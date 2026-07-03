@@ -158,8 +158,26 @@ html.js .hero .est { animation-delay: .44s; }
   border-radius: 14px; padding: 44px; margin: 64px auto;
   box-shadow: var(--shadow-md);
 }
-.concert-banner img { border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,.5); transition: transform .5s cubic-bezier(.22,.61,.36,1); }
-.concert-banner:hover img { transform: scale(1.025) rotate(-.5deg); }
+/* 海報與深色背景分離：金色細框＋呼吸光暈，襯托主視覺 */
+.concert-banner .poster-wrap { position: relative; }
+.concert-banner .poster-wrap::before {
+  content: ""; position: absolute; inset: -14%;
+  background: radial-gradient(ellipse at center, rgba(200,164,92,.28), transparent 65%);
+  filter: blur(6px); animation: halo 5s ease-in-out infinite alternate; pointer-events: none;
+}
+@keyframes halo { from { opacity: .45; transform: scale(.96); } to { opacity: 1; transform: scale(1.04); } }
+@media (prefers-reduced-motion: reduce) { .concert-banner .poster-wrap::before { animation: none; } }
+.concert-banner img {
+  position: relative; border-radius: 8px;
+  border: 1px solid rgba(200,164,92,.55);
+  outline: 1px solid rgba(0,0,0,.4);
+  box-shadow: 0 0 0 4px rgba(200,164,92,.08), 0 6px 24px rgba(0,0,0,.55), 0 0 46px rgba(200,164,92,.22);
+  transition: transform .5s cubic-bezier(.22,.61,.36,1), box-shadow .5s;
+}
+.concert-banner:hover img {
+  transform: scale(1.03) rotate(-.6deg);
+  box-shadow: 0 0 0 4px rgba(200,164,92,.16), 0 10px 32px rgba(0,0,0,.6), 0 0 60px rgba(200,164,92,.34);
+}
 .concert-banner .tag { color: var(--gold-soft); letter-spacing: .3em; font-size: .85rem; margin-bottom: 10px; }
 .concert-banner h2 { font-family: var(--serif); font-size: 2.1rem; font-weight: 900; letter-spacing: .12em; margin-bottom: 14px; color: #fff; }
 .concert-banner .info { color: var(--dark-ink-dim); margin-bottom: 24px; }
@@ -342,6 +360,17 @@ blockquote {
   font-family: var(--serif); font-size: 1.15rem; color: var(--ink); letter-spacing: .05em; max-width: 42em;
 }
 blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--ink-dim); margin-top: 8px; }
+
+/* ---------- 人物個人專頁 ---------- */
+.person-hero { display: flex; gap: 28px; align-items: center; margin: 40px 0 8px; flex-wrap: wrap; }
+.person-hero img {
+  width: 168px; height: 168px; object-fit: cover; border-radius: 18px;
+  border: 1px solid var(--line); box-shadow: var(--shadow-md); flex: none;
+}
+.person-hero .person-meta { flex: 1; min-width: 260px; }
+.person-article p { max-width: 42em; }
+.person-article .sources { font-size: .85rem; color: var(--ink-dim); }
+.person-article .sources a { word-break: break-all; }
 
 /* ---------- 回到頂端 ---------- */
 .to-top {

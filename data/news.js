@@ -26,5 +26,11 @@ window.NEWS = [
     summary: "第 41 屆校友聯演第一次團練展開，翁啟榮學長一如往常第一個到場開門，團練後再回味一碗嘉中人的火雞肉飯。",
     url: "news/2026-06-27-first-rehearsal.html",
     thumb: "assets/img/news/2026-06-27-turkeyrice.webp"
+  },
+  {
+    date: "2026-06-12",
+    title: "校友歸隊召集令：《為伍》團練時程公布",
+    summary: "6/27 起每週六日下午團練、8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台，歡迎校友歸隊、親友探班。",
+    url: "news/2026-06-12-rehearsal-schedule.html"
   }
 ];
