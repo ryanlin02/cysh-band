@@ -607,6 +607,38 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .table-scroll table.plain { min-width: 480px; }
+.part-code-table-wrap { max-width: 560px; }
+.table-scroll table.part-code-table {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  table-layout: fixed;
+}
+.part-code-table th:nth-child(1),
+.part-code-table td:nth-child(1),
+.part-code-table th:nth-child(3),
+.part-code-table td:nth-child(3) {
+  width: 74px;
+  padding-left: 12px;
+  padding-right: 12px;
+  text-align: center;
+}
+.part-code-table th:nth-child(2),
+.part-code-table td:nth-child(2),
+.part-code-table th:nth-child(4),
+.part-code-table td:nth-child(4) {
+  width: 178px;
+  padding-left: 18px;
+  padding-right: 22px;
+}
+.part-code-table td:nth-child(1),
+.part-code-table td:nth-child(3) {
+  background: rgba(242, 238, 228, .36);
+}
+.part-code-table td b {
+  font-size: 1.08rem;
+  font-variant-numeric: tabular-nums;
+}
 
 /* ---------- 頁尾（保留深色收尾） ---------- */
 .footer { border-top: none; background: linear-gradient(180deg, var(--dark-2), var(--dark)); margin-top: 80px; }
