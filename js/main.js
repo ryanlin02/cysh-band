@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ---------- Lightbox（影像館） ---------- */
-  var galleryImgs = document.querySelectorAll('.gallery-grid figure img, .concert-item .poster img');
+  var galleryImgs = document.querySelectorAll('.gallery-grid figure img, .concert-item .poster img, .news-article figure img');
   if (galleryImgs.length) {
     var lb = document.createElement('div');
     lb.className = 'lightbox';

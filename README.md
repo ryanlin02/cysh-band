@@ -64,7 +64,6 @@ brew install webp     # 安裝一次
 cwebp -q 82 -resize 1600 0 原圖.jpg -o 輸出.webp
 ```
 
-
 ## 待補事項
 
 - [ ] OPENTIX 實際購票連結（index.html、concerts.html、news 文章共三處）
