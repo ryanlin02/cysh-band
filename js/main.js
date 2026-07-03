@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ---------- Lightbox（影像館） ---------- */
-  var galleryImgs = document.querySelectorAll('.gallery-grid figure img, .concert-item .poster img, .news-article figure img');
+  var galleryImgs = document.querySelectorAll('.gallery-grid figure img:not(.album-cover), .concert-item .poster img, .news-article figure img');
   if (galleryImgs.length) {
     var lb = document.createElement('div');
     lb.className = 'lightbox';
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-caption');
     galleryImgs.forEach(function (img) {
       img.addEventListener('click', function () {
-        lbImg.src = img.src;
+        lbImg.src = img.dataset.full || img.src;
         lbImg.alt = img.alt || '';
         var cap = img.closest('figure') && img.closest('figure').querySelector('figcaption');
         lbCap.textContent = cap ? cap.textContent : (img.alt || '');
