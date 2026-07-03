@@ -4,10 +4,13 @@
 document.addEventListener('DOMContentLoaded', function () {
   if (!window.NEWS) return;
   function item(n) {
+    var tail = n.thumb
+      ? '<img class="news-thumb" src="' + n.thumb + '" alt="" loading="lazy">'
+      : '<span class="news-arrow">→</span>';
     return '<a class="news-item" href="' + n.url + '">' +
       '<span class="news-date">' + n.date + '</span>' +
       '<span class="news-body"><b>' + n.title + '</b><span class="news-summary">' + n.summary + '</span></span>' +
-      '<span class="news-arrow">→</span></a>';
+      tail + '</a>';
   }
   var list = document.getElementById('news-list');
   if (list) list.innerHTML = window.NEWS.map(item).join('') || '<p class="muted">目前沒有新消息。</p>';
