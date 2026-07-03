@@ -31,7 +31,7 @@
 ### 發布最新消息
 1. 複製 `news/_template.html` 改名 `news/YYYY-MM-DD-主題.html`，編輯內容
 2. 在 `data/news.js` 陣列「最前面」加一筆
-（校友聯演頁顯示全部、首頁自動顯示最新 2 則）
+（首頁自動顯示最新 2 則、校友聯演頁最新 4 則、news/index.html 總覽頁全部列出，皆自動處理）
 
 ### 新增一屆聯演
 音樂會結束後，把 concerts.html「本屆演出」改寫為「歷屆紀錄」的一個 `concert-item`；資料豐富的屆別（海報、曲目、名單齊全）可另開 `concerts/第N屆.html` 獨立頁
