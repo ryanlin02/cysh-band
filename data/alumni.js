@@ -16,6 +16,7 @@ window.ALUMNI = [
   { num: null, name: "蕭萬長", year: 43, part: "打擊（鼓手）", tags: ["打擊"], role: "前副總統", desc: "學生時期是嘉中樂隊的鼓手，2024 年嘉中百年校慶亦親臨慶祝大會。編號制度建立前的資深前輩。", photo: "hsiao", link: "people.html" },
   { num: "6301", name: "陳錫仁", year: 63, part: "社長．小號", tags: ["幹部", "小號"], role: "小號演奏家．中臺科技大學教師", desc: "當屆社長、小號聲部。美國聖保羅大學小號演奏碩士，台灣銅管五重奏團創辦人、中臺科技大學教師，曾在東海大學指導曾膺安，多屆聯演擔任指揮與小號獨奏。", photo: "6301", link: "people/6301.html" },
   { num: "6392", name: "羅家駒", year: 63, part: "打擊", tags: ["打擊"], role: "音樂教師．前指導老師", desc: "民國 63 年入學，打擊聲部，曾返回母隊擔任指導老師，深受隊員愛戴；現為詩班、合唱團、管樂與吉他教師。「依風台窩點、和學弟妹一齊演出的點滴！」", photo: "blank", link: "" },
+  { num: "6401", name: "馮朝君", year: 64, part: "社長．打擊", tags: ["幹部", "打擊"], role: "嘉義城市管樂推手．前校友團團長", desc: "嘉中管樂隊校友，退伍後返回母隊指導學弟，後續投入嘉義地區學校管樂教育、嘉義市管樂節早期籌辦與嘉義市管樂團行政。曾任嘉義高中校友管樂團團長，媒體曾以「嘉義市管樂之父」稱之。", photo: "6401", link: "people/6401.html" },
   { num: "6951", name: "曾膺安", year: 69, part: "小號", tags: ["小號"], role: "嘉義市管樂團藝術總監暨常任指揮", desc: "自 1994 年嘉義市管樂團創立掌舵至今逾 30 年，率團登上多個國際管樂舞台。", photo: "6951", link: "people/6951.html" },
   { num: "7111", name: "盧宓承", year: 71, part: "長笛", tags: ["長笛"], role: "嘉義高中校友管樂團團長", desc: "綽號「咪咪學長」。校友管樂團登記立案代表人，現任教於雲林縣立蔦松藝術高中，校友聯演核心指揮之一。", photo: "7111", link: "people/7111.html" },
   { num: "7112", name: "何權烈", year: 71, part: "長笛", tags: ["長笛"], role: "", desc: "民國 71 年入學，長笛聲部校友。", photo: "7112", link: "" },
@@ -63,12 +64,15 @@ window.ALUMNI = [
   { num: "0611", name: "蔡詠竹", year: 106, part: "長笛", tags: ["長笛"], role: "", desc: "民國 106 年入學，長笛聲部校友。", photo: "0611", link: "" },
   { num: "7571", name: "陳昌遠", year: 75, part: "上低音號", tags: ["上低音號"], role: "大學兼任教師", desc: "民國 75 年入學，上低音號聲部校友。", photo: "blank", link: "" },
   { num: "7722", name: "陳冠志", year: 77, part: "豎笛", tags: ["豎笛"], role: "工程師", desc: "民國 77 年入學，豎笛聲部校友。「感謝有樂隊，讓我有地方混。」", photo: "blank", link: "" },
+  { num: "7921", name: "莊富益", year: 79, part: "豎笛", tags: ["豎笛"], role: "國小教師", desc: "民國 79 年入學，豎笛聲部校友。回憶嘉中管樂是「一群人完成好多事，音樂啟蒙的地方」。", photo: "7921", link: "" },
   { num: "8603", name: "江俊漢", year: 86, part: "副社長．豎笛", tags: ["幹部", "豎笛"], role: "嘉義大學特殊教育學系專任教師", desc: "民國 86 年入學，曾任副社長，豎笛聲部。", photo: "8603", link: "" },
   { num: "8912", name: "黃耀瑩", year: 89, part: "長笛", tags: ["長笛"], role: "愛樂者", desc: "民國 89 年入學，長笛聲部校友。「不能沒有你。」", photo: "8912", link: "" },
+  { num: "8962", name: "蔡秉璋", year: 89, part: "長號", tags: ["長號"], role: "警務員", desc: "民國 89 年入學，長號聲部校友，現職臺南市政府警察局刑事鑑識中心警務員。", photo: "blank", link: "" },
   { num: "1001", name: "林奕安", year: 110, part: "社長．豎笛", tags: ["幹部", "豎笛"], role: "", desc: "民國 110 年入學，當屆社長，豎笛聲部，現就讀蘇州大學。", photo: "blank", link: "" },
-  { num: "1051", name: "黃鈺芠", year: 110, part: "小號", tags: ["小號"], role: "臺北市立大學音樂系", desc: "民國 110 年入學，小號聲部，將於第 41 屆《為伍》擔任 Philip Sparke《Manhattan》小號協奏。", photo: "1051", link: "people.html" },
+  { num: "1051", name: "黃鈺芠", year: 110, part: "小號", tags: ["小號"], role: "臺北市立大學音樂系．《為伍》小號協奏", desc: "民國 110 年入學，小號聲部。自嘉義校園管樂體系成長，曾參與嘉義市國際管樂節與嘉中百年校慶聯演，將於第 41 屆《為伍》擔任 Philip Sparke《Manhattan》小號協奏。", photo: "1051", link: "people/1051.html" },
   { num: "0755", name: "許祥倫", year: 107, part: "小號", tags: ["小號"], role: "研究生", desc: "民國 107 年入學，小號聲部校友。", photo: "0755", link: "" },
+  { num: null, name: "林少凡", year: 107, part: "小號", tags: ["小號"], role: "小號演奏．音樂研究生", desc: "民國 107 年入學，小號聲部。屏東大學音樂系畢業，現就讀國立臺北教育大學音樂學系碩士班演奏組；曾參與大型歌劇、職棒與國際賽事應援樂隊演出。校友編號待查。", photo: "linshaofan", link: "" },
   { num: "9161", name: "王聖安", year: 91, part: "長號", tags: ["長號"], role: "諮商心理師", desc: "民國 91 年入學，長號聲部校友。", photo: "9161", link: "" },
-  { num: null, name: "莊宗儒", year: null, part: "上低音號", tags: ["上低音號"], role: "上低音號演奏家", desc: "2022 年第 37 屆聯演《從0開始》獨奏者。", photo: "blank", link: "people.html" },
-  { num: "0741", name: "陳羿弦", year: 107, part: "法國號", tags: ["法國號"], role: "法國號．國立清華大學音樂系", desc: "民國 107 年入學，法國號聲部，第 89 屆學生指揮，現就讀清華大學音樂系主修法國號。", photo: "0741", link: "people.html" }
+  { num: "0271", name: "莊宗儒", year: 99, part: "上低音號", tags: ["上低音號"], role: "上低音號演奏家", desc: "北藝大管絃與擊樂研究所畢業，EuTuba 悠風低音號重奏團、銅心銅管樂團、TSO 管樂團上低音號團員。2022 年第 37 屆聯演《從0開始》獨奏者，2025 TEF 總召集人。", photo: "0271", link: "people.html" },
+  { num: "0741", name: "陳羿弦", year: 107, part: "法國號", tags: ["法國號"], role: "法國號．藝術管理研究生", desc: "民國 107 年入學，法國號聲部，第 89 屆學生指揮。嘉義高中音樂班、國立清華大學音樂系畢業，現就讀國立中山大學藝術管理與創業研究所。", photo: "0741", link: "people.html" }
 ];
