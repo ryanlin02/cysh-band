@@ -36,6 +36,9 @@
 ### 新增一屆聯演
 音樂會結束後，把 concerts.html「本屆演出」改寫為「歷屆紀錄」的一個 `concert-item`；資料豐富的屆別（海報、曲目、名單齊全）可另開 `concerts/第N屆.html` 獨立頁
 
+### 新增頁面時同步更新 SEO
+新增任何公開頁面（如 news 文章、屆別頁）後，在 `sitemap.xml` 加一行對應的 `<url>`（複製既有行修改網址與日期即可）
+
 ### 新增相簿照片
 壓成 WebP（長邊 1600px、每張 300KB 內）放 `assets/img/`，在 gallery.html 對應相簿複製一個 `<figure>`；新活動就新開一個「相簿：」section。點擊放大（lightbox）自動生效
 

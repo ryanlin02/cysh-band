@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /news/_template.html
+
+Sitemap: https://cysh.band/sitemap.xml
