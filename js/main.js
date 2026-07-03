@@ -91,8 +91,24 @@ document.addEventListener('DOMContentLoaded', function () {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
     targets.forEach(function (el) { io.observe(el); });
+
+    /* 保險機制：部分行動瀏覽器（尤其舊版 iOS Safari）對 IntersectionObserver 的支援不穩定，
+       曾發生區塊永遠停留在淡入前的透明狀態、導致內容「消失」的情形。捲動與縮放視窗時
+       額外用座標檢查一次，確保任何進入可視範圍的區塊一定會顯示出來。 */
+    function revealVisible() {
+      document.querySelectorAll('.reveal:not(.in)').forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {
+          el.classList.add('in');
+          io.unobserve(el);
+        }
+      });
+    }
+    window.addEventListener('scroll', revealVisible, { passive: true });
+    window.addEventListener('resize', revealVisible);
+    revealVisible();
   }
 
   /* ---------- 錨點跳轉：目標卡片略過淡入動畫直接顯示（如 people.html#p-7581） ---------- */
