@@ -10,9 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var result = document.getElementById('number-result');
   var random = document.getElementById('number-random');
   var byNum = {};
+  var photoByNum = {};
 
   window.NUMBER_LOOKUP.forEach(function (person) {
     if (person.num) byNum[person.num] = person;
+  });
+
+  /* 交叉比對 data/alumni.js：若此編號在校友名錄有真實大頭照（非 blank），查詢結果旁可顯示照片 */
+  (window.ALUMNI || []).forEach(function (a) {
+    if (a.num && a.photo && a.photo !== 'blank') photoByNum[a.num] = a.photo;
   });
 
   function padNum() {
@@ -93,21 +99,16 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    result.className = 'lookup-result is-found';
+    var photo = photoByNum[person.num];
+    result.className = 'lookup-result is-found' + (photo ? ' has-photo' : '');
     result.innerHTML =
-      '<p class="result-num">' + person.num + '</p>' +
-      '<h3>' + person.name + '</h3>' +
-      '<p class="result-meta">' + metaFor(person) + '</p>';
+      '<div class="result-text">' +
+        '<p class="result-num">' + person.num + '</p>' +
+        '<h3>' + person.name + '</h3>' +
+        '<p class="result-meta">' + metaFor(person) + '</p>' +
+      '</div>' +
+      (photo ? '<img class="result-avatar" src="assets/img/members/' + photo + '.webp" alt="' + person.name + '" loading="lazy">' : '');
   }
-
-  root.addEventListener('click', function (event) {
-    var step = event.target.closest('.slot-step');
-    if (!step || !root.contains(step)) return;
-    var reel = step.closest('.slot-reel');
-    var index = reels.indexOf(reel);
-    if (index < 0) return;
-    bump(index, step.dataset.dir === 'up' ? 1 : -1);
-  });
 
   reels.forEach(function (reel, index) {
     var startY = null;

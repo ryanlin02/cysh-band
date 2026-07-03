@@ -95,6 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
     targets.forEach(function (el) { io.observe(el); });
   }
 
+  /* ---------- 錨點跳轉：目標卡片略過淡入動畫直接顯示（如 people.html#p-7581） ---------- */
+  if (location.hash) {
+    var hashEl = document.querySelector(location.hash);
+    if (hashEl) hashEl.classList.add('in');
+  }
+
   /* ---------- 數字滾動（首頁 stats） ---------- */
   var nums = document.querySelectorAll('.stat b');
   if (nums.length && !reduced && 'IntersectionObserver' in window) {

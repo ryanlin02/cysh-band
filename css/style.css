@@ -280,8 +280,18 @@ html.js .tl-item.in::before { animation: pulse 1.2s ease-out 1; }
   background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px;
   padding: 30px 28px; box-shadow: var(--shadow-sm);
   transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s, border-color .35s;
+  scroll-margin-top: 84px;
 }
 .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--gold-soft); }
+
+/* 編號頁「示範」卡片：與可點擊的正式人物卡做出區隔 */
+.card.demo { border-style: dashed; position: relative; }
+.card.demo .demo-tag {
+  position: absolute; top: -11px; right: 18px;
+  background: var(--bg-soft); color: var(--ink-dim);
+  font-family: var(--sans); font-size: .68rem; letter-spacing: .16em;
+  padding: 3px 10px; border-radius: 20px; border: 1px solid var(--line);
+}
 .card-head { display: flex; align-items: center; gap: 18px; margin-bottom: 14px; }
 .card .avatar {
   width: 104px; height: 104px; border-radius: 14px; object-fit: cover; flex: none;
@@ -377,23 +387,18 @@ table.plain td b { color: var(--ink); }
   gap: 10px; max-width: 420px; margin: 0 auto 14px;
 }
 .slot-reel {
-  display: grid; grid-template-rows: 38px 92px 38px; gap: 7px;
+  display: grid; grid-template-rows: 92px; gap: 7px;
   touch-action: pan-x; user-select: none;
 }
-.slot-step, .slot-value {
+.slot-value {
   border: 1px solid var(--line); background: var(--bg-card); color: var(--gold);
   font-family: var(--latin); cursor: pointer; box-shadow: var(--shadow-sm);
   transition: transform .25s cubic-bezier(.22,.61,.36,1), box-shadow .25s, border-color .25s, background .25s;
-}
-.slot-step {
-  border-radius: 8px; font-size: .88rem; line-height: 1; color: var(--ink-dim);
-}
-.slot-value {
   position: relative; overflow: hidden; display: block;
   border-radius: 10px; font-family: var(--sans); font-size: 3.15rem; font-weight: 700; line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.slot-step:hover, .slot-value:hover, .slot-value:focus-visible, .slot-step:focus-visible {
+.slot-value:hover, .slot-value:focus-visible {
   border-color: var(--gold-soft); box-shadow: var(--shadow-md); outline: none;
 }
 .slot-value:hover { transform: translateY(-3px); }
@@ -449,6 +454,17 @@ table.plain td b { color: var(--ink); }
   color: var(--ink-dim); font-size: .96rem; letter-spacing: .06em;
 }
 .lookup-result.is-empty h3 { color: var(--ink-dim); }
+.lookup-result.has-photo {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.lookup-result .result-avatar {
+  width: 84px; height: 84px; border-radius: 14px; object-fit: cover; flex: none;
+  border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+}
+@media (max-width: 480px) {
+  .lookup-result.has-photo { flex-direction: column; align-items: flex-start; }
+  .lookup-result .result-avatar { align-self: center; }
+}
 .lookup-note { margin-top: 14px; }
 @media (prefers-reduced-motion: reduce) {
   .slot-track.roll-up, .slot-track.roll-down { animation: none; }
@@ -456,7 +472,7 @@ table.plain td b { color: var(--ink); }
 @media (max-width: 560px) {
   .number-lookup { padding: 18px; }
   .slot-machine { grid-template-columns: repeat(4, minmax(54px, 1fr)); gap: 7px; }
-  .slot-reel { grid-template-rows: 32px 78px 32px; gap: 6px; }
+  .slot-reel { grid-template-rows: 78px; gap: 6px; }
   .slot-value { font-size: 2.35rem; }
   .desktop-hint { display: none; }
   .touch-hint { display: inline; }

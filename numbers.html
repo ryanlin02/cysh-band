@@ -32,6 +32,7 @@
 <link rel="stylesheet" href="css/style.css">
 <script src="js/main.js" defer></script>
 <script src="data/number-lookup.js" defer></script>
+<script src="data/alumni.js" defer></script>
 <script src="js/number-lookup.js" defer></script>
 </head>
 <body>
@@ -92,30 +93,22 @@
     <div class="number-lookup" id="number-lookup">
       <div class="slot-machine" role="group" aria-label="四碼編號轉輪">
         <div class="slot-reel" data-index="0">
-          <button class="slot-step" type="button" data-dir="up" aria-label="第一碼加一">▲</button>
           <button class="slot-value" type="button" aria-label="第一碼，目前為 8">8</button>
-          <button class="slot-step" type="button" data-dir="down" aria-label="第一碼減一">▼</button>
         </div>
         <div class="slot-reel" data-index="1">
-          <button class="slot-step" type="button" data-dir="up" aria-label="第二碼加一">▲</button>
           <button class="slot-value" type="button" aria-label="第二碼，目前為 8">8</button>
-          <button class="slot-step" type="button" data-dir="down" aria-label="第二碼減一">▼</button>
         </div>
         <div class="slot-reel" data-index="2">
-          <button class="slot-step" type="button" data-dir="up" aria-label="第三碼加一">▲</button>
           <button class="slot-value" type="button" aria-label="第三碼，目前為 6">6</button>
-          <button class="slot-step" type="button" data-dir="down" aria-label="第三碼減一">▼</button>
         </div>
         <div class="slot-reel" data-index="3">
-          <button class="slot-step" type="button" data-dir="up" aria-label="第四碼加一">▲</button>
           <button class="slot-value" type="button" aria-label="第四碼，目前為 1">1</button>
-          <button class="slot-step" type="button" data-dir="down" aria-label="第四碼減一">▼</button>
         </div>
       </div>
 
       <p class="lookup-hint">
-        <span class="desktop-hint">點擊上下箭頭，或用滑鼠滾輪調整號碼。</span>
-        <span class="touch-hint">上下滑動數字，或點擊箭頭調整號碼。</span>
+        <span class="desktop-hint">點擊數字或用滑鼠滾輪調整號碼。</span>
+        <span class="touch-hint">上下滑動或點擊數字調整號碼。</span>
       </p>
 
       <div class="lookup-actions">
@@ -132,7 +125,8 @@
     <h2>編號實例</h2>
     <p class="muted">依入學年由前輩至後輩排列。</p>
     <div class="cards">
-      <div class="card">
+      <div class="card demo">
+        <span class="demo-tag">編號示範</span>
         <div class="card-head">
           <img class="avatar" src="assets/img/members/7202.webp" alt="吳俊霖（伍佰）" loading="lazy">
           <div>
@@ -142,8 +136,10 @@
         </div>
         <p class="role">創作歌手．低音號</p>
         <p>名冊中編號 7202、聲部標記 TUBA 的紀錄，正是後來的搖滾巨星伍佰。學生時期擔任樂隊副隊長，主修低音號。</p>
+        <p class="more"><a href="people.html#p-7202">完整介紹 →</a></p>
       </div>
-      <div class="card">
+      <div class="card demo">
+        <span class="demo-tag">編號示範</span>
         <div class="card-head">
           <img class="avatar" src="assets/img/members/8501.webp" alt="丁肇賢" loading="lazy">
           <div>
@@ -153,8 +149,10 @@
         </div>
         <p class="role">校友聯演統籌</p>
         <p>幹部與聲部演奏員身分不互斥——他同時也是低音號演奏員，Email 帳號正是「tuba＋8501」。</p>
+        <p class="more"><a href="people/8501.html">完整介紹 →</a></p>
       </div>
-      <div class="card">
+      <div class="card demo">
+        <span class="demo-tag">編號示範</span>
         <div class="card-head">
           <img class="avatar" src="assets/img/members/8861.webp" alt="簡晟軒" loading="lazy">
           <div>
@@ -164,8 +162,10 @@
         </div>
         <p class="role">在校生管樂隊指導老師．核心指揮</p>
         <p>長年演奏長號、擔任長號老師，編號與其音樂人生完全吻合。</p>
+        <p class="more"><a href="people/8861.html">完整介紹 →</a></p>
       </div>
-      <div class="card">
+      <div class="card demo">
+        <span class="demo-tag">編號示範</span>
         <div class="card-head">
           <img class="avatar" src="assets/img/members/blank.webp" alt="林俊余" loading="lazy">
           <div>
@@ -175,8 +175,10 @@
         </div>
         <p class="role">上個月發票中了 500 元</p>
         <p>第三碼「0」代表幹部組，流水號「02」是當年度的副社長——但幹部同時仍隸屬自己的聲部，他是長號手。</p>
+        <p class="more"><a href="roster.html#p-9502">校友名錄 →</a></p>
       </div>
-      <div class="card">
+      <div class="card demo">
+        <span class="demo-tag">編號示範</span>
         <div class="card-head">
           <img class="avatar" src="assets/img/members/9721.webp" alt="葉哲良" loading="lazy">
           <div>
@@ -186,8 +188,10 @@
         </div>
         <p class="role">作曲家．《旭陵慶典》創作者</p>
         <p>為嘉中百年校慶創作管樂曲《旭陵慶典》，2023 年第 38 屆聯演首演。</p>
+        <p class="more"><a href="people/9721.html">完整介紹 →</a></p>
       </div>
-      <div class="card">
+      <div class="card demo">
+        <span class="demo-tag">編號示範</span>
         <div class="card-head">
           <img class="avatar" src="assets/img/members/0431.webp" alt="許哲誠" loading="lazy">
           <div>
@@ -197,6 +201,7 @@
         </div>
         <p class="role">旅外薩克斯風獨奏家</p>
         <p>年份跨過民國百年後，年份碼取末兩碼「04」，規則依舊。</p>
+        <p class="more"><a href="people.html#p-0431">完整介紹 →</a></p>
       </div>
     </div>
   </section>

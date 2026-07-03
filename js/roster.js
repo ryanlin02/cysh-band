@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
       html += '<h2>' + g.info.label + ' <span class="group-sub">' + g.info.sub + '．' + g.people.length + ' 位</span></h2>';
       html += '<div class="cards roster-cards">';
       g.people.forEach(function (p) {
-        html += '<div class="card roster-card">';
+        var anchorId = 'p-' + (p.num || p.photo);
+        html += '<div class="card roster-card" id="' + anchorId + '">';
         html += '<div class="card-head">';
         html += '<img class="avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
         html += '<div>';
@@ -108,4 +109,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   render();
+
+  /* 從其他頁面帶錨點過來（如 people/{編號}.html 的「校友名錄 →」）：
+     名錄卡是 render() 後才動態產生，瀏覽器原生錨點跳轉抓不到，需要手動捲動並跳過淡入動畫 */
+  if (location.hash) {
+    var jumpTarget = document.querySelector(location.hash);
+    if (jumpTarget) {
+      jumpTarget.classList.add('in');
+      jumpTarget.scrollIntoView({ block: 'center' });
+    }
+  }
 });
