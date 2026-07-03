@@ -17,6 +17,16 @@ document.addEventListener('DOMContentLoaded', function () {
   top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); });
   document.body.appendChild(top);
 
+  /* ---------- 演出倒數 ---------- */
+  document.querySelectorAll('[data-countdown]').forEach(function (el) {
+    var target = new Date(el.getAttribute('data-countdown') + 'T00:00:00+08:00');
+    var days = Math.ceil((target - new Date()) / 86400000);
+    if (days > 1) el.innerHTML = '距離演出還有 <b>' + days + '</b> 天';
+    else if (days === 1) el.innerHTML = '明天就是演出日！';
+    else if (days === 0) el.innerHTML = '就是今天，音樂廳見！';
+    else el.innerHTML = '演出圓滿落幕，感謝蒞臨';
+  });
+
   /* ---------- 漢堡選單 ---------- */
   var nav = document.querySelector('.nav');
   var toggle = document.querySelector('.nav-toggle');
