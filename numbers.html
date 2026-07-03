@@ -31,6 +31,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <script src="js/main.js" defer></script>
+<script src="data/number-lookup.js" defer></script>
+<script src="js/number-lookup.js" defer></script>
 </head>
 <body>
 
@@ -81,6 +83,49 @@
       <tr><td><b>4</b></td><td>法國號</td><td><b>9</b></td><td>打擊樂器</td></tr>
     </table></div>
     <p>只要知道一位隊員的編號，幾乎就能立刻判斷出他是哪一年入隊、擔任什麼聲部，甚至是否曾任社團幹部——報出編號，就等於完成了一半的自我介紹。要注意的是，編號第三碼為「0」的幹部，編號上雖以幹部身分登錄，但每一位幹部同時仍是某個聲部的演奏員——社長可能是長號手，副社長可能吹低音號，兩種身分並存，只是幹部組在編號邏輯上優先以「0」記錄。</p>
+  </section>
+
+  <section class="section number-lookup-section" id="number-lookup-section">
+    <h2>編號查詢小遊戲</h2>
+    <p>轉出一組四碼編號，看看這組數字背後是哪一位嘉中管樂人。</p>
+
+    <div class="number-lookup" id="number-lookup">
+      <div class="slot-machine" role="group" aria-label="四碼編號轉輪">
+        <div class="slot-reel" data-index="0">
+          <button class="slot-step" type="button" data-dir="up" aria-label="第一碼加一">▲</button>
+          <button class="slot-value" type="button" aria-label="第一碼，目前為 8">8</button>
+          <button class="slot-step" type="button" data-dir="down" aria-label="第一碼減一">▼</button>
+        </div>
+        <div class="slot-reel" data-index="1">
+          <button class="slot-step" type="button" data-dir="up" aria-label="第二碼加一">▲</button>
+          <button class="slot-value" type="button" aria-label="第二碼，目前為 8">8</button>
+          <button class="slot-step" type="button" data-dir="down" aria-label="第二碼減一">▼</button>
+        </div>
+        <div class="slot-reel" data-index="2">
+          <button class="slot-step" type="button" data-dir="up" aria-label="第三碼加一">▲</button>
+          <button class="slot-value" type="button" aria-label="第三碼，目前為 6">6</button>
+          <button class="slot-step" type="button" data-dir="down" aria-label="第三碼減一">▼</button>
+        </div>
+        <div class="slot-reel" data-index="3">
+          <button class="slot-step" type="button" data-dir="up" aria-label="第四碼加一">▲</button>
+          <button class="slot-value" type="button" aria-label="第四碼，目前為 1">1</button>
+          <button class="slot-step" type="button" data-dir="down" aria-label="第四碼減一">▼</button>
+        </div>
+      </div>
+
+      <p class="lookup-hint">
+        <span class="desktop-hint">點擊上下箭頭，或用滑鼠滾輪調整號碼。</span>
+        <span class="touch-hint">上下滑動數字，或點擊箭頭調整號碼。</span>
+      </p>
+
+      <div class="lookup-actions">
+        <button class="filter-btn" type="button" id="number-random">隨機收錄編號</button>
+      </div>
+
+      <div class="lookup-result" id="number-result" aria-live="polite"></div>
+    </div>
+
+    <p class="muted lookup-note">校友名冊已多年未完整更新，資料仍持續整理中；若編號、姓名、聲部或幹部資訊有誤，歡迎透過粉絲專頁聯繫並提供正確資訊。</p>
   </section>
 
   <section class="section">
