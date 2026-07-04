@@ -27,6 +27,34 @@ const articles = [
     ogTitle: '《為伍》8/8 文化局音樂廳登場｜最新消息｜嘉義高中管樂隊',
     description: '第 41 屆校友暨在校生聯合音樂會《為伍》，2026 年 8 月 8 日於嘉義市政府文化局音樂廳演出。',
     headlineHtml: '第 41 屆聯合音樂會《為伍》<br>8/8 文化局音樂廳登場'
+  },
+  {
+    date: '2026-06-30',
+    source: 'content/news/2026-06-30-summer-bbq.html',
+    output: 'news/2026-06-30-summer-bbq.html',
+    title: '期末考結束，肉趴開烤！在校生迎接《為伍》暑假｜最新消息｜嘉義高中管樂隊',
+    ogTitle: '期末考結束，肉趴開烤！在校生迎接《為伍》暑假',
+    description: '6 月 30 日晚間，在校生管樂社在指導老師簡晟軒帶領下舉辦期末烤肉聚會，為暑假的《為伍》密集團練暖身。',
+    headlineHtml: '期末考結束，肉趴開烤！<br>在校生迎接《為伍》的暑假'
+  },
+  {
+    date: '2026-06-27',
+    source: 'content/news/2026-06-27-first-rehearsal.html',
+    output: 'news/2026-06-27-first-rehearsal.html',
+    title: '《為伍》第一次團練啟動｜最新消息｜嘉義高中管樂隊',
+    ogTitle: '《為伍》第一次團練啟動｜嘉義高中管樂隊',
+    description: '第 41 屆校友聯演《為伍》6 月 27 日展開第一次團練，翁啟榮學長一如往常第一個到場開門，團練後再回味一碗嘉中人的火雞肉飯。',
+    headlineHtml: '《為伍》第一次團練啟動！<br>警伯依然是第一個到的人'
+  },
+  {
+    date: '2026-06-12',
+    source: 'content/news/2026-06-12-rehearsal-schedule.html',
+    output: 'news/2026-06-12-rehearsal-schedule.html',
+    title: '校友歸隊召集令：《為伍》團練時程公布｜最新消息｜嘉義高中管樂隊',
+    ogTitle: '校友歸隊召集令：《為伍》團練時程公布',
+    ogDescription: '6/27 起每週六日下午團練，8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台。歡迎校友歸隊。',
+    description: '第 41 屆校友聯演《為伍》團練時程公布：6/27 起每週六日下午團練，8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台。歡迎校友歸隊。',
+    headlineHtml: '校友歸隊召集令：<br>《為伍》團練時程公布'
   }
 ];
 
