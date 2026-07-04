@@ -264,6 +264,23 @@ function checkGeneratedNewsPages() {
   info.push(`Generated news pages checked: ${articles.length}`);
 }
 
+function checkGeneratedPeoplePages() {
+  const { profiles, renderProfile } = require('./generate-people-pages');
+  for (const profile of profiles) {
+    const outputPath = path.join(root, profile.output);
+    if (!fs.existsSync(outputPath)) {
+      addError(`generated people page missing: ${profile.output}`);
+      continue;
+    }
+    const expected = renderProfile(profile);
+    const actual = fs.readFileSync(outputPath, 'utf8');
+    if (actual !== expected) {
+      addError(`${profile.output}: generated HTML is out of sync. Run node scripts/generate-people-pages.js`);
+    }
+  }
+  info.push(`Generated people pages checked: ${profiles.length}`);
+}
+
 function getAttr(tag, name) {
   const match = tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, 'i'));
   return match ? match[1] : '';
@@ -354,5 +371,6 @@ checkPublicHtmlQuality();
 checkSitemapAndFeed();
 checkFontUrlEncoding();
 checkGeneratedNewsPages();
+checkGeneratedPeoplePages();
 checkPeopleProfilePages();
 printReport();
