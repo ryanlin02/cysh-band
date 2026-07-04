@@ -460,29 +460,15 @@ table.plain.roster { max-width: 880px; }
 table.plain.roster th:first-child,
 table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
 
-/* 手機版表格：僅「單欄 key-value 資訊表」改為堆疊（欄位單純、無混淆風險）；
-   多欄表格（聲部代碼表、演出人員名單等）維持與桌機相同的表格／欄位排列，
-   超出螢幕寬度時交由 .table-scroll 橫向捲動，不轉為堆疊卡片，避免欄位對應錯亂 */
-@media (max-width: 640px) {
-  /* 單欄 key-value 資訊表（屆別／日期／場地…、人物頁基本資料）：th 本身即為欄位標籤，直接上下堆疊，內容夠短不需捲動 */
-  .table-scroll table.plain:not(.roster):not(.part-code-table) { min-width: 0; }
-  table.plain:not(.roster):not(.part-code-table) { max-width: none; }
-  table.plain:not(.roster):not(.part-code-table) tr {
-    display: flex; flex-direction: column; gap: 3px;
-    padding: 12px 16px;
-  }
-  table.plain:not(.roster):not(.part-code-table) tr + tr { border-top: 1px solid var(--line); }
-  table.plain:not(.roster):not(.part-code-table) th,
-  table.plain:not(.roster):not(.part-code-table) td { display: block; border: 0; padding: 0; }
-  table.plain:not(.roster):not(.part-code-table) th {
-    background: none; color: var(--gold); font-size: .76rem; letter-spacing: .12em; font-weight: 700;
-  }
-  table.plain:not(.roster):not(.part-code-table) td { color: var(--ink-dim); }
-
-  /* 多欄名單／團隊表（聲部、職稱等）：保留原生表格結構，僅收窄最小寬度以減少必要時的捲動幅度 */
-  .table-scroll table.plain.roster { min-width: 420px; }
-  table.plain.roster { max-width: none; }
-}
+/* 手機版表格（修訂，2026-07-04）：全站表格（人物頁基本資料、歷屆聯演演出資訊／演出名單等）
+   一律維持與桌機相同的欄位比例／排版，不壓縮欄寬、不轉為堆疊卡片；
+   超出螢幕寬度時單純交由 .table-scroll 橫向捲動——避免欄寬被手機斷點強制縮小，
+   導致內文被迫多次換行。換言之：這裡刻意不寫任何 max-width:640px 的表格覆寫規則，
+   讓 table.plain／table.plain.roster 在所有斷點都套用同一份桌機版規則（見上方），
+   只靠 .table-scroll { overflow-x:auto } 處理窄螢幕。
+   例外：「編號」頁（numbers.html）的聲部代碼表 .part-code-table 為永久獨立呈現，
+   完全由其專屬規則（見下方「.part-code-table」區塊）控制外觀，不受這裡任何調整影響，
+   往後修改全站表格樣式時也不應影響到它。 */
 
 /* 編號拆解圖 */
 .num-demo { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0 8px; }
@@ -757,6 +743,26 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .table-scroll table.plain { min-width: 480px; }
+
+/* 表格橫向捲動提示（CSS-only「捲動陰影」，不需 JavaScript）：
+   表格內容超出可視寬度時，捲動容器左右邊緣會自動出現淡出漸層＋輕微陰影，提示還可以往該方向滑動；
+   捲到底／頂時對應那一側會自動消失，若內容本來就沒有超出寬度，則兩側都不會出現。
+   原理：同一個背景疊 4 層——外側兩層陰影固定於可視邊緣（background-attachment: scroll），
+   內側兩層與表格內容同色、跟著內容一起捲動（background-attachment: local），
+   捲到底/頂時內側那層剛好蓋住陰影，形成「自動出現與消失」的效果。
+   「編號」頁的聲部代碼表（.part-code-table-wrap）維持固定呈現，不套用此提示，以免影響其獨立外觀。 */
+.table-scroll:not(.part-code-table-wrap) {
+  background-image:
+    linear-gradient(to right, var(--bg-card), transparent),
+    linear-gradient(to left, var(--bg-card), transparent),
+    linear-gradient(to right, rgba(43, 39, 33, .16), transparent),
+    linear-gradient(to left, rgba(43, 39, 33, .16), transparent);
+  background-repeat: no-repeat;
+  background-size: 28px 100%, 28px 100%, 10px 100%, 10px 100%;
+  background-position: left top, right top, left top, right top;
+  background-attachment: local, local, scroll, scroll;
+}
+
 .part-code-table-wrap { max-width: 560px; }
 .table-scroll table.part-code-table {
   width: auto;
