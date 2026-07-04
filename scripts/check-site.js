@@ -143,6 +143,7 @@ function checkDataReferences() {
 function checkHtmlReferences() {
   const htmlFiles = walk(root, (file) => (
     file.endsWith('.html')
+    && !file.includes(`${path.sep}content${path.sep}`)
     && !file.includes(`${path.sep}templates${path.sep}`)
   ));
   const missing = [];
@@ -172,6 +173,7 @@ function checkHtmlReferences() {
 function checkPublicHtmlQuality() {
   const publicHtml = walk(root, (file) => (
     file.endsWith('.html')
+    && !file.includes(`${path.sep}content${path.sep}`)
     && !file.includes(`${path.sep}_generated${path.sep}`)
     && !file.includes(`${path.sep}templates${path.sep}`)
     && !file.endsWith(`${path.sep}news${path.sep}_template.html`)

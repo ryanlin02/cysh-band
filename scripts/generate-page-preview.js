@@ -3,65 +3,12 @@
    這個腳本只輸出 _generated/page-template-preview.html，不會修改任何正式公開頁面。 */
 const fs = require('fs');
 const path = require('path');
+const { createRenderer } = require('./lib/site-template');
 
 const root = path.join(__dirname, '..');
-const templatesDir = path.join(root, 'templates');
 const outDir = path.join(root, '_generated');
 const outFile = path.join(outDir, 'page-template-preview.html');
-
-function readTemplate(relativePath) {
-  return fs.readFileSync(path.join(templatesDir, relativePath), 'utf8');
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function render(template, values) {
-  let html = template;
-  html = html.replace(/{{active:([a-z-]+)}}/g, (_, key) => (
-    values.navActive === key ? ' class="active"' : ''
-  ));
-  return html.replace(/{{([a-zA-Z0-9]+)}}/g, (_, key) => (
-    Object.prototype.hasOwnProperty.call(values, key) ? values[key] : ''
-  ));
-}
-
-function renderHead(values) {
-  const safe = {
-    ...values,
-    title: escapeHtml(values.title),
-    description: escapeHtml(values.description),
-    url: escapeHtml(values.url),
-    ogType: escapeHtml(values.ogType || 'website'),
-    ogImage: escapeHtml(values.ogImage || 'https://cysh.band/assets/img/og.jpg')
-  };
-  return render(readTemplate('partials/head.html'), safe);
-}
-
-function renderPage(values) {
-  const shared = {
-    assetPrefix: values.assetPrefix || '',
-    navActive: values.navActive || '',
-    extraHead: values.extraHead || '',
-    extraScripts: values.extraScripts || ''
-  };
-
-  const head = renderHead({ ...shared, ...values });
-  const nav = render(readTemplate('partials/nav.html'), shared);
-  const footer = render(readTemplate('partials/footer.html'), shared);
-
-  return render(readTemplate('layouts/base.html'), {
-    head,
-    nav,
-    content: values.content,
-    footer
-  });
-}
+const { escapeHtml, renderPage } = createRenderer(root);
 
 const generatedAt = new Date().toISOString();
 const content = `<header class="page-head">

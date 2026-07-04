@@ -38,6 +38,14 @@
 2. 在 `data/news.js` 陣列「最前面」加一筆
 （首頁自動顯示最新 2 則、校友聯演頁最新 4 則、news/index.html 總覽頁全部列出，皆自動處理）
 
+目前 `2026-07-02`、`2026-07-04` 兩篇 news 文章已作為模板化試點：正文來源放在 `content/news/`，正式 HTML 由以下指令產生：
+
+```
+node scripts/generate-news-pages.js
+```
+
+新的消息文章暫時仍可照舊複製 `news/_template.html`；等模板化流程確認穩定後，再把更多 news 文章分批轉入 `content/news/`。
+
 ### 新增一屆聯演
 音樂會結束後，把 concerts.html「本屆演出」改寫為「歷屆紀錄」的一個 `concert-item`；資料豐富的屆別（海報、曲目、名單齊全）可另開 `concerts/第N屆.html` 獨立頁
 
@@ -61,6 +69,8 @@ node scripts/generate-page-preview.js
 ```
 
 輸出檔案是 `_generated/page-template-preview.html`。它只供本地檢查模板方向，不會修改首頁、關於、人物誌、校友聯演等正式頁面。
+
+已套用到正式頁面的第一批試點是兩篇最新消息文章；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。
 
 ### 新增相簿照片（兩層相簿制）
 - **策展原則**：大批照片一律「精選上網、全量放外部」——每本相簿精選 30–50 張，全量放 Google 相簿並在相簿頁尾放連結
