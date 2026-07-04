@@ -7,6 +7,13 @@
 */
 window.NEWS = [
   {
+    date: "2026-07-04",
+    title: "7/4 團練日：火雞肉飯、團練室與一壺咖啡",
+    summary: "《為伍》第二個週末團練日，翁啟榮學長從簡單火雞肉飯回到嘉中團練室，也煮起咖啡和大家一起喝。",
+    url: "news/2026-07-04-rehearsal-coffee.html",
+    thumb: "assets/img/news/2026-07-04-rehearsal-thumb.webp"
+  },
+  {
     date: "2026-07-02",
     title: "第 41 屆聯合音樂會《為伍》8/8 文化局音樂廳登場",
     summary: "睽違六年重返嘉義市政府文化局音樂廳，透過 OPENTIX 公開售票，售票資訊將於近期公布。",
