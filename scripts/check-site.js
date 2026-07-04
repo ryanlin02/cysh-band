@@ -70,7 +70,7 @@ function checkJsSyntax() {
 
 function loadData() {
   global.window = global;
-  for (const file of ['data/alumni.js', 'data/news.js', 'data/number-lookup.js', 'data/concerts.js']) {
+  for (const file of ['data/alumni.js', 'data/news.js', 'data/number-lookup.js', 'data/concerts.js', 'data/people-profiles.js']) {
     require(path.join(root, file));
   }
 
@@ -78,6 +78,7 @@ function loadData() {
   if (!Array.isArray(global.NEWS)) addError('data/news.js: window.NEWS must be an array.');
   if (!Array.isArray(global.NUMBER_LOOKUP)) addError('data/number-lookup.js: window.NUMBER_LOOKUP must be an array.');
   if (!Array.isArray(global.CONCERTS)) addError('data/concerts.js: window.CONCERTS must be an array.');
+  if (!Array.isArray(global.PEOPLE_PROFILES)) addError('data/people-profiles.js: window.PEOPLE_PROFILES must be an array.');
 }
 
 function checkDataReferences() {
@@ -85,6 +86,7 @@ function checkDataReferences() {
   const news = global.NEWS || [];
   const lookup = global.NUMBER_LOOKUP || [];
   const concerts = global.CONCERTS || [];
+  const peopleProfiles = global.PEOPLE_PROFILES || [];
 
   for (const person of alumni) {
     const label = `${person.num || 'no-num'} ${person.name || '(missing name)'}`;
@@ -99,6 +101,37 @@ function checkDataReferences() {
   for (const item of news) {
     if (!item.url || !exists(item.url)) addError(`data/news.js: missing news page: ${item.url || '(empty url)'}`);
     if (item.thumb && !exists(item.thumb)) addError(`data/news.js: missing news thumb for "${item.title}": ${item.thumb}`);
+  }
+
+  const alumniByNum = new Map(alumni.filter((person) => person.num).map((person) => [person.num, person]));
+  const profileNums = new Set();
+  for (const profile of peopleProfiles) {
+    const label = `${profile.num || 'no-num'} ${profile.name || '(missing name)'}`;
+    if (!profile.num) addError(`data/people-profiles.js: missing num for ${label}`);
+    if (profile.num && profileNums.has(profile.num)) addError(`data/people-profiles.js: duplicate num: ${profile.num}`);
+    if (profile.num) profileNums.add(profile.num);
+    for (const field of ['name', 'source', 'output', 'title', 'description', 'headlineHtml', 'photo', 'sourceHtml']) {
+      if (!profile[field]) addError(`data/people-profiles.js: ${label} missing ${field}.`);
+    }
+    if (profile.source && !exists(profile.source)) addError(`data/people-profiles.js: ${label} source not found: ${profile.source}`);
+    if (profile.output && !exists(profile.output)) addError(`data/people-profiles.js: ${label} output not found: ${profile.output}`);
+    if (profile.photo && !isExternal(profile.photo)) {
+      const target = path.normalize(path.join(root, profile.output ? path.dirname(profile.output) : 'people', cleanLocalRef(profile.photo)));
+      if (!target.startsWith(root) || !fs.existsSync(target)) {
+        addError(`data/people-profiles.js: ${label} photo not found: ${profile.photo}`);
+      }
+    }
+    if (!Array.isArray(profile.facts) || !profile.facts.length) addError(`data/people-profiles.js: ${label} facts must be a non-empty array.`);
+    if (!Array.isArray(profile.relatedLinks)) addError(`data/people-profiles.js: ${label} relatedLinks must be an array.`);
+    for (const [index, link] of (profile.relatedLinks || []).entries()) {
+      if (!link.label || !link.url || !link.type) addError(`data/people-profiles.js: ${label} relatedLinks[${index}] missing label/url/type.`);
+    }
+    const alumniPerson = profile.num ? alumniByNum.get(profile.num) : null;
+    if (!alumniPerson) {
+      addError(`data/people-profiles.js: ${label} no matching data/alumni.js record.`);
+    } else if (alumniPerson.link !== profile.output) {
+      addError(`data/people-profiles.js: ${label} output mismatch with data/alumni.js link: ${profile.output} / ${alumniPerson.link}`);
+    }
   }
 
   const allowedStatuses = new Set(['confirmed', 'partial', 'inferred', 'pending', 'planning', 'cancelled']);
@@ -151,7 +184,7 @@ function checkDataReferences() {
   const blankPhotos = alumni.filter((person) => person.photo === 'blank').length;
   const incompleteParts = alumni.filter((person) => !person.part || !person.tags || !person.tags.length).length;
   info.push(`ALUMNI records: ${alumni.length}; blank photos: ${blankPhotos}; incomplete part/tags: ${incompleteParts}`);
-  info.push(`NEWS records: ${news.length}; NUMBER_LOOKUP records: ${lookup.length}; CONCERTS records: ${concerts.length}`);
+  info.push(`NEWS records: ${news.length}; NUMBER_LOOKUP records: ${lookup.length}; CONCERTS records: ${concerts.length}; PEOPLE_PROFILES records: ${peopleProfiles.length}`);
 }
 
 function checkHtmlReferences() {
