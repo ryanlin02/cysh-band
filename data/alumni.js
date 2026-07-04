@@ -41,7 +41,7 @@ window.ALUMNI = [
   { num: "8703", name: "林彥佑", year: 87, part: "前幹部．打擊", tags: ["幹部", "打擊"], role: "", desc: "民國 87 年入學，打擊聲部。曾回憶在「綠色小屋」的社團時光與每天兩百下伏地挺身的紮實訓練。", photo: "blank", link: "" },
   { num: "8722", name: "張羽嫻", year: 87, part: "豎笛", tags: ["豎笛"], role: "", desc: "民國 87 年入學，豎笛聲部校友。", photo: "blank", link: "" },
   { num: "8801", name: "林佳宏", year: 88, part: "小號", tags: ["小號"], role: "程式設計師", desc: "民國 88 年入學，小號聲部校友。", photo: "blank", link: "" },
-  { num: "8802", name: "劉議謙", year: 88, part: "副社長．法國號", tags: ["幹部", "法國號"], role: "國立臺中科技大學保險金融管理系助理教授", desc: "民國 88 年入學，當屆副社長，法國號聲部，曾任學生指揮。", photo: "blank", link: "" },
+  { num: "8802", name: "劉議謙", year: 88, part: "副社長．法國號", tags: ["幹部", "法國號"], role: "", desc: "民國 88 年入學，當屆副社長，法國號聲部，曾任學生指揮。", photo: "blank", link: "" },
   { num: "8811", name: "吳昭男", year: 88, part: "", tags: [], role: "警察", desc: "民國 88 年入學校友，東海大學音樂系，曾參與 89~93 屆校友聯演。", photo: "blank", link: "" },
   { num: "8831", name: "高守霖", year: 88, part: "", tags: [], role: "", desc: "民國 88 年入學校友，曾參與 89~92 屆校友聯演。", photo: "blank", link: "" },
   { num: "8832", name: "陳韋志", year: 88, part: "", tags: [], role: "", desc: "民國 88 年入學校友，清雲科大資工系，曾參與多屆校友聯演。", photo: "blank", link: "" },
