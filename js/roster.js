@@ -49,16 +49,19 @@ document.addEventListener('DOMContentLoaded', function () {
       html += '<div class="cards roster-cards">';
       g.people.forEach(function (p) {
         var anchorId = 'p-' + (p.num || p.photo);
+        var hasProfileLink = p.link && p.link.indexOf('people/') === 0;
         html += '<div class="card roster-card" id="' + anchorId + '">';
-        html += '<div class="card-head">';
+        html += hasProfileLink
+          ? '<a class="card-head" href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →">'
+          : '<div class="card-head">';
         html += '<img class="avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
         html += '<div>';
         html += '<p class="num">' + (p.num || '—') + (p.part ? ' <small>' + (p.year != null ? '民國 ' + p.year + ' 年入學．' : '') + p.part + '</small>' : (p.year != null ? ' <small>民國 ' + p.year + ' 年入學</small>' : '')) + '</p>';
         html += '<h3>' + p.name + '</h3>';
-        html += '</div></div>';
+        html += hasProfileLink ? '</div></a>' : '</div></div>';
         if (p.role) html += '<p class="role">' + p.role + '</p>';
         if (p.desc) html += '<p>' + p.desc + '</p>';
-        if (p.link && p.link.indexOf('people/') === 0) html += '<p class="more"><a href="' + p.link + '">詳細介紹 →</a></p>';
+        if (hasProfileLink) html += '<p class="more"><a href="' + p.link + '">詳細介紹 →</a></p>';
         html += '</div>';
       });
       html += '</div></section>';

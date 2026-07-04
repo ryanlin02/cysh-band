@@ -328,6 +328,39 @@ function checkGeneratedPeoplePages() {
   info.push(`Generated people pages checked: ${profiles.length}`);
 }
 
+function checkPeopleIndexCards() {
+  const text = read('people.html');
+  const cardRegex = /<div class="card" id="p-([^"]+)">([\s\S]*?)(?=\n\s*<div class="card" id="p-[^"]+">|\n\s*<\/div>\s*<\/section>)/g;
+  const cards = [...text.matchAll(cardRegex)].map((match) => ({ id: match[1], html: match[2] }));
+  const alumniByNum = new Map((global.ALUMNI || [])
+    .filter((person) => person.num)
+    .map((person) => [person.num, person]));
+  const profileByNum = new Map((global.PEOPLE_PROFILES || [])
+    .map((profile) => [profile.num, profile]));
+
+  for (const card of cards) {
+    const name = (card.html.match(/<h3>([\s\S]*?)<\/h3>/) || [null, ''])[1].replace(/<[^>]+>/g, '').trim();
+    const avatar = (card.html.match(/<img class="avatar" src="assets\/img\/members\/([^"/]+)\.webp"/) || [null, ''])[1];
+    const headLink = (card.html.match(/<a class="card-head" href="people\/([^"#]+)\.html"/) || [null, ''])[1];
+    const moreLink = (card.html.match(/<p class="more"><a href="people\/([^"#]+)\.html"/) || [null, ''])[1];
+    const alumni = alumniByNum.get(card.id);
+    const profile = profileByNum.get(card.id);
+
+    if (headLink && !profileByNum.has(headLink)) addError(`people.html#p-${card.id}: card-head links to missing profile people/${headLink}.html.`);
+    if (profile && headLink !== card.id) addError(`people.html#p-${card.id}: card-head should link to people/${card.id}.html.`);
+    if (profile && moreLink !== card.id) addError(`people.html#p-${card.id}: more link should point to people/${card.id}.html.`);
+    if (profile && profile.name !== name) addError(`people.html#p-${card.id}: card name "${name}" does not match PEOPLE_PROFILES name "${profile.name}".`);
+    if (alumni && alumni.name !== name) addError(`people.html#p-${card.id}: card name "${name}" does not match ALUMNI name "${alumni.name}".`);
+    if (alumni && avatar !== alumni.photo) addError(`people.html#p-${card.id}: card avatar "${avatar}" does not match ALUMNI photo "${alumni.photo}".`);
+    if (profile) {
+      const profileAvatar = (profile.photo.match(/members\/([^/]+)\.webp$/) || [null, ''])[1];
+      if (profileAvatar && avatar !== profileAvatar) addError(`people.html#p-${card.id}: card avatar "${avatar}" does not match PEOPLE_PROFILES photo "${profileAvatar}".`);
+    }
+  }
+
+  info.push(`People index cards checked: ${cards.length}`);
+}
+
 function getAttr(tag, name) {
   const match = tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, 'i'));
   return match ? match[1] : '';
@@ -419,5 +452,6 @@ checkSitemapAndFeed();
 checkFontUrlEncoding();
 checkGeneratedNewsPages();
 checkGeneratedPeoplePages();
+checkPeopleIndexCards();
 checkPeopleProfilePages();
 printReport();

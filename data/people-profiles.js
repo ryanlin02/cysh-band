@@ -7,6 +7,29 @@
 */
 window.PEOPLE_PROFILES = [
   {
+    num: "0271",
+    name: "莊宗儒",
+    source: "content/people/0271.html",
+    output: "people/0271.html",
+    title: "莊宗儒（0271）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉中管樂隊到上低音號推廣——莊宗儒（編號 0271）畢業於北藝大管絃與擊樂研究所，回到嘉義投入演奏、教學與 Taiwan Euphonium Festival 籌辦。",
+    ogTitle: "莊宗儒（0271）｜從嘉中出發的上低音號演奏與推廣",
+    ogDescription: "北藝大管絃與擊樂研究所、TSO 管樂團、EuTuba 悠風低音號重奏團、銅心銅管樂團與 Taiwan Euphonium Festival，編號 0271 的上低音號之路。",
+    headlineHtml: "莊宗儒：從嘉中出發<br>讓上低音號站上舞台中央",
+    photo: "../assets/img/members/0271.webp",
+    facts: [
+      ["編號", "<b>0271</b>（民國 102 年入學．上低音號聲部）"],
+      ["主修", "上低音號"],
+      ["學歷", "國立臺北藝術大學管絃與擊樂研究所"],
+      ["現職", "多所中小學分部老師．嘉義高中管樂社指導老師"],
+      ["樂團角色", "TSO 管樂團、EuTuba 悠風低音號重奏團團員；銅心銅管樂團 Baritone 首席"]
+    ],
+    peopleLink: "../people.html#p-0271",
+    rosterLink: "../roster.html#p-0271",
+    relatedLinks: [],
+    sourceHtml: "本文以莊宗儒本人提供資料為主要依據，並參考嘉義高中校友管樂團第 37 屆聯演紀錄與校友團保存資料整理；若日後本人補充完整演出曲目、任教學校或公開連結，本文將再行更新。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
     num: "0431",
     name: "許哲誠",
     source: "content/people/0431.html",
@@ -69,7 +92,13 @@ window.PEOPLE_PROFILES = [
     ],
     peopleLink: "../people.html#p-1051",
     rosterLink: "../roster.html#p-1051",
-    relatedLinks: [],
+    relatedLinks: [
+      { label: "世賢國小校慶音樂會公開影像", url: "https://www.youtube.com/watch?v=QYNxu6jThYw", type: "公開影像" },
+      { label: "北興國中管樂班成果發表公開影像", url: "https://www.youtube.com/watch?v=Wy1hc4ll_nk", type: "公開影像" },
+      { label: "嘉義市 111 學年度學生音樂比賽秩序冊", url: "https://www.msjh.cy.edu.tw/uploads/1668157834510oOWsOhWD.pdf", type: "比賽秩序冊" },
+      { label: "嘉義高中管樂社 2023 嘉義市國際管樂節公開影像", url: "https://www.youtube.com/watch?v=Au2GSuSfkYo", type: "公開影像" },
+      { label: "嘉中第 38 屆聯演《旭陵慶典》公開影像", url: "https://www.youtube.com/watch?v=mcttO3a8wKs", type: "公開影像" }
+    ],
     sourceHtml: "本文整理自以下公開資料與本人 2026 年校友資料登錄：<a href=\"https://www.youtube.com/watch?v=QYNxu6jThYw\" target=\"_blank\" rel=\"noopener\">世賢國小校慶音樂會公開影像</a>、<a href=\"https://www.youtube.com/watch?v=Wy1hc4ll_nk\" target=\"_blank\" rel=\"noopener\">北興國中管樂班成果發表公開影像</a>、<a href=\"https://www.msjh.cy.edu.tw/uploads/1668157834510oOWsOhWD.pdf\" target=\"_blank\" rel=\"noopener\">嘉義市 111 學年度學生音樂比賽秩序冊</a>、<a href=\"https://www.youtube.com/watch?v=Au2GSuSfkYo\" target=\"_blank\" rel=\"noopener\">嘉義高中管樂社 2023 嘉義市國際管樂節公開影像</a>、<a href=\"https://www.youtube.com/watch?v=mcttO3a8wKs\" target=\"_blank\" rel=\"noopener\">嘉中第 38 屆聯演《旭陵慶典》公開影像</a>。若本人日後補充師承、比賽成績或演出履歷，本文將再行更新。"
   },
   {
@@ -115,7 +144,15 @@ window.PEOPLE_PROFILES = [
     ],
     peopleLink: "../people.html#p-6401",
     rosterLink: "../roster.html#p-6401",
-    relatedLinks: [],
+    relatedLinks: [
+      { label: "PeoPo 公民新聞〈馮朝君熱愛管樂 管樂節幕後推手〉", url: "https://www.peopo.org/news/45150", type: "新聞報導" },
+      { label: "嘉義市政府《管不住的樂音》紀錄片介紹", url: "https://www.chiayi.gov.tw/News_Content.aspx?n=455&s=351712", type: "公開新聞資料" },
+      { label: "嘉義市管樂團〈樂團沿革〉", url: "https://cywo1994.com/%E6%A8%82%E5%9C%98%E6%B2%BF%E9%9D%A9/", type: "樂團沿革" },
+      { label: "嘉中管樂隊校友社群 2008 年立案紀錄", url: "https://www.ptt.cc/bbs/CYHSBAND/M.1220528613.A.26A.html", type: "校友社群紀錄" },
+      { label: "嘉中管樂隊校友社群 2009 年團長紀錄", url: "https://www.ptt.cc/bbs/CYHSBAND/M.1247496670.A.13A.html", type: "校友社群紀錄" },
+      { label: "校友回憶資料", url: "https://www.ptt.cc/bbs/CYHSBAND/M.1405925977.A.169.html", type: "校友回憶資料" },
+      { label: "NOWnews 2019 年校友團演出報導", url: "https://www.nownews.com/news/3604655", type: "新聞報導" }
+    ],
     sourceHtml: "本文整理自以下公開資料與校友社群紀錄：<a href=\"https://www.peopo.org/news/45150\" target=\"_blank\" rel=\"noopener\">PeoPo 公民新聞〈馮朝君熱愛管樂 管樂節幕後推手〉</a>、<a href=\"https://www.chiayi.gov.tw/News_Content.aspx?n=455&amp;s=351712\" target=\"_blank\" rel=\"noopener\">嘉義市政府《管不住的樂音》紀錄片介紹</a>、<a href=\"https://cywo1994.com/%E6%A8%82%E5%9C%98%E6%B2%BF%E9%9D%A9/\" target=\"_blank\" rel=\"noopener\">嘉義市管樂團〈樂團沿革〉</a>、<a href=\"https://www.ptt.cc/bbs/CYHSBAND/M.1220528613.A.26A.html\" target=\"_blank\" rel=\"noopener\">嘉中管樂隊校友社群 2008 年立案紀錄</a>、<a href=\"https://www.ptt.cc/bbs/CYHSBAND/M.1247496670.A.13A.html\" target=\"_blank\" rel=\"noopener\">嘉中管樂隊校友社群 2009 年團長紀錄</a>、<a href=\"https://www.ptt.cc/bbs/CYHSBAND/M.1405925977.A.169.html\" target=\"_blank\" rel=\"noopener\">校友回憶資料</a>、<a href=\"https://www.nownews.com/news/3604655\" target=\"_blank\" rel=\"noopener\">NOWnews 2019 年校友團演出報導</a>。校友回憶與早期資料如有出入，以正式節目冊、團方名冊或本人補充為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
@@ -137,7 +174,10 @@ window.PEOPLE_PROFILES = [
     ],
     peopleLink: "../people.html#p-6951",
     rosterLink: "../roster.html#p-6951",
-    relatedLinks: [],
+    relatedLinks: [
+      { label: "嘉義市管樂團官方網站〈藝術總監曾膺安〉", url: "https://cywo1994.com/%E8%97%9D%E8%A1%93%E7%B8%BD%E7%9B%A3-%E6%9B%BE%E8%86%BA%E5%AE%89/", type: "官方人物資料" },
+      { label: "教育部藝術教育推動資源中心〈北興國中音樂班〉", url: "https://artistic.finearts.ntnu.edu.tw/school/detail/366", type: "教育資料" }
+    ],
     sourceHtml: "本文整理自以下公開資料：<a href=\"https://cywo1994.com/%E8%97%9D%E8%A1%93%E7%B8%BD%E7%9B%A3-%E6%9B%BE%E8%86%BA%E5%AE%89/\" target=\"_blank\" rel=\"noopener\">嘉義市管樂團官方網站〈藝術總監曾膺安〉</a>、嘉義市政府與國家表演藝術中心（衛武營、OPENTIX）演出資料、<a href=\"https://artistic.finearts.ntnu.edu.tw/school/detail/366\" target=\"_blank\" rel=\"noopener\">教育部藝術教育推動資源中心〈北興國中音樂班〉</a>，以及嘉義高中校友管樂團公開演出紀錄。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
@@ -429,7 +469,7 @@ window.PEOPLE_PROFILES = [
     ogTitle: "洪筱涵（9841）｜從嘉中號角走向 NTSO 舞台的法國號之路",
     ogDescription: "嘉義大學音樂系、法國號獨奏會、校友聯演協奏獨奏與 NTSO 臺灣管樂團——編號 9841 的法國號之路。",
     headlineHtml: "洪筱涵：從嘉中號角<br>走向 NTSO 舞台的法國號之路",
-    photo: "../assets/img/members/blank.webp",
+    photo: "../assets/img/members/9841.webp",
     facts: [
       ["編號", "<b>9841</b>（民國 98 年入學．法國號聲部）"],
       ["主修", "法國號（副修鋼琴）"],

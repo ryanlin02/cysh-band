@@ -114,7 +114,7 @@ window.ALUMNI = [
   { num: "9701", name: "蔡政岳", year: 97, part: "社長．長號", tags: ["幹部", "長號"], role: "長號演奏家．低音銅管教師", desc: "當屆社長、長號聲部。國立高雄師範大學長號演奏碩士，長年指導長號與低音銅管。", photo: "9701", link: "people/9701.html" },
   { num: "9721", name: "葉哲良", year: 97, part: "豎笛", tags: ["豎笛"], role: "作曲家．編曲人", desc: "為嘉中百年校慶創作《旭陵慶典》，2023 年第 38 屆聯演首演。", photo: "9721", link: "people/9721.html" },
   { num: "9802", name: "李亞璿", year: 98, part: "副社長．豎笛", tags: ["幹部", "豎笛"], role: "", desc: "民國 98 年入學，當屆副社長，豎笛聲部。", photo: "9802", link: "" },
-  { num: "9841", name: "洪筱涵", year: 98, part: "法國號", tags: ["法國號"], role: "法國號演奏家．NTSO 臺灣管樂團", desc: "畢業於嘉義大學音樂系，法國號演奏家，現任 NTSO 臺灣管樂團法國號團員。", photo: "blank", link: "people/9841.html" },
+  { num: "9841", name: "洪筱涵", year: 98, part: "法國號", tags: ["法國號"], role: "法國號演奏家．NTSO 臺灣管樂團", desc: "畢業於嘉義大學音樂系，法國號演奏家，現任 NTSO 臺灣管樂團法國號團員。", photo: "9841", link: "people/9841.html" },
   { num: "9921", name: "劉炫廷", year: 99, part: "豎笛", tags: ["豎笛"], role: "", desc: "民國 99 年入學，豎笛聲部校友。", photo: "9921", link: "" },
   { num: "9903", name: "陳信慈", year: 99, part: "社長．小號", tags: ["幹部", "小號"], role: "護理師", desc: "民國 99 年入學，當屆社長，小號聲部，現職護理師，曾參與 2015、2019 年校友聯演演出。", photo: "blank", link: "" },
   { num: "0323", name: "董書菡", year: 103, part: "豎笛", tags: ["豎笛"], role: "", desc: "民國 103 年入學，豎笛聲部校友。", photo: "0323", link: "" },
@@ -132,7 +132,7 @@ window.ALUMNI = [
   { num: "0755", name: "許祥倫", year: 107, part: "小號", tags: ["小號"], role: "研究生", desc: "民國 107 年入學，小號聲部校友。", photo: "0755", link: "" },
   { num: null, name: "林少凡", year: 107, part: "小號", tags: ["小號"], role: "小號演奏．音樂研究生", desc: "民國 107 年入學，小號聲部。屏東大學音樂系畢業，現就讀北教大音樂學系碩士班。", photo: "linshaofan", link: "" },
   { num: "9161", name: "王聖安", year: 91, part: "長號", tags: ["長號"], role: "諮商心理師", desc: "民國 91 年入學，長號聲部校友。", photo: "9161", link: "" },
-  { num: "0271", name: "莊宗儒", year: 102, part: "上低音號", tags: ["上低音號"], role: "上低音號演奏家", desc: "北藝大管絃與擊樂研究所畢業，上低音號演奏家，2022 年第 37 屆聯演獨奏者。", photo: "0271", link: "people.html#p-0271" },
+  { num: "0271", name: "莊宗儒", year: 102, part: "上低音號", tags: ["上低音號"], role: "上低音號演奏家．低音銅管教師", desc: "北藝大管絃與擊樂研究所畢業，返嘉投入上低音號教學與演出，2022 年聯演獨奏者。", photo: "0271", link: "people/0271.html" },
   { num: "0741", name: "陳羿弦", year: 107, part: "法國號", tags: ["法國號"], role: "法國號．藝術管理研究生", desc: "民國 107 年入學，法國號聲部，第 89 屆學生指揮，現就讀中山大學藝術管理所。", photo: "0741", link: "people/0741.html" },
   { num: "1301", name: "蔡承真", year: 113, part: "社長．豎笛", tags: ["幹部", "豎笛"], role: "現任社長", desc: "民國 113 年入學，現任社長，豎笛聲部，現為嘉義高中學生。「能與各個前輩同台共鳴，是我最大的榮幸之一。」", photo: "blank", link: "" }
 ];
