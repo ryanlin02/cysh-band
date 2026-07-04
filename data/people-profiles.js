@@ -485,7 +485,21 @@ window.PEOPLE_PROFILES = [
 
 /* 人物誌首頁卡片資料
    定位：管理 people.html 的策展分區、卡片角色與首頁摘要。
-   profile 欄位會連回 PEOPLE_PROFILES；沒有個人頁者才另外寫 id/name/photo。
+
+   常用欄位：
+   - title：人物誌首頁分區標題。
+   - note：分區內部註解，只輸出 HTML comment，不顯示在頁面上。
+   - items：該分區卡片清單，順序就是 people.html 顯示順序。
+   - profile：已有個人頁者填 PEOPLE_PROFILES 的 num，例如 "6401"；姓名、照片、入學年與連結會自動帶入。
+   - role：人物誌卡片上的一句話角色標籤。
+   - summaryHtml：人物誌卡片摘要，可放少量內部連結；健康檢查會提醒長度是否失衡。
+   - id/name/numHtml/photo：尚無個人頁者才使用；有 profile 時不要重複填。
+   - officialName：人物誌顯示名稱與 data/alumni.js 正式名稱不同時使用，例如舞台名優先顯示。
+   - afterHtml：分區後方補充文字，目前用於人物誌頁尾說明。
+
+   修改後需執行：
+   node scripts/generate-people-index.js
+   node scripts/check-site.js
 */
 window.PEOPLE_FEATURED_SECTIONS = [
   {
