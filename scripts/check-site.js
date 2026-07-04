@@ -247,6 +247,23 @@ function checkFontUrlEncoding() {
   }
 }
 
+function checkGeneratedNewsPages() {
+  const { articles, renderArticle } = require('./generate-news-pages');
+  for (const article of articles) {
+    const outputPath = path.join(root, article.output);
+    if (!fs.existsSync(outputPath)) {
+      addError(`generated news missing: ${article.output}`);
+      continue;
+    }
+    const expected = renderArticle(article);
+    const actual = fs.readFileSync(outputPath, 'utf8');
+    if (actual !== expected) {
+      addError(`${article.output}: generated HTML is out of sync. Run node scripts/generate-news-pages.js`);
+    }
+  }
+  info.push(`Generated news pages checked: ${articles.length}`);
+}
+
 function printReport() {
   console.log('CYSH Band site health check');
   console.log('===========================');
@@ -274,4 +291,5 @@ checkHtmlReferences();
 checkPublicHtmlQuality();
 checkSitemapAndFeed();
 checkFontUrlEncoding();
+checkGeneratedNewsPages();
 printReport();

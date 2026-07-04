@@ -85,8 +85,16 @@ ${indentedBody}
   });
 }
 
-for (const article of articles) {
-  const outputPath = path.join(root, article.output);
-  fs.writeFileSync(outputPath, renderArticle(article));
-  console.log(article.output);
+function generateNewsPages() {
+  for (const article of articles) {
+    const outputPath = path.join(root, article.output);
+    fs.writeFileSync(outputPath, renderArticle(article));
+    console.log(article.output);
+  }
 }
+
+if (require.main === module) {
+  generateNewsPages();
+}
+
+module.exports = { articles, renderArticle, generateNewsPages };
