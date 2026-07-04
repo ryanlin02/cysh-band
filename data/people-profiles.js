@@ -34,6 +34,55 @@ window.PEOPLE_PROFILES = [
     sourceHtml: "本文整理自以下公開資料與本人自述：<a href=\"https://cywo1994.com/member/\" target=\"_blank\" rel=\"noopener\">嘉義市管樂團官方網站〈團員介紹〉</a>、<a href=\"https://www.cna.com.tw/news/ahel/202308240299.aspx\" target=\"_blank\" rel=\"noopener\">中央社 2023 年報導</a>、<a href=\"https://www.chiayi.gov.tw/News_Content.aspx?n=455&amp;s=351712\" target=\"_blank\" rel=\"noopener\">嘉義市政府《管不住的樂音》紀錄片介紹（2013）</a>、<a href=\"https://www.atanews.net/?news=35122\" target=\"_blank\" rel=\"noopener\">亞太新聞網 2017 年第 33 屆校友演奏會報導</a>，以及本人 2009 年發表之校友回憶與 2026 年校友資料登錄。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
+    num: "8301",
+    name: "高崇文",
+    source: "content/people/8301.html",
+    output: "people/8301.html",
+    title: "高崇文（8301）｜人物誌｜嘉義高中管樂隊",
+    description: "阿里山鄒族出身，從嘉中管樂隊找到長號——高崇文（編號 8301）曾任高雄市交響樂團長號專任團員，是長號演奏家、音樂班教師與指揮。",
+    ogTitle: "高崇文（8301）｜從嘉中管樂隊走向專業舞台的長號演奏家",
+    ogDescription: "阿里山鄒族出身，曾任高雄市交響樂團長號專任團員，編號 8301 在演奏、教育與指揮之間持續前行。",
+    headlineHtml: "高崇文：從一支長號<br>找到人生方向",
+    photo: "../assets/img/members/8301.webp",
+    facts: [
+      ["編號", "<b>8301</b>（民國 83 年入學．長號聲部、當屆社長）"],
+      ["出身", "嘉義阿里山鄒族"],
+      ["學歷", "國立臺北藝術大學音樂碩士"],
+      ["現職", "長號演奏家、音樂班教師；台灣獨奏家交響樂團、高雄市管樂團、台南市交響樂團長號演奏員"]
+    ],
+    peopleLink: "../people.html#p-8301",
+    rosterLink: "../roster.html#p-8301",
+    relatedLinks: [
+      { label: "台灣獨奏家交響樂團〈高崇文〉", url: "https://www.taiwansoloists.org/member/ins.php?index_id=84", type: "公開人物資料" },
+      { label: "高雄市管樂團團員名單", url: "https://kcwo2012.com/members", type: "公開團員資料" }
+    ],
+    sourceHtml: "本文整理自以下公開資料：<a href=\"https://www.taiwansoloists.org/member/ins.php?index_id=84\" target=\"_blank\" rel=\"noopener\">台灣獨奏家交響樂團〈高崇文〉</a>、<a href=\"https://kcwo2012.com/members\" target=\"_blank\" rel=\"noopener\">高雄市管樂團團員名單</a>、OPENTIX 兩廳院文化生活演出簡介、臺中國家歌劇院演奏家資料、嘉義市管樂團團史，以及本人 2009 年發表之校友回憶。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
+    num: "8431",
+    name: "鄭鈞元",
+    source: "content/people/8431.html",
+    output: "people/8431.html",
+    title: "鄭鈞元（8431）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉中管樂社走向法國——鄭鈞元（編號 8431）取得馬爾梅松音樂院演奏文憑，返臺後任教南華大學、擔任嘉義市管樂團薩克斯風首席。",
+    ogTitle: "鄭鈞元（8431）｜把世界的聲音帶回嘉義的薩克斯風演奏家",
+    ogDescription: "馬爾梅松音樂院演奏文憑，南華大學講師、嘉義市管樂團薩克斯風首席，編號 8431 的演奏與傳承之路。",
+    headlineHtml: "鄭鈞元：把世界的聲音<br>帶回嘉義的薩克斯風",
+    photo: "../assets/img/members/8431.webp",
+    facts: [
+      ["編號", "<b>8431</b>（民國 84 年入學．薩克斯風聲部）"],
+      ["出身", "嘉義市"],
+      ["學歷", "法國國立馬爾梅松音樂院薩克斯風及室內樂高級演奏班第一獎文憑"],
+      ["現職", "南華大學講師、嘉義市管樂團薩克斯風首席"]
+    ],
+    peopleLink: "../people.html#p-8431",
+    rosterLink: "../roster.html#p-8431",
+    relatedLinks: [
+      { label: "嘉頌重奏團官方人物頁", url: "https://www.chiasong.com/team-2/%E9%84%AD%E9%88%9E%E5%85%83", type: "公開人物資料" }
+    ],
+    sourceHtml: "本文整理自以下公開資料：<a href=\"https://www.chiasong.com/team-2/%E9%84%AD%E9%88%9E%E5%85%83\" target=\"_blank\" rel=\"noopener\">嘉頌重奏團官方人物頁</a>、南華大學官方師資資料、嘉義市政府與嘉義市立博物館公開演出資料、嘉義市教育網路中心存檔資料，以及嘉義高中校友暨在校生聯合音樂會歷年公開報導。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
     num: "8861",
     name: "簡晟軒",
     source: "content/people/8861.html",
