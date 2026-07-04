@@ -66,7 +66,7 @@ node scripts/generate-news-pages.js
 node scripts/check-site.js
 ```
 
-這會檢查 JS 語法、資料檔引用、HTML 本機連結、圖片 alt、SEO 基本欄位、sitemap / feed 對應與 Google Fonts URL 標準化。
+這會檢查 JS 語法、資料檔引用、HTML 本機連結、圖片 alt、SEO 基本欄位、sitemap / feed 對應、Google Fonts URL 標準化、news 產生結果同步，以及人物個人頁基本結構。
 
 ### 共用模板試作
 目前正式頁面仍是手寫 HTML；為了降低 nav、footer、head 重複維護成本，已先建立共用模板試作。產生預覽頁：

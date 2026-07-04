@@ -264,6 +264,68 @@ function checkGeneratedNewsPages() {
   info.push(`Generated news pages checked: ${articles.length}`);
 }
 
+function getAttr(tag, name) {
+  const match = tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, 'i'));
+  return match ? match[1] : '';
+}
+
+function checkPeopleProfilePages() {
+  const peopleDir = path.join(root, 'people');
+  const profileFiles = fs.readdirSync(peopleDir)
+    .filter((name) => name.endsWith('.html'))
+    .sort()
+    .map((name) => path.join(peopleDir, name));
+  const linkedProfiles = new Map((global.ALUMNI || [])
+    .filter((person) => person.link && /^people\/[^#]+\.html$/.test(person.link))
+    .map((person) => [person.link, person]));
+
+  let blankHeroPhotos = 0;
+  let missingOgImageDimensions = 0;
+
+  for (const file of profileFiles) {
+    const fileRel = rel(file);
+    const num = path.basename(file, '.html');
+    const text = fs.readFileSync(file, 'utf8');
+
+    if (!/class=["'][^"']*\bperson-hero\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-hero.`);
+    if (!/class=["'][^"']*\bperson-article\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-article.`);
+    if (!/<h3>\s*資料來源\s*<\/h3>/i.test(text)) addError(`${fileRel}: missing 資料來源 heading.`);
+    if (!/class=["'][^"']*\bperson-nav\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-nav.`);
+    if (!text.includes(`PEOPLE．${num}`)) addError(`${fileRel}: page kicker should include PEOPLE．${num}.`);
+    if (!/<meta\s+property=["']og:type["']\s+content=["']profile["']/i.test(text)) addError(`${fileRel}: og:type should be profile.`);
+    if (!/<meta\s+property=["']og:image:width["']/i.test(text) || !/<meta\s+property=["']og:image:height["']/i.test(text)) {
+      missingOgImageDimensions += 1;
+    }
+
+    const linkedPerson = linkedProfiles.get(fileRel);
+    if (!linkedPerson) {
+      addError(`${fileRel}: no matching data/alumni.js link.`);
+    } else if (linkedPerson.num && linkedPerson.num !== num) {
+      addError(`${fileRel}: data/alumni.js link num mismatch: ${linkedPerson.num} / ${num}`);
+    }
+
+    const heroMatch = text.match(/<div\s+class=["'][^"']*\bperson-hero\b[^"']*["'][\s\S]*?<img\b([^>]*)>/i);
+    if (!heroMatch) {
+      addError(`${fileRel}: missing person hero image.`);
+      continue;
+    }
+
+    const imgTag = heroMatch[0];
+    const src = getAttr(imgTag, 'src');
+    const alt = getAttr(imgTag, 'alt');
+    if (!src) addError(`${fileRel}: person hero image missing src.`);
+    if (!alt) addError(`${fileRel}: person hero image missing alt.`);
+    if (src.endsWith('/blank.webp') || src === '../assets/img/members/blank.webp') blankHeroPhotos += 1;
+    if (src && !isExternal(src)) {
+      const clean = cleanLocalRef(src);
+      const target = path.normalize(path.join(path.dirname(file), clean));
+      if (!target.startsWith(root) || !fs.existsSync(target)) addError(`${fileRel}: person hero image not found: ${src}`);
+    }
+  }
+
+  info.push(`People profile pages checked: ${profileFiles.length}; blank hero photos: ${blankHeroPhotos}; missing OG image dimensions: ${missingOgImageDimensions}`);
+}
+
 function printReport() {
   console.log('CYSH Band site health check');
   console.log('===========================');
@@ -292,4 +354,5 @@ checkPublicHtmlQuality();
 checkSitemapAndFeed();
 checkFontUrlEncoding();
 checkGeneratedNewsPages();
+checkPeopleProfilePages();
 printReport();
