@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         html += '</div></div>';
         if (p.role) html += '<p class="role">' + p.role + '</p>';
         if (p.desc) html += '<p>' + p.desc + '</p>';
-        if (p.link) html += '<p class="more"><a href="' + p.link + '">人物誌詳細介紹 →</a></p>';
+        if (p.link && p.link.indexOf('people/') === 0) html += '<p class="more"><a href="' + p.link + '">詳細介紹 →</a></p>';
         html += '</div>';
       });
       html += '</div></section>';

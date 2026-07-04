@@ -306,6 +306,12 @@ html.js .tl-item.in::before { animation: pulse 1.2s ease-out 1; }
 .card .role { color: var(--gold); font-size: .88rem; letter-spacing: .08em; margin-bottom: 12px; }
 .card p { color: var(--ink-dim); font-size: .92rem; }
 
+/* 人物誌卡片：頭像／編號／姓名可點擊進入個人專頁（僅已建立專頁者，card-head 為 <a>） */
+a.card-head { text-decoration: none; color: inherit; cursor: pointer; }
+a.card-head:hover .avatar { transform: scale(1.05); box-shadow: var(--shadow-md); }
+a.card-head:hover h3 { color: var(--gold); }
+a.card-head:hover .num { color: var(--gold-soft); }
+
 /* 文章段落中的人物小照＋名稱（如聯演頁指揮／獨奏介紹），非卡片式 */
 .person-byline { display: flex; align-items: center; gap: 16px; margin: 30px 0 6px; }
 .person-byline img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
@@ -645,6 +651,19 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .person-article p { max-width: 42em; }
 .person-article .sources { font-size: .85rem; color: var(--ink-dim); }
 .person-article .sources a { word-break: break-all; }
+
+/* ---------- 人物頁尾導覽（回人物誌／看校友名錄） ---------- */
+.person-nav {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+  gap: 16px; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line);
+}
+.person-nav .btn { letter-spacing: .04em; padding: 12px 28px; font-size: .92rem; }
+.person-nav .btn.ghost { margin-left: 0; }
+.person-nav.person-nav--single { justify-content: flex-end; }
+@media (max-width: 560px) {
+  .person-nav { flex-direction: column; align-items: stretch; }
+  .person-nav .btn { display: block; width: 100%; text-align: center; box-sizing: border-box; }
+}
 
 /* ---------- 回到頂端 ---------- */
 .to-top {
