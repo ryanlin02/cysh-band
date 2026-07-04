@@ -335,6 +335,43 @@ html.js .tl-item.in::before { animation: pulse 1.2s ease-out 1; }
   .page-head.has-poster .ph-poster { order: -1; max-width: 220px; margin: 0 auto; }
 }
 
+/* 同屆多場次快速跳轉（如 2019 第 35 屆兩地演出） */
+.session-nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 4px; }
+.session-nav a {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  padding: 10px 20px; border: 1px solid var(--line); border-radius: 999px;
+  font-size: .86rem; letter-spacing: .04em; color: var(--ink);
+  background: var(--bg-card); box-shadow: var(--shadow-sm);
+  transition: border-color .25s, color .25s, transform .25s;
+}
+.session-nav a:hover { border-color: var(--gold-soft); color: var(--gold); transform: translateY(-2px); }
+.session-nav a .num { font-family: var(--latin); color: var(--gold); font-weight: 600; }
+
+/* 同屆多場次卡片（每場次獨立成塊，白／米雙色區隔＋金色頂緣） */
+.session {
+  position: relative; margin: 44px 0 0; padding: 36px 32px 6px;
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--bg-card); box-shadow: var(--shadow-sm);
+  scroll-margin-top: 90px;
+}
+.session:nth-of-type(2) { background: var(--bg-soft); }
+.session + .session { margin-top: 52px; }
+.session::before {
+  content: ""; position: absolute; left: 32px; right: 32px; top: 0; height: 3px;
+  border-radius: 3px 3px 0 0; background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+}
+.session-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 4px; }
+.session-head .num { font-family: var(--latin); font-size: 1.7rem; font-weight: 600; color: var(--gold); line-height: 1; }
+.session-head h2 { margin: 0; padding: 0; border: 0; font-family: var(--serif); font-size: 1.3rem; letter-spacing: .1em; color: var(--ink); }
+.session-head h2::before { display: none; content: none; }
+.session-meta { color: var(--ink-dim); font-size: .92rem; margin: 6px 0 8px; }
+.session-meta b { color: var(--ink); }
+.session h3:first-of-type { margin-top: 30px; }
+@media (max-width: 640px) {
+  .session { padding: 28px 20px 4px; }
+  .session::before { left: 20px; right: 20px; }
+}
+
 /* ---------- 聯演紀錄 ---------- */
 .concert-item {
   display: grid; grid-template-columns: 120px 1fr; gap: 28px;
@@ -342,18 +379,38 @@ html.js .tl-item.in::before { animation: pulse 1.2s ease-out 1; }
 }
 .concert-item.has-poster { grid-template-columns: 120px 1fr 200px; align-items: start; }
 .concert-item .poster img {
-  width: 100%; border-radius: 8px; border: 1px solid var(--line);
-  box-shadow: var(--shadow-sm); cursor: zoom-in;
+  display: block; width: 100%; border-radius: 8px; border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
   transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s;
 }
-.concert-item .poster img:hover { transform: scale(1.03); box-shadow: var(--shadow-md); }
-/* 窄螢幕：所有屆別（有無海報）統一收成單欄，屆數改為行內靠左 */
+/* 有獨立介紹頁：海報可點擊進入該頁 */
+.concert-item .poster.linked a { display: block; border-radius: 8px; }
+.concert-item .poster.linked img { cursor: pointer; }
+.concert-item .poster.linked:hover img { transform: scale(1.03); box-shadow: var(--shadow-md); }
+/* 尚無獨立介紹頁：純展示用海報，不做任何點擊互動 */
+.concert-item .poster:not(.linked) img { cursor: default; }
+
+/* 窄螢幕：屆數＋海報並列為緊湊標頭列，文字內容另起一列滿版呈現 */
 @media (max-width: 760px) {
-  .concert-item, .concert-item.has-poster { grid-template-columns: 1fr; gap: 10px; }
+  .concert-item {
+    grid-template-columns: 1fr; gap: 10px;
+  }
+  .concert-item.has-poster {
+    display: grid;
+    grid-template-columns: 76px 1fr;
+    grid-template-areas: "poster no" "content content";
+    column-gap: 18px; row-gap: 12px;
+    align-items: center;
+  }
+  .concert-item.has-poster .poster {
+    grid-area: poster; max-width: none; margin: 0; align-self: start;
+  }
+  .concert-item.has-poster .poster img { width: 76px; height: 100px; object-fit: cover; }
+  .concert-item.has-poster .no { grid-area: no; align-self: center; }
+  .concert-item.has-poster > div:nth-child(2) { grid-area: content; }
   .concert-item .no { text-align: left; }
   .concert-item .no b { display: inline; font-size: 1.9rem; }
   .concert-item .no span { margin-left: 10px; }
-  .concert-item .poster { max-width: 280px; margin-top: 4px; }
 }
 .concert-item:last-child { border-bottom: none; }
 .concert-item .no { font-family: var(--latin); text-align: center; }
@@ -396,6 +453,45 @@ table.plain td b { color: var(--ink); }
 table.plain.roster { max-width: 880px; }
 table.plain.roster th:first-child,
 table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
+
+/* 手機版表格：改為堆疊卡片，避免橫向捲動與欄位擁擠換行 */
+@media (max-width: 640px) {
+  .table-scroll { overflow-x: visible; }
+  .table-scroll table.plain { min-width: 0; }
+
+  /* 單欄 key-value 資訊表（屆別／日期／場地…）：th 本身即為欄位標籤，直接上下堆疊 */
+  table.plain:not(.roster) { max-width: none; }
+  table.plain:not(.roster) tr {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 12px 16px;
+  }
+  table.plain:not(.roster) tr + tr { border-top: 1px solid var(--line); }
+  table.plain:not(.roster) th,
+  table.plain:not(.roster) td { display: block; border: 0; padding: 0; }
+  table.plain:not(.roster) th {
+    background: none; color: var(--gold); font-size: .76rem; letter-spacing: .12em; font-weight: 700;
+  }
+  table.plain:not(.roster) td { color: var(--ink-dim); }
+
+  /* 多欄名單／團隊表（聲部、職稱等）：每列轉為一張卡片，欄位標籤取自 data-label */
+  table.plain.roster { max-width: none; }
+  table.plain.roster tr:first-child { display: none; } /* 隱藏原表頭列（無 thead 包裹） */
+  table.plain.roster tr {
+    display: block; padding: 14px 16px;
+  }
+  table.plain.roster tr + tr { border-top: 1px solid var(--line); }
+  table.plain.roster td {
+    display: block; border: 0; padding: 5px 0 0; width: auto !important; white-space: normal !important;
+  }
+  table.plain.roster td:first-child { padding-top: 0; }
+  table.plain.roster td[data-label]::before {
+    content: attr(data-label); display: block;
+    font-size: .74rem; letter-spacing: .1em; color: var(--gold); margin-bottom: 2px; font-weight: 700;
+  }
+  table.plain.roster td:first-child {
+    font-family: var(--serif); color: var(--ink); font-weight: 700; letter-spacing: .04em;
+  }
+}
 
 /* 編號拆解圖 */
 .num-demo { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0 8px; }
