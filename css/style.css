@@ -460,43 +460,28 @@ table.plain.roster { max-width: 880px; }
 table.plain.roster th:first-child,
 table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
 
-/* 手機版表格：改為堆疊卡片，避免橫向捲動與欄位擁擠換行 */
+/* 手機版表格：僅「單欄 key-value 資訊表」改為堆疊（欄位單純、無混淆風險）；
+   多欄表格（聲部代碼表、演出人員名單等）維持與桌機相同的表格／欄位排列，
+   超出螢幕寬度時交由 .table-scroll 橫向捲動，不轉為堆疊卡片，避免欄位對應錯亂 */
 @media (max-width: 640px) {
-  .table-scroll { overflow-x: visible; }
-  .table-scroll table.plain { min-width: 0; }
-
-  /* 單欄 key-value 資訊表（屆別／日期／場地…）：th 本身即為欄位標籤，直接上下堆疊 */
-  table.plain:not(.roster) { max-width: none; }
-  table.plain:not(.roster) tr {
+  /* 單欄 key-value 資訊表（屆別／日期／場地…、人物頁基本資料）：th 本身即為欄位標籤，直接上下堆疊，內容夠短不需捲動 */
+  .table-scroll table.plain:not(.roster):not(.part-code-table) { min-width: 0; }
+  table.plain:not(.roster):not(.part-code-table) { max-width: none; }
+  table.plain:not(.roster):not(.part-code-table) tr {
     display: flex; flex-direction: column; gap: 3px;
     padding: 12px 16px;
   }
-  table.plain:not(.roster) tr + tr { border-top: 1px solid var(--line); }
-  table.plain:not(.roster) th,
-  table.plain:not(.roster) td { display: block; border: 0; padding: 0; }
-  table.plain:not(.roster) th {
+  table.plain:not(.roster):not(.part-code-table) tr + tr { border-top: 1px solid var(--line); }
+  table.plain:not(.roster):not(.part-code-table) th,
+  table.plain:not(.roster):not(.part-code-table) td { display: block; border: 0; padding: 0; }
+  table.plain:not(.roster):not(.part-code-table) th {
     background: none; color: var(--gold); font-size: .76rem; letter-spacing: .12em; font-weight: 700;
   }
-  table.plain:not(.roster) td { color: var(--ink-dim); }
+  table.plain:not(.roster):not(.part-code-table) td { color: var(--ink-dim); }
 
-  /* 多欄名單／團隊表（聲部、職稱等）：每列轉為一張卡片，欄位標籤取自 data-label */
+  /* 多欄名單／團隊表（聲部、職稱等）：保留原生表格結構，僅收窄最小寬度以減少必要時的捲動幅度 */
+  .table-scroll table.plain.roster { min-width: 420px; }
   table.plain.roster { max-width: none; }
-  table.plain.roster tr:first-child { display: none; } /* 隱藏原表頭列（無 thead 包裹） */
-  table.plain.roster tr {
-    display: block; padding: 14px 16px;
-  }
-  table.plain.roster tr + tr { border-top: 1px solid var(--line); }
-  table.plain.roster td {
-    display: block; border: 0; padding: 5px 0 0; width: auto !important; white-space: normal !important;
-  }
-  table.plain.roster td:first-child { padding-top: 0; }
-  table.plain.roster td[data-label]::before {
-    content: attr(data-label); display: block;
-    font-size: .74rem; letter-spacing: .1em; color: var(--gold); margin-bottom: 2px; font-weight: 700;
-  }
-  table.plain.roster td:first-child {
-    font-family: var(--serif); color: var(--ink); font-weight: 700; letter-spacing: .04em;
-  }
 }
 
 /* 編號拆解圖 */
