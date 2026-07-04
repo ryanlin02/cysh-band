@@ -91,6 +91,48 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .page-head .kicker { color: var(--gold); letter-spacing: .4em; font-size: .95rem; margin-bottom: 14px; font-family: var(--latin); font-weight: 600; }
 .page-head h1 { font-family: var(--serif); font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; letter-spacing: .1em; }
 .page-head .lede { max-width: 46em; color: var(--ink-dim); margin-top: 20px; }
+.concerts-head {
+  position: relative;
+  overflow: hidden;
+}
+.concerts-head::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+}
+.concerts-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 150px));
+  gap: 12px;
+  margin-top: 34px;
+}
+.concerts-metrics div {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.52);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.concerts-metrics b {
+  display: block;
+  font-family: var(--latin);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--gold);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.concerts-metrics span {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-dim);
+  font-size: .8rem;
+  letter-spacing: .1em;
+}
 
 /* ---------- 版面 ---------- */
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
@@ -383,54 +425,261 @@ a.card-head:hover .num { color: var(--gold-soft); }
 }
 
 /* ---------- 聯演紀錄 ---------- */
-.concert-item {
-  display: grid; grid-template-columns: 120px 1fr; gap: 28px;
-  padding: 36px 0; border-bottom: 1px dashed var(--line);
+.archive-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  margin: -6px 0 26px;
 }
-.concert-item.has-poster { grid-template-columns: 120px 1fr 200px; align-items: start; }
-.concert-item .poster img {
-  display: block; width: 100%; border-radius: 8px; border: 1px solid var(--line);
+.archive-section {
+  scroll-margin-top: 88px;
+}
+.archive-intro p {
+  max-width: 50em;
+  color: var(--ink-dim);
+}
+.archive-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 250px;
+}
+.archive-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 14px;
+  border: 1px solid rgba(160,124,49,.32);
+  border-radius: 999px;
+  background: rgba(255,255,255,.62);
+  color: var(--gold);
+  font-size: .78rem;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.concert-archive {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.concert-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.88), rgba(248,245,238,.78));
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s, border-color .35s, background .35s;
+}
+.concert-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--gold-soft), transparent 82%);
+  opacity: .72;
+}
+.concert-item.has-poster {
+  grid-template-columns: 96px minmax(0, 1fr) minmax(132px, 180px);
+}
+.concert-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(160,124,49,.45);
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(135deg, #fff, #f5efe1);
+}
+.concert-item .no {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 92px;
+  padding: 12px 8px;
+  border: 1px solid rgba(160,124,49,.24);
+  border-radius: 12px;
+  background: rgba(250,248,243,.78);
+  font-family: var(--latin);
+  text-align: center;
+}
+.concert-item .no b {
+  display: block;
+  font-size: 2.65rem;
+  color: var(--gold);
+  font-weight: 600;
+  line-height: .95;
+  font-variant-numeric: tabular-nums;
+}
+.concert-item .no span {
+  display: block;
+  margin-top: 8px;
+  font-size: .78rem;
+  color: var(--ink-dim);
+  letter-spacing: .22em;
+}
+.concert-item h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.18rem, 2vw, 1.46rem);
+  line-height: 1.45;
+  margin: 0 0 7px;
+  letter-spacing: .08em;
+  color: var(--ink);
+}
+.concert-item .meta {
+  display: inline;
+  color: var(--gold);
+  font-size: .9rem;
+  margin-bottom: 12px;
+  letter-spacing: .04em;
+  font-weight: 700;
+}
+.concert-item p {
+  color: var(--ink-dim);
+  font-size: .95rem;
+  max-width: 58em;
+}
+.concert-item .poster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(160,124,49,.26);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.75), rgba(242,238,228,.72));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.6);
+}
+.concert-item .poster img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  box-shadow: 0 10px 24px rgba(43,39,33,.12);
   transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s;
 }
-/* 有獨立介紹頁：海報可點擊進入該頁 */
-.concert-item .poster.linked a { display: block; border-radius: 8px; }
-.concert-item .poster.linked img { cursor: pointer; }
-.concert-item .poster.linked:hover img { transform: scale(1.03); box-shadow: var(--shadow-md); }
-/* 尚無獨立介紹頁：純展示用海報，不做任何點擊互動 */
-.concert-item .poster:not(.linked) img { cursor: default; }
-
-/* 窄螢幕：海報改為左側縱貫的縮圖，屆數／標題／簡介一起靠右排成一欄——
-   避免海報只跟屆數配成一列、標題卻另起一列滿版，視覺上讓海報跟整則紀錄脫節
-  （原本的排法在畫面上會顯得「海報跟內文對不起來」，已重新設計，2026-07-04）。 */
-@media (max-width: 760px) {
-  .concert-item {
-    grid-template-columns: 1fr; gap: 10px;
+.concert-item .poster.linked a {
+  display: block;
+  border-radius: 8px;
+}
+.concert-item .poster.linked img {
+  cursor: pointer;
+}
+.concert-item .poster.linked:hover img,
+.concert-item.has-poster:hover .poster.linked img {
+  transform: scale(1.025);
+  box-shadow: 0 14px 32px rgba(43,39,33,.18);
+}
+.concert-item .poster:not(.linked) img {
+  cursor: default;
+}
+@media (max-width: 860px) {
+  .archive-intro {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
+  .archive-tags {
+    justify-content: flex-start;
+    min-width: 0;
+  }
+  .concert-item,
   .concert-item.has-poster {
-    display: grid;
-    grid-template-columns: 76px 1fr;
-    grid-template-areas: "poster no" "poster content";
-    column-gap: 16px; row-gap: 6px;
-    align-items: start;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 16px;
+    padding: 20px;
   }
   .concert-item.has-poster .poster {
-    grid-area: poster; max-width: none; margin: 0;
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    max-width: 360px;
+    margin: 4px auto 0;
   }
-  .concert-item.has-poster .poster img { width: 76px; height: 100px; object-fit: cover; }
-  .concert-item.has-poster .no { grid-area: no; align-self: start; }
-  .concert-item.has-poster > div:nth-child(2) { grid-area: content; }
-  .concert-item .no { text-align: left; }
-  .concert-item .no b { display: inline; font-size: 1.7rem; }
-  .concert-item .no span { margin-left: 8px; }
+  .concert-item .no {
+    min-height: 78px;
+    border-radius: 10px;
+  }
+  .concert-item .no b {
+    font-size: 2.1rem;
+  }
+  .concert-item .no span {
+    margin-top: 5px;
+    font-size: .72rem;
+  }
 }
-.concert-item:last-child { border-bottom: none; }
-.concert-item .no { font-family: var(--latin); text-align: center; }
-.concert-item .no b { display: block; font-size: 2.6rem; color: var(--gold); font-weight: 600; line-height: 1.1; }
-.concert-item .no span { font-size: .85rem; color: var(--ink-dim); letter-spacing: .2em; }
-.concert-item h3 { font-family: var(--serif); font-size: 1.35rem; margin: 0 0 6px; letter-spacing: .1em; color: var(--ink); }
-.concert-item .meta { color: var(--gold); font-size: .88rem; margin-bottom: 10px; letter-spacing: .05em; }
-.concert-item p { color: var(--ink-dim); font-size: .95rem; max-width: 44em; }
+@media (max-width: 560px) {
+  .concerts-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .concerts-metrics div {
+    padding: 12px 9px;
+    border-radius: 10px;
+  }
+  .concerts-metrics b {
+    font-size: 1.55rem;
+  }
+  .concerts-metrics span {
+    font-size: .72rem;
+    letter-spacing: .06em;
+  }
+  .concert-archive {
+    gap: 14px;
+  }
+  .concert-item,
+  .concert-item.has-poster {
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+  .concert-item::before {
+    width: 2px;
+  }
+  .concert-item .no {
+    min-height: 68px;
+    padding: 9px 6px;
+  }
+  .concert-item .no b {
+    font-size: 1.75rem;
+  }
+  .concert-item .no span {
+    font-size: .68rem;
+    letter-spacing: .14em;
+  }
+  .concert-item h3 {
+    font-size: 1.12rem;
+    letter-spacing: .04em;
+  }
+  .concert-item .meta,
+  .concert-item p {
+    font-size: .9rem;
+  }
+  .concert-item .poster {
+    padding: 8px;
+    border-radius: 10px;
+  }
+  .concert-item .poster img {
+    max-height: 300px;
+  }
+  .archive-tags span {
+    min-height: 30px;
+    padding: 5px 11px;
+    font-size: .72rem;
+  }
+}
 
 /* 精選（本屆）— 亮面卡片 */
 .featured {
@@ -452,7 +701,18 @@ a.card-head:hover .num { color: var(--gold-soft); }
 .featured p { color: var(--ink-dim); }
 .featured p b { color: var(--ink); }
 .featured .muted { color: var(--ink-dim); }
-@media (max-width: 760px) { .featured { grid-template-columns: 1fr; padding: 32px; } .featured img { max-width: 280px; } }
+@media (max-width: 760px) {
+  .featured {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    padding: 26px;
+    border-radius: 12px;
+  }
+  .featured img {
+    max-width: min(280px, 100%);
+    margin: 0 auto;
+  }
+}
 
 /* ---------- 表格 ---------- */
 table.plain { border-collapse: collapse; width: 100%; max-width: 640px; margin: 12px 0 20px; font-size: .95rem; background: var(--bg-card); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-sm); }
@@ -741,6 +1001,11 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .section { padding: 44px 0; }
   .stat { padding: 8px 18px; }
   .stat b { font-size: 2rem; }
+}
+@media (max-width: 560px) {
+  .section.archive-section {
+    padding-top: 72px;
+  }
 }
 @media (max-width: 420px) {
   .card-head { gap: 14px; }

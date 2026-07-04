@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- 捲動漸入 ---------- */
   var targets = document.querySelectorAll(
-    '.section, .card, .tl-item, .concert-item, .way, .stat, .concert-banner, .featured, .gallery-grid figure, blockquote, .num-demo .digit'
+    '.section, .card, .tl-item, .concert-item, .archive-tags span, .concerts-metrics div, .way, .stat, .concert-banner, .featured, .gallery-grid figure, blockquote, .num-demo .digit'
   );
   if (reduced || !('IntersectionObserver' in window)) {
     targets.forEach(function (el) { el.classList.add('reveal', 'in'); });
