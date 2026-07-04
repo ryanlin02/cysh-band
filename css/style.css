@@ -354,7 +354,11 @@ a.card-head:hover .num { color: var(--gold-soft); }
 .session-nav a .num { font-family: var(--latin); color: var(--gold); font-weight: 600; }
 
 /* 同屆多場次卡片（每場次獨立成塊，白／米雙色區隔＋金色頂緣） */
-.session {
+/* 注意：.session 同時掛在 <section class="section session"> 上，.session 的 padding／::before
+   位置規則一律以 .section.session 限定選擇器書寫，避免與後方「小螢幕微調」區塊裡
+   權重相同的 .section{padding:...} 規則因後到者優先而覆蓋掉這裡的橫向留白
+  （曾在 2019-35th.html 造成手機版場次卡片內文緊貼卡片邊框的問題，已修正，2026-07-04）。 */
+.section.session {
   position: relative; margin: 44px 0 0; padding: 36px 32px 6px;
   border: 1px solid var(--line); border-radius: 16px;
   background: var(--bg-card); box-shadow: var(--shadow-sm);
@@ -362,7 +366,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
 }
 .session:nth-of-type(2) { background: var(--bg-soft); }
 .session + .session { margin-top: 52px; }
-.session::before {
+.section.session::before {
   content: ""; position: absolute; left: 32px; right: 32px; top: 0; height: 3px;
   border-radius: 3px 3px 0 0; background: linear-gradient(90deg, var(--gold-soft), var(--gold));
 }
@@ -374,8 +378,8 @@ a.card-head:hover .num { color: var(--gold-soft); }
 .session-meta b { color: var(--ink); }
 .session h3:first-of-type { margin-top: 30px; }
 @media (max-width: 640px) {
-  .session { padding: 28px 20px 4px; }
-  .session::before { left: 20px; right: 20px; }
+  .section.session { padding: 28px 20px 4px; }
+  .section.session::before { left: 20px; right: 20px; }
 }
 
 /* ---------- 聯演紀錄 ---------- */
@@ -396,7 +400,9 @@ a.card-head:hover .num { color: var(--gold-soft); }
 /* 尚無獨立介紹頁：純展示用海報，不做任何點擊互動 */
 .concert-item .poster:not(.linked) img { cursor: default; }
 
-/* 窄螢幕：屆數＋海報並列為緊湊標頭列，文字內容另起一列滿版呈現 */
+/* 窄螢幕：海報改為左側縱貫的縮圖，屆數／標題／簡介一起靠右排成一欄——
+   避免海報只跟屆數配成一列、標題卻另起一列滿版，視覺上讓海報跟整則紀錄脫節
+  （原本的排法在畫面上會顯得「海報跟內文對不起來」，已重新設計，2026-07-04）。 */
 @media (max-width: 760px) {
   .concert-item {
     grid-template-columns: 1fr; gap: 10px;
@@ -404,19 +410,19 @@ a.card-head:hover .num { color: var(--gold-soft); }
   .concert-item.has-poster {
     display: grid;
     grid-template-columns: 76px 1fr;
-    grid-template-areas: "poster no" "content content";
-    column-gap: 18px; row-gap: 12px;
-    align-items: center;
+    grid-template-areas: "poster no" "poster content";
+    column-gap: 16px; row-gap: 6px;
+    align-items: start;
   }
   .concert-item.has-poster .poster {
-    grid-area: poster; max-width: none; margin: 0; align-self: start;
+    grid-area: poster; max-width: none; margin: 0;
   }
   .concert-item.has-poster .poster img { width: 76px; height: 100px; object-fit: cover; }
-  .concert-item.has-poster .no { grid-area: no; align-self: center; }
+  .concert-item.has-poster .no { grid-area: no; align-self: start; }
   .concert-item.has-poster > div:nth-child(2) { grid-area: content; }
   .concert-item .no { text-align: left; }
-  .concert-item .no b { display: inline; font-size: 1.9rem; }
-  .concert-item .no span { margin-left: 10px; }
+  .concert-item .no b { display: inline; font-size: 1.7rem; }
+  .concert-item .no span { margin-left: 8px; }
 }
 .concert-item:last-child { border-bottom: none; }
 .concert-item .no { font-family: var(--latin); text-align: center; }
@@ -587,7 +593,7 @@ table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
 }
 
 /* ---------- 相簿 ---------- */
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 8px; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 20px; margin-top: 8px; }
 .gallery-grid figure {
   background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
   overflow: hidden; box-shadow: var(--shadow-sm);
