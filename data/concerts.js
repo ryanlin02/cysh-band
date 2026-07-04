@@ -122,6 +122,7 @@ window.CONCERTS = [
     venue: "嘉義高中樹人堂",
     venueNote: "嘉中百年校慶前哨",
     hostHead: "一字頭",
+    organizers: [{ name: "翁啟榮", num: "7581", role: "籌備統籌" }],
     conductors: [
       { name: "盧宓承", num: "7111", role: "指揮" },
       { name: "丁肇賢", num: "8501", role: "指揮" },
@@ -302,6 +303,7 @@ window.CONCERTS = [
     venue: "嘉義高中樹人堂",
     venueNote: "",
     hostHead: "六字頭",
+    organizers: [{ name: "翁啟榮", num: "7581", role: "召集人之一" }],
     conductors: [
       { name: "羅家駒", num: "6392", role: "指揮" },
       { name: "盧宓承", num: "7111", role: "指揮" },

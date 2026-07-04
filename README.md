@@ -21,7 +21,7 @@
 | gallery.html | 影像館（活動相簿制，點擊放大） |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
-| content/people/ | 人物個人頁正文來源檔（目前先以 8861 試點） |
+| content/people/ | 人物個人頁正文來源檔（目前先以 7581、8861 試點） |
 | data/alumni.js | 校友名錄資料檔 |
 | data/news.js | 最新消息資料檔 |
 | data/number-lookup.js | 編號查詢小遊戲資料檔（非完整公開名錄） |
@@ -80,13 +80,13 @@ node scripts/generate-page-preview.js
 
 已套用到正式頁面的第一批是目前全部 5 篇最新消息文章；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。
 
-人物頁模板化目前採單頁試點。正式試點頁為簡晟軒（8861），正文來源在 `content/people/8861.html`，正式 HTML 由以下指令產生：
+人物頁模板化目前採小批試點。正式試點頁為翁啟榮（7581）與簡晟軒（8861），正文來源在 `content/people/`，正式 HTML 由以下指令產生：
 
 ```
 node scripts/generate-people-pages.js
 ```
 
-目前只有 `people/8861.html` 由此腳本產生；其他人物頁仍維持原本手寫 HTML。`node scripts/check-site.js` 會檢查試點頁是否與來源檔同步。
+目前只有 `people/7581.html`、`people/8861.html` 由此腳本產生；其他人物頁仍維持原本手寫 HTML。`node scripts/check-site.js` 會檢查試點頁是否與來源檔同步。
 
 若想先看模板預覽，可產生單頁人物模板預覽：
 

@@ -125,6 +125,20 @@ function checkDataReferences() {
         if (!exists(item)) addError(`data/concerts.js: ${label} ${field} not found: ${item}`);
       }
     }
+    for (const field of ['conductors', 'soloists', 'organizers']) {
+      if (concert[field] && !Array.isArray(concert[field])) {
+        addError(`data/concerts.js: ${label} ${field} must be an array.`);
+        continue;
+      }
+      for (const [index, person] of (concert[field] || []).entries()) {
+        if (!person || typeof person !== 'object') {
+          addError(`data/concerts.js: ${label} ${field}[${index}] must be an object.`);
+          continue;
+        }
+        if (!person.name) addError(`data/concerts.js: ${label} ${field}[${index}] missing name.`);
+        if (field !== 'soloists' && !person.role) addError(`data/concerts.js: ${label} ${field}[${index}] missing role.`);
+      }
+    }
   }
 
   const lookupByNum = new Map(lookup.map((person) => [person.num, person]));

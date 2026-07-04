@@ -48,6 +48,20 @@ if (!Array.isArray(concerts)) {
         if (!exists(rel)) errors.push(`${label}: ${field} not found: ${rel}`);
       });
     });
+    ['conductors', 'soloists', 'organizers'].forEach((field) => {
+      if (c[field] && !Array.isArray(c[field])) {
+        errors.push(`${label}: ${field} must be an array.`);
+        return;
+      }
+      (c[field] || []).forEach((person, personIndex) => {
+        if (!person || typeof person !== 'object') {
+          errors.push(`${label}: ${field}[${personIndex}] must be an object.`);
+          return;
+        }
+        if (!person.name) errors.push(`${label}: ${field}[${personIndex}] missing name.`);
+        if (field !== 'soloists' && !person.role) errors.push(`${label}: ${field}[${personIndex}] missing role.`);
+      });
+    });
 
     if (c.status === 'confirmed' && !(c.sources || []).length) {
       warnings.push(`${label}: confirmed record should include sources.`);
