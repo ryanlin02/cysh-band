@@ -79,6 +79,7 @@ function loadData() {
   if (!Array.isArray(global.NUMBER_LOOKUP)) addError('data/number-lookup.js: window.NUMBER_LOOKUP must be an array.');
   if (!Array.isArray(global.CONCERTS)) addError('data/concerts.js: window.CONCERTS must be an array.');
   if (!Array.isArray(global.PEOPLE_PROFILES)) addError('data/people-profiles.js: window.PEOPLE_PROFILES must be an array.');
+  if (!Array.isArray(global.PEOPLE_FEATURED_SECTIONS)) addError('data/people-profiles.js: window.PEOPLE_FEATURED_SECTIONS must be an array.');
 }
 
 function checkDataReferences() {
@@ -87,6 +88,7 @@ function checkDataReferences() {
   const lookup = global.NUMBER_LOOKUP || [];
   const concerts = global.CONCERTS || [];
   const peopleProfiles = global.PEOPLE_PROFILES || [];
+  const featuredSections = global.PEOPLE_FEATURED_SECTIONS || [];
 
   for (const person of alumni) {
     const label = `${person.num || 'no-num'} ${person.name || '(missing name)'}`;
@@ -131,6 +133,51 @@ function checkDataReferences() {
       addError(`data/people-profiles.js: ${label} no matching data/alumni.js record.`);
     } else if (alumniPerson.link !== profile.output) {
       addError(`data/people-profiles.js: ${label} output mismatch with data/alumni.js link: ${profile.output} / ${alumniPerson.link}`);
+    }
+  }
+
+  const profileByNum = new Map(peopleProfiles.map((profile) => [profile.num, profile]));
+  const featuredIds = new Set();
+  let featuredCardCount = 0;
+  for (const [sectionIndex, section] of featuredSections.entries()) {
+    const sectionLabel = section && section.title ? section.title : `section ${sectionIndex + 1}`;
+    if (!section || typeof section !== 'object') {
+      addError(`data/people-profiles.js: PEOPLE_FEATURED_SECTIONS[${sectionIndex}] must be an object.`);
+      continue;
+    }
+    if (!section.title) addError(`data/people-profiles.js: PEOPLE_FEATURED_SECTIONS[${sectionIndex}] missing title.`);
+    if (!Array.isArray(section.items) || !section.items.length) {
+      addError(`data/people-profiles.js: PEOPLE_FEATURED_SECTIONS "${sectionLabel}" must have items.`);
+      continue;
+    }
+    for (const [itemIndex, item] of section.items.entries()) {
+      const itemLabel = `${sectionLabel} item ${itemIndex + 1}`;
+      if (!item || typeof item !== 'object') {
+        addError(`data/people-profiles.js: ${itemLabel} must be an object.`);
+        continue;
+      }
+      const id = item.profile || item.id;
+      if (!id) addError(`data/people-profiles.js: ${itemLabel} missing profile/id.`);
+      if (id && featuredIds.has(id)) addError(`data/people-profiles.js: duplicate PEOPLE_FEATURED card id: ${id}`);
+      if (id) featuredIds.add(id);
+      featuredCardCount += 1;
+      if (!item.role) addError(`data/people-profiles.js: ${itemLabel} missing role.`);
+      if (!item.summaryHtml) addError(`data/people-profiles.js: ${itemLabel} missing summaryHtml.`);
+
+      if (item.profile) {
+        if (!profileByNum.has(item.profile)) {
+          addError(`data/people-profiles.js: ${itemLabel} references missing PEOPLE_PROFILES profile: ${item.profile}`);
+        }
+      } else {
+        for (const field of ['id', 'name', 'numHtml', 'photo']) {
+          if (!item[field]) addError(`data/people-profiles.js: ${itemLabel} missing ${field}.`);
+        }
+        const alumniPerson = item.id ? alumniByNum.get(item.id) : null;
+        if (alumniPerson && item.name !== alumniPerson.name && item.officialName !== alumniPerson.name) {
+          addError(`data/people-profiles.js: ${itemLabel} name "${item.name}" does not match ALUMNI name "${alumniPerson.name}" and has no matching officialName.`);
+        }
+        if (item.photo && !exists(item.photo)) addError(`data/people-profiles.js: ${itemLabel} photo not found: ${item.photo}`);
+      }
     }
   }
 
@@ -184,7 +231,7 @@ function checkDataReferences() {
   const blankPhotos = alumni.filter((person) => person.photo === 'blank').length;
   const incompleteParts = alumni.filter((person) => !person.part || !person.tags || !person.tags.length).length;
   info.push(`ALUMNI records: ${alumni.length}; blank photos: ${blankPhotos}; incomplete part/tags: ${incompleteParts}`);
-  info.push(`NEWS records: ${news.length}; NUMBER_LOOKUP records: ${lookup.length}; CONCERTS records: ${concerts.length}; PEOPLE_PROFILES records: ${peopleProfiles.length}`);
+  info.push(`NEWS records: ${news.length}; NUMBER_LOOKUP records: ${lookup.length}; CONCERTS records: ${concerts.length}; PEOPLE_PROFILES records: ${peopleProfiles.length}; PEOPLE_FEATURED cards: ${featuredCardCount}`);
 }
 
 function checkHtmlReferences() {
@@ -328,15 +375,31 @@ function checkGeneratedPeoplePages() {
   info.push(`Generated people pages checked: ${profiles.length}`);
 }
 
+function checkGeneratedPeopleIndex() {
+  const { renderPeopleIndex } = require('./generate-people-index');
+  const expected = renderPeopleIndex();
+  const actual = read('people.html');
+  if (actual !== expected) {
+    addError('people.html: generated HTML is out of sync. Run node scripts/generate-people-index.js');
+  }
+  info.push('Generated people index checked: people.html');
+}
+
 function checkPeopleIndexCards() {
   const text = read('people.html');
-  const cardRegex = /<div class="card" id="p-([^"]+)">([\s\S]*?)(?=\n\s*<div class="card" id="p-[^"]+">|\n\s*<\/div>\s*<\/section>)/g;
+  const cardRegex = /<div class="card" id="p-([^"]+)">([\s\S]*?)(?=\n\s*<div class="card" id="p-[^"]+">|\n\s*<\/div>\s*(?:<p class="muted"|<\/section>))/g;
   const cards = [...text.matchAll(cardRegex)].map((match) => ({ id: match[1], html: match[2] }));
   const alumniByNum = new Map((global.ALUMNI || [])
     .filter((person) => person.num)
     .map((person) => [person.num, person]));
   const profileByNum = new Map((global.PEOPLE_PROFILES || [])
     .map((profile) => [profile.num, profile]));
+  const featuredById = new Map();
+  for (const section of global.PEOPLE_FEATURED_SECTIONS || []) {
+    for (const item of section.items || []) {
+      featuredById.set(item.profile || item.id, item);
+    }
+  }
 
   for (const card of cards) {
     const name = (card.html.match(/<h3>([\s\S]*?)<\/h3>/) || [null, ''])[1].replace(/<[^>]+>/g, '').trim();
@@ -345,12 +408,15 @@ function checkPeopleIndexCards() {
     const moreLink = (card.html.match(/<p class="more"><a href="people\/([^"#]+)\.html"/) || [null, ''])[1];
     const alumni = alumniByNum.get(card.id);
     const profile = profileByNum.get(card.id);
+    const featured = featuredById.get(card.id);
 
     if (headLink && !profileByNum.has(headLink)) addError(`people.html#p-${card.id}: card-head links to missing profile people/${headLink}.html.`);
     if (profile && headLink !== card.id) addError(`people.html#p-${card.id}: card-head should link to people/${card.id}.html.`);
     if (profile && moreLink !== card.id) addError(`people.html#p-${card.id}: more link should point to people/${card.id}.html.`);
     if (profile && profile.name !== name) addError(`people.html#p-${card.id}: card name "${name}" does not match PEOPLE_PROFILES name "${profile.name}".`);
-    if (alumni && alumni.name !== name) addError(`people.html#p-${card.id}: card name "${name}" does not match ALUMNI name "${alumni.name}".`);
+    if (alumni && alumni.name !== name && (!featured || featured.officialName !== alumni.name)) {
+      addError(`people.html#p-${card.id}: card name "${name}" does not match ALUMNI name "${alumni.name}".`);
+    }
     if (alumni && avatar !== alumni.photo) addError(`people.html#p-${card.id}: card avatar "${avatar}" does not match ALUMNI photo "${alumni.photo}".`);
     if (profile) {
       const profileAvatar = (profile.photo.match(/members\/([^/]+)\.webp$/) || [null, ''])[1];
@@ -452,6 +518,7 @@ checkSitemapAndFeed();
 checkFontUrlEncoding();
 checkGeneratedNewsPages();
 checkGeneratedPeoplePages();
+checkGeneratedPeopleIndex();
 checkPeopleIndexCards();
 checkPeopleProfilePages();
 printReport();
