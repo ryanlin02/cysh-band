@@ -102,6 +102,10 @@ function renderProfile(profile, options = {}) {
     : '';
   const previewSuffix = options.preview ? '．PREVIEW' : '';
   const relatedLinksHtml = renderRelatedLinks(profile.relatedLinks);
+  const personNavClass = profile.peopleLink ? 'person-nav' : 'person-nav person-nav--single';
+  const peopleBackLink = profile.peopleLink
+    ? `      <a class="btn ghost" href="${escapeHtml(profile.peopleLink)}">← 回人物誌總覽</a>\n`
+    : '';
 
   const content = `<header class="page-head">
   <p class="kicker">PEOPLE．${escapeHtml(profile.num)}${previewSuffix}</p>
@@ -123,9 +127,8 @@ ${previewNote}${indentHtml(body)}
     <h3>資料來源</h3>
     <p class="sources">${profile.sourceHtml}</p>
 
-    <nav class="person-nav" aria-label="人物頁面導覽">
-      <a class="btn ghost" href="${escapeHtml(profile.peopleLink)}">← 回人物誌總覽</a>
-${officialPageLink}      <a class="btn" href="${escapeHtml(profile.rosterLink)}">在校友名錄查看${escapeHtml(profile.name)} →</a>
+    <nav class="${personNavClass}" aria-label="人物頁面導覽">
+${peopleBackLink}${officialPageLink}      <a class="btn" href="${escapeHtml(profile.rosterLink)}">在校友名錄查看${escapeHtml(profile.name)} →</a>
     </nav>
   </article>
 </main>`;
@@ -138,7 +141,7 @@ ${officialPageLink}      <a class="btn" href="${escapeHtml(profile.rosterLink)}"
     url: options.url || `https://cysh.band/${profile.output}`,
     ogType: 'profile',
     assetPrefix: '../',
-    navActive: 'people',
+    navActive: profile.navActive || 'people',
     extraHead: options.extraHead || '',
     content
   }).replace(/[ \t]+$/gm, '');

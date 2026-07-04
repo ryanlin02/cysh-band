@@ -29,6 +29,50 @@ window.PEOPLE_PROFILES = [
     sourceHtml: "本文整理自國立中山大學音樂學系公開校務資料、南風薩克斯風四重奏公開簡介，以及嘉義高中校友管樂團演出紀錄；嘉中入學與畢業確切年份、法國進修完整起訖時間等細節，仍待本人進一步確認與補充。歷史資料以當年紀錄為準；如需更正或補充，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
+    num: "0741",
+    name: "陳羿弦",
+    source: "content/people/0741.html",
+    output: "people/0741.html",
+    title: "陳羿弦（0741）｜嘉義高中管樂隊校友",
+    description: "從嘉中學生指揮到法國號研究生——陳羿弦（編號 0741）的音樂之路：清華大學音樂系、嘉義市管樂團行政助理與持續累積中的演奏生涯。",
+    ogTitle: "陳羿弦（0741）｜從嘉中學生指揮到法國號研究生",
+    ogDescription: "清華大學音樂系、嘉義市管樂團行政助理與持續累積中的演奏生涯——編號 0741 的音樂之路。",
+    headlineHtml: "陳羿弦：從嘉中學生指揮<br>到法國號研究生",
+    photo: "../assets/img/members/0741.webp",
+    facts: [
+      ["編號", "<b>0741</b>（民國 107 年入學．法國號聲部．第 89 屆學生指揮兼公關）"],
+      ["主修", "法國號（副修鋼琴）"],
+      ["學歷", "國立清華大學音樂系；現就讀國立中山大學藝術管理與創業研究所"],
+      ["現職", "嘉義市管樂團行政助理"]
+    ],
+    navActive: "roster",
+    rosterLink: "../roster.html#p-0741",
+    relatedLinks: [],
+    sourceHtml: "本文整理自嘉義高中管樂社公開幹部介紹、嘉義市管樂團官方沿革與演出資料，以及本人提供之最新資料；北興國中與嘉中入學畢業確切年份、研究所現任指導教授等細節，仍待本人進一步確認與補充。歷史資料以當年紀錄為準；如需更正或補充，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
+    num: "1051",
+    name: "黃鈺芠",
+    source: "content/people/1051.html",
+    output: "people/1051.html",
+    title: "黃鈺芠（1051）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉義校園管樂體系走向嘉中校友團——黃鈺芠（編號 1051）的小號成長紀錄與第 41 屆《為伍》協奏。",
+    ogTitle: "黃鈺芠（1051）｜從嘉義校園管樂走向嘉中校友團的小號之路",
+    ogDescription: "嘉中管樂隊年輕校友、小號聲部，第 41 屆《為伍》Philip Sparke《Manhattan》協奏。",
+    headlineHtml: "黃鈺芠：從嘉義校園管樂<br>走向嘉中校友團的小號之路",
+    photo: "../assets/img/members/1051.webp",
+    facts: [
+      ["編號", "<b>1051</b>（民國 110 年入學．小號聲部）"],
+      ["現況", "臺北市立大學音樂系"],
+      ["嘉中角色", "嘉中管樂隊年輕校友、校友團小號聲部"],
+      ["本屆演出", "第 41 屆《為伍》Philip Sparke《Manhattan》小號協奏"]
+    ],
+    peopleLink: "../people.html#p-1051",
+    rosterLink: "../roster.html#p-1051",
+    relatedLinks: [],
+    sourceHtml: "本文整理自以下公開資料與本人 2026 年校友資料登錄：<a href=\"https://www.youtube.com/watch?v=QYNxu6jThYw\" target=\"_blank\" rel=\"noopener\">世賢國小校慶音樂會公開影像</a>、<a href=\"https://www.youtube.com/watch?v=Wy1hc4ll_nk\" target=\"_blank\" rel=\"noopener\">北興國中管樂班成果發表公開影像</a>、<a href=\"https://www.msjh.cy.edu.tw/uploads/1668157834510oOWsOhWD.pdf\" target=\"_blank\" rel=\"noopener\">嘉義市 111 學年度學生音樂比賽秩序冊</a>、<a href=\"https://www.youtube.com/watch?v=Au2GSuSfkYo\" target=\"_blank\" rel=\"noopener\">嘉義高中管樂社 2023 嘉義市國際管樂節公開影像</a>、<a href=\"https://www.youtube.com/watch?v=mcttO3a8wKs\" target=\"_blank\" rel=\"noopener\">嘉中第 38 屆聯演《旭陵慶典》公開影像</a>。若本人日後補充師承、比賽成績或演出履歷，本文將再行更新。"
+  },
+  {
     num: "6301",
     name: "陳錫仁",
     source: "content/people/6301.html",
@@ -288,6 +332,28 @@ window.PEOPLE_PROFILES = [
     sourceHtml: "本文整理自以下公開資料：實踐大學與中國科技大學官方師資頁、台北青年管樂團及美頌樂集公開演出資料、各場音樂會與專輯製作節目資訊，以及本人 2010 年發表之校友回憶。個人現職與任教單位以刊登當下之校方資料為準；歷史資料以當年紀錄為準，如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
+    num: "8993",
+    name: "林唐禾",
+    source: "content/people/8993.html",
+    output: "people/8993.html",
+    title: "林唐禾（8993）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉中打擊聲部與學生指揮，到臺大醫學院杏林管弦樂團指揮——林唐禾（編號 8993）橫跨管樂、管弦樂、合唱與國民教育的指揮之路。",
+    ogTitle: "林唐禾（8993）｜從嘉中學生指揮到跨領域音樂教育者",
+    ogDescription: "從嘉中打擊手與學生指揮，到臺大杏林管弦樂團指揮，編號 8993 的指揮與教育之路。",
+    headlineHtml: "林唐禾：從嘉中學生指揮<br>到跨領域音樂教育者",
+    photo: "../assets/img/members/8993.webp",
+    facts: [
+      ["編號", "<b>8993</b>（民國 89 年入學．打擊聲部、學生指揮）"],
+      ["主修", "小提琴（副修鋼琴、聲樂）"],
+      ["學歷", "國立臺北教育大學音樂系；國立臺灣師範大學音樂研究所指揮組碩士"],
+      ["樂團角色", "臺大醫學院杏林管弦樂團指揮．校友聯演指揮之一"]
+    ],
+    peopleLink: "../people.html#p-8993",
+    rosterLink: "../roster.html#p-8993",
+    relatedLinks: [],
+    sourceHtml: "本文整理自臺灣博碩士論文知識加值系統、嘉義市政府公告、國立臺灣大學醫學院及杏林管弦樂團公開資料、國立臺北教育大學校慶刊物，以及新北市相關國小公開教職資料；部分經歷（如嘉中入學與畢業確切年份、歷屆聯演完整參與紀錄）尚待本人進一步確認與補充。歷史資料以當年紀錄為準；如需更正或補充，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
     num: "9101",
     name: "謝介豪",
     source: "content/people/9101.html",
@@ -352,5 +418,27 @@ window.PEOPLE_PROFILES = [
     rosterLink: "../roster.html#p-9721",
     relatedLinks: [],
     sourceHtml: "本文整理自以下公開資料：嘉義市管樂團官方人物頁與《魔幻樂神降臨》節目資料、中央社《旭陵慶典》報導、嘉義縣藝術才能音樂班課程計畫、國立臺北藝術大學演出資訊，以及嘉義高中校友暨在校生聯合音樂會公開紀錄。《旭陵慶典》樂譜著作權屬作曲者所有；歷史資料以當年紀錄為準，如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
+    num: "9841",
+    name: "洪筱涵",
+    source: "content/people/9841.html",
+    output: "people/9841.html",
+    title: "洪筱涵（9841）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉中法國號聲部到 NTSO 臺灣管樂團——洪筱涵（編號 9841）的法國號之路：嘉義大學音樂系、法國號獨奏會、校友聯演協奏獨奏與學校音樂教育。",
+    ogTitle: "洪筱涵（9841）｜從嘉中號角走向 NTSO 舞台的法國號之路",
+    ogDescription: "嘉義大學音樂系、法國號獨奏會、校友聯演協奏獨奏與 NTSO 臺灣管樂團——編號 9841 的法國號之路。",
+    headlineHtml: "洪筱涵：從嘉中號角<br>走向 NTSO 舞台的法國號之路",
+    photo: "../assets/img/members/blank.webp",
+    facts: [
+      ["編號", "<b>9841</b>（民國 98 年入學．法國號聲部）"],
+      ["主修", "法國號（副修鋼琴）"],
+      ["學歷", "國立嘉義大學音樂學系"],
+      ["樂團角色", "NTSO 臺灣管樂團法國號團員．校友聯演協奏獨奏"]
+    ],
+    peopleLink: "../people.html#p-9841",
+    rosterLink: "../roster.html#p-9841",
+    relatedLinks: [],
+    sourceHtml: "本文整理自國立臺灣交響樂團公開資料、嘉義高中校友管樂團演出紀錄與報導、國家文化藝術基金會補助案件檔案，以及學校公開教職資料；嘉中入學與畢業確切年份、部分演出曲目細節仍待本人進一步確認與補充。歷史資料以當年紀錄為準；如需更正或補充，歡迎透過粉絲專頁與我們聯繫。"
   }
 ];

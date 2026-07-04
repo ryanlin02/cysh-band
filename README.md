@@ -21,9 +21,9 @@
 | gallery.html | 影像館（活動相簿制，點擊放大） |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
-| content/people/ | 人物個人頁正文來源檔（目前 15 頁已模板化） |
+| content/people/ | 人物個人頁正文來源檔（19 個人物頁皆已模板化） |
 | data/alumni.js | 校友名錄資料檔 |
-| data/people-profiles.js | 已模板化人物個人頁 metadata（目前 15 頁） |
+| data/people-profiles.js | 已模板化人物個人頁 metadata（19 個人物頁皆已納入） |
 | data/news.js | 最新消息資料檔 |
 | data/number-lookup.js | 編號查詢小遊戲資料檔（非完整公開名錄） |
 | 校友資料管理與驗證流程.md | 公開名錄、查號資料、個人頁與內部 Excel 名冊的管理流程 |
@@ -81,13 +81,13 @@ node scripts/generate-page-preview.js
 
 已套用到正式頁面的第一批是目前全部 5 篇最新消息文章；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。
 
-人物頁模板化目前採小批批次轉換。已模板化頁為許哲誠（0431）、陳錫仁（6301）、馮朝君（6401）、曾膺安（6951）、盧宓承（7111）、翁啟榮（7581）、高崇文（8301）、鄧杰翔（8302）、鄭鈞元（8431）、丁肇賢（8501）、簡晟軒（8861）、王騰寬（8982）、謝介豪（9101）、蔡政岳（9701）與葉哲良（9721），正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
+人物頁模板化已涵蓋目前全部 19 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
 
 ```
 node scripts/generate-people-pages.js
 ```
 
-目前有 15 個 `people/*.html` 由此腳本產生；其他人物頁仍維持原本手寫 HTML。`node scripts/check-site.js` 會檢查已模板化頁是否與來源檔同步。
+目前所有 `people/*.html` 個人頁皆由此腳本產生。`node scripts/check-site.js` 會檢查已模板化頁是否與來源檔同步。
 
 若想先看模板預覽，可產生單頁人物模板預覽：
 
