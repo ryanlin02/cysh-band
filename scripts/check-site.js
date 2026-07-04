@@ -49,6 +49,21 @@ function cleanLocalRef(raw) {
   return raw.split('#')[0].split('?')[0];
 }
 
+function plainTextFromHtml(html) {
+  return String(html || '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+function countCjk(text) {
+  return (String(text || '').match(/[\u3400-\u9fff]/g) || []).length;
+}
+
 function webUrlToLocal(url) {
   const parsed = new URL(url);
   let pathname = decodeURIComponent(parsed.pathname);
@@ -139,6 +154,10 @@ function checkDataReferences() {
   const profileByNum = new Map(peopleProfiles.map((profile) => [profile.num, profile]));
   const featuredIds = new Set();
   let featuredCardCount = 0;
+  let featuredSummaryMin = Infinity;
+  let featuredSummaryMax = 0;
+  let featuredSummaryCjkMin = Infinity;
+  let featuredSummaryCjkMax = 0;
   for (const [sectionIndex, section] of featuredSections.entries()) {
     const sectionLabel = section && section.title ? section.title : `section ${sectionIndex + 1}`;
     if (!section || typeof section !== 'object') {
@@ -163,6 +182,21 @@ function checkDataReferences() {
       featuredCardCount += 1;
       if (!item.role) addError(`data/people-profiles.js: ${itemLabel} missing role.`);
       if (!item.summaryHtml) addError(`data/people-profiles.js: ${itemLabel} missing summaryHtml.`);
+      if (item.summaryHtml) {
+        const summaryText = plainTextFromHtml(item.summaryHtml).trim();
+        const summaryLength = summaryText.length;
+        const summaryCjkLength = countCjk(summaryText);
+        featuredSummaryMin = Math.min(featuredSummaryMin, summaryLength);
+        featuredSummaryMax = Math.max(featuredSummaryMax, summaryLength);
+        featuredSummaryCjkMin = Math.min(featuredSummaryCjkMin, summaryCjkLength);
+        featuredSummaryCjkMax = Math.max(featuredSummaryCjkMax, summaryCjkLength);
+        if (summaryLength < 105 || summaryLength > 145) {
+          addWarning(`data/people-profiles.js: ${itemLabel} summary visible length ${summaryLength} outside recommended 105-145.`);
+        }
+        if (summaryCjkLength < 75 || summaryCjkLength > 115) {
+          addWarning(`data/people-profiles.js: ${itemLabel} summary CJK length ${summaryCjkLength} outside recommended 75-115.`);
+        }
+      }
 
       if (item.profile) {
         if (!profileByNum.has(item.profile)) {
@@ -232,6 +266,9 @@ function checkDataReferences() {
   const incompleteParts = alumni.filter((person) => !person.part || !person.tags || !person.tags.length).length;
   info.push(`ALUMNI records: ${alumni.length}; blank photos: ${blankPhotos}; incomplete part/tags: ${incompleteParts}`);
   info.push(`NEWS records: ${news.length}; NUMBER_LOOKUP records: ${lookup.length}; CONCERTS records: ${concerts.length}; PEOPLE_PROFILES records: ${peopleProfiles.length}; PEOPLE_FEATURED cards: ${featuredCardCount}`);
+  if (featuredCardCount) {
+    info.push(`PEOPLE_FEATURED summary length: visible ${featuredSummaryMin}-${featuredSummaryMax}; CJK ${featuredSummaryCjkMin}-${featuredSummaryCjkMax}`);
+  }
 }
 
 function checkHtmlReferences() {
