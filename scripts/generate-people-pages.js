@@ -101,6 +101,7 @@ function renderProfile(profile, options = {}) {
     ? `      <a class="btn ghost" href="../${escapeHtml(profile.output)}">查看目前正式頁 →</a>\n`
     : '';
   const previewSuffix = options.preview ? '．PREVIEW' : '';
+  const relatedLinksHtml = renderRelatedLinks(profile.relatedLinks);
 
   const content = `<header class="page-head">
   <p class="kicker">PEOPLE．${escapeHtml(profile.num)}${previewSuffix}</p>
@@ -117,9 +118,7 @@ function renderProfile(profile, options = {}) {
   <article class="section news-article person-article">
 ${previewNote}${indentHtml(body)}
 
-    ${renderRelatedConcerts(relatedConcerts)}
-
-    ${renderRelatedLinks(profile.relatedLinks)}
+    ${renderRelatedConcerts(relatedConcerts)}${relatedLinksHtml ? `\n\n    ${relatedLinksHtml}` : ''}
 
     <h3>資料來源</h3>
     <p class="sources">${profile.sourceHtml}</p>
@@ -142,7 +141,7 @@ ${officialPageLink}      <a class="btn" href="${escapeHtml(profile.rosterLink)}"
     navActive: 'people',
     extraHead: options.extraHead || '',
     content
-  });
+  }).replace(/[ \t]+$/gm, '');
 }
 
 function generatePeoplePages() {
