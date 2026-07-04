@@ -306,6 +306,35 @@ html.js .tl-item.in::before { animation: pulse 1.2s ease-out 1; }
 .card .role { color: var(--gold); font-size: .88rem; letter-spacing: .08em; margin-bottom: 12px; }
 .card p { color: var(--ink-dim); font-size: .92rem; }
 
+/* 文章段落中的人物小照＋名稱（如聯演頁指揮／獨奏介紹），非卡片式 */
+.person-byline { display: flex; align-items: center; gap: 16px; margin: 30px 0 6px; }
+.person-byline img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.person-byline h3 { margin: 0; }
+.person-byline .role { color: var(--gold); font-size: .88rem; letter-spacing: .08em; margin: 4px 0 0; }
+@media (max-width: 560px) { .person-byline img { width: 56px; height: 56px; } }
+
+/* 屆別介紹頁：頁首文字＋海報並列（沿用 .poster-wrap 呼吸光暈概念） */
+.page-head.has-poster { display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: center; }
+.page-head.has-poster .ph-poster { position: relative; text-align: center; }
+.page-head.has-poster .ph-poster::before {
+  content: ""; position: absolute; inset: -12%;
+  background: radial-gradient(ellipse at center, rgba(200,164,92,.22), transparent 65%);
+  filter: blur(8px); animation: halo 5s ease-in-out infinite alternate; pointer-events: none;
+}
+.page-head.has-poster .ph-poster img {
+  position: relative; width: 100%; border-radius: 10px;
+  border: 1px solid rgba(160,124,49,.45);
+  box-shadow: 0 0 0 4px rgba(200,164,92,.10), var(--shadow-md);
+  cursor: zoom-in; transition: transform .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s;
+}
+.page-head.has-poster .ph-poster img:hover { transform: scale(1.03) rotate(-.5deg); box-shadow: 0 0 0 4px rgba(200,164,92,.18), var(--shadow-md); }
+.page-head.has-poster .ph-poster .cap { position: relative; margin-top: 12px; font-size: .82rem; color: var(--ink-dim); letter-spacing: .04em; }
+@media (prefers-reduced-motion: reduce) { .page-head.has-poster .ph-poster::before { animation: none; } }
+@media (max-width: 760px) {
+  .page-head.has-poster { grid-template-columns: 1fr; gap: 28px; }
+  .page-head.has-poster .ph-poster { order: -1; max-width: 220px; margin: 0 auto; }
+}
+
 /* ---------- 聯演紀錄 ---------- */
 .concert-item {
   display: grid; grid-template-columns: 120px 1fr; gap: 28px;
@@ -362,6 +391,11 @@ table.plain th, table.plain td { border: 1px solid var(--line); padding: 10px 16
 table.plain th { background: var(--bg-soft); color: var(--gold); font-weight: 700; letter-spacing: .1em; }
 table.plain td { color: var(--ink-dim); }
 table.plain td b { color: var(--ink); }
+
+/* 內容較多欄（如演出人員名單）的表格：放寬寬度、首欄不換行 */
+table.plain.roster { max-width: 880px; }
+table.plain.roster th:first-child,
+table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
 
 /* 編號拆解圖 */
 .num-demo { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0 8px; }
