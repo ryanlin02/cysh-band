@@ -141,7 +141,10 @@ function checkDataReferences() {
 }
 
 function checkHtmlReferences() {
-  const htmlFiles = walk(root, (file) => file.endsWith('.html'));
+  const htmlFiles = walk(root, (file) => (
+    file.endsWith('.html')
+    && !file.includes(`${path.sep}templates${path.sep}`)
+  ));
   const missing = [];
   const referencePattern = /\b(href|src|data-full)=["']([^"']+)["']/g;
 
@@ -170,6 +173,7 @@ function checkPublicHtmlQuality() {
   const publicHtml = walk(root, (file) => (
     file.endsWith('.html')
     && !file.includes(`${path.sep}_generated${path.sep}`)
+    && !file.includes(`${path.sep}templates${path.sep}`)
     && !file.endsWith(`${path.sep}news${path.sep}_template.html`)
   ));
 
@@ -229,7 +233,9 @@ function checkSitemapAndFeed() {
 function checkFontUrlEncoding() {
   const files = walk(root, (file) => (
     file.endsWith('.html')
+    || file.includes(`${path.sep}templates${path.sep}`)
     || rel(file) === 'scripts/generate-concerts-preview.js'
+    || rel(file) === 'scripts/generate-page-preview.js'
   ));
   for (const file of files) {
     const text = fs.readFileSync(file, 'utf8');

@@ -22,6 +22,8 @@
 | data/news.js | 最新消息資料檔 |
 | data/number-lookup.js | 編號查詢小遊戲資料檔（非完整公開名錄） |
 | 校友資料管理與驗證流程.md | 公開名錄、查號資料、個人頁與內部 Excel 名冊的管理流程 |
+| templates/ | 共用模板試作（head、導覽列、頁尾與基礎版型；暫不直接替換正式頁面） |
+| _generated/ | 腳本產生的本地預覽／比對檔，不列入 sitemap |
 | js/、css/ | 互動腳本與全站樣式 |
 | assets/img/members/ | 成員大頭照（正方形 WebP） |
 
@@ -50,6 +52,15 @@ node scripts/check-site.js
 ```
 
 這會檢查 JS 語法、資料檔引用、HTML 本機連結、圖片 alt、SEO 基本欄位、sitemap / feed 對應與 Google Fonts URL 標準化。
+
+### 共用模板試作
+目前正式頁面仍是手寫 HTML；為了降低 nav、footer、head 重複維護成本，已先建立共用模板試作。產生預覽頁：
+
+```
+node scripts/generate-page-preview.js
+```
+
+輸出檔案是 `_generated/page-template-preview.html`。它只供本地檢查模板方向，不會修改首頁、關於、人物誌、校友聯演等正式頁面。
 
 ### 新增相簿照片（兩層相簿制）
 - **策展原則**：大批照片一律「精選上網、全量放外部」——每本相簿精選 30–50 張，全量放 Google 相簿並在相簿頁尾放連結
