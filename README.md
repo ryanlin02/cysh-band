@@ -79,6 +79,14 @@ node scripts/generate-page-preview.js
 
 已套用到正式頁面的第一批是目前全部 5 篇最新消息文章；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。
 
+人物頁模板化目前仍在預覽階段。產生單頁人物模板預覽：
+
+```
+node scripts/generate-people-profile-preview.js
+```
+
+輸出檔案是 `_generated/people-profile-preview.html`，目前以簡晟軒（8861）為試作對象，不會修改正式 `people/8861.html`。
+
 ### 新增相簿照片（兩層相簿制）
 - **策展原則**：大批照片一律「精選上網、全量放外部」——每本相簿精選 30–50 張，全量放 Google 相簿並在相簿頁尾放連結
 - **結構**：gallery.html 是相簿封面牆；每本相簿獨立頁 `gallery/{活動}.html`，照片縮圖（480×360 q75）進網格、`data-full` 指向大圖（長邊 1600 q78）供點擊放大
