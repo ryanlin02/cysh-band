@@ -1029,6 +1029,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   padding: 0;
 }
 .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 28px 0 4px; }
+.filter-bar.roster-filter { padding-top: 8px; }
 .filter-btn {
   padding: 8px 18px; border-radius: var(--radius-pill); border: 1px solid var(--line);
   background: var(--bg-card); color: var(--ink-dim); font-family: var(--sans);

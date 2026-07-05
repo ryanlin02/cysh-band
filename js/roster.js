@@ -5,8 +5,16 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!root || !window.ALUMNI) return;
 
   var PARTS = ['全部', '幹部', '長笛', '豎笛', '薩克斯風', '小號', '法國號', '長號', '上低音號', '低音號', '打擊'];
+  var STATUS_FILTERS = [
+    { key: 'all', label: '全部狀態' },
+    { key: 'profile', label: '有個人頁' },
+    { key: 'photo', label: '有照片' },
+    { key: 'missing-photo', label: '待補照片' },
+    { key: 'leader', label: '幹部' }
+  ];
   var DIGITS = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
   var currentPart = '全部';
+  var currentStatus = 'all';
   var mode = 'head'; /* head=依字頭, decade=依入學年代 */
   var view = 'card'; /* card=卡片, list=精簡列表 */
   var query = '';
@@ -49,6 +57,22 @@ document.addEventListener('DOMContentLoaded', function () {
     return terms.every(function (term) { return text.indexOf(term) >= 0; });
   }
 
+  function hasProfile(p) {
+    return !!(p.link && p.link.indexOf('people/') === 0);
+  }
+
+  function hasPhoto(p) {
+    return !!(p.photo && p.photo !== 'blank');
+  }
+
+  function matchesStatus(p) {
+    if (currentStatus === 'profile') return hasProfile(p);
+    if (currentStatus === 'photo') return hasPhoto(p);
+    if (currentStatus === 'missing-photo') return !hasPhoto(p);
+    if (currentStatus === 'leader') return (p.tags || []).indexOf('幹部') >= 0;
+    return true;
+  }
+
   function personMeta(p) {
     var parts = [];
     if (p.year != null) parts.push('民國 ' + p.year + ' 年入學');
@@ -58,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderCard(p) {
     var anchorId = 'p-' + (p.num || p.photo);
-    var hasProfileLink = p.link && p.link.indexOf('people/') === 0;
+    var hasProfileLink = hasProfile(p);
     var html = '<div class="card roster-card" id="' + anchorId + '">';
     html += hasProfileLink
       ? '<a class="card-head" href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →">'
@@ -77,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderRow(p) {
     var anchorId = 'p-' + (p.num || p.photo);
-    var hasProfileLink = p.link && p.link.indexOf('people/') === 0;
+    var hasProfileLink = hasProfile(p);
     var tag = hasProfileLink ? 'a' : 'div';
     var html = '<' + tag + ' class="roster-row' + (hasProfileLink ? ' linked' : '') + '" id="' + anchorId + '"' + (hasProfileLink ? ' href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →"' : '') + '>';
     html += '<img class="roster-row-avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
@@ -92,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function render() {
     var list = window.ALUMNI.filter(function (p) {
-      return (currentPart === '全部' || (p.tags || []).indexOf(currentPart) >= 0) && matchesQuery(p);
+      return (currentPart === '全部' || (p.tags || []).indexOf(currentPart) >= 0) && matchesStatus(p) && matchesQuery(p);
     }).sort(function (a, b) {
       var ya = a.year == null ? 9999 : a.year, yb = b.year == null ? 9999 : b.year;
       return ya - yb || ((a.num || '9999') < (b.num || '9999') ? -1 : 1);
@@ -128,6 +152,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (count) {
       var status = [];
       if (currentPart !== '全部') status.push('篩選「' + currentPart + '」');
+      var statusInfo = STATUS_FILTERS.find(function (item) { return item.key === currentStatus; });
+      if (currentStatus !== 'all' && statusInfo) status.push('狀態「' + statusInfo.label + '」');
       if (query) status.push('搜尋「' + query + '」');
       count.textContent = '目前收錄 ' + window.ALUMNI.length + ' 位校友' + (status.length ? '，' + status.join('、') + '共 ' + list.length + ' 位' : '') + '，持續增補中。';
     }
@@ -175,6 +201,24 @@ document.addEventListener('DOMContentLoaded', function () {
     search.addEventListener('input', function () {
       query = search.value.trim();
       render();
+    });
+  }
+
+  /* 資料狀態篩選 */
+  var statusBar = document.getElementById('roster-status');
+  if (statusBar) {
+    STATUS_FILTERS.forEach(function (item) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'filter-btn' + (item.key === currentStatus ? ' on' : '');
+      b.textContent = item.label;
+      b.addEventListener('click', function () {
+        currentStatus = item.key;
+        statusBar.querySelectorAll('.filter-btn').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        render();
+      });
+      statusBar.appendChild(b);
     });
   }
 
