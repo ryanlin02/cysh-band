@@ -412,7 +412,10 @@ a.card-head:hover .num { color: var(--gold-soft); }
 @media (max-width: 560px) { .person-byline img { width: 56px; height: 56px; } }
 
 /* 屆別介紹頁：頁首文字＋海報並列（沿用 .poster-wrap 呼吸光暈概念） */
-.page-head.has-poster { display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: center; }
+.page-head.has-poster {
+  display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: center;
+  overflow: hidden;
+}
 .page-head.has-poster .ph-poster { position: relative; text-align: center; }
 .page-head.has-poster .ph-poster::before {
   content: ""; position: absolute; inset: -12%;
@@ -420,10 +423,10 @@ a.card-head:hover .num { color: var(--gold-soft); }
   filter: blur(8px); animation: halo 5s ease-in-out infinite alternate; pointer-events: none;
 }
 .page-head.has-poster .ph-poster img {
-  position: relative; width: 100%; border-radius: 10px;
+  position: relative; width: 100%; border-radius: var(--radius-md);
   border: 1px solid rgba(160,124,49,.45);
   box-shadow: 0 0 0 4px rgba(200,164,92,.10), var(--shadow-md);
-  cursor: zoom-in; transition: transform .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s;
+  cursor: zoom-in; transition: transform .4s var(--ease-standard), box-shadow .4s;
 }
 .page-head.has-poster .ph-poster img:hover { transform: scale(1.03) rotate(-.5deg); box-shadow: 0 0 0 4px rgba(200,164,92,.18), var(--shadow-md); }
 .page-head.has-poster .ph-poster .cap { position: relative; margin-top: 12px; font-size: .82rem; color: var(--ink-dim); letter-spacing: .04em; }
