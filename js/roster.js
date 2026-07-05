@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
   var mode = 'head'; /* head=依字頭, decade=依入學年代 */
   var view = 'card'; /* card=卡片, list=精簡列表 */
   var query = '';
+  var filterPanel = document.querySelector('.roster-filter-panel');
+  var filterSummary = document.getElementById('roster-filter-summary');
+  var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+  if (filterPanel && isMobileRoster) filterPanel.removeAttribute('open');
 
   function headGroup(p) {
     /* 字頭＝編號第二碼（入學民國年的個位數） */
@@ -71,6 +75,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (currentStatus === 'missing-photo') return !hasPhoto(p);
     if (currentStatus === 'leader') return (p.tags || []).indexOf('幹部') >= 0;
     return true;
+  }
+
+  function currentModeLabel() {
+    return mode === 'head' ? '依字頭' : '依入學年代';
+  }
+
+  function currentStatusLabel() {
+    var statusInfo = STATUS_FILTERS.find(function (item) { return item.key === currentStatus; });
+    return statusInfo ? statusInfo.label : '全部狀態';
+  }
+
+  function updateFilterSummary() {
+    if (!filterSummary) return;
+    filterSummary.textContent = [
+      currentModeLabel(),
+      currentPart === '全部' ? '全部聲部' : currentPart,
+      currentStatusLabel()
+    ].join('．');
   }
 
   function personMeta(p) {
@@ -157,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (query) status.push('搜尋「' + query + '」');
       count.textContent = '目前收錄 ' + window.ALUMNI.length + ' 位校友' + (status.length ? '，' + status.join('、') + '共 ' + list.length + ' 位' : '') + '，持續增補中。';
     }
+    updateFilterSummary();
   }
 
   /* 分組方式切換 */
