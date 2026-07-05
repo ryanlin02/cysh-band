@@ -15,7 +15,7 @@
 | history.html | 九十五年（歷史時間軸） |
 | numbers.html | 編號文化 |
 | people.html | 人物誌（精選故事，由 `data/people-profiles.js` 產生卡片） |
-| roster.html | 校友名錄（`data/alumni.js` 驅動，字頭分組＋聲部篩選） |
+| roster.html | 校友名錄（`data/alumni.js` 驅動，搜尋＋卡片／列表檢視＋字頭／年代分組＋聲部篩選） |
 | concerts.html | 校友聯演（最新消息＋本屆演出＋歷屆紀錄） |
 | gallery.html | 影像館（活動相簿制，點擊放大） |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |

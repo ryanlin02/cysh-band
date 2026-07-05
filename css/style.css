@@ -988,6 +988,46 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 
 /* ---------- 名錄篩選列與群組 ---------- */
+.roster-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px 18px;
+  align-items: end;
+  padding: 30px 0 0;
+}
+.roster-search {
+  display: grid;
+  gap: 8px;
+  max-width: 560px;
+}
+.roster-search span {
+  color: var(--gold);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+.roster-search input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--ink);
+  font: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.roster-search input:focus {
+  outline: none;
+  border-color: var(--gold-soft);
+  box-shadow: var(--shadow-focus), var(--shadow-sm);
+}
+.roster-search input::placeholder { color: rgba(111,103,87,.72); }
+.roster-view {
+  justify-content: flex-end;
+  padding: 0;
+}
 .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 28px 0 4px; }
 .filter-btn {
   padding: 8px 18px; border-radius: var(--radius-pill); border: 1px solid var(--line);
@@ -1000,6 +1040,106 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .roster-group h2 .group-sub { font-family: var(--sans); font-size: .82rem; font-weight: 400; color: var(--ink-dim); letter-spacing: .1em; }
 .roster-card p { font-size: .9rem; }
 .roster-card .more { margin-top: 10px; font-size: .88rem; }
+.roster-list {
+  display: grid;
+  gap: 10px;
+}
+.roster-row {
+  display: grid;
+  grid-template-columns: 54px minmax(62px, 82px) minmax(0, 1.25fr) minmax(160px, .75fr);
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,.72);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-standard), border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.roster-row.linked:hover {
+  transform: translateY(var(--lift-sm));
+  border-color: var(--gold-soft);
+  box-shadow: var(--shadow-md);
+  color: var(--ink);
+}
+.roster-row-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.roster-row-num {
+  font-family: var(--latin);
+  color: var(--gold);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  font-variant-numeric: tabular-nums;
+}
+.roster-row-main {
+  min-width: 0;
+}
+.roster-row-main b {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.04rem;
+  letter-spacing: .08em;
+}
+.roster-row-main small {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-dim);
+  font-size: .84rem;
+  line-height: 1.55;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.roster-row-meta {
+  color: var(--ink-dim);
+  font-size: .86rem;
+  letter-spacing: .06em;
+}
+@media (max-width: 760px) {
+  .roster-controls {
+    grid-template-columns: 1fr;
+  }
+  .roster-view {
+    justify-content: flex-start;
+  }
+  .roster-row {
+    grid-template-columns: 48px minmax(58px, 72px) minmax(0, 1fr);
+    gap: 10px;
+    padding: 11px 12px;
+  }
+  .roster-row-avatar {
+    width: 48px;
+    height: 48px;
+  }
+  .roster-row-meta {
+    grid-column: 3;
+    margin-top: -4px;
+    font-size: .78rem;
+  }
+}
+@media (max-width: 420px) {
+  .roster-row {
+    grid-template-columns: 44px minmax(52px, 64px) minmax(0, 1fr);
+  }
+  .roster-row-avatar {
+    width: 44px;
+    height: 44px;
+  }
+  .roster-row-num {
+    font-size: 1.1rem;
+  }
+  .roster-row-main b {
+    font-size: .98rem;
+  }
+}
 
 /* ---------- 最新消息 ---------- */
 .news-list { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }

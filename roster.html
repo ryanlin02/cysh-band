@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="css/style.css">
 <script src="js/main.js" defer></script>
 <script src="data/alumni.js" defer></script>
-<script src="js/roster.js" defer></script>
+<script src="js/roster.js?v=20260706" defer></script>
 </head>
 <body>
 
@@ -61,6 +61,13 @@
 </header>
 
 <main class="wrap">
+  <section class="roster-controls" aria-label="校友名錄搜尋與檢視">
+    <label class="roster-search" for="roster-search">
+      <span>搜尋校友</span>
+      <input id="roster-search" type="search" inputmode="search" autocomplete="off" placeholder="輸入姓名、編號、聲部、年代或關鍵字">
+    </label>
+    <div class="filter-bar roster-view" id="roster-view" aria-label="檢視模式"></div>
+  </section>
   <div class="filter-bar" id="roster-mode" aria-label="分組方式"></div>
   <div class="filter-bar" id="roster-filter" aria-label="依聲部篩選" style="padding-top:8px"></div>
   <div id="roster">

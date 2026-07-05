@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var DIGITS = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
   var currentPart = '全部';
   var mode = 'head'; /* head=依字頭, decade=依入學年代 */
+  var view = 'card'; /* card=卡片, list=精簡列表 */
+  var query = '';
 
   function headGroup(p) {
     /* 字頭＝編號第二碼（入學民國年的個位數） */
@@ -24,9 +26,73 @@ document.addEventListener('DOMContentLoaded', function () {
     return { key: dec, label: '民國' + (names[dec] || dec + '〇') + '年代', sub: '入學民國 ' + dec + '0–' + dec + '9 年' };
   }
 
+  function normalizedTerms(value) {
+    return value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  }
+
+  function searchText(p) {
+    return [
+      p.num || '',
+      p.name || '',
+      p.year == null ? '' : '民國 ' + p.year + ' ' + p.year,
+      p.part || '',
+      (p.tags || []).join(' '),
+      p.role || '',
+      p.desc || ''
+    ].join(' ').toLowerCase();
+  }
+
+  function matchesQuery(p) {
+    var terms = normalizedTerms(query);
+    if (!terms.length) return true;
+    var text = searchText(p);
+    return terms.every(function (term) { return text.indexOf(term) >= 0; });
+  }
+
+  function personMeta(p) {
+    var parts = [];
+    if (p.year != null) parts.push('民國 ' + p.year + ' 年入學');
+    if (p.part) parts.push(p.part);
+    return parts.join('．');
+  }
+
+  function renderCard(p) {
+    var anchorId = 'p-' + (p.num || p.photo);
+    var hasProfileLink = p.link && p.link.indexOf('people/') === 0;
+    var html = '<div class="card roster-card" id="' + anchorId + '">';
+    html += hasProfileLink
+      ? '<a class="card-head" href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →">'
+      : '<div class="card-head">';
+    html += '<img class="avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
+    html += '<div>';
+    html += '<p class="num">' + (p.num || '—') + (p.part ? ' <small>' + (p.year != null ? '民國 ' + p.year + ' 年入學．' : '') + p.part + '</small>' : (p.year != null ? ' <small>民國 ' + p.year + ' 年入學</small>' : '')) + '</p>';
+    html += '<h3>' + p.name + '</h3>';
+    html += hasProfileLink ? '</div></a>' : '</div></div>';
+    if (p.role) html += '<p class="role">' + p.role + '</p>';
+    if (p.desc) html += '<p>' + p.desc + '</p>';
+    if (hasProfileLink) html += '<p class="more"><a href="' + p.link + '">詳細介紹 →</a></p>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderRow(p) {
+    var anchorId = 'p-' + (p.num || p.photo);
+    var hasProfileLink = p.link && p.link.indexOf('people/') === 0;
+    var tag = hasProfileLink ? 'a' : 'div';
+    var html = '<' + tag + ' class="roster-row' + (hasProfileLink ? ' linked' : '') + '" id="' + anchorId + '"' + (hasProfileLink ? ' href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →"' : '') + '>';
+    html += '<img class="roster-row-avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
+    html += '<span class="roster-row-num">' + (p.num || '—') + '</span>';
+    html += '<span class="roster-row-main"><b>' + p.name + '</b>';
+    if (p.role || p.desc) html += '<small>' + (p.role || p.desc) + '</small>';
+    html += '</span>';
+    html += '<span class="roster-row-meta">' + personMeta(p) + '</span>';
+    html += '</' + tag + '>';
+    return html;
+  }
+
   function render() {
     var list = window.ALUMNI.filter(function (p) {
-      return currentPart === '全部' || (p.tags || []).indexOf(currentPart) >= 0;
+      return (currentPart === '全部' || (p.tags || []).indexOf(currentPart) >= 0) && matchesQuery(p);
     }).sort(function (a, b) {
       var ya = a.year == null ? 9999 : a.year, yb = b.year == null ? 9999 : b.year;
       return ya - yb || ((a.num || '9999') < (b.num || '9999') ? -1 : 1);
@@ -42,38 +108,29 @@ document.addEventListener('DOMContentLoaded', function () {
     groups.sort(function (a, b) { return a.info.key - b.info.key; });
 
     var html = '';
-    if (!list.length) html = '<p class="muted">此聲部目前沒有已收錄的校友，資料持續增補中。</p>';
+    if (!list.length) html = '<p class="muted">沒有符合目前搜尋與篩選條件的校友，請調整關鍵字或篩選條件。</p>';
     groups.forEach(function (g) {
       html += '<section class="section roster-group">';
       html += '<h2>' + g.info.label + ' <span class="group-sub">' + g.info.sub + '．' + g.people.length + ' 位</span></h2>';
-      html += '<div class="cards roster-cards">';
+      html += view === 'card' ? '<div class="cards roster-cards">' : '<div class="roster-list">';
       g.people.forEach(function (p) {
-        var anchorId = 'p-' + (p.num || p.photo);
-        var hasProfileLink = p.link && p.link.indexOf('people/') === 0;
-        html += '<div class="card roster-card" id="' + anchorId + '">';
-        html += hasProfileLink
-          ? '<a class="card-head" href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →">'
-          : '<div class="card-head">';
-        html += '<img class="avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
-        html += '<div>';
-        html += '<p class="num">' + (p.num || '—') + (p.part ? ' <small>' + (p.year != null ? '民國 ' + p.year + ' 年入學．' : '') + p.part + '</small>' : (p.year != null ? ' <small>民國 ' + p.year + ' 年入學</small>' : '')) + '</p>';
-        html += '<h3>' + p.name + '</h3>';
-        html += hasProfileLink ? '</div></a>' : '</div></div>';
-        if (p.role) html += '<p class="role">' + p.role + '</p>';
-        if (p.desc) html += '<p>' + p.desc + '</p>';
-        if (hasProfileLink) html += '<p class="more"><a href="' + p.link + '">詳細介紹 →</a></p>';
-        html += '</div>';
+        html += view === 'card' ? renderCard(p) : renderRow(p);
       });
       html += '</div></section>';
     });
     root.innerHTML = html;
-    root.querySelectorAll('.roster-card').forEach(function (el, i) {
+    root.querySelectorAll('.roster-card, .roster-row').forEach(function (el, i) {
       el.classList.add('reveal');
       el.style.setProperty('--d', Math.min((i % 6) * 0.06, 0.3) + 's');
       requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('in'); }); });
     });
     var count = document.getElementById('roster-count');
-    if (count) count.textContent = '目前收錄 ' + window.ALUMNI.length + ' 位校友' + (currentPart !== '全部' ? '，篩選「' + currentPart + '」共 ' + list.length + ' 位' : '') + '，持續增補中。';
+    if (count) {
+      var status = [];
+      if (currentPart !== '全部') status.push('篩選「' + currentPart + '」');
+      if (query) status.push('搜尋「' + query + '」');
+      count.textContent = '目前收錄 ' + window.ALUMNI.length + ' 位校友' + (status.length ? '，' + status.join('、') + '共 ' + list.length + ' 位' : '') + '，持續增補中。';
+    }
   }
 
   /* 分組方式切換 */
@@ -91,6 +148,33 @@ document.addEventListener('DOMContentLoaded', function () {
         render();
       });
       modeBar.appendChild(b);
+    });
+  }
+
+  /* 檢視模式切換 */
+  var viewBar = document.getElementById('roster-view');
+  if (viewBar) {
+    [['card', '卡片'], ['list', '列表']].forEach(function (m) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'filter-btn' + (m[0] === view ? ' on' : '');
+      b.textContent = m[1];
+      b.addEventListener('click', function () {
+        view = m[0];
+        viewBar.querySelectorAll('.filter-btn').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        render();
+      });
+      viewBar.appendChild(b);
+    });
+  }
+
+  /* 關鍵字搜尋 */
+  var search = document.getElementById('roster-search');
+  if (search) {
+    search.addEventListener('input', function () {
+      query = search.value.trim();
+      render();
     });
   }
 
