@@ -46,7 +46,7 @@ window.ALUMNI = [
   { num: "8831", name: "高守霖", year: 88, part: "", tags: [], role: "", desc: "民國 88 年入學校友，曾參與 89~92 屆校友聯演。", photo: "blank", link: "" },
   { num: "8832", name: "陳韋志", year: 88, part: "", tags: [], role: "", desc: "民國 88 年入學校友，清雲科大資工系，曾參與多屆校友聯演。", photo: "blank", link: "" },
   { num: "8833", name: "蔡幸芝", year: 88, part: "", tags: [], role: "學校老師", desc: "民國 88 年入學校友，新竹教育大學音樂系，曾參與多屆校友聯演。", photo: "blank", link: "" },
-  { num: "8841", name: "魏仕杰", year: 88, part: "法國號", tags: ["法國號"], role: "", desc: "民國 88 年入學，法國號聲部，曾任總務幹部，長年支援校友聯演。", photo: "blank", link: "" },
+  { num: "8841", name: "魏仕杰", year: 88, part: "法國號", tags: ["法國號"], role: "法國號．校友聯演總召", desc: "民國 88 年入學，法國號聲部，2019 年第 35 屆《正八音》總召，長年支援校友聯演。", photo: "8841", link: "people/8841.html" },
   { num: "8851", name: "蕭文斌", year: 88, part: "", tags: [], role: "", desc: "民國 88 年入學校友，曾參與 89、90 屆校友聯演。", photo: "blank", link: "" },
   { num: "8861", name: "簡晟軒", year: 88, part: "長號", tags: ["長號"], role: "在校生管樂隊指導老師．長號演奏家", desc: "赴德國萊比錫音樂院深造，近年聯演核心指揮。", photo: "8861", link: "people/8861.html" },
   { num: "8881", name: "李佳宇", year: 88, part: "", tags: [], role: "", desc: "民國 88 年入學校友，曾參與第 89 屆校友聯演。", photo: "blank", link: "" },

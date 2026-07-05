@@ -232,6 +232,7 @@ window.CONCERTS = [
       { date: "2019-08-31", time: "16:00", venue: "嘉義高中樹人堂", conductor: { name: "盧宓承", num: "7111" } },
       { date: "2019-09-01", time: "14:30", venue: "北港文化中心家湖廳", conductor: { name: "簡晟軒", num: "8861" } }
     ],
+    organizers: [{ name: "魏仕杰", num: "8841", role: "總召" }],
     conductors: [
       { name: "盧宓承", num: "7111", role: "8/31 指揮" },
       { name: "簡晟軒", num: "8861", role: "9/1 指揮" }
