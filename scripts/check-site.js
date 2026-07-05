@@ -363,6 +363,35 @@ function checkSitemapAndFeed() {
   info.push(`sitemap urls checked: ${sitemapUrls.length}; feed links checked: ${feedLinks.length}`);
 }
 
+function checkStructuredData() {
+  const indexHtml = read('index.html');
+  const blocks = [...indexHtml.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)]
+    .map((match) => match[1].trim());
+  const jsonLd = [];
+  for (const [index, block] of blocks.entries()) {
+    try {
+      jsonLd.push(JSON.parse(block));
+    } catch (error) {
+      addError(`index.html: JSON-LD block ${index + 1} is invalid JSON: ${error.message}`);
+    }
+  }
+
+  const events = jsonLd.filter((item) => {
+    const type = item && item['@type'];
+    return type === 'Event' || type === 'MusicEvent' || (Array.isArray(type) && (type.includes('Event') || type.includes('MusicEvent')));
+  });
+  for (const event of events) {
+    const label = event.name || '(unnamed event)';
+    for (const field of ['name', 'startDate', 'endDate', 'eventStatus', 'eventAttendanceMode', 'location', 'image', 'description', 'offers', 'organizer', 'performer']) {
+      if (!event[field]) addError(`index.html: MusicEvent "${label}" missing JSON-LD field ${field}.`);
+    }
+    if (event.offers && (!event.offers['@type'] || !event.offers.url || !event.offers.priceCurrency || !event.offers.availability)) {
+      addError(`index.html: MusicEvent "${label}" offers should include @type, url, priceCurrency, and availability.`);
+    }
+  }
+  info.push(`JSON-LD checked: ${jsonLd.length} blocks; events: ${events.length}`);
+}
+
 function checkFontUrlEncoding() {
   const files = walk(root, (file) => (
     file.endsWith('.html')
@@ -552,6 +581,7 @@ checkDataReferences();
 checkHtmlReferences();
 checkPublicHtmlQuality();
 checkSitemapAndFeed();
+checkStructuredData();
 checkFontUrlEncoding();
 checkGeneratedNewsPages();
 checkGeneratedPeoplePages();
