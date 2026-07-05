@@ -162,7 +162,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
 }
 .concerts-metrics div {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: rgba(255,255,255,.52);
   padding: 14px 16px;
   box-shadow: var(--shadow-sm);
@@ -274,7 +274,7 @@ html.js .hero .est { animation-delay: .44s; }
   position: relative; border-radius: var(--radius-sm);
   border: 1px solid rgba(160,124,49,.45);
   box-shadow: 0 0 0 5px rgba(200,164,92,.10), 0 14px 36px rgba(43,39,33,.28), 0 0 42px rgba(200,164,92,.18);
-  transition: transform .5s var(--ease-standard), box-shadow .5s;
+  transition: transform var(--duration-slow) var(--ease-standard), box-shadow var(--duration-slow);
 }
 .concert-banner:hover img {
   transform: scale(1.03) rotate(-.6deg);
@@ -333,7 +333,7 @@ html.js .hero .est { animation-delay: .44s; }
 .way::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg, var(--gold-soft), transparent);
-  transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease-standard);
+  transform: scaleX(0); transform-origin: left; transition: transform var(--duration-base) var(--ease-standard);
 }
 .way:hover { transform: translateY(var(--lift-lg)); box-shadow: var(--shadow-md); border-color: var(--gold-soft); color: var(--ink); }
 .way:hover::before { transform: scaleX(1); }
@@ -357,7 +357,7 @@ html.js .hero .est { animation-delay: .44s; }
   width: 12px; height: 12px; border-radius: 50%;
   background: var(--bg); border: 3px solid var(--gold-soft);
   box-shadow: 0 0 0 0 rgba(200,164,92,.4);
-  transition: box-shadow .6s;
+  transition: box-shadow var(--duration-slow);
 }
 html.js .tl-item.in::before { animation: pulse 1.2s ease-out 1; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(200,164,92,.45); } 100% { box-shadow: 0 0 0 14px rgba(200,164,92,0); } }
@@ -382,7 +382,7 @@ html.js .tl-item.in::before { animation: pulse 1.2s ease-out 1; }
   position: absolute; top: -11px; right: 18px;
   background: var(--bg-soft); color: var(--ink-dim);
   font-family: var(--sans); font-size: .68rem; letter-spacing: .16em;
-  padding: 3px 10px; border-radius: 20px; border: 1px solid var(--line);
+  padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid var(--line);
 }
 .card-head { display: flex; align-items: center; gap: 18px; margin-bottom: 14px; }
 .card .avatar {
@@ -426,7 +426,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   position: relative; width: 100%; border-radius: var(--radius-md);
   border: 1px solid rgba(160,124,49,.45);
   box-shadow: 0 0 0 4px rgba(200,164,92,.10), var(--shadow-md);
-  cursor: zoom-in; transition: transform .4s var(--ease-standard), box-shadow .4s;
+  cursor: zoom-in; transition: transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base);
 }
 .page-head.has-poster .ph-poster img:hover { transform: scale(1.03) rotate(-.5deg); box-shadow: 0 0 0 4px rgba(200,164,92,.18), var(--shadow-md); }
 .page-head.has-poster .ph-poster .cap { position: relative; margin-top: 12px; font-size: .82rem; color: var(--ink-dim); letter-spacing: .04em; }
@@ -455,7 +455,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   （曾在 2019-35th.html 造成手機版場次卡片內文緊貼卡片邊框的問題，已修正，2026-07-04）。 */
 .section.session {
   position: relative; margin: 44px 0 0; padding: 36px 32px 6px;
-  border: 1px solid var(--line); border-radius: 16px;
+  border: 1px solid var(--line); border-radius: var(--radius-xl);
   background: var(--bg-card); box-shadow: var(--shadow-sm);
   scroll-margin-top: 90px;
 }
@@ -505,7 +505,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   min-height: 34px;
   padding: 6px 14px;
   border: 1px solid rgba(160,124,49,.32);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255,255,255,.62);
   color: var(--gold);
   font-size: .78rem;
@@ -546,7 +546,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   grid-template-columns: 96px minmax(0, 1fr) minmax(132px, 180px);
 }
 .concert-item:hover {
-  transform: translateY(-3px);
+  transform: translateY(var(--lift-sm));
   border-color: rgba(160,124,49,.45);
   box-shadow: var(--shadow-md);
   background: linear-gradient(135deg, #fff, #f5efe1);
@@ -558,7 +558,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   min-height: 92px;
   padding: 12px 8px;
   border: 1px solid rgba(160,124,49,.24);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: rgba(250,248,243,.78);
   font-family: var(--latin);
   text-align: center;
@@ -607,7 +607,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   width: 100%;
   padding: 10px;
   border: 1px solid rgba(160,124,49,.26);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background:
     linear-gradient(180deg, rgba(255,255,255,.75), rgba(242,238,228,.72));
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.6);
@@ -618,7 +618,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   max-width: 100%;
   height: auto;
   max-height: 250px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: var(--bg-card);
   box-shadow: 0 10px 24px rgba(43,39,33,.12);
@@ -626,7 +626,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
 }
 .concert-item .poster.linked a {
   display: block;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 }
 .concert-item .poster.linked img {
   cursor: pointer;
@@ -662,7 +662,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   }
   .concert-item .no {
     min-height: 78px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
   .concert-item .no b {
     font-size: 2.1rem;
@@ -679,7 +679,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   }
   .concerts-metrics div {
     padding: 12px 9px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
   .concerts-metrics b {
     font-size: 1.55rem;
@@ -696,7 +696,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
     grid-template-columns: 68px minmax(0, 1fr);
     gap: 12px;
     padding: 16px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
   }
   .concert-item::before {
     width: 2px;
@@ -722,7 +722,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   }
   .concert-item .poster {
     padding: 8px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
   .concert-item .poster img {
     max-height: 300px;
@@ -741,13 +741,13 @@ a.card-head:hover .num { color: var(--gold-soft); }
   background: linear-gradient(135deg, #ffffff, #f4efe3);
   color: var(--ink);
   border: 1px solid var(--line); border-top: 3px solid var(--gold-soft);
-  border-radius: 14px; padding: 44px; margin-bottom: 52px;
+  border-radius: var(--radius-lg); padding: 44px; margin-bottom: 52px;
   box-shadow: var(--shadow-md);
 }
 .featured img {
-  border-radius: 8px; border: 1px solid rgba(160,124,49,.45);
+  border-radius: var(--radius-sm); border: 1px solid rgba(160,124,49,.45);
   box-shadow: 0 0 0 5px rgba(200,164,92,.10), 0 14px 36px rgba(43,39,33,.28);
-  transition: transform .5s cubic-bezier(.22,.61,.36,1);
+  transition: transform var(--duration-slow) var(--ease-standard);
 }
 .featured:hover img { transform: scale(1.02); }
 .featured h3 { color: var(--ink) !important; }
@@ -759,7 +759,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
     grid-template-columns: 1fr;
     gap: 26px;
     padding: 26px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
   }
   .featured img {
     max-width: min(280px, 100%);
@@ -768,7 +768,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
 }
 
 /* ---------- 表格 ---------- */
-table.plain { border-collapse: collapse; width: 100%; max-width: 640px; margin: 12px 0 20px; font-size: .95rem; background: var(--bg-card); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-sm); }
+table.plain { border-collapse: collapse; width: 100%; max-width: 640px; margin: 12px 0 20px; font-size: .95rem; background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
 table.plain th, table.plain td { border: 1px solid var(--line); padding: 10px 16px; text-align: left; }
 table.plain th { background: var(--bg-soft); color: var(--gold); font-weight: 700; letter-spacing: .1em; }
 table.plain td { color: var(--ink-dim); }
@@ -794,19 +794,19 @@ table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
 .num-demo .digit { text-align: center; }
 .num-demo .digit b {
   display: flex; align-items: center; justify-content: center;
-  width: 78px; height: 90px; border: 1px solid var(--line); border-radius: 12px;
+  width: 78px; height: 90px; border: 1px solid var(--line); border-radius: var(--radius-md);
   font-family: var(--latin); font-size: 2.8rem; font-weight: 600; color: var(--gold);
   background: var(--bg-card); box-shadow: var(--shadow-sm);
-  transition: transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s, border-color .3s;
+  transition: transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base), border-color var(--duration-base);
 }
-.num-demo .digit:hover b { transform: translateY(-5px); border-color: var(--gold-soft); box-shadow: var(--shadow-md); }
+.num-demo .digit:hover b { transform: translateY(var(--lift-md)); border-color: var(--gold-soft); box-shadow: var(--shadow-md); }
 .num-demo .digit span { display: block; margin-top: 10px; font-size: .8rem; color: var(--ink-dim); letter-spacing: .05em; }
 
 /* 編號查詢小遊戲 */
 .number-lookup {
   max-width: 560px; background: linear-gradient(135deg, #ffffff, #f7f2e8);
   border: 1px solid var(--line); border-top: 3px solid var(--gold-soft);
-  border-radius: 14px; padding: 28px; box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm);
 }
 .slot-machine {
   display: grid; grid-template-columns: repeat(4, minmax(72px, 1fr));
@@ -819,15 +819,15 @@ table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
 .slot-value {
   border: 1px solid var(--line); background: var(--bg-card); color: var(--gold);
   font-family: var(--latin); cursor: pointer; box-shadow: var(--shadow-sm);
-  transition: transform .25s cubic-bezier(.22,.61,.36,1), box-shadow .25s, border-color .25s, background .25s;
+  transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast);
   position: relative; overflow: hidden; display: block;
-  border-radius: 10px; font-family: var(--sans); font-size: 3.15rem; font-weight: 700; line-height: 1;
+  border-radius: var(--radius-md); font-family: var(--sans); font-size: 3.15rem; font-weight: 700; line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 .slot-value:hover, .slot-value:focus-visible {
   border-color: var(--gold-soft); box-shadow: var(--shadow-md); outline: none;
 }
-.slot-value:hover { transform: translateY(-3px); }
+.slot-value:hover { transform: translateY(var(--lift-sm)); }
 .slot-window {
   display: block; height: 100%; overflow: hidden;
 }
@@ -838,8 +838,8 @@ table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
 .slot-track span {
   display: flex; align-items: center; justify-content: center;
 }
-.slot-track.roll-up { animation: slot-roll-up .38s cubic-bezier(.22,.61,.36,1) forwards; }
-.slot-track.roll-down { animation: slot-roll-down .38s cubic-bezier(.22,.61,.36,1) forwards; }
+.slot-track.roll-up { animation: slot-roll-up var(--duration-base) var(--ease-standard) forwards; }
+.slot-track.roll-down { animation: slot-roll-down var(--duration-base) var(--ease-standard) forwards; }
 @keyframes slot-roll-up {
   from { transform: translateY(0); }
   to { transform: translateY(-50%); }
@@ -865,7 +865,7 @@ table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
   .touch-hint { display: inline; }
 }
 .lookup-result {
-  border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.72);
+  border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255,255,255,.72);
   padding: 22px 24px; min-height: 142px;
 }
 .lookup-result .result-num {
@@ -884,7 +884,7 @@ table.plain.roster td:first-child { white-space: nowrap; width: 1%; }
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
 .lookup-result .result-avatar {
-  width: 84px; height: 84px; border-radius: 14px; object-fit: cover; flex: none;
+  width: 84px; height: 84px; border-radius: var(--radius-lg); object-fit: cover; flex: none;
   border: 1px solid var(--line); box-shadow: var(--shadow-sm);
 }
 @media (max-width: 480px) {
@@ -934,7 +934,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 /* ---------- 人物個人專頁 ---------- */
 .person-hero { display: flex; gap: 28px; align-items: center; margin: 40px 0 8px; flex-wrap: wrap; }
 .person-hero img {
-  width: 168px; height: 168px; object-fit: cover; border-radius: 18px;
+  width: 168px; height: 168px; object-fit: cover; border-radius: var(--radius-xl);
   border: 1px solid var(--line); box-shadow: var(--shadow-md); flex: none;
 }
 .person-hero .person-meta { flex: 1; min-width: 260px; }
@@ -971,7 +971,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   display: none; width: 44px; height: 44px; border: none; background: none;
   cursor: pointer; padding: 10px; flex-direction: column; justify-content: center; gap: 5px;
 }
-.nav-toggle span { display: block; height: 2px; width: 24px; background: var(--ink); border-radius: 2px; transition: transform .3s, opacity .3s; }
+.nav-toggle span { display: block; height: 2px; width: 24px; background: var(--ink); border-radius: 2px; transition: transform var(--duration-base), opacity var(--duration-base); }
 .nav.open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
 .nav.open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -1040,10 +1040,10 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .lightbox {
   position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center;
   background: rgba(20, 18, 14, .92); padding: 4vmin; cursor: zoom-out;
-  opacity: 0; pointer-events: none; transition: opacity .3s;
+  opacity: 0; pointer-events: none; transition: opacity var(--duration-base);
 }
 .lightbox.show { opacity: 1; pointer-events: auto; }
-.lightbox img { max-width: 100%; max-height: 100%; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: var(--radius-xs); box-shadow: 0 20px 60px rgba(0,0,0,.6); }
 .lightbox .lb-caption { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: #ece5d8; font-size: .9rem; letter-spacing: .1em; }
 .gallery-grid figure img { cursor: zoom-in; }
 
