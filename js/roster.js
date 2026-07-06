@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var query = '';
   var filterPanel = document.querySelector('.roster-filter-panel');
   var filterSummary = document.getElementById('roster-filter-summary');
+  var activeFilters = document.getElementById('roster-active-filters');
   var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
   if (filterPanel && isMobileRoster) filterPanel.removeAttribute('open');
   readStateFromUrl();
@@ -74,6 +75,44 @@ document.addEventListener('DOMContentLoaded', function () {
     syncButtonGroup(statusBar, currentStatus);
     syncButtonGroup(bar, currentPart);
     if (search && search.value.trim() !== query) search.value = query;
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (char) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
+    });
+  }
+
+  function hasActiveFilterState() {
+    return !!query || currentPart !== '全部' || currentStatus !== 'all' || mode !== 'head' || view !== 'card';
+  }
+
+  function resetAllFilters() {
+    query = '';
+    currentPart = '全部';
+    currentStatus = 'all';
+    mode = 'head';
+    view = 'card';
+  }
+
+  function renderActiveFilters() {
+    if (!activeFilters) return;
+    if (!hasActiveFilterState()) {
+      activeFilters.classList.remove('has-filters');
+      activeFilters.innerHTML = '';
+      return;
+    }
+
+    var chips = ['<span class="roster-active-title">已套用</span>'];
+    if (query) chips.push('<button type="button" class="roster-active-chip" data-reset="query">搜尋：' + escapeHtml(query) + '</button>');
+    if (currentPart !== '全部') chips.push('<button type="button" class="roster-active-chip" data-reset="part">聲部：' + escapeHtml(currentPart) + '</button>');
+    if (currentStatus !== 'all') chips.push('<button type="button" class="roster-active-chip" data-reset="status">狀態：' + escapeHtml(currentStatusLabel()) + '</button>');
+    if (mode !== 'head') chips.push('<button type="button" class="roster-active-chip" data-reset="mode">分組：' + escapeHtml(currentModeLabel()) + '</button>');
+    if (view !== 'card') chips.push('<button type="button" class="roster-active-chip" data-reset="view">檢視：列表</button>');
+    chips.push('<button type="button" class="roster-clear-filters" data-reset="all">清除全部</button>');
+
+    activeFilters.innerHTML = chips.join('');
+    activeFilters.classList.add('has-filters');
   }
 
   function headGroup(p) {
@@ -233,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
       count.textContent = '目前收錄 ' + window.ALUMNI.length + ' 位校友' + (status.length ? '，' + status.join('、') + '共 ' + list.length + ' 位' : '') + '，持續增補中。';
     }
     updateFilterSummary();
+    renderActiveFilters();
     syncControls();
   }
 
@@ -316,6 +356,21 @@ document.addEventListener('DOMContentLoaded', function () {
         render();
       });
       bar.appendChild(b);
+    });
+  }
+  if (activeFilters) {
+    activeFilters.addEventListener('click', function (event) {
+      var button = event.target.closest('button[data-reset]');
+      if (!button) return;
+      var reset = button.dataset.reset;
+      if (reset === 'query') query = '';
+      if (reset === 'part') currentPart = '全部';
+      if (reset === 'status') currentStatus = 'all';
+      if (reset === 'mode') mode = 'head';
+      if (reset === 'view') view = 'card';
+      if (reset === 'all') resetAllFilters();
+      updateUrlState();
+      render();
     });
   }
   render();

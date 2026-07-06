@@ -1046,6 +1046,50 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .roster-filter-panel .filter-bar {
   padding: 0 0 4px;
 }
+.roster-active-filters {
+  display: none;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 0;
+}
+.roster-active-filters.has-filters {
+  display: flex;
+}
+.roster-active-title {
+  color: var(--ink-dim);
+  font-size: .8rem;
+  letter-spacing: .12em;
+}
+.roster-active-chip,
+.roster-clear-filters {
+  min-height: 32px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.76);
+  color: var(--ink-dim);
+  font-family: var(--sans);
+  font-size: .8rem;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: color var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast), box-shadow var(--duration-fast);
+}
+.roster-active-chip:hover,
+.roster-clear-filters:hover {
+  border-color: var(--gold-soft);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+.roster-active-chip::after {
+  content: " ×";
+  color: var(--gold);
+  font-weight: 700;
+}
+.roster-clear-filters {
+  color: var(--gold);
+  border-color: rgba(198,150,59,.32);
+}
 .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 28px 0 4px; }
 .filter-bar.roster-filter { padding-top: 8px; }
 .filter-btn {
@@ -1210,6 +1254,20 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     padding: 7px 13px;
     font-size: .84rem;
     letter-spacing: .06em;
+  }
+  .roster-active-filters {
+    gap: 7px;
+    margin-top: 14px;
+  }
+  .roster-active-title {
+    width: 100%;
+    font-size: .76rem;
+  }
+  .roster-active-chip,
+  .roster-clear-filters {
+    min-height: 30px;
+    padding: 6px 11px;
+    font-size: .78rem;
   }
   .roster-row {
     grid-template-columns: 48px minmax(58px, 72px) minmax(0, 1fr);
