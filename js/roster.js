@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var filterPanel = document.querySelector('.roster-filter-panel');
   var filterSummary = document.getElementById('roster-filter-summary');
   var activeFilters = document.getElementById('roster-active-filters');
+  var stickyTools = document.getElementById('roster-sticky-tools');
   var stickyCount = document.getElementById('roster-sticky-count');
   var stickySummary = document.getElementById('roster-sticky-summary');
   var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
@@ -101,6 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
     currentStatus = 'all';
     mode = 'head';
     view = 'card';
+    resetGroupState();
+  }
+
+  function resetGroupState() {
+    groupOpenState = {};
   }
 
   function resultCountText(resultCount) {
@@ -139,11 +145,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function updateStickyToolsVisibility() {
+    if (!stickyTools) return;
+    var marker = activeFilters && activeFilters.classList.contains('has-filters') ? activeFilters : filterPanel;
+    if (!marker) return;
+    var threshold = marker.getBoundingClientRect().bottom + window.pageYOffset + 72;
+    var shouldShow = window.pageYOffset > threshold;
+    stickyTools.classList.toggle('is-visible', shouldShow);
+    if (!shouldShow) {
+      var stickyPanel = stickyTools.querySelector('.roster-sticky-filter-panel');
+      if (stickyPanel) stickyPanel.open = false;
+    }
+  }
+
   function bindSearchInput(input) {
     if (!input) return;
     input.value = query;
     input.addEventListener('input', function () {
       query = input.value.trim();
+      resetGroupState();
       updateUrlState();
       render();
     });
@@ -320,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var open = isGroupOpen(g.info, index);
       html += '<details class="section roster-group" data-group-id="' + groupId + '"' + (open ? ' open' : '') + '>';
       html += '<summary class="roster-group-summary">';
-      html += '<h2>' + g.info.label + ' <span class="group-sub">' + g.info.sub + '．' + g.people.length + ' 位</span></h2>';
+      html += '<h2><span class="group-title-main">' + g.info.label + '</span> <span class="group-sub">' + g.info.sub + '．' + g.people.length + ' 位</span></h2>';
       html += '<span class="roster-group-state" aria-hidden="true"></span>';
       html += '</summary>';
       html += view === 'card' ? '<div class="cards roster-cards">' : '<div class="roster-list">';
@@ -361,6 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderActiveFilters(list.length);
     updateStickyTools(list.length);
     syncControls();
+    updateStickyToolsVisibility();
   }
 
   /* 分組方式切換 */
@@ -370,6 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
     [['head', '依字頭'], ['decade', '依入學年代']].forEach(function (m) {
       addFilterButton(container, m[0], m[1], m[0] === mode, function () {
         mode = m[0];
+        resetGroupState();
         updateUrlState();
         render();
       });
@@ -402,6 +424,7 @@ document.addEventListener('DOMContentLoaded', function () {
     STATUS_FILTERS.forEach(function (item) {
       addFilterButton(container, item.key, item.label, item.key === currentStatus, function () {
         currentStatus = item.key;
+        resetGroupState();
         updateUrlState();
         render();
       });
@@ -415,6 +438,7 @@ document.addEventListener('DOMContentLoaded', function () {
     PARTS.forEach(function (p) {
       addFilterButton(container, p, p, p === currentPart, function () {
         currentPart = p;
+        resetGroupState();
         updateUrlState();
         render();
       });
@@ -431,10 +455,13 @@ document.addEventListener('DOMContentLoaded', function () {
       if (reset === 'mode') mode = 'head';
       if (reset === 'view') view = 'card';
       if (reset === 'all') resetAllFilters();
+      if (reset !== 'view') resetGroupState();
       updateUrlState();
       render();
     });
   }
+  window.addEventListener('scroll', updateStickyToolsVisibility, { passive: true });
+  window.addEventListener('resize', updateStickyToolsVisibility);
   render();
 
   /* 從其他頁面帶錨點過來（如 people/{編號}.html 的「校友名錄 →」）：

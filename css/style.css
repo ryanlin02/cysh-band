@@ -1091,13 +1091,15 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   border-color: rgba(198,150,59,.32);
 }
 .roster-sticky-tools {
-  position: sticky;
+  position: fixed;
   top: 68px;
-  z-index: 80;
+  left: 50%;
+  z-index: 95;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 18px 0 8px;
+  width: min(calc(100vw - (var(--page-x) * 2)), var(--layout-max));
+  margin: 0;
   padding: 8px 10px 8px 14px;
   border: 1px solid rgba(226,217,202,.82);
   border-radius: var(--radius-md);
@@ -1105,6 +1107,15 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sm);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
+}
+.roster-sticky-tools.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
 }
 .roster-sticky-info {
   display: grid;
@@ -1215,7 +1226,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  margin: 28px 0 -18px;
+  margin: 28px 0 -24px;
 }
 .roster-group-actions button {
   min-height: 32px;
@@ -1250,6 +1261,11 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   flex: 1;
   min-width: 0;
   margin-bottom: 0;
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+.group-title-main {
+  white-space: nowrap;
 }
 .roster-group-state {
   display: inline-grid;
@@ -1285,7 +1301,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .filter-btn:hover { border-color: var(--gold-soft); color: var(--ink); }
 .filter-btn.on { background: linear-gradient(135deg, var(--gold-soft), var(--gold)); color: #fff; border-color: transparent; }
-.roster-group h2 .group-sub { font-family: var(--sans); font-size: .82rem; font-weight: 400; color: var(--ink-dim); letter-spacing: .1em; }
+.roster-group h2 .group-sub { display: inline-block; min-width: 0; font-family: var(--sans); font-size: .82rem; font-weight: 400; color: var(--ink-dim); letter-spacing: .1em; }
 .roster-card p { font-size: .9rem; }
 .roster-card .more { margin-top: 10px; font-size: .88rem; }
 .roster-list {
@@ -1455,10 +1471,10 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     font-size: .78rem;
   }
   .roster-sticky-tools {
-    top: 66px;
+    top: 60px;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 14px;
+    width: calc(100vw - 28px);
     padding: 7px 8px 7px 10px;
   }
   .roster-sticky-info strong {
@@ -1485,7 +1501,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   }
   .roster-group-actions {
     justify-content: flex-start;
-    margin: 22px 0 -12px;
+    margin: 18px 0 -10px;
   }
   .roster-group-actions button {
     min-height: 30px;
@@ -1493,15 +1509,34 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     font-size: .78rem;
   }
   .roster-group-summary {
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
     gap: 10px;
   }
   .roster-group-summary h2 {
-    flex-wrap: nowrap;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    grid-template-areas:
+      "line title"
+      "line sub";
+    align-items: start;
+    column-gap: 12px;
+    row-gap: 4px;
   }
   .roster-group-summary h2::before {
+    grid-area: line;
     margin-top: .7em;
+  }
+  .group-title-main {
+    grid-area: title;
+    line-height: 1.25;
+  }
+  .roster-group h2 .group-sub {
+    grid-area: sub;
+    display: block;
+    line-height: 1.7;
+    letter-spacing: .06em;
   }
   .roster-group-state {
     min-width: 48px;
