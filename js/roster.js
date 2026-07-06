@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var mode = 'head'; /* head=依字頭, decade=依入學年代 */
   var view = 'card'; /* card=卡片, list=精簡列表 */
   var query = '';
+  var groupOpenState = {};
   var filterPanel = document.querySelector('.roster-filter-panel');
   var filterSummary = document.getElementById('roster-filter-summary');
   var activeFilters = document.getElementById('roster-active-filters');
@@ -159,6 +160,23 @@ document.addEventListener('DOMContentLoaded', function () {
     container.appendChild(b);
   }
 
+  function groupStateId(groupInfo) {
+    return mode + ':' + groupInfo.key;
+  }
+
+  function isGroupOpen(groupInfo, index) {
+    var id = groupStateId(groupInfo);
+    if (Object.prototype.hasOwnProperty.call(groupOpenState, id)) return groupOpenState[id];
+    return hasActiveFilterState() || index === 0;
+  }
+
+  function setAllGroups(open) {
+    root.querySelectorAll('.roster-group').forEach(function (group) {
+      group.open = open;
+      groupOpenState[group.dataset.groupId] = open;
+    });
+  }
+
   function headGroup(p) {
     /* 字頭＝編號第二碼（入學民國年的個位數） */
     if (!p.num) return { key: 99, label: '編號待考', sub: '編號制度前的資深前輩與資料待補者' };
@@ -291,16 +309,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var html = '';
     if (!list.length) html = '<p class="muted">沒有符合目前搜尋與篩選條件的校友，請調整關鍵字或篩選條件。</p>';
-    groups.forEach(function (g) {
-      html += '<section class="section roster-group">';
+    if (groups.length) {
+      html += '<div class="roster-group-actions" id="roster-group-actions">';
+      html += '<button type="button" data-group-action="open">全部展開</button>';
+      html += '<button type="button" data-group-action="close">全部收合</button>';
+      html += '</div>';
+    }
+    groups.forEach(function (g, index) {
+      var groupId = groupStateId(g.info);
+      var open = isGroupOpen(g.info, index);
+      html += '<details class="section roster-group" data-group-id="' + groupId + '"' + (open ? ' open' : '') + '>';
+      html += '<summary class="roster-group-summary">';
       html += '<h2>' + g.info.label + ' <span class="group-sub">' + g.info.sub + '．' + g.people.length + ' 位</span></h2>';
+      html += '<span class="roster-group-state" aria-hidden="true"></span>';
+      html += '</summary>';
       html += view === 'card' ? '<div class="cards roster-cards">' : '<div class="roster-list">';
       g.people.forEach(function (p) {
         html += view === 'card' ? renderCard(p) : renderRow(p);
       });
-      html += '</div></section>';
+      html += '</div></details>';
     });
     root.innerHTML = html;
+    root.querySelectorAll('.roster-group').forEach(function (group) {
+      group.addEventListener('toggle', function () {
+        groupOpenState[group.dataset.groupId] = group.open;
+      });
+    });
+    var groupActions = document.getElementById('roster-group-actions');
+    if (groupActions) {
+      groupActions.addEventListener('click', function (event) {
+        var button = event.target.closest('button[data-group-action]');
+        if (!button) return;
+        setAllGroups(button.dataset.groupAction === 'open');
+      });
+    }
     root.querySelectorAll('.roster-card, .roster-row').forEach(function (el, i) {
       el.classList.add('reveal');
       el.style.setProperty('--d', Math.min((i % 6) * 0.06, 0.3) + 's');

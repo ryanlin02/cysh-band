@@ -1211,6 +1211,70 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   border-color: var(--gold-soft);
   box-shadow: var(--shadow-focus);
 }
+.roster-group-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 28px 0 -18px;
+}
+.roster-group-actions button {
+  min-height: 32px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.72);
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: .8rem;
+  letter-spacing: .06em;
+  transition: color var(--duration-fast), border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.roster-group-actions button:hover {
+  border-color: var(--gold-soft);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+.roster-group-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.roster-group-summary::-webkit-details-marker {
+  display: none;
+}
+.roster-group-summary h2 {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+.roster-group-state {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  min-width: 56px;
+  min-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: .78rem;
+  letter-spacing: .08em;
+}
+.roster-group-state::before {
+  content: "展開";
+}
+.roster-group[open] .roster-group-state::before {
+  content: "收合";
+}
+.roster-group > .cards,
+.roster-group > .roster-list {
+  margin-top: 26px;
+}
 .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 28px 0 4px; }
 .filter-bar.roster-filter { padding-top: 8px; }
 .filter-btn {
@@ -1418,6 +1482,36 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     max-height: min(58vh, 420px);
     margin-top: 9px;
     padding: 14px;
+  }
+  .roster-group-actions {
+    justify-content: flex-start;
+    margin: 22px 0 -12px;
+  }
+  .roster-group-actions button {
+    min-height: 30px;
+    padding: 6px 11px;
+    font-size: .78rem;
+  }
+  .roster-group-summary {
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .roster-group-summary h2 {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+  .roster-group-summary h2::before {
+    margin-top: .7em;
+  }
+  .roster-group-state {
+    min-width: 48px;
+    min-height: 30px;
+    padding: 5px 9px;
+    font-size: .72rem;
+  }
+  .roster-group > .cards,
+  .roster-group > .roster-list {
+    margin-top: 20px;
   }
   .roster-row {
     grid-template-columns: 48px minmax(58px, 72px) minmax(0, 1fr);
