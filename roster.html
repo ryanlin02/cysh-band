@@ -29,10 +29,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260706-1">
 <script src="js/main.js" defer></script>
 <script src="data/alumni.js?v=20260706-1" defer></script>
-<script src="js/roster.js?v=20260706-4" defer></script>
+<script src="js/roster.js?v=20260706-5" defer></script>
 </head>
 <body>
 
@@ -92,6 +92,37 @@
     </div>
   </details>
   <div class="roster-active-filters" id="roster-active-filters" aria-live="polite"></div>
+  <div class="roster-sticky-tools" id="roster-sticky-tools" aria-label="校友名錄快速篩選">
+    <div class="roster-sticky-info">
+      <strong id="roster-sticky-count">514 位</strong>
+      <span id="roster-sticky-summary">依字頭．全部聲部．全部狀態</span>
+    </div>
+    <details class="roster-sticky-filter-panel">
+      <summary>調整篩選</summary>
+      <div class="roster-sticky-filter-panel-body">
+        <label class="roster-sticky-search" for="roster-sticky-search">
+          <span>搜尋</span>
+          <input id="roster-sticky-search" type="search" inputmode="search" autocomplete="off" placeholder="姓名、編號、聲部、年代">
+        </label>
+        <div class="roster-filter-group">
+          <p>檢視</p>
+          <div class="filter-bar" id="roster-sticky-view" aria-label="快速切換檢視模式"></div>
+        </div>
+        <div class="roster-filter-group">
+          <p>分組</p>
+          <div class="filter-bar" id="roster-sticky-mode" aria-label="快速切換分組方式"></div>
+        </div>
+        <div class="roster-filter-group">
+          <p>聲部</p>
+          <div class="filter-bar" id="roster-sticky-filter" aria-label="快速依聲部篩選"></div>
+        </div>
+        <div class="roster-filter-group">
+          <p>資料狀態</p>
+          <div class="filter-bar" id="roster-sticky-status" aria-label="快速依資料狀態篩選"></div>
+        </div>
+      </div>
+    </details>
+  </div>
   <div id="roster">
     <noscript><p>校友名錄需要啟用 JavaScript 才能顯示。</p></noscript>
   </div>

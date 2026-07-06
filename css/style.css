@@ -1090,6 +1090,127 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   color: var(--gold);
   border-color: rgba(198,150,59,.32);
 }
+.roster-sticky-tools {
+  position: sticky;
+  top: 68px;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 8px;
+  padding: 8px 10px 8px 14px;
+  border: 1px solid rgba(226,217,202,.82);
+  border-radius: var(--radius-md);
+  background: rgba(250,248,243,.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+}
+.roster-sticky-info {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+.roster-sticky-info strong {
+  color: var(--gold);
+  font-size: .9rem;
+  letter-spacing: .08em;
+}
+.roster-sticky-info span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink-dim);
+  font-size: .78rem;
+  letter-spacing: .04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.roster-sticky-filter-panel {
+  position: relative;
+  flex: 0 0 auto;
+}
+.roster-sticky-filter-panel summary {
+  min-height: 34px;
+  padding: 7px 14px;
+  border: 1px solid rgba(198,150,59,.34);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.72);
+  color: var(--gold);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: .82rem;
+  letter-spacing: .08em;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.roster-sticky-filter-panel summary::-webkit-details-marker {
+  display: none;
+}
+.roster-sticky-filter-panel[open] summary {
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: #fff;
+  border-color: transparent;
+}
+.roster-sticky-filter-panel-body {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  width: min(680px, calc(100vw - 44px));
+  max-height: min(70vh, 560px);
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(250,248,243,.97);
+  box-shadow: var(--shadow-lg);
+}
+.roster-sticky-filter-panel-body .roster-filter-group + .roster-filter-group {
+  margin-top: 12px;
+}
+.roster-sticky-filter-panel-body .roster-filter-group p {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--gold);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+.roster-sticky-filter-panel-body .filter-bar {
+  padding: 0;
+  gap: 7px;
+}
+.roster-sticky-filter-panel-body .filter-btn {
+  padding: 7px 13px;
+  font-size: .82rem;
+  letter-spacing: .06em;
+}
+.roster-sticky-search {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.roster-sticky-search span {
+  color: var(--gold);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+.roster-sticky-search input {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--ink);
+  font: inherit;
+}
+.roster-sticky-search input:focus {
+  outline: none;
+  border-color: var(--gold-soft);
+  box-shadow: var(--shadow-focus);
+}
 .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 28px 0 4px; }
 .filter-bar.roster-filter { padding-top: 8px; }
 .filter-btn {
@@ -1268,6 +1389,35 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     min-height: 30px;
     padding: 6px 11px;
     font-size: .78rem;
+  }
+  .roster-sticky-tools {
+    top: 66px;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 7px 8px 7px 10px;
+  }
+  .roster-sticky-info strong {
+    font-size: .82rem;
+  }
+  .roster-sticky-info span {
+    font-size: .72rem;
+  }
+  .roster-sticky-filter-panel summary {
+    min-height: 32px;
+    padding: 6px 11px;
+    font-size: .76rem;
+    letter-spacing: .04em;
+  }
+  .roster-sticky-filter-panel[open] {
+    flex-basis: 100%;
+  }
+  .roster-sticky-filter-panel-body {
+    position: static;
+    width: 100%;
+    max-height: min(58vh, 420px);
+    margin-top: 9px;
+    padding: 14px;
   }
   .roster-row {
     grid-template-columns: 48px minmax(58px, 72px) minmax(0, 1fr);

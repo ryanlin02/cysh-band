@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var filterPanel = document.querySelector('.roster-filter-panel');
   var filterSummary = document.getElementById('roster-filter-summary');
   var activeFilters = document.getElementById('roster-active-filters');
+  var stickyCount = document.getElementById('roster-sticky-count');
+  var stickySummary = document.getElementById('roster-sticky-summary');
   var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
   if (filterPanel && isMobileRoster) filterPanel.removeAttribute('open');
   readStateFromUrl();
@@ -71,10 +73,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function syncControls() {
     syncButtonGroup(modeBar, mode);
+    syncButtonGroup(stickyModeBar, mode);
     syncButtonGroup(viewBar, view);
+    syncButtonGroup(stickyViewBar, view);
     syncButtonGroup(statusBar, currentStatus);
+    syncButtonGroup(stickyStatusBar, currentStatus);
     syncButtonGroup(bar, currentPart);
+    syncButtonGroup(stickyBar, currentPart);
     if (search && search.value.trim() !== query) search.value = query;
+    if (stickySearch && stickySearch.value.trim() !== query) stickySearch.value = query;
   }
 
   function escapeHtml(value) {
@@ -95,7 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
     view = 'card';
   }
 
-  function renderActiveFilters() {
+  function resultCountText(resultCount) {
+    return '共 ' + resultCount + ' 位';
+  }
+
+  function renderActiveFilters(resultCount) {
     if (!activeFilters) return;
     if (!hasActiveFilterState()) {
       activeFilters.classList.remove('has-filters');
@@ -103,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    var chips = ['<span class="roster-active-title">已套用</span>'];
+    var chips = ['<span class="roster-active-title">已套用（' + resultCountText(resultCount) + '）</span>'];
     if (query) chips.push('<button type="button" class="roster-active-chip" data-reset="query">搜尋：' + escapeHtml(query) + '</button>');
     if (currentPart !== '全部') chips.push('<button type="button" class="roster-active-chip" data-reset="part">聲部：' + escapeHtml(currentPart) + '</button>');
     if (currentStatus !== 'all') chips.push('<button type="button" class="roster-active-chip" data-reset="status">狀態：' + escapeHtml(currentStatusLabel()) + '</button>');
@@ -113,6 +124,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
     activeFilters.innerHTML = chips.join('');
     activeFilters.classList.add('has-filters');
+  }
+
+  function updateStickyTools(resultCount) {
+    if (stickyCount) stickyCount.textContent = resultCountText(resultCount);
+    if (stickySummary) {
+      stickySummary.textContent = [
+        currentModeLabel(),
+        currentPart === '全部' ? '全部聲部' : currentPart,
+        currentStatusLabel(),
+        view === 'list' ? '列表' : '卡片'
+      ].join('．');
+    }
+  }
+
+  function bindSearchInput(input) {
+    if (!input) return;
+    input.value = query;
+    input.addEventListener('input', function () {
+      query = input.value.trim();
+      updateUrlState();
+      render();
+    });
+  }
+
+  function addFilterButton(container, value, label, isActive, onClick) {
+    if (!container) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.dataset.value = value;
+    b.className = 'filter-btn' + (isActive ? ' on' : '');
+    b.textContent = label;
+    b.addEventListener('click', onClick);
+    container.appendChild(b);
   }
 
   function headGroup(p) {
@@ -272,92 +316,68 @@ document.addEventListener('DOMContentLoaded', function () {
       count.textContent = '目前收錄 ' + window.ALUMNI.length + ' 位校友' + (status.length ? '，' + status.join('、') + '共 ' + list.length + ' 位' : '') + '，持續增補中。';
     }
     updateFilterSummary();
-    renderActiveFilters();
+    renderActiveFilters(list.length);
+    updateStickyTools(list.length);
     syncControls();
   }
 
   /* 分組方式切換 */
   var modeBar = document.getElementById('roster-mode');
-  if (modeBar) {
+  var stickyModeBar = document.getElementById('roster-sticky-mode');
+  [modeBar, stickyModeBar].forEach(function (container) {
     [['head', '依字頭'], ['decade', '依入學年代']].forEach(function (m) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.dataset.value = m[0];
-      b.className = 'filter-btn' + (m[0] === mode ? ' on' : '');
-      b.textContent = m[1];
-      b.addEventListener('click', function () {
+      addFilterButton(container, m[0], m[1], m[0] === mode, function () {
         mode = m[0];
         updateUrlState();
         render();
       });
-      modeBar.appendChild(b);
     });
-  }
+  });
 
   /* 檢視模式切換 */
   var viewBar = document.getElementById('roster-view');
-  if (viewBar) {
+  var stickyViewBar = document.getElementById('roster-sticky-view');
+  [viewBar, stickyViewBar].forEach(function (container) {
     [['card', '卡片'], ['list', '列表']].forEach(function (m) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.dataset.value = m[0];
-      b.className = 'filter-btn' + (m[0] === view ? ' on' : '');
-      b.textContent = m[1];
-      b.addEventListener('click', function () {
+      addFilterButton(container, m[0], m[1], m[0] === view, function () {
         view = m[0];
         updateUrlState();
         render();
       });
-      viewBar.appendChild(b);
     });
-  }
+  });
 
   /* 關鍵字搜尋 */
   var search = document.getElementById('roster-search');
-  if (search) {
-    search.value = query;
-    search.addEventListener('input', function () {
-      query = search.value.trim();
-      updateUrlState();
-      render();
-    });
-  }
+  var stickySearch = document.getElementById('roster-sticky-search');
+  bindSearchInput(search);
+  bindSearchInput(stickySearch);
 
   /* 資料狀態篩選 */
   var statusBar = document.getElementById('roster-status');
-  if (statusBar) {
+  var stickyStatusBar = document.getElementById('roster-sticky-status');
+  [statusBar, stickyStatusBar].forEach(function (container) {
     STATUS_FILTERS.forEach(function (item) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.dataset.value = item.key;
-      b.className = 'filter-btn' + (item.key === currentStatus ? ' on' : '');
-      b.textContent = item.label;
-      b.addEventListener('click', function () {
+      addFilterButton(container, item.key, item.label, item.key === currentStatus, function () {
         currentStatus = item.key;
         updateUrlState();
         render();
       });
-      statusBar.appendChild(b);
     });
-  }
+  });
 
   /* 聲部篩選 */
   var bar = document.getElementById('roster-filter');
-  if (bar) {
+  var stickyBar = document.getElementById('roster-sticky-filter');
+  [bar, stickyBar].forEach(function (container) {
     PARTS.forEach(function (p) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.dataset.value = p;
-      b.className = 'filter-btn' + (p === currentPart ? ' on' : '');
-      b.textContent = p;
-      b.addEventListener('click', function () {
+      addFilterButton(container, p, p, p === currentPart, function () {
         currentPart = p;
         updateUrlState();
         render();
       });
-      bar.appendChild(b);
     });
-  }
+  });
   if (activeFilters) {
     activeFilters.addEventListener('click', function (event) {
       var button = event.target.closest('button[data-reset]');
