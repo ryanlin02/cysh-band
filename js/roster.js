@@ -22,6 +22,59 @@ document.addEventListener('DOMContentLoaded', function () {
   var filterSummary = document.getElementById('roster-filter-summary');
   var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
   if (filterPanel && isMobileRoster) filterPanel.removeAttribute('open');
+  readStateFromUrl();
+
+  function isValidPart(value) {
+    return PARTS.indexOf(value) >= 0;
+  }
+
+  function isValidStatus(value) {
+    return STATUS_FILTERS.some(function (item) { return item.key === value; });
+  }
+
+  function readStateFromUrl() {
+    var params = new URLSearchParams(window.location.search);
+    var nextMode = params.get('mode');
+    var nextView = params.get('view');
+    var nextPart = params.get('part');
+    var nextStatus = params.get('status');
+    var nextQuery = params.get('q');
+
+    if (nextMode === 'head' || nextMode === 'decade') mode = nextMode;
+    if (nextView === 'card' || nextView === 'list') view = nextView;
+    if (nextPart && isValidPart(nextPart)) currentPart = nextPart;
+    if (nextStatus && isValidStatus(nextStatus)) currentStatus = nextStatus;
+    if (nextQuery) query = nextQuery.trim();
+  }
+
+  function updateUrlState() {
+    var params = new URLSearchParams();
+    if (query) params.set('q', query);
+    if (currentPart !== '全部') params.set('part', currentPart);
+    if (currentStatus !== 'all') params.set('status', currentStatus);
+    if (mode !== 'head') params.set('mode', mode);
+    if (view !== 'card') params.set('view', view);
+
+    var nextUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+    if (nextUrl !== window.location.pathname + window.location.search + window.location.hash) {
+      window.history.replaceState(null, '', nextUrl);
+    }
+  }
+
+  function syncButtonGroup(container, value) {
+    if (!container) return;
+    container.querySelectorAll('.filter-btn').forEach(function (button) {
+      button.classList.toggle('on', button.dataset.value === value);
+    });
+  }
+
+  function syncControls() {
+    syncButtonGroup(modeBar, mode);
+    syncButtonGroup(viewBar, view);
+    syncButtonGroup(statusBar, currentStatus);
+    syncButtonGroup(bar, currentPart);
+    if (search && search.value.trim() !== query) search.value = query;
+  }
 
   function headGroup(p) {
     /* 字頭＝編號第二碼（入學民國年的個位數） */
@@ -180,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
       count.textContent = '目前收錄 ' + window.ALUMNI.length + ' 位校友' + (status.length ? '，' + status.join('、') + '共 ' + list.length + ' 位' : '') + '，持續增補中。';
     }
     updateFilterSummary();
+    syncControls();
   }
 
   /* 分組方式切換 */
@@ -188,12 +242,12 @@ document.addEventListener('DOMContentLoaded', function () {
     [['head', '依字頭'], ['decade', '依入學年代']].forEach(function (m) {
       var b = document.createElement('button');
       b.type = 'button';
+      b.dataset.value = m[0];
       b.className = 'filter-btn' + (m[0] === mode ? ' on' : '');
       b.textContent = m[1];
       b.addEventListener('click', function () {
         mode = m[0];
-        modeBar.querySelectorAll('.filter-btn').forEach(function (x) { x.classList.remove('on'); });
-        b.classList.add('on');
+        updateUrlState();
         render();
       });
       modeBar.appendChild(b);
@@ -206,12 +260,12 @@ document.addEventListener('DOMContentLoaded', function () {
     [['card', '卡片'], ['list', '列表']].forEach(function (m) {
       var b = document.createElement('button');
       b.type = 'button';
+      b.dataset.value = m[0];
       b.className = 'filter-btn' + (m[0] === view ? ' on' : '');
       b.textContent = m[1];
       b.addEventListener('click', function () {
         view = m[0];
-        viewBar.querySelectorAll('.filter-btn').forEach(function (x) { x.classList.remove('on'); });
-        b.classList.add('on');
+        updateUrlState();
         render();
       });
       viewBar.appendChild(b);
@@ -221,8 +275,10 @@ document.addEventListener('DOMContentLoaded', function () {
   /* 關鍵字搜尋 */
   var search = document.getElementById('roster-search');
   if (search) {
+    search.value = query;
     search.addEventListener('input', function () {
       query = search.value.trim();
+      updateUrlState();
       render();
     });
   }
@@ -233,12 +289,12 @@ document.addEventListener('DOMContentLoaded', function () {
     STATUS_FILTERS.forEach(function (item) {
       var b = document.createElement('button');
       b.type = 'button';
+      b.dataset.value = item.key;
       b.className = 'filter-btn' + (item.key === currentStatus ? ' on' : '');
       b.textContent = item.label;
       b.addEventListener('click', function () {
         currentStatus = item.key;
-        statusBar.querySelectorAll('.filter-btn').forEach(function (x) { x.classList.remove('on'); });
-        b.classList.add('on');
+        updateUrlState();
         render();
       });
       statusBar.appendChild(b);
@@ -251,12 +307,12 @@ document.addEventListener('DOMContentLoaded', function () {
     PARTS.forEach(function (p) {
       var b = document.createElement('button');
       b.type = 'button';
+      b.dataset.value = p;
       b.className = 'filter-btn' + (p === currentPart ? ' on' : '');
       b.textContent = p;
       b.addEventListener('click', function () {
         currentPart = p;
-        bar.querySelectorAll('.filter-btn').forEach(function (x) { x.classList.remove('on'); });
-        b.classList.add('on');
+        updateUrlState();
         render();
       });
       bar.appendChild(b);
