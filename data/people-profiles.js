@@ -700,7 +700,7 @@ window.PEOPLE_PROFILES = [
     ogTitle: "方崇任（9261）｜從嘉中長號獨奏走向專業演奏",
     ogDescription: "嘉中長號校友、東吳大學與臺師大音樂研究所出身、臺北市立交響樂團附設團長號聲部，編號 9261 的演奏道路。",
     headlineHtml: "方崇任：從嘉中長號獨奏<br>走向專業演奏",
-    photo: "../assets/img/members/blank.webp",
+    photo: "../assets/img/members/9261.webp",
     facts: [
       ["編號", "<b>9261</b>（民國 92 年入學．長號聲部）"],
       ["主要樂器", "長號"],
