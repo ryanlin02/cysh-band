@@ -306,8 +306,12 @@ document.addEventListener('DOMContentLoaded', function () {
     return parts.join('．');
   }
 
+  function personAnchorId(p) {
+    return 'p-' + (p.num || p.id || p.photo);
+  }
+
   function renderCard(p) {
-    var anchorId = 'p-' + (p.num || p.photo);
+    var anchorId = personAnchorId(p);
     var hasProfileLink = hasProfile(p);
     var html = '<div class="card roster-card" id="' + anchorId + '">';
     html += hasProfileLink
@@ -326,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function renderRow(p) {
-    var anchorId = 'p-' + (p.num || p.photo);
+    var anchorId = personAnchorId(p);
     var hasProfileLink = hasProfile(p);
     var tag = hasProfileLink ? 'a' : 'div';
     var html = '<' + tag + ' class="roster-row' + (hasProfileLink ? ' linked' : '') + '" id="' + anchorId + '"' + (hasProfileLink ? ' href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →"' : '') + '>';

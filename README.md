@@ -20,9 +20,9 @@
 | gallery.html | 影像館（活動相簿制，點擊放大） |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
-| content/people/ | 人物個人頁正文來源檔（21 個人物頁皆已模板化） |
+| content/people/ | 人物個人頁正文來源檔（32 個人物頁皆已模板化） |
 | data/alumni.js | 校友名錄資料檔 |
-| data/people-profiles.js | 已模板化人物個人頁 metadata（21 個人物頁皆已納入） |
+| data/people-profiles.js | 已模板化人物個人頁 metadata（32 個人物頁皆已納入） |
 | data/news.js | 最新消息資料檔 |
 | data/number-lookup.js | 編號查詢小遊戲資料檔（非完整公開名錄） |
 | 校友資料管理與驗證流程.md | 公開名錄、查號資料、個人頁與內部 Excel 名冊的管理流程 |
@@ -80,7 +80,7 @@ node scripts/generate-page-preview.js
 
 已套用到正式頁面的第一批是目前全部 5 篇最新消息文章；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。
 
-人物頁模板化已涵蓋目前全部 21 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
+人物頁模板化已涵蓋目前全部 32 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
 
 ```
 node scripts/generate-people-pages.js

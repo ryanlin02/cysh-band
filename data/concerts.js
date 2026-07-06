@@ -129,6 +129,9 @@ window.CONCERTS = [
       { name: "簡晟軒", num: "8861", role: "指揮" }
     ],
     soloists: [],
+    performers: [
+      { name: "劉炫廷", num: "9921", role: "雙簧管聲部" }
+    ],
     program: [{ title: "旭陵慶典", composer: "葉哲良", status: "confirmed", note: "首演" }],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/concerts/2023.webp",
@@ -241,6 +244,24 @@ window.CONCERTS = [
       { name: "陳錫仁", num: "6301", instrument: "小號", work: "Arutiunian Trumpet Concerto" },
       { name: "洪筱涵", num: "9841", instrument: "法國號", work: "Richard Strauss: Horn Concerto No. 1, mvt. I" }
     ],
+    performers: [
+      { name: "葉哲良", num: "9721", role: "單簧管聲部（8/31、9/1）" },
+      { name: "鄭鈞元", num: "8431", role: "薩克斯風聲部（8/31、9/1）" },
+      { name: "許哲誠", num: "0431", role: "薩克斯風聲部（8/31、9/1）" },
+      { name: "魏仕杰", num: "8841", role: "法國號聲部（8/31、9/1）" },
+      { name: "楊秉驊", num: "8401", role: "小號聲部（8/31、9/1）" },
+      { name: "蔡淳任", num: "9202", role: "小號聲部（8/31、9/1）" },
+      { name: "林少凡", id: "linshaofan", role: "小號聲部（8/31、9/1）" },
+      { name: "高健雄", num: "7901", role: "長號聲部（8/31）" },
+      { name: "張永澤", num: "9601", role: "長號聲部（8/31）" },
+      { name: "蔡政岳", num: "9701", role: "長號聲部（8/31、9/1）" },
+      { name: "翁啟榮", num: "7581", role: "低音號聲部（8/31、9/1）" },
+      { name: "王騰寬", num: "8982", role: "低音號聲部（8/31）" },
+      { name: "鄧杰翔", num: "8302", role: "打擊聲部（8/31、9/1）" },
+      { name: "陳英杰", num: "8991", role: "打擊聲部（8/31、9/1）" },
+      { name: "林唐禾", num: "8993", role: "打擊聲部（8/31、9/1）" },
+      { name: "陳羿弦", num: "0741", role: "法國號聲部（9/1）" }
+    ],
     program: [
       { title: "Slava!", status: "confirmed" },
       { title: "Dynamica", status: "confirmed" },
@@ -343,6 +364,7 @@ window.CONCERTS = [
     venue: "嘉義市政府文化局音樂廳",
     venueNote: "",
     hostHead: "",
+    organizers: [{ name: "蔡淳任", num: "9202", role: "舞台監督" }],
     conductors: [
       { name: "鄭鈞元", num: "8431", role: "指揮" },
       { name: "簡晟軒", num: "8861", role: "指揮" },
@@ -350,6 +372,27 @@ window.CONCERTS = [
       { name: "盧宓承", num: "7111", role: "指揮" }
     ],
     soloists: [{ name: "陳韋希", num: "9132", instrument: "薩克斯風", work: "Andre Waignein: Deux Mouvements" }],
+    performers: [
+      { name: "盧宓承", num: "7111", role: "長笛聲部" },
+      { name: "黃耀瑩", num: "8912", role: "雙簧管聲部" },
+      { name: "葉哲良", num: "9721", role: "單簧管聲部" },
+      { name: "鄭鈞元", num: "8431", role: "薩克斯風聲部" },
+      { name: "魏仕杰", num: "8841", role: "法國號聲部" },
+      { name: "洪筱涵", num: "9841", role: "法國號聲部" },
+      { name: "楊秉驊", num: "8401", role: "小號聲部" },
+      { name: "蔡淳任", num: "9202", role: "小號聲部" },
+      { name: "高健雄", num: "7901", role: "長號聲部" },
+      { name: "高崇文", num: "8301", role: "長號聲部" },
+      { name: "簡晟軒", num: "8861", role: "長號聲部" },
+      { name: "方崇任", num: "9261", role: "長號聲部" },
+      { name: "張永澤", num: "9601", role: "長號聲部" },
+      { name: "蔡政岳", num: "9701", role: "長號聲部" },
+      { name: "翁啟榮", num: "7581", role: "低音號聲部" },
+      { name: "丁肇賢", num: "8501", role: "低音號聲部" },
+      { name: "鄧杰翔", num: "8302", role: "打擊聲部" },
+      { name: "陳英杰", num: "8991", role: "打擊聲部" },
+      { name: "劉炫廷", num: "9921", role: "單簧管聲部" }
+    ],
     program: [
       { title: "1812 序曲", composer: "Tchaikovsky", status: "confirmed" },
       { title: "Deux Mouvements", composer: "Andre Waignein", status: "confirmed" },
@@ -413,6 +456,24 @@ window.CONCERTS = [
       { name: "蔡淳任", num: "9202", role: "助理指揮" }
     ],
     soloists: [{ name: "陳錫仁", num: "6301", instrument: "小號", work: "Haydn Trumpet Concerto in E-flat" }],
+    performers: [
+      { name: "盧宓承", num: "7111", role: "長笛聲部" },
+      { name: "黃耀瑩", num: "8912", role: "雙簧管聲部" },
+      { name: "葉哲良", num: "9721", role: "單簧管聲部" },
+      { name: "鄭鈞元", num: "8431", role: "薩克斯風聲部" },
+      { name: "魏仕杰", num: "8841", role: "法國號聲部" },
+      { name: "洪筱涵", num: "9841", role: "法國號聲部" },
+      { name: "蔡淳任", num: "9202", role: "小號聲部" },
+      { name: "高健雄", num: "7901", role: "長號聲部" },
+      { name: "高崇文", num: "8301", role: "長號聲部" },
+      { name: "簡晟軒", num: "8861", role: "長號聲部" },
+      { name: "方崇任", num: "9261", role: "長號聲部" },
+      { name: "張永澤", num: "9601", role: "長號聲部" },
+      { name: "蔡政岳", num: "9701", role: "長號聲部" },
+      { name: "王騰寬", num: "8982", role: "上低音號聲部" },
+      { name: "翁啟榮", num: "7581", role: "低音號聲部" },
+      { name: "丁肇賢", num: "8501", role: "低音號聲部" }
+    ],
     program: [
       { title: "The Hounds of Spring", composer: "Alfred Reed", status: "confirmed" },
       { title: "Trumpet Concerto in E-flat", composer: "Haydn", status: "confirmed" },
@@ -445,6 +506,7 @@ window.CONCERTS = [
     venue: "嘉義市文化局音樂廳",
     venueNote: "現存海報可考最早的音樂廳演出紀錄",
     hostHead: "",
+    organizers: [{ name: "張永澤", num: "9601", role: "主要籌備與行政統籌" }],
     conductors: [
       { name: "鄭鈞元", num: "8431", role: "指揮" },
       { name: "丁肇賢", num: "8501", role: "指揮" }
@@ -473,7 +535,12 @@ window.CONCERTS = [
     venueNote: "確切廳名待考",
     hostHead: "",
     conductors: [],
-    soloists: [],
+    soloists: [{ name: "方崇任", num: "9261", instrument: "長號", work: "Launy Grøndahl: Trombone Concerto" }],
+    performers: [
+      { name: "黃耀瑩", num: "8912", role: "雙簧管聲部" },
+      { name: "蔡淳任", num: "9202", role: "小號聲部" },
+      { name: "張永澤", num: "9601", role: "長號聲部" }
+    ],
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "",
@@ -500,7 +567,7 @@ window.CONCERTS = [
       { name: "丁肇賢", num: "8501", role: "指揮" },
       { name: "簡晟軒", num: "8861", role: "指揮" }
     ],
-    soloists: [],
+    soloists: [{ name: "黃耀瑩", num: "8912", instrument: "雙簧管", work: "James Barnes: Autumn Soliloquy" }],
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "",

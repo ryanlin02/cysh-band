@@ -121,12 +121,14 @@ function checkDataReferences() {
   }
 
   const alumniByNum = new Map(alumni.filter((person) => person.num).map((person) => [person.num, person]));
-  const profileNums = new Set();
+  const alumniByLink = new Map(alumni.filter((person) => person.link).map((person) => [person.link, person]));
+  const profileIds = new Set();
   for (const profile of peopleProfiles) {
-    const label = `${profile.num || 'no-num'} ${profile.name || '(missing name)'}`;
-    if (!profile.num) addError(`data/people-profiles.js: missing num for ${label}`);
-    if (profile.num && profileNums.has(profile.num)) addError(`data/people-profiles.js: duplicate num: ${profile.num}`);
-    if (profile.num) profileNums.add(profile.num);
+    const key = profile.id || profile.num;
+    const label = `${key || 'no-id'} ${profile.name || '(missing name)'}`;
+    if (!key) addError(`data/people-profiles.js: missing id/num for ${label}`);
+    if (key && profileIds.has(key)) addError(`data/people-profiles.js: duplicate id/num: ${key}`);
+    if (key) profileIds.add(key);
     for (const field of ['name', 'source', 'output', 'title', 'description', 'headlineHtml', 'photo', 'sourceHtml']) {
       if (!profile[field]) addError(`data/people-profiles.js: ${label} missing ${field}.`);
     }
@@ -143,7 +145,7 @@ function checkDataReferences() {
     for (const [index, link] of (profile.relatedLinks || []).entries()) {
       if (!link.label || !link.url || !link.type) addError(`data/people-profiles.js: ${label} relatedLinks[${index}] missing label/url/type.`);
     }
-    const alumniPerson = profile.num ? alumniByNum.get(profile.num) : null;
+    const alumniPerson = profile.num ? alumniByNum.get(profile.num) : alumniByLink.get(profile.output);
     if (!alumniPerson) {
       addError(`data/people-profiles.js: ${label} no matching data/alumni.js record.`);
     } else if (alumniPerson.link !== profile.output) {
@@ -151,7 +153,7 @@ function checkDataReferences() {
     }
   }
 
-  const profileByNum = new Map(peopleProfiles.map((profile) => [profile.num, profile]));
+  const profileByNum = new Map(peopleProfiles.map((profile) => [profile.id || profile.num, profile]));
   const featuredIds = new Set();
   let featuredCardCount = 0;
   let featuredSummaryMin = Infinity;
@@ -239,7 +241,7 @@ function checkDataReferences() {
         if (!exists(item)) addError(`data/concerts.js: ${label} ${field} not found: ${item}`);
       }
     }
-    for (const field of ['conductors', 'soloists', 'organizers']) {
+    for (const field of ['conductors', 'soloists', 'organizers', 'performers']) {
       if (concert[field] && !Array.isArray(concert[field])) {
         addError(`data/concerts.js: ${label} ${field} must be an array.`);
         continue;
@@ -459,7 +461,7 @@ function checkPeopleIndexCards() {
     .filter((person) => person.num)
     .map((person) => [person.num, person]));
   const profileByNum = new Map((global.PEOPLE_PROFILES || [])
-    .map((profile) => [profile.num, profile]));
+    .map((profile) => [profile.id || profile.num, profile]));
   const featuredById = new Map();
   for (const section of global.PEOPLE_FEATURED_SECTIONS || []) {
     for (const item of section.items || []) {

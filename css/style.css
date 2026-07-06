@@ -770,7 +770,8 @@ a.card-head:hover .num { color: var(--gold-soft); }
 /* ---------- 表格 ---------- */
 table.plain { border-collapse: collapse; width: 100%; max-width: 640px; margin: 12px 0 20px; font-size: .95rem; background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
 table.plain th, table.plain td { border: 1px solid var(--line); padding: 10px 16px; text-align: left; }
-table.plain th { background: var(--bg-soft); color: var(--gold); font-weight: 700; letter-spacing: .1em; }
+table.plain th { background: var(--bg-soft); color: var(--gold); font-weight: 700; letter-spacing: .08em; white-space: nowrap; word-break: keep-all; }
+table.plain th:first-child { width: 1%; min-width: 5.5em; }
 table.plain td { color: var(--ink-dim); }
 table.plain td b { color: var(--ink); }
 

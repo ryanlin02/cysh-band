@@ -14,6 +14,10 @@ require(path.join(root, 'data', 'people-profiles.js'));
 
 const profiles = global.PEOPLE_PROFILES || [];
 
+function profileKey(profile) {
+  return profile.id || profile.num;
+}
+
 function indentHtml(html, spaces = 4) {
   const prefix = ' '.repeat(spaces);
   return html.split('\n').map((line) => (line ? `${prefix}${line}` : line)).join('\n');
@@ -25,22 +29,32 @@ function zhDate(date) {
   return `${match[1]}.${match[2]}.${match[3]}`;
 }
 
-function findRelatedConcerts(num) {
+function personMatchesProfile(person, profile) {
+  if (!person || !profile) return false;
+  if (profile.num && person.num === profile.num) return true;
+  if (profile.id && person.id === profile.id) return true;
+  return false;
+}
+
+function findRelatedConcerts(profile) {
   const concerts = global.CONCERTS || [];
   const rows = [];
   for (const concert of concerts) {
     const roles = [];
     for (const person of concert.conductors || []) {
-      if (person.num === num) roles.push(person.role || '指揮');
+      if (personMatchesProfile(person, profile)) roles.push(person.role || '指揮');
     }
     for (const person of concert.organizers || []) {
-      if (person.num === num) roles.push(person.role || '籌備');
+      if (personMatchesProfile(person, profile)) roles.push(person.role || '籌備');
     }
     for (const person of concert.soloists || []) {
-      if (person.num === num) {
+      if (personMatchesProfile(person, profile)) {
         const detail = [person.instrument, person.work].filter(Boolean).join('／');
         roles.push(detail ? `獨奏／協奏：${detail}` : '獨奏／協奏');
       }
+    }
+    for (const person of concert.performers || []) {
+      if (personMatchesProfile(person, profile)) roles.push(person.role || person.instrument || '演出');
     }
     if (roles.length) {
       rows.push({
@@ -49,7 +63,7 @@ function findRelatedConcerts(num) {
         title: concert.title,
         date: concert.date,
         venue: concert.venue,
-        roles
+        roles: [...new Set(roles)]
       });
     }
   }
@@ -93,7 +107,8 @@ ${links.map((link) => `      <tr><th>${escapeHtml(link.type)}</th><td><a href="$
 
 function renderProfile(profile, options = {}) {
   const body = fs.readFileSync(path.join(root, profile.source), 'utf8').trim();
-  const relatedConcerts = findRelatedConcerts(profile.num);
+  const relatedConcerts = findRelatedConcerts(profile);
+  const key = profileKey(profile);
   const previewNote = options.preview
     ? `    <p class="muted">此頁為人物個人頁模板預覽，由 <code>scripts/generate-people-profile-preview.js</code> 產生，不是正式公開人物頁。產生時間：${escapeHtml(options.generatedAt || new Date().toISOString())}</p>\n\n`
     : '';
@@ -108,7 +123,7 @@ function renderProfile(profile, options = {}) {
     : '';
 
   const content = `<header class="page-head">
-  <p class="kicker">PEOPLE．${escapeHtml(profile.num)}${previewSuffix}</p>
+  <p class="kicker">PEOPLE．${escapeHtml(key)}${previewSuffix}</p>
   <h1>${profile.headlineHtml}</h1>
   <div class="person-hero">
     <img src="${escapeHtml(profile.photo)}" alt="${escapeHtml(profile.name)}">

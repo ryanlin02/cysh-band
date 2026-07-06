@@ -16,15 +16,23 @@ const profiles = global.PEOPLE_PROFILES || [];
 const sections = global.PEOPLE_FEATURED_SECTIONS || [];
 const alumni = global.ALUMNI || [];
 
-const profileByNum = new Map(profiles.map((profile) => [profile.num, profile]));
+function profileKey(profile) {
+  return profile.id || profile.num;
+}
+
+const profileByNum = new Map(profiles.map((profile) => [profileKey(profile), profile]));
 const alumniByNum = new Map(alumni.filter((person) => person.num).map((person) => [person.num, person]));
+const alumniByLink = new Map(alumni.filter((person) => person.link).map((person) => [person.link, person]));
 
 function indexPhotoFromProfile(profile) {
   return String(profile.photo || '').replace(/^\.\.\//, '');
 }
 
 function numHtmlForProfile(profile) {
-  const person = alumniByNum.get(profile.num);
+  const person = profile.num ? alumniByNum.get(profile.num) : alumniByLink.get(profile.output);
+  if (!profile.num) {
+    return profile.indexNumHtml || (person && person.year ? `民國 ${escapeHtml(person.year)} 年入學` : escapeHtml(profileKey(profile)));
+  }
   const year = person && person.year ? ` <small>民國 ${escapeHtml(person.year)} 年入學</small>` : '';
   return `${escapeHtml(profile.num)}${year}`;
 }
@@ -35,7 +43,7 @@ function renderCard(item) {
     throw new Error(`PEOPLE_FEATURED_SECTIONS references missing profile: ${item.profile}`);
   }
 
-  const id = profile ? profile.num : item.id;
+  const id = profile ? profileKey(profile) : item.id;
   const name = profile ? profile.name : item.name;
   const numHtml = profile ? numHtmlForProfile(profile) : item.numHtml;
   const photo = profile ? indexPhotoFromProfile(profile) : item.photo;

@@ -48,7 +48,7 @@ if (!Array.isArray(concerts)) {
         if (!exists(rel)) errors.push(`${label}: ${field} not found: ${rel}`);
       });
     });
-    ['conductors', 'soloists', 'organizers'].forEach((field) => {
+    ['conductors', 'soloists', 'organizers', 'performers'].forEach((field) => {
       if (c[field] && !Array.isArray(c[field])) {
         errors.push(`${label}: ${field} must be an array.`);
         return;
