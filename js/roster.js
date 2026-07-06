@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { key: 'leader', label: '幹部' }
   ];
   var DIGITS = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
-  var currentPart = '全部';
+  var selectedParts = [];
   var currentStatus = 'all';
   var mode = 'head'; /* head=依字頭, decade=依入學年代 */
   var view = 'card'; /* card=卡片, list=精簡列表 */
@@ -42,13 +42,19 @@ document.addEventListener('DOMContentLoaded', function () {
     var params = new URLSearchParams(window.location.search);
     var nextMode = params.get('mode');
     var nextView = params.get('view');
-    var nextPart = params.get('part');
+    var nextParts = [];
     var nextStatus = params.get('status');
     var nextQuery = params.get('q');
 
     if (nextMode === 'head' || nextMode === 'decade') mode = nextMode;
     if (nextView === 'card' || nextView === 'list') view = nextView;
-    if (nextPart && isValidPart(nextPart)) currentPart = nextPart;
+    params.getAll('part').forEach(function (partParam) {
+      partParam.split(',').forEach(function (part) {
+        var cleanPart = part.trim();
+        if (cleanPart && isValidPart(cleanPart) && cleanPart !== '全部' && nextParts.indexOf(cleanPart) < 0) nextParts.push(cleanPart);
+      });
+    });
+    if (nextParts.length) selectedParts = nextParts;
     if (nextStatus && isValidStatus(nextStatus)) currentStatus = nextStatus;
     if (nextQuery) query = nextQuery.trim();
   }
@@ -56,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateUrlState() {
     var params = new URLSearchParams();
     if (query) params.set('q', query);
-    if (currentPart !== '全部') params.set('part', currentPart);
+    if (selectedParts.length) params.set('part', selectedParts.join(','));
     if (currentStatus !== 'all') params.set('status', currentStatus);
     if (mode !== 'head') params.set('mode', mode);
     if (view !== 'card') params.set('view', view);
@@ -71,6 +77,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!container) return;
     container.querySelectorAll('.filter-btn').forEach(function (button) {
       button.classList.toggle('on', button.dataset.value === value);
+      button.setAttribute('aria-pressed', button.dataset.value === value ? 'true' : 'false');
+    });
+  }
+
+  function syncPartButtonGroup(container) {
+    if (!container) return;
+    container.querySelectorAll('.filter-btn').forEach(function (button) {
+      var active = button.dataset.value === '全部' ? !selectedParts.length : selectedParts.indexOf(button.dataset.value) >= 0;
+      button.classList.toggle('on', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
   }
 
@@ -81,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
     syncButtonGroup(stickyViewBar, view);
     syncButtonGroup(statusBar, currentStatus);
     syncButtonGroup(stickyStatusBar, currentStatus);
-    syncButtonGroup(bar, currentPart);
-    syncButtonGroup(stickyBar, currentPart);
+    syncPartButtonGroup(bar);
+    syncPartButtonGroup(stickyBar);
     if (search && search.value.trim() !== query) search.value = query;
     if (stickySearch && stickySearch.value.trim() !== query) stickySearch.value = query;
   }
@@ -94,12 +110,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function hasActiveFilterState() {
-    return !!query || currentPart !== '全部' || currentStatus !== 'all' || mode !== 'head' || view !== 'card';
+    return !!query || selectedParts.length > 0 || currentStatus !== 'all' || mode !== 'head' || view !== 'card';
   }
 
   function resetAllFilters() {
     query = '';
-    currentPart = '全部';
+    selectedParts = [];
     currentStatus = 'all';
     mode = 'head';
     view = 'card';
@@ -124,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var chips = ['<span class="roster-active-title">已套用（' + resultCountText(resultCount) + '）</span>'];
     if (query) chips.push('<button type="button" class="roster-active-chip" data-reset="query">搜尋：' + escapeHtml(query) + '</button>');
-    if (currentPart !== '全部') chips.push('<button type="button" class="roster-active-chip" data-reset="part">聲部：' + escapeHtml(currentPart) + '</button>');
+    if (selectedParts.length) chips.push('<button type="button" class="roster-active-chip" data-reset="part">聲部：' + escapeHtml(currentPartsLabel()) + '</button>');
     if (currentStatus !== 'all') chips.push('<button type="button" class="roster-active-chip" data-reset="status">狀態：' + escapeHtml(currentStatusLabel()) + '</button>');
     if (mode !== 'head') chips.push('<button type="button" class="roster-active-chip" data-reset="mode">分組：' + escapeHtml(currentModeLabel()) + '</button>');
     if (view !== 'card') chips.push('<button type="button" class="roster-active-chip" data-reset="view">檢視：列表</button>');
@@ -139,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (stickySummary) {
       stickySummary.textContent = [
         currentModeLabel(),
-        currentPart === '全部' ? '全部聲部' : currentPart,
+        currentPartsLabel(),
         currentStatusLabel(),
         view === 'list' ? '列表' : '卡片'
       ].join('．');
@@ -255,6 +271,16 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
+  function currentPartsLabel() {
+    return selectedParts.length ? selectedParts.join('、') : '全部聲部';
+  }
+
+  function matchesParts(p) {
+    if (!selectedParts.length) return true;
+    var tags = p.tags || [];
+    return selectedParts.some(function (part) { return tags.indexOf(part) >= 0; });
+  }
+
   function currentModeLabel() {
     return mode === 'head' ? '依字頭' : '依入學年代';
   }
@@ -268,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!filterSummary) return;
     filterSummary.textContent = [
       currentModeLabel(),
-      currentPart === '全部' ? '全部聲部' : currentPart,
+      currentPartsLabel(),
       currentStatusLabel()
     ].join('．');
   }
@@ -316,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function render() {
     var list = window.ALUMNI.filter(function (p) {
-      return (currentPart === '全部' || (p.tags || []).indexOf(currentPart) >= 0) && matchesStatus(p) && matchesQuery(p);
+      return matchesParts(p) && matchesStatus(p) && matchesQuery(p);
     }).sort(function (a, b) {
       var ya = a.year == null ? 9999 : a.year, yb = b.year == null ? 9999 : b.year;
       return ya - yb || ((a.num || '9999') < (b.num || '9999') ? -1 : 1);
@@ -375,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var count = document.getElementById('roster-count');
     if (count) {
       var status = [];
-      if (currentPart !== '全部') status.push('篩選「' + currentPart + '」');
+      if (selectedParts.length) status.push('篩選「' + currentPartsLabel() + '」');
       var statusInfo = STATUS_FILTERS.find(function (item) { return item.key === currentStatus; });
       if (currentStatus !== 'all' && statusInfo) status.push('狀態「' + statusInfo.label + '」');
       if (query) status.push('搜尋「' + query + '」');
@@ -440,8 +466,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var stickyBar = document.getElementById('roster-sticky-filter');
   [bar, stickyBar].forEach(function (container) {
     PARTS.forEach(function (p) {
-      addFilterButton(container, p, p, p === currentPart, function () {
-        currentPart = p;
+      var active = p === '全部' ? !selectedParts.length : selectedParts.indexOf(p) >= 0;
+      addFilterButton(container, p, p, active, function () {
+        if (p === '全部') {
+          selectedParts = [];
+        } else if (selectedParts.indexOf(p) >= 0) {
+          selectedParts = selectedParts.filter(function (part) { return part !== p; });
+        } else {
+          selectedParts = selectedParts.concat(p);
+        }
         resetGroupState();
         updateUrlState();
         render();
@@ -454,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!button) return;
       var reset = button.dataset.reset;
       if (reset === 'query') query = '';
-      if (reset === 'part') currentPart = '全部';
+      if (reset === 'part') selectedParts = [];
       if (reset === 'status') currentStatus = 'all';
       if (reset === 'mode') mode = 'head';
       if (reset === 'view') view = 'card';
