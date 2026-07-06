@@ -321,6 +321,9 @@ function checkPublicHtmlQuality() {
     }
     if (!/<meta\s+property=["']og:title["']/i.test(text)) addError(`${fileRel}: missing og:title.`);
     if (!/<meta\s+property=["']og:description["']/i.test(text)) addError(`${fileRel}: missing og:description.`);
+    if (!/<link\s+rel=["']canonical["']\s+href=["']https:\/\/cysh\.band\/[^"']*["']\s*>/i.test(text)) {
+      addError(`${fileRel}: missing canonical URL.`);
+    }
 
     const ids = [...text.matchAll(/\bid=["']([^"']+)["']/g)].map((match) => match[1]);
     const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
@@ -524,6 +527,9 @@ function checkPeopleProfilePages() {
     if (!/class=["'][^"']*\bperson-nav\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-nav.`);
     if (!text.includes(`PEOPLE．${num}`)) addError(`${fileRel}: page kicker should include PEOPLE．${num}.`);
     if (!/<meta\s+property=["']og:type["']\s+content=["']profile["']/i.test(text)) addError(`${fileRel}: og:type should be profile.`);
+    if (!/<script\s+type=["']application\/ld\+json["']>[\s\S]*"@type":\s*"Person"[\s\S]*<\/script>/i.test(text)) {
+      addError(`${fileRel}: missing Person JSON-LD.`);
+    }
     if (!/<meta\s+property=["']og:image:width["']/i.test(text) || !/<meta\s+property=["']og:image:height["']/i.test(text)) {
       missingOgImageDimensions += 1;
     }

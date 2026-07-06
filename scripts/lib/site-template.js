@@ -36,6 +36,7 @@ function createRenderer(root) {
       ogTitle: escapeHtml(values.ogTitle || title),
       ogDescription: escapeHtml(values.ogDescription || description),
       url: escapeHtml(values.url),
+      canonicalUrl: escapeHtml(values.canonicalUrl || values.url),
       ogType: escapeHtml(values.ogType || 'website'),
       ogImage: escapeHtml(values.ogImage || 'https://cysh.band/assets/img/og.jpg')
     };

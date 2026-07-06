@@ -105,6 +105,44 @@ ${links.map((link) => `      <tr><th>${escapeHtml(link.type)}</th><td><a href="$
     </table></div>`;
 }
 
+function textFromHtml(html) {
+  return String(html || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function safeJsonLd(data) {
+  return JSON.stringify(data, null, 2).replace(/<\/(script)/gi, '<\\/$1');
+}
+
+function renderPersonStructuredData(profile) {
+  const key = profileKey(profile);
+  const url = `https://cysh.band/${profile.output}`;
+  const image = profile.photo.replace(/^\.\.\//, 'https://cysh.band/');
+  const facts = Object.fromEntries((profile.facts || []).map(([label, value]) => [label, textFromHtml(value)]));
+  const person = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: profile.name,
+    identifier: key,
+    url,
+    image,
+    description: profile.description,
+    memberOf: {
+      '@type': 'PerformingGroup',
+      name: '嘉義高中管樂隊暨校友管樂團',
+      url: 'https://cysh.band/'
+    },
+    alumniOf: {
+      '@type': 'EducationalOrganization',
+      name: '國立嘉義高級中學'
+    }
+  };
+  const instrument = facts['主修'] || facts['主要樂器'];
+  if (instrument) person.knowsAbout = instrument;
+  return `<script type="application/ld+json">
+${safeJsonLd(person)}
+</script>`;
+}
+
 function renderProfile(profile, options = {}) {
   const body = fs.readFileSync(path.join(root, profile.source), 'utf8').trim();
   const relatedConcerts = findRelatedConcerts(profile);
@@ -157,7 +195,7 @@ ${peopleBackLink}${officialPageLink}      <a class="btn" href="${escapeHtml(prof
     ogType: 'profile',
     assetPrefix: '../',
     navActive: profile.navActive || 'people',
-    extraHead: options.extraHead || '',
+    extraHead: [options.extraHead, renderPersonStructuredData(profile)].filter(Boolean).join('\n'),
     content
   }).replace(/[ \t]+$/gm, '');
 }
