@@ -543,7 +543,7 @@ window.PEOPLE_PROFILES = [
     ogTitle: "高健雄（7901）｜從嘉中隊長到嘉義管樂教育現場",
     ogDescription: "長號演奏者、管樂指揮與教師，編號 7901 從嘉中走向嘉義地方管樂教育，也延續高一生家族音樂記憶。",
     headlineHtml: "高健雄：從嘉中隊長<br>到嘉義管樂教育現場",
-    photo: "../assets/img/members/blank.webp",
+    photo: "../assets/img/members/7901.webp",
     facts: [
       ["編號", "<b>7901</b>（民國 79 年入學．長號聲部．曾任隊長）"],
       ["主要樂器", "長號"],
@@ -621,7 +621,7 @@ window.PEOPLE_PROFILES = [
     ogTitle: "陳英杰（8991）｜從嘉中打擊聲部出發的節奏教育之路",
     ogDescription: "嘉中打擊校友、杰斯打擊教育系統創辦人，編號 8991 的地方音樂教育與打擊教學故事。",
     headlineHtml: "陳英杰：從嘉中打擊聲部出發<br>走向節奏教育之路",
-    photo: "../assets/img/members/blank.webp",
+    photo: "../assets/img/members/8991.webp",
     facts: [
       ["編號", "<b>8991</b>（民國 89 年入學．打擊聲部）"],
       ["主要樂器", "打擊樂、爵士鼓"],
