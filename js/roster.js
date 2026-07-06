@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var filterSummary = document.getElementById('roster-filter-summary');
   var activeFilters = document.getElementById('roster-active-filters');
   var stickyTools = document.getElementById('roster-sticky-tools');
+  var stickyPanel = document.querySelector('.roster-sticky-filter-panel');
   var stickyCount = document.getElementById('roster-sticky-count');
   var stickySummary = document.getElementById('roster-sticky-summary');
   var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
@@ -153,9 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var shouldShow = window.pageYOffset > threshold;
     stickyTools.classList.toggle('is-visible', shouldShow);
     if (!shouldShow) {
-      var stickyPanel = stickyTools.querySelector('.roster-sticky-filter-panel');
-      if (stickyPanel) stickyPanel.open = false;
+      closeStickyPanel();
     }
+  }
+
+  function closeStickyPanel() {
+    if (stickyPanel) stickyPanel.open = false;
   }
 
   function bindSearchInput(input) {
@@ -460,6 +464,27 @@ document.addEventListener('DOMContentLoaded', function () {
       render();
     });
   }
+  if (stickyTools) {
+    stickyTools.addEventListener('click', function (event) {
+      if (event.target.closest('[data-sticky-close]')) {
+        closeStickyPanel();
+        return;
+      }
+      if (event.target.closest('[data-sticky-reset="all"]')) {
+        resetAllFilters();
+        updateUrlState();
+        render();
+      }
+    });
+  }
+  document.addEventListener('click', function (event) {
+    if (!stickyPanel || !stickyPanel.open) return;
+    if (stickyTools && stickyTools.contains(event.target)) return;
+    closeStickyPanel();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeStickyPanel();
+  });
   window.addEventListener('scroll', updateStickyToolsVisibility, { passive: true });
   window.addEventListener('resize', updateStickyToolsVisibility);
   render();
