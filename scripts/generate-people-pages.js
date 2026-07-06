@@ -63,6 +63,7 @@ function findRelatedConcerts(profile) {
         title: concert.title,
         date: concert.date,
         venue: concert.venue,
+        page: concert.page,
         roles: [...new Set(roles)]
       });
     }
@@ -90,8 +91,11 @@ ${rows.map((row) => {
     const title = String(row.title || '').includes(`第 ${row.nth} 屆`)
       ? `《${escapedTitle}》`
       : `第 ${escapeHtml(row.nth)} 屆《${escapedTitle}》`;
+    const titleHtml = row.page
+      ? `<a href="../${escapeHtml(row.page)}">${title}</a>`
+      : title;
     const meta = [zhDate(row.date), row.venue].filter(Boolean).join('．');
-    return `      <tr><th>${escapeHtml(row.year)}</th><td>${title}${meta ? `<br><span class="muted">${escapeHtml(meta)}</span>` : ''}</td><td>${escapeHtml(row.roles.join('、'))}</td></tr>`;
+    return `      <tr><th>${escapeHtml(row.year)}</th><td>${titleHtml}${meta ? `<br><span class="muted">${escapeHtml(meta)}</span>` : ''}</td><td>${escapeHtml(row.roles.join('、'))}</td></tr>`;
   }).join('\n')}
     </table></div>`;
 }
@@ -103,6 +107,36 @@ function renderRelatedLinks(links) {
       <tr><th>類型</th><th>連結</th></tr>
 ${links.map((link) => `      <tr><th>${escapeHtml(link.type)}</th><td><a href="${escapeHtml(link.url)}"${/^https?:/.test(link.url) ? ' target="_blank" rel="noopener"' : ''}>${escapeHtml(link.label)}</a></td></tr>`).join('\n')}
     </table></div>`;
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function linkConcertMentions(html) {
+  const concertLinks = (global.CONCERTS || [])
+    .filter((concert) => concert.page && concert.status !== 'cancelled' && concert.title)
+    .map((concert) => ({
+      nth: concert.nth,
+      title: concert.title,
+      href: `../${concert.page}`
+    }))
+    .sort((a, b) => String(b.title).length - String(a.title).length);
+  const chunks = String(html || '').split(/(<a\b[\s\S]*?<\/a>)/gi);
+  return chunks.map((chunk) => {
+    if (/^<a\b/i.test(chunk)) return chunk;
+    let next = chunk;
+    for (const concert of concertLinks) {
+      const linked = `<a href="${escapeHtml(concert.href)}">《${escapeHtml(concert.title)}》</a>`;
+      next = next.replace(new RegExp(`(?<!>)《${escapeRegExp(concert.title)}》`, 'g'), linked);
+      if (concert.nth) {
+        const full = `第 ${concert.nth} 屆聯合音樂會`;
+        const fullLinked = `<a href="${escapeHtml(concert.href)}">${escapeHtml(full)}</a>`;
+        next = next.replace(new RegExp(escapeRegExp(full), 'g'), fullLinked);
+      }
+    }
+    return next;
+  }).join('');
 }
 
 function textFromHtml(html) {
@@ -144,7 +178,7 @@ ${safeJsonLd(person)}
 }
 
 function renderProfile(profile, options = {}) {
-  const body = fs.readFileSync(path.join(root, profile.source), 'utf8').trim();
+  const body = linkConcertMentions(fs.readFileSync(path.join(root, profile.source), 'utf8').trim());
   const relatedConcerts = findRelatedConcerts(profile);
   const key = profileKey(profile);
   const previewNote = options.preview

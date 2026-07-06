@@ -764,7 +764,7 @@ window.PEOPLE_PROFILES = [
     rosterLink: "../roster.html#p-9921",
     relatedLinks: [
       { label: "嘉義市管樂團〈團員介紹〉", url: "https://cywo1994.com/member/", type: "公開團員資料" },
-      { label: "第 38 屆《一樹起響》聯演紀錄", url: "../concerts.html", type: "校友聯演紀錄" }
+      { label: "第 38 屆《一樹起響》聯演紀錄", url: "../concerts/2023-38th.html", type: "校友聯演紀錄" }
     ],
     sourceHtml: "本文整理自嘉義市管樂團公開團員與演出資料、雲科大雲響管樂社公開資料、嘉中校友聯演演出名單、校友名錄與校友團整理之人物資料；完整師承、各樂器學習順序與現職身分待本人補充確認。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },

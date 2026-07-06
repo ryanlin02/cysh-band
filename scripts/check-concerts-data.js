@@ -48,6 +48,18 @@ if (!Array.isArray(concerts)) {
         if (!exists(rel)) errors.push(`${label}: ${field} not found: ${rel}`);
       });
     });
+    if (c.videos && !Array.isArray(c.videos)) {
+      errors.push(`${label}: videos must be an array.`);
+    }
+    (c.videos || []).forEach((video, videoIndex) => {
+      if (!video || typeof video !== 'object') {
+        errors.push(`${label}: videos[${videoIndex}] must be an object.`);
+        return;
+      }
+      if (!video.label) errors.push(`${label}: videos[${videoIndex}] missing label.`);
+      if (!video.url) errors.push(`${label}: videos[${videoIndex}] missing url.`);
+      if (video.url && !/^https?:\/\//i.test(video.url)) errors.push(`${label}: videos[${videoIndex}] url must be http(s): ${video.url}`);
+    });
     ['conductors', 'soloists', 'organizers', 'performers'].forEach((field) => {
       if (c[field] && !Array.isArray(c[field])) {
         errors.push(`${label}: ${field} must be an array.`);

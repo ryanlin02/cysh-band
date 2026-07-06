@@ -117,6 +117,25 @@ document.addEventListener('DOMContentLoaded', function () {
     if (hashEl) hashEl.classList.add('in');
   }
 
+  /* ---------- 校友聯演卡片整張可點擊 ---------- */
+  document.querySelectorAll('.concert-item, .featured').forEach(function (card) {
+    var primary = card.querySelector('h3 a, .btn[href*="concerts/"]');
+    if (!primary) return;
+    card.classList.add('clickable-card');
+    card.setAttribute('role', 'link');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', primary.textContent.trim());
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('a, button, input, select, textarea')) return;
+      window.location.href = primary.href;
+    });
+    card.addEventListener('keydown', function (e) {
+      if (e.target !== card || (e.key !== 'Enter' && e.key !== ' ')) return;
+      e.preventDefault();
+      window.location.href = primary.href;
+    });
+  });
+
   /* ---------- 數字滾動（首頁 stats） ---------- */
   var nums = document.querySelectorAll('.stat b');
   if (nums.length && !reduced && 'IntersectionObserver' in window) {

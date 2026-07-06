@@ -9,6 +9,10 @@ const root = path.join(__dirname, '..');
 const errors = [];
 const warnings = [];
 const info = [];
+const ignoredDirs = new Set([
+  '.git',
+  '20260704_嘉中管樂社官網_校友提供資料'
+]);
 
 function rel(file) {
   return path.relative(root, file).replace(/\\/g, '/');
@@ -20,7 +24,7 @@ function exists(relativePath) {
 
 function walk(dir, predicate, results = []) {
   for (const name of fs.readdirSync(dir)) {
-    if (name === '.git') continue;
+    if (ignoredDirs.has(name)) continue;
     const file = path.join(dir, name);
     const stat = fs.statSync(file);
     if (stat.isDirectory()) walk(file, predicate, results);
@@ -241,6 +245,18 @@ function checkDataReferences() {
         if (!exists(item)) addError(`data/concerts.js: ${label} ${field} not found: ${item}`);
       }
     }
+    if (concert.videos && !Array.isArray(concert.videos)) {
+      addError(`data/concerts.js: ${label} videos must be an array.`);
+    }
+    for (const [index, video] of (concert.videos || []).entries()) {
+      if (!video || typeof video !== 'object') {
+        addError(`data/concerts.js: ${label} videos[${index}] must be an object.`);
+        continue;
+      }
+      if (!video.label) addError(`data/concerts.js: ${label} videos[${index}] missing label.`);
+      if (!video.url) addError(`data/concerts.js: ${label} videos[${index}] missing url.`);
+      if (video.url && !/^https?:\/\//i.test(video.url)) addError(`data/concerts.js: ${label} videos[${index}] url must be http(s): ${video.url}`);
+    }
     for (const field of ['conductors', 'soloists', 'organizers', 'performers']) {
       if (concert[field] && !Array.isArray(concert[field])) {
         addError(`data/concerts.js: ${label} ${field} must be an array.`);
@@ -456,6 +472,16 @@ function checkGeneratedPeopleIndex() {
   info.push('Generated people index checked: people.html');
 }
 
+function checkGeneratedConcertsIndex() {
+  const { renderConcertsIndex } = require('./generate-concerts-index');
+  const expected = renderConcertsIndex();
+  const actual = read('concerts.html');
+  if (actual !== expected) {
+    addError('concerts.html: generated archive is out of sync. Run node scripts/generate-concerts-index.js');
+  }
+  info.push('Generated concerts archive checked: concerts.html');
+}
+
 function checkPeopleIndexCards() {
   const text = read('people.html');
   const cardRegex = /<div class="card" id="p-([^"]+)">([\s\S]*?)(?=\n\s*<div class="card" id="p-[^"]+">|\n\s*<\/div>\s*(?:<p class="muted"|<\/section>))/g;
@@ -594,6 +620,7 @@ checkFontUrlEncoding();
 checkGeneratedNewsPages();
 checkGeneratedPeoplePages();
 checkGeneratedPeopleIndex();
+checkGeneratedConcertsIndex();
 checkPeopleIndexCards();
 checkPeopleProfilePages();
 printReport();

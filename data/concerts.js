@@ -1,7 +1,7 @@
 /* 歷屆校友聯演資料檔（試作版）
    建立時間：2026-07-04
-   定位：這是第 2 階段資料化試作，先作為 concerts.html 的結構化對照資料，
-   暫時不直接驅動頁面。正式替換 concerts.html 前，需先完成比對、檢查與規範確認。
+   定位：校友聯演的結構化資料來源，供 concerts.html 對照、人物頁相關演出表、
+   以及 scripts/generate-concert-pages.js 產生歷屆獨立資料頁使用。
 
    狀態說明：
    - confirmed：已有海報、節目冊、獨立頁或可靠資料佐證
@@ -11,6 +11,9 @@
    - planning：籌備中，正式資訊尚未全部公告
    - cancelled：已知停辦
 */
+const SOURCE_SOCIAL_VIDEO_LIST = "20260704_嘉中管樂社官網_校友提供資料/04_社群匯出資料/02_Facebook私密社團匯出_原始檔/社群匯出/社群匯出__社群匯出__a4de9dcc__校友聯演歷年錄影連結列表.md";
+const SOURCE_2018_PROGRAM_NOTES = "20260704_嘉中管樂社官網_校友提供資料/04_社群匯出資料/02_Facebook私密社團匯出_原始檔/社群匯出/社群匯出__社群匯出__453ca74b__2018年校友聯演曲目介紹.md";
+
 window.CONCERTS = [
   {
     id: "2026-41st",
@@ -24,7 +27,10 @@ window.CONCERTS = [
     venue: "嘉義市政府文化局音樂廳",
     venueNote: "睽違六年重返文化局音樂廳",
     hostHead: "五字頭",
-    conductors: [],
+    conductors: [
+      { name: "簡晟軒", num: "8861", role: "樂團指導" },
+      { name: "丁肇賢", num: "8501", role: "樂團指導" }
+    ],
     soloists: [
       { name: "黃鈺芠", num: "1051", instrument: "小號", work: "Philip Sparke: Manhattan" }
     ],
@@ -38,7 +44,7 @@ window.CONCERTS = [
     ],
     ticket: { type: "ticketed", price: "待正式公告", channels: ["OPENTIX"], note: "售票資訊以正式公告為準" },
     poster: "assets/img/poster_weiwu_2026.webp",
-    page: "",
+    page: "concerts/2026-41st.html",
     gallery: ["gallery/2026-weiwu.html"],
     news: [
       "news/2026-06-12-rehearsal-schedule.html",
@@ -68,12 +74,12 @@ window.CONCERTS = [
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/concerts/2025.webp",
-    page: "",
+    page: "concerts/2025-40th.html",
     gallery: [],
     news: [],
     sources: ["concerts.html"],
     status: "partial",
-    notes: "總召陳乃慎；鄭鈞元與許哲誠相關協演脈絡見 concerts.html。"
+    notes: "總召陳乃慎；鄭鈞元與許哲誠相關協演脈絡見校友演出紀錄。"
   },
   {
     id: "2024-39th",
@@ -102,11 +108,14 @@ window.CONCERTS = [
       { title: "Yesterday", status: "confirmed" }
     ],
     ticket: { type: "ceremony", price: "", channels: [], note: "百年校慶活動" },
-    poster: "",
-    page: "",
+    poster: "assets/img/concerts/2024.webp",
+    page: "concerts/2024-39th.html",
     gallery: [],
+    videos: [
+      { label: "第 39 屆《三生有幸》錄影清單（鄧杰翔學長錄影）", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qmp7OAM5EYVdJc6TjsHSeEj&si=6-GILdAd7G5n2P0r", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "前副總統蕭萬長等貴賓與 180 餘位嘉中人共襄盛舉。"
   },
@@ -135,10 +144,13 @@ window.CONCERTS = [
     program: [{ title: "旭陵慶典", composer: "葉哲良", status: "confirmed", note: "首演" }],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/concerts/2023.webp",
-    page: "",
+    page: "concerts/2023-38th.html",
     gallery: [],
+    videos: [
+      { label: "第 38 屆《一樹起響》錄影清單（吳明德學長手機錄影）", url: "https://youtube.com/playlist?list=PLrgre0LUNSYDPJu7FjDyfow4dvdFImMTa&si=nlORMnALVCRH-HQ8", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "翁啟榮籌備統籌；中央社報導伍佰高中副隊長與低音號故事。"
   },
@@ -149,20 +161,27 @@ window.CONCERTS = [
     rocYear: 111,
     title: "從0開始",
     subtitle: "",
+    aliases: ["從零開始"],
     date: "",
     time: "",
     venue: "嘉義高中樹人堂",
     venueNote: "2021 疫情停辦後重啟",
     hostHead: "零字頭",
-    conductors: [],
+    conductors: [
+      { name: "簡晟軒", num: "8861", role: "樂團指導" },
+      { name: "丁肇賢", num: "8501", role: "樂團指導" }
+    ],
     soloists: [{ name: "莊宗儒", num: "0271", instrument: "上低音號", work: "" }],
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
-    poster: "",
-    page: "",
+    poster: "assets/img/concerts/2022.webp",
+    page: "concerts/2022-37th.html",
     gallery: [],
+    videos: [
+      { label: "第 37 屆《從零開始》錄影清單", url: "https://youtube.com/playlist?list=PLx4Z-dMoougSXkYYsdbDti1UTSIhj2-OY&si=-EIgy3jCjKxYo1cJ", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "日期、曲目、完整名單待補。"
   },
@@ -195,8 +214,9 @@ window.CONCERTS = [
     nth: 36,
     year: 2020,
     rocYear: 109,
-    title: "Parent-Child 99",
-    subtitle: "",
+    title: "親子九九",
+    subtitle: "Parent-Child 99",
+    aliases: ["親子久久"],
     date: "2020-08-29",
     time: "14:30",
     venue: "嘉義市文化局音樂廳",
@@ -211,12 +231,15 @@ window.CONCERTS = [
     program: [],
     ticket: { type: "ticketed", price: "100", channels: ["兩廳院售票系統", "ibon"], note: "" },
     poster: "assets/img/concerts/2020.webp",
-    page: "",
+    page: "concerts/2020-36th.html",
     gallery: [],
+    videos: [
+      { label: "第 36 屆《親子九九》錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qmmg5jrps8SSy2B1uukzSiu", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
-    notes: ""
+    notes: "社群錄影清單作《親子九九》；籌備貼文另見《親子久久》用語，暫列別名待考。"
   },
   {
     id: "2019-35th",
@@ -275,8 +298,12 @@ window.CONCERTS = [
     poster: "assets/img/concerts/2019.webp",
     page: "concerts/2019-35th.html",
     gallery: [],
+    videos: [
+      { label: "第 35 屆《正八音》樹人堂場錄影清單", url: "https://youtube.com/playlist?list=PLzUX_mdxEPjXYhGIosLIcPNW9DgrdXMmt", source: SOURCE_SOCIAL_VIDEO_LIST },
+      { label: "第 35 屆《正八音》北港場錄影清單", url: "https://youtube.com/playlist?list=PLzUX_mdxEPjXYhGIosLIcPNW9DgrdXMmt", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html", "concerts/2019-35th.html"],
+    sources: ["concerts.html", "concerts/2019-35th.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "confirmed",
     notes: "兩場合計約 550 名觀眾；動員 76 人、計 129 人次。"
   },
@@ -298,20 +325,26 @@ window.CONCERTS = [
     ],
     soloists: [],
     program: [
-      { title: "稚鳥飛翔", status: "confirmed" },
-      { title: "七夕", status: "confirmed" },
-      { title: "豪勇七蛟龍", status: "confirmed" },
-      { title: "007", status: "confirmed" },
-      { title: "美國風情畫", status: "confirmed" }
+      { title: "Fanfare - Young Pheasants in the Sky", composer: "Satoshi Yagisawa", status: "confirmed", note: "稚鳥飛翔" },
+      { title: "Abram's Pursuit", composer: "David Holsinger", status: "confirmed", note: "亞拉伯罕之追" },
+      { title: "Spartacus", composer: "Jan van der Roost", status: "confirmed", note: "交響詩－斯巴達克斯" },
+      { title: "Seven Cities of Gold", composer: "David Lovrien", status: "confirmed", note: "七座黃金城市" },
+      { title: "The Seventh Night of July", composer: "Itaru Sakai", status: "confirmed", note: "七夕" },
+      { title: "The Magnificent Seven", composer: "Elmer Bernstein", status: "confirmed", note: "豪勇七蛟龍" },
+      { title: "Bond... James Bond", arranger: "Stephen Bulla", status: "confirmed", note: "詹姆士龐德 007" },
+      { title: "America Graffiti VII", arranger: "Naohiro Iwai", status: "confirmed", note: "美國風情畫七" }
     ],
     ticket: { type: "ticketed", price: "100", channels: [], note: "" },
     poster: "assets/img/concerts/2018.webp",
-    page: "",
+    page: "concerts/2018-34th.html",
     gallery: [],
+    videos: [
+      { label: "第 34 屆《當我的七仔好嗎》錄影與示範帶清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qk-a2Ycs4OKFJr8FRU72K6V", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST, SOURCE_2018_PROGRAM_NOTES],
     status: "partial",
-    notes: "屆數依規範列為推算值，待節目冊佐證。"
+    notes: "社群協作曲目介紹可補全本屆曲目；錄影清單註明因版權因素，YouTube 上傳後多有消音或版權宣告，現存清單多為示範帶。"
   },
   {
     id: "2017-33rd",
@@ -345,12 +378,62 @@ window.CONCERTS = [
     ],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/concerts/2017.webp",
-    page: "",
+    page: "concerts/2017-33rd.html",
     gallery: [],
+    videos: [
+      { label: "第 33 屆《六馬仰秣》錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4ql68tkPdaF3lniP66sTedsW", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "部分曲名取自海報小字，待節目冊佐證；屆數依規範列為推算值。"
+  },
+  {
+    id: "2016-32nd",
+    nth: 32,
+    year: 2016,
+    rocYear: 105,
+    title: "五字頭！",
+    subtitle: "",
+    date: "2016-08-27",
+    time: "17:00",
+    venue: "嘉義市文化公園演奏台",
+    venueNote: "",
+    hostHead: "五字頭",
+    organizers: [
+      { name: "嘉義高中校友管樂團", role: "主辦單位" }
+    ],
+    conductors: [
+      { name: "陳錫仁", num: "6301", role: "指揮" },
+      { name: "翁啟榮", num: "7581", role: "指揮" },
+      { name: "丁肇賢", num: "8501", role: "指揮" }
+    ],
+    soloists: [],
+    program: [
+      { title: "The Days of Wine and Roses", composer: "Henry Mancini", arranger: "Naohiro Iwai", status: "confirmed" },
+      { title: "各種管樂重奏", status: "partial", note: "曲目 2-5 待節目冊補齊" },
+      { title: "松田聖子歌曲選粹", arranger: "Naohiro Iwai", status: "partial" },
+      { title: "On the Mall", composer: "Edwin Franko Goldman", status: "confirmed" },
+      { title: "新天堂樂園", composer: "Andrea Morricone / Ennio Morricone", arranger: "M. Oshima", status: "partial" },
+      { title: "晚霞", composer: "王福齡", arranger: "San Pedro", status: "confirmed" },
+      { title: "My Way", composer: "Paul Anka", arranger: "Naohiro Iwai", status: "confirmed" }
+    ],
+    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    poster: "assets/img/concerts/2016.webp",
+    page: "concerts/2016-32nd.html",
+    gallery: [],
+    videos: [
+      { label: "第 32 屆《五字頭》錄影清單", url: "https://youtube.com/playlist?list=PLAVnw2heYVvnEursVMqOMsCQ8z8knBFSF", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
+    news: [],
+    sources: [
+      "concerts.html",
+      SOURCE_SOCIAL_VIDEO_LIST,
+      "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/2016_第32屆_校友聯演_待補/10_節目冊海報文宣_公開候選/節目冊海報文宣__7581翁啟榮提供__99de70c5__DM.jpg",
+      "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/2016_第32屆_校友聯演_待補/10_節目冊海報文宣_公開候選/節目冊海報文宣__7581翁啟榮提供__84485060__演出曲目.docx"
+    ],
+    status: "partial",
+    notes: "DM 確認主題、屆次、日期、時間、場地、指揮、指導與主辦單位；曲目檔確認部分曲目，室內樂重奏細目待補。"
   },
   {
     id: "2015-31st",
@@ -408,8 +491,11 @@ window.CONCERTS = [
     poster: "assets/img/concerts/2015.webp",
     page: "concerts/2015-31st.html",
     gallery: [],
+    videos: [
+      { label: "第 31 屆《三生情一世樂》錄影清單", url: "https://youtube.com/playlist?list=PLAVnw2heYVvlWoZvSn-QPXnABOTnjmDnY", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html", "concerts/2015-31st.html"],
+    sources: ["concerts.html", "concerts/2015-31st.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "confirmed",
     notes: "不可因此誤寫 2026 為首度售票。"
   },
@@ -420,6 +506,7 @@ window.CONCERTS = [
     rocYear: 103,
     title: "三十而樂",
     subtitle: "卅有其誓 × 出磊拔粹",
+    aliases: ["３０而礫"],
     date: "",
     time: "",
     venue: "",
@@ -430,12 +517,15 @@ window.CONCERTS = [
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/concerts/2014.webp",
-    page: "",
+    page: "concerts/2014-30th.html",
     gallery: [],
+    videos: [
+      { label: "第 30 屆《３０而礫》錄影清單", url: "https://youtube.com/playlist?list=PLAVnw2heYVvn5-dmQCDPpVOIpMu5hdO5J", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
-    notes: "日期、場地、指揮、曲目待補。"
+    notes: "社群錄影清單作《３０而礫》；現有主頁與海報替代文字作《三十而樂》，名稱仍需節目冊或海報圖像再核對。日期、場地、指揮、曲目待補。"
   },
   {
     id: "2013-29th",
@@ -444,6 +534,7 @@ window.CONCERTS = [
     rocYear: 102,
     title: "第 29 屆聯合音樂會",
     subtitle: "",
+    aliases: ["２９"],
     date: "2013-08-23",
     time: "19:30",
     venue: "嘉義市政府文化局音樂廳",
@@ -489,8 +580,11 @@ window.CONCERTS = [
     poster: "assets/img/concerts/2013.webp",
     page: "concerts/2013-29th.html",
     gallery: [],
+    videos: [
+      { label: "第 29 屆《２９》錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qkLOi9_u0uwB7Q3EDJuOsv1", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html", "concerts/2013-29th.html"],
+    sources: ["concerts.html", "concerts/2013-29th.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "confirmed",
     notes: "全團約 80 人；正式節目冊資料完整。"
   },
@@ -515,12 +609,51 @@ window.CONCERTS = [
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/concerts/2012.webp",
-    page: "",
+    page: "concerts/2012-28th.html",
     gallery: [],
+    videos: [
+      { label: "第 28 屆錄影清單", url: "https://youtube.com/playlist?list=PL59A19BE790C3493A", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "嘉義市文化局主辦，國立嘉義高中協辦，行政院青輔會與教育部指導。"
+  },
+  {
+    id: "2011-27th",
+    nth: 27,
+    year: 2011,
+    rocYear: 100,
+    title: "第 27 屆聯合音樂會",
+    subtitle: "",
+    date: "2011-07-16",
+    time: "",
+    venue: "",
+    venueNote: "場地待考",
+    hostHead: "",
+    conductors: [],
+    soloists: [],
+    performers: [
+      { name: "鄧杰翔", num: "8302", role: "打擊聲部" }
+    ],
+    program: [],
+    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    poster: "",
+    page: "concerts/2011-27th.html",
+    gallery: [],
+    videos: [
+      { label: "第 27 屆錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qkJw6ZNI0hCR3rqHIjCS3zV", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
+    news: [],
+    sources: [
+      "concerts.html",
+      SOURCE_SOCIAL_VIDEO_LIST,
+      "content/people/8302.html",
+      "people/8302.html",
+      "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/2011_校友演奏會_待考/20_照片影像_公開候選"
+    ],
+    status: "partial",
+    notes: "2011 聯演存在與鄧杰翔打擊聲部由人物頁名單脈絡確認；日期由 2011.07.16 影像 EXIF 支持，場地、指揮、主題與完整曲目待節目冊或海報補齊。2011 世界管樂年會校友團協奏紀錄暫列為同年相關活動，未直接併入第 27 屆。"
   },
   {
     id: "2010-26th",
@@ -546,10 +679,45 @@ window.CONCERTS = [
     poster: "",
     page: "concerts/2010-26th.html",
     gallery: [],
+    videos: [
+      { label: "第 26 屆錄影清單（現存小牛仔片段）", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qlvf60Z_F7TS6Ndv160NGTs", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html", "concerts/2010-26th.html"],
+    sources: ["concerts.html", "concerts/2010-26th.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "指揮、曲目、正式場地名稱待考。"
+  },
+  {
+    id: "2009-25th",
+    nth: 25,
+    year: 2009,
+    rocYear: 98,
+    title: "第 25 屆聯合音樂會",
+    subtitle: "",
+    date: "2009-08-23",
+    time: "",
+    venue: "嘉義市音樂廳",
+    venueNote: "今嘉義市政府文化局音樂廳",
+    hostHead: "",
+    conductors: [],
+    soloists: [
+      { name: "王聖安", num: "9161", instrument: "雙鋼琴", work: "Francis Poulenc: Concerto for Two Pianos" },
+      { name: "陳佩君", instrument: "雙鋼琴", work: "Francis Poulenc: Concerto for Two Pianos" }
+    ],
+    program: [
+      { title: "Francis Poulenc: Concerto for Two Pianos", status: "partial", note: "由王聖安人物頁確認" }
+    ],
+    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    poster: "",
+    page: "concerts/2009-25th.html",
+    gallery: [],
+    videos: [
+      { label: "第 25 屆錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qkbJDaF7reo-eFQncSMNk63", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
+    news: [],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST, "content/people/9161.html", "people/9161.html", "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/2009_校友演奏會_待考/20_照片影像_公開候選"],
+    status: "partial",
+    notes: "場地由使用者確認為嘉義市音樂廳；日期由補充照片 EXIF 與演出影像檔名群組支持；指揮、主題與完整曲目待補。"
   },
   {
     id: "2008-24th",
@@ -571,10 +739,13 @@ window.CONCERTS = [
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "",
-    page: "",
+    page: "concerts/2008-24th.html",
     gallery: [],
+    videos: [
+      { label: "第 24 屆《管樂肖像》錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qnoQJNUaV01j98dwZn6_BFn", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "曲目橫跨古典管樂、現代作品、臺灣歌曲與流行音樂改編；日期與場地待補。"
   },
@@ -605,12 +776,40 @@ window.CONCERTS = [
     ],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "",
-    page: "",
+    page: "concerts/2007-23rd.html",
     gallery: [],
     news: [],
     sources: ["concerts.html"],
     status: "partial",
     notes: "嘉中管樂隊創隊 76 周年。"
+  },
+  {
+    id: "2006-22nd",
+    nth: 22,
+    year: 2006,
+    rocYear: 95,
+    title: "第 22 屆聯合音樂會",
+    subtitle: "",
+    date: "",
+    time: "",
+    venue: "嘉義市音樂廳",
+    venueNote: "今嘉義市政府文化局音樂廳",
+    hostHead: "",
+    conductors: [],
+    soloists: [
+      { name: "簡晟軒", num: "8861", instrument: "長號", work: "Launy Grøndahl: Trombone Concerto" }
+    ],
+    program: [
+      { title: "Launy Grøndahl: Trombone Concerto", status: "partial", note: "由簡晟軒人物頁與公開履歷脈絡交叉確認" }
+    ],
+    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    poster: "",
+    page: "concerts/2006-22nd.html",
+    gallery: [],
+    news: [],
+    sources: ["concerts.html", "content/people/8861.html", "people/8861.html"],
+    status: "partial",
+    notes: "完整日期、指揮、主題與曲目仍待節目冊或海報補齊；校友提供影像仍需交叉確認，暫不作為公開頁主證據。"
   },
   {
     id: "2005-21st",
@@ -631,8 +830,11 @@ window.CONCERTS = [
     poster: "",
     page: "concerts/2005-21st.html",
     gallery: [],
+    videos: [
+      { label: "第 21 屆《神話》錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qnayc53KBzO3qEKPjQUqcae", source: SOURCE_SOCIAL_VIDEO_LIST }
+    ],
     news: [],
-    sources: ["concerts.html", "concerts/2005-21st.html"],
+    sources: ["concerts.html", "concerts/2005-21st.html", SOURCE_SOCIAL_VIDEO_LIST],
     status: "partial",
     notes: "現存後台、正式演出、謝幕照片；場地、指揮、曲目待考。"
   },
@@ -653,12 +855,83 @@ window.CONCERTS = [
     program: [{ title: "Blue Midnight", status: "partial", note: "照片檔名留下之曲目線索" }],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/gallery/2002/0830c-06.webp",
-    page: "gallery/2002-concert.html",
+    page: "concerts/2002-18th.html",
     gallery: ["gallery/2002-concert.html"],
     news: [],
     sources: ["concerts.html", "gallery/2002-concert.html"],
     status: "partial",
     notes: "目前影像保存最完整的早期屆別；主題名稱與完整節目單待考。"
+  },
+  {
+    id: "1998-14th",
+    nth: 14,
+    year: 1998,
+    rocYear: 87,
+    title: "情誼永固",
+    subtitle: "How Firm Thy Friendship",
+    date: "1998-08-29",
+    time: "19:30",
+    venue: "嘉義市立文化中心音樂廳",
+    venueNote: "今嘉義市政府文化局音樂廳",
+    hostHead: "",
+    conductors: [
+      { name: "羅家駒", num: "6392", role: "指揮" },
+      { name: "陳錫仁", num: "6301", role: "指揮／小號獨奏" }
+    ],
+    soloists: [
+      { name: "陳錫仁", num: "6301", instrument: "小號", work: "Hummel: Trumpet Concerto in E-flat" }
+    ],
+    program: [
+      { title: "Viva! Italia!", arranger: "J. Bullock", status: "confirmed" },
+      { title: "Andante from Symphony No. 5", composer: "L. V. Beethoven", arranger: "T. M.-Tobani", status: "confirmed" },
+      { title: "Symphonic Portrait", composer: "S. Rachmaninoff", arranger: "A. Antonini", status: "confirmed" },
+      { title: "Trumpet Concerto in E-flat", composer: "J. Hummel", arranger: "J. Corley", status: "confirmed" },
+      { title: "Firm Thy Friendship", composer: "James Swearingen", status: "confirmed" },
+      { title: "Springtime Celebration", composer: "Alfred Reed", status: "confirmed" },
+      { title: "American Folk Fantasia", composer: "Ed Huckeby", status: "confirmed" },
+      { title: "The Emerald Isle", composer: "Dave Black", status: "confirmed" },
+      { title: "African Symphony", composer: "Van McCoy", arranger: "Naohiro Iwai", status: "confirmed" },
+      { title: "Carpenters Forever", arranger: "Toshio Mashima", status: "confirmed" }
+    ],
+    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    poster: "assets/img/concerts/1998.webp",
+    page: "concerts/1998-14th.html",
+    gallery: [],
+    news: [],
+    sources: [
+      "concerts.html",
+      "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/1990_早期校友演奏會_待考/10_節目冊海報文宣_公開候選/節目冊海報文宣__校友提供__6066c757__74568191_3528475503831025_8578050035239878656_n.jpg",
+      "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/1990_早期校友演奏會_待考/10_節目冊海報文宣_公開候選/節目冊海報文宣__校友提供__267adef7__75279247_3528476053830970_5702877242284048384_n.jpg"
+    ],
+    status: "partial",
+    notes: "節目冊封面與曲目頁完整度高；屆次依 1985 年第 1 屆推算為第 14 屆，待正式屆次文字佐證。補充資料中同時保存其他早期年份影像，已依節目冊封面文字辨識本筆為 1998 年。"
+  },
+  {
+    id: "1990-6th",
+    nth: 6,
+    year: 1990,
+    rocYear: 79,
+    title: "Popular Night",
+    subtitle: "",
+    date: "1990-08-23",
+    time: "19:30",
+    venue: "嘉中樹人堂",
+    venueNote: "",
+    hostHead: "",
+    conductors: [],
+    soloists: [],
+    program: [],
+    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    poster: "assets/img/concerts/1990.webp",
+    page: "concerts/1990-6th.html",
+    gallery: [],
+    news: [],
+    sources: [
+      "concerts.html",
+      "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/1990_早期校友演奏會_待考/10_節目冊海報文宣_公開候選/節目冊海報文宣__校友提供__518498ed__74984677_3528475117164397_253369561129156608_n.jpg"
+    ],
+    status: "partial",
+    notes: "封面寫作「七九年校友聯合演奏會」，日期 8 月 23 日星期四與 1990 年相符；屆次依 1985 年第 1 屆推算為第 6 屆，待正式屆次文字、指揮、曲目與團員名單佐證。"
   },
   {
     id: "1985-1st",
@@ -677,7 +950,7 @@ window.CONCERTS = [
     program: [],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "",
-    page: "",
+    page: "concerts/1985-1st.html",
     gallery: [],
     news: [],
     sources: ["concerts.html", "history.html"],
