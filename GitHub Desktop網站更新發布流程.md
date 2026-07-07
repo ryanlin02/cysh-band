@@ -5,6 +5,7 @@
 GitHub 專案：`ryanlin02/cysh-band`  
 正式網址：<https://cysh.band/>  
 文件用途：讓完全不熟 Git、GitHub、VS Code 的維護者，也能理解如何安全更新網站、檢查修改、發布到 GitHub Pages。
+文件角色：本文件是人工使用 GitHub Desktop 發布網站的操作教學。AI 修改網站時仍應優先遵守 `AGENTS.md`、`README.md` 與 `網站製作規範.md`；根目錄文件的整體分工見 `文件總覽與AI協作流程.md`。
 
 ---
 
