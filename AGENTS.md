@@ -167,6 +167,16 @@ node scripts/generate-concert-pages.js
 
 - 全站色彩、版面、圓角、陰影、動畫 token 以 `css/style.css` 的 `:root` 為準，不要在新元件中隨意硬寫新色碼或新設計語言。
 - 新內容優先沿用既有 class，如 `.section`、`.card`、`.cards`、`.concert-item`、`.news-list`、`.gallery-grid`、`.btn`、`.filter-bar`、`.table-scroll > table.plain`。
+- 卡片語言主要保留給人物資訊與大量人物索引（人物誌、校友名錄）；最新消息使用文章索引設計，歷屆聯演使用典藏列表設計，不要再做成卡片牆。
+- 當屆演出可保留主視覺大卡，但卡片內不得再塞小卡、表格感欄位、過多框線或膠囊標籤；資訊層級應靠標題、meta、段落與細分隔線完成。
+- 最新消息在首頁、校友聯演頁與消息總覽頁共用 `.news-list`／`.news-item` 設計：圖片與標題為主，日期只是小型 meta，不建立大日期欄。
+- 歷屆聯演列表由 `data/concerts.js` 與 `scripts/generate-concerts-index.js` 產生。不要直接手改 `concerts.html` 的 GENERATED 區塊；如需改呈現語言，改資料、產生器或 CSS 後重跑腳本。
+- 歷屆聯演列表頁的海報可作為裁切、淡化後的右側背景視覺，不必強求整張完整露出；單一屆別介紹頁則必須完整呈現文宣海報，不可裁切掉文字或設計資訊。
+- 歷屆聯演列表頁的右側背景海報應由右側清楚、往左側自然淡出，左側不得出現明顯圖片邊緣；優先用 CSS `mask-image` 讓圖片本體淡出，再用覆蓋層保護文字可讀性。
+- 屆別介紹頁的曲目用 `.concert-program-list` 分隔線清單，不用卡片；每首曲目可依該場節目冊填入中外文標題、作曲／編曲資訊與專屬解說，不可用通用曲庫文字覆蓋節目冊版本。
+- 屆別介紹頁的指揮與獨奏者用 `.concert-people-list .person-byline` 文章列，不用人物卡片；若 `data/concerts.js` 的人物物件有 `concertBio`／`concertRole`，必須優先使用該場次版本。人物照片與姓名都要連到個人介紹頁；資料不足時才退回人物誌摘要或待補文字。
+- 手寫屆別頁轉為資料驅動前，必須比對原頁，不得刪除已整理的演出人員名冊、幕後行政團隊、職掌、贊助致謝、照片序列、資料來源或節目冊註記。`data/concerts.js` 可用 `performerGroups`、`adminRows`、`sponsorParagraphs`、`photos`、`sourceNote` 等欄位保留原始史料。
+- 除 `concerts/2019-35th.html` 第 35 屆《正八音》外，屆別介紹頁應由 `scripts/generate-concert-pages.js` 依 `data/concerts.js` 產生。2019 因雙場次、不同場地與演出人員差異保留手寫 HTML，產生器會跳過。
 - 導覽維持 8 項扁平架構：首頁、關於樂團、九十五年、編號、人物誌、校友名錄、校友聯演、影像館。新增第一層導覽前需重新評估架構。
 - 行動版需檢查 375px、768px、1080px。新增或修改互動元件時，確認漢堡選單、篩選面板、表格橫向捲動、lightbox 不破版。
 - 表格在手機版仍維持桌機欄位比例，靠 `.table-scroll` 橫向捲動；不要改成堆疊卡片。
@@ -214,7 +224,7 @@ node scripts/check-site.js
 ### 9.4 更新聯演資料
 
 1. 優先更新 `data/concerts.js`。
-2. 若獨立頁是人工頁，手動補對應內容；若是產生頁，重跑產生器。
+2. 一般屆別頁重跑產生器；若要把舊人工頁改為資料驅動頁，使用 `node scripts/generate-concert-pages.js --overwrite-manual`。目前唯一保留人工頁的例外是 `concerts/2019-35th.html`。
 3. 執行：
 
 ```bash

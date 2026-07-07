@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* 依 data/concerts.js 更新 concerts.html 的歷屆紀錄卡片。
+/* 依 data/concerts.js 更新 concerts.html 的歷屆紀錄列表。
    用法：
    node scripts/generate-concerts-index.js
    node scripts/generate-concerts-index.js --check */
@@ -223,7 +223,7 @@ function expandArchiveIntro(concert, value) {
     sentences.push(`仍待補齊${missing.join('、')}等資料；若校友保存節目冊、海報、照片或錄音，歡迎協助補充。`);
   }
   if (sentences.join('').length < 250) {
-    sentences.push('後續整理會盡量回到節目冊、照片、錄影與校友口述之間互相校對，讓卡片上的簡介先保留可閱讀的輪廓，也讓獨立頁面持續累積更完整的演出脈絡。');
+    sentences.push('後續整理會盡量回到節目冊、照片、錄影與校友口述之間互相校對，讓列表摘要先保留可閱讀的輪廓，也讓獨立頁面持續累積更完整的演出脈絡。');
   }
   return trimIntro(sentences.join(''));
 }

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-/* 依 data/concerts.js 產生缺漏的校友聯演獨立資料頁。
-   既有人工頁不覆寫；只有缺頁或本腳本生成頁會更新。
-   用法：node scripts/generate-concert-pages.js */
+/* 依 data/concerts.js 產生校友聯演獨立資料頁。
+   預設只更新缺頁或本腳本生成頁；加上 --overwrite-manual 可將人工頁改為資料驅動頁。
+   2019 第 35 屆《正八音》為雙場次、場地與人員差異較大的手寫例外。
+   用法：node scripts/generate-concert-pages.js [--overwrite-manual] [concert-id] */
 const fs = require('fs');
 const path = require('path');
 
@@ -15,7 +16,10 @@ const concerts = global.CONCERTS || [];
 const peopleProfiles = global.PEOPLE_PROFILES || [];
 const newsItems = global.NEWS || [];
 const generatedMarker = '<!-- GENERATED CONCERT PAGE -->';
-const onlyIds = new Set(process.argv.slice(2));
+const args = process.argv.slice(2);
+const overwriteManual = args.includes('--overwrite-manual');
+const onlyIds = new Set(args.filter((arg) => !arg.startsWith('--')));
+const manualPageExceptions = new Set(['2019-35th']);
 
 function exists(rel) {
   return fs.existsSync(path.join(root, rel));
@@ -120,6 +124,7 @@ function personPhoto(profile) {
 }
 
 function personSummary(person, profile, fallbackRole) {
+  if (person.concertBio) return escapeHtml(person.concertBio);
   if (profile && profile.description) return escapeHtml(profile.description);
   const role = person.role || fallbackRole;
   if (person.work) {
@@ -129,10 +134,15 @@ function personSummary(person, profile, fallbackRole) {
 }
 
 function roleText(person, fallbackRole) {
-  return [person.role || fallbackRole, person.instrument, person.work]
+  if (person.concertRole) return escapeHtml(person.concertRole);
+  return [person.concertRole || person.role || fallbackRole, person.instrument, person.work]
     .filter(Boolean)
     .map(escapeHtml)
     .join('／');
+}
+
+function linkToFullProfile(href) {
+  return href ? ` <a href="${href}">閱讀完整人物誌 →</a>` : '';
 }
 
 function renderPersonByline(person, fallbackRole) {
@@ -141,22 +151,41 @@ function renderPersonByline(person, fallbackRole) {
   const name = href
     ? `<a href="${href}">${escapeHtml(person.name)}</a>`
     : escapeHtml(person.name);
+  const photo = `<img src="${personPhoto(profile)}" alt="${escapeHtml(person.name)}">`;
+  const photoNode = href ? `<a class="person-photo-link" href="${href}" aria-label="查看${escapeHtml(person.name)}人物誌">${photo}</a>` : photo;
   const role = roleText(person, fallbackRole);
+  const summary = personSummary(person, profile, fallbackRole);
   return `<div class="person-byline">
-      <img src="${personPhoto(profile)}" alt="${escapeHtml(person.name)}">
+      ${photoNode}
       <div>
         <h3>${name}</h3>
         ${role ? `<p class="role">${role}</p>` : ''}
-        <p>${personSummary(person, profile, fallbackRole)}</p>
+        <p>${summary}${linkToFullProfile(href)}</p>
       </div>
     </div>`;
 }
 
 function renderPeopleSection(concert) {
-  const people = [
-    ...(concert.conductors || []).map((person) => ({ person, role: '指揮' })),
-    ...(concert.soloists || []).map((person) => ({ person, role: '獨奏／協奏' }))
-  ];
+  const peopleMap = new Map();
+  for (const { person, role } of [
+    ...(concert.conductors || []).map((item) => ({ person: item, role: '指揮' })),
+    ...(concert.soloists || []).map((item) => ({ person: item, role: '獨奏／協奏' }))
+  ]) {
+    const key = person.num || person.id || person.name;
+    if (!peopleMap.has(key)) {
+      peopleMap.set(key, { person: { ...person }, role });
+      continue;
+    }
+    const current = peopleMap.get(key);
+    current.person = {
+      ...person,
+      ...current.person,
+      instrument: current.person.instrument || person.instrument,
+      work: current.person.work || person.work,
+      concertRole: current.person.concertRole || person.concertRole || [current.person.role, person.role].filter(Boolean).join('／')
+    };
+  }
+  const people = [...peopleMap.values()];
   if (!people.length) {
     return '<p class="muted">本屆指揮與獨奏／協奏音樂家資料仍待考證；若您保存節目冊或演出紀錄，歡迎聯絡補充。</p>';
   }
@@ -190,12 +219,15 @@ function missingFields(concert) {
   if (!concert.venue) missing.push('演出場地');
   if (!concert.conductors || !concert.conductors.length) missing.push('指揮');
   if (!concert.program || !concert.program.length) missing.push('完整曲目');
-  if (!concert.performers || !concert.performers.length) missing.push('完整團員名單');
+  if ((!concert.performers || !concert.performers.length) && (!concert.performerGroups || !concert.performerGroups.length)) missing.push('完整團員名單');
   return missing;
 }
 
 function concertIntro(concert, desc) {
   const paragraphs = [];
+  if (concert.intro && concert.intro.length) {
+    return concert.intro.map((text) => `<p>${escapeHtml(text)}</p>`).join('\n    ');
+  }
   const note = publicNote(concert.notes, '');
   if (note) paragraphs.push(note);
   if (concert.venueNote && !paragraphs.join('').includes(concert.venueNote)) paragraphs.push(concert.venueNote);
@@ -238,7 +270,7 @@ function concertInfoTable(concert, statusText) {
     </table></div>`;
 }
 
-function programList(program) {
+function programList(program, concert = {}) {
   if (!program || !program.length) return '<p class="muted">完整曲目待考證。</p>';
   const withSection = program.some((work) => work.section || work.part || work.half);
   const sections = [];
@@ -255,17 +287,29 @@ function programList(program) {
   } else {
     sections.push({ key: '', works: program });
   }
-  const renderWorks = (works) => `<ol class="concert-program-list">
-      ${works.map((work) => {
-    const title = escapeHtml(work.title || '曲名待考');
-    const meta = [work.composer, work.arranger ? `arr. ${work.arranger}` : '', work.note]
+  const titleText = (work) => {
+    if (work.displayTitle) return escapeHtml(work.displayTitle);
+    const main = work.localTitle || work.title || '曲名待考';
+    const foreign = work.foreignTitle || work.originalTitle || '';
+    return `${escapeHtml(main)}${foreign ? ` <i>${escapeHtml(foreign)}</i>` : ''}`;
+  };
+  const composerText = (work) => {
+    if (work.credit) return escapeHtml(work.credit);
+    return [work.composer, work.arranger ? `arr. ${work.arranger}` : '', work.note]
       .filter(Boolean)
       .map(escapeHtml)
       .join('／');
-    return `<li><b>${title}</b>${meta ? `<span>${meta}</span>` : ''}</li>`;
+  };
+  const renderWorks = (works) => `<ol class="concert-program-list">
+      ${works.map((work) => {
+    const meta = composerText(work);
+    const description = work.description ? `<p>${escapeHtml(work.description)}</p>` : '';
+    return `<li><b>${titleText(work)}</b>${meta ? `<span>${meta}</span>` : ''}${description}</li>`;
   }).join('\n      ')}
     </ol>`;
-  return sections.map((section) => `${section.key ? `<h3>${escapeHtml(section.key)}</h3>` : ''}${renderWorks(section.works)}`).join('\n    ');
+  const content = sections.map((section) => `${section.key ? `<h3>${escapeHtml(section.key)}</h3>` : ''}${renderWorks(section.works)}`).join('\n    ');
+  const sourceNote = concert.programNote || '';
+  return `${content}${sourceNote ? `\n    <p class="muted">${escapeHtml(sourceNote)}</p>` : ''}`;
 }
 
 function sessionsTable(sessions) {
@@ -300,38 +344,84 @@ function provenanceText(concert, missing) {
   const state = missing.length
     ? `目前仍待補：${missing.map(escapeHtml).join('、')}。`
     : '基本欄位已有可考資料，仍會持續核對節目冊與校友補充。';
+  if (concert.sourceNote || (concert.sourceNotes && concert.sourceNotes.length)) {
+    const notes = concert.sourceNotes && concert.sourceNotes.length ? concert.sourceNotes : [concert.sourceNote];
+    return `${notes.map((note) => `<p>${escapeHtml(note)}</p>`).join('\n    ')}
+    <p class="muted">${state}</p>`;
+  }
   return `<p>本頁依校友提供之海報、節目冊、照片、錄影清單與網站既有資料整理。部分早期屆別仍缺完整節目單、指揮、曲目或團員名單；若您留有相關資料，歡迎透過粉絲專頁聯絡補充。</p>
     <p class="muted">${state}</p>`;
 }
 
-function performerRows(performers) {
-  if (!performers || !performers.length) return '<p class="muted">完整演出人員名單待節目冊、團員名冊或校友補充資料確認。</p>';
+function rosterPersonText(entry) {
+  if (!entry) return '';
+  if (typeof entry === 'string') {
+    const match = entry.match(/^(\d{4})\s+(.+)$/);
+    if (!match) return escapeHtml(entry);
+    const [, num] = match;
+    return exists(`people/${num}.html`)
+      ? `<a href="../people/${escapeHtml(num)}.html">${escapeHtml(entry)}</a>`
+      : escapeHtml(entry);
+  }
+  if (entry.text) return rosterPersonText(entry.text);
+  const key = entry.num || entry.id;
+  const label = [
+    entry.num,
+    entry.name,
+    entry.note ? `(${entry.note})` : ''
+  ].filter(Boolean).join(' ');
+  return key && exists(`people/${key}.html`)
+    ? `<a href="../people/${escapeHtml(key)}.html">${escapeHtml(label)}</a>`
+    : escapeHtml(label || entry.name || '');
+}
+
+function rosterPeopleText(people) {
+  if (!people || !people.length) return '資料待考';
+  return people.map(rosterPersonText).filter(Boolean).join('、');
+}
+
+function performerRows(concert) {
+  if (!concert.performerGroups && (!concert.performers || !concert.performers.length)) return '<p class="muted">完整演出人員名單待節目冊、團員名冊或校友補充資料確認。</p>';
   const groups = [];
-  for (const person of performers) {
-    const role = person.role || person.instrument || '演出人員';
-    const key = role.replace(/（.*?）/g, '').trim();
-    let group = groups.find((item) => item.key === key);
-    if (!group) {
-      group = { key, people: [] };
-      groups.push(group);
+  if (concert.performerGroups && concert.performerGroups.length) {
+    for (const group of concert.performerGroups) {
+      groups.push({ key: group.role || group.label || '演出人員', people: group.people || group.members || [] });
     }
-    group.people.push(person);
+  } else {
+    for (const person of concert.performers) {
+      const role = person.role || person.instrument || '演出人員';
+      const key = role.replace(/（.*?）/g, '').trim();
+      let group = groups.find((item) => item.key === key);
+      if (!group) {
+        group = { key, people: [] };
+        groups.push(group);
+      }
+      group.people.push(person);
+    }
   }
   return `<div class="table-scroll"><table class="plain roster">
       <tr><th>聲部／角色</th><th>人員</th></tr>
-      ${groups.map((group) => `<tr><td data-label="聲部／角色">${escapeHtml(group.key)}</td><td data-label="人員">${group.people.map(itemName).join('、')}</td></tr>`).join('\n      ')}
-    </table></div>`;
+      ${groups.map((group) => `<tr><td data-label="聲部／角色">${escapeHtml(group.key)}</td><td data-label="人員">${rosterPeopleText(group.people)}</td></tr>`).join('\n      ')}
+    </table></div>${concert.performerNote ? `\n    <p class="muted">${escapeHtml(concert.performerNote)}</p>` : ''}`;
 }
 
 function adminTable(concert) {
-  if (!concert.organizers || !concert.organizers.length) return '<p class="muted">幕後行政團隊名單仍待補齊；若您保存籌備文件或工作人員名單，歡迎協助補充。</p>';
+  const adminRows = concert.adminRows || (concert.organizers || []).map((person) => ({
+    role: person.role || '籌備／主辦',
+    people: [person]
+  }));
+  if (!adminRows.length) return '<p class="muted">幕後行政團隊名單仍待補齊；若您保存籌備文件或工作人員名單，歡迎協助補充。</p>';
+  const hasDuty = adminRows.some((row) => row.duty || row.description);
   return `<div class="table-scroll"><table class="plain roster">
-      <tr><th>職務</th><th>人員</th></tr>
-      ${concert.organizers.map((person) => `<tr><td data-label="職務">${escapeHtml(person.role || '籌備／主辦')}</td><td data-label="人員">${itemName(person)}</td></tr>`).join('\n      ')}
-    </table></div>`;
+      <tr><th>職務</th><th>人員</th>${hasDuty ? '<th>職掌</th>' : ''}</tr>
+      ${adminRows.map((row) => `<tr><td data-label="職務">${escapeHtml(row.role || '籌備／主辦')}</td><td data-label="人員">${rosterPeopleText(row.people || row.members || [row.person || row])}</td>${hasDuty ? `<td data-label="職掌">${escapeHtml(row.duty || row.description || '')}</td>` : ''}</tr>`).join('\n      ')}
+    </table></div>${concert.adminNote ? `\n    <p class="muted">${escapeHtml(concert.adminNote)}</p>` : ''}`;
 }
 
 function sponsorsText(concert) {
+  if (concert.sponsorParagraphs && concert.sponsorParagraphs.length) {
+    return concert.sponsorParagraphs.map((text) => `<p>${escapeHtml(text)}</p>`).join('\n    ');
+  }
   const sponsors = concert.sponsors || concert.supporters || [];
   const thanks = concert.thanks || concert.acknowledgements || [];
   if (!sponsors.length && !thanks.length) return '<p class="muted">贊助、協辦與致謝名單仍待節目冊或海報補齊。</p>';
@@ -344,7 +434,7 @@ function sponsorsText(concert) {
 function galleryPhotos(concert) {
   const explicit = concert.photos || concert.galleryPhotos || [];
   const normalized = explicit.map((photo) => typeof photo === 'string' ? { src: photo, caption: '' } : photo);
-  if (normalized.length >= 3) return normalized.slice(0, 3);
+  if (normalized.length) return normalized;
 
   const dir = path.join(root, 'assets', 'img', 'gallery', String(concert.year));
   if (!fs.existsSync(dir)) return normalized;
@@ -365,11 +455,11 @@ function galleryPhotos(concert) {
 
 function renderGallerySection(concert) {
   const photos = galleryPhotos(concert);
-  if (photos.length < 3) {
+  if (!photos.length) {
     return '<p class="muted">目前尚未整理到足夠的演出影像。若校友保存全團合照、舞台照或排練照片，歡迎協助補充。</p>';
   }
   return `<div class="gallery-grid concert-gallery-grid">
-      ${photos.slice(0, 3).map((photo) => {
+      ${photos.map((photo) => {
     const src = photo.src || '';
     const full = photo.full || src.replace(/t\.webp$/, '.webp');
     const caption = photo.caption || '演出留影';
@@ -439,7 +529,7 @@ ${generatedMarker}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/style.css?v=20260707-poster-complete">
 <script src="../js/main.js" defer></script>
 </head>
 <body>
@@ -493,13 +583,13 @@ ${generatedMarker}
 
   <section class="section">
     <h2>曲目</h2>
-    ${programList(concert.program)}
+    ${programList(concert.program, concert)}
     <p class="muted">若尚未顯示上下半場或完整曲序，表示目前資料尚不足以確認正式節目順序；後續會依節目冊與校友補充資料校對。</p>
   </section>
 
   <section class="section">
     <h2>演出人員名單</h2>
-    ${performerRows(concert.performers)}
+    ${performerRows(concert)}
   </section>
 
   <section class="section">
@@ -569,6 +659,8 @@ ${generatedMarker}
 
 let written = 0;
 let skipped = 0;
+let manualConverted = 0;
+let exceptionSkipped = 0;
 
 for (const concert of concerts) {
   if (!concert || !concert.page || concert.status === 'cancelled') continue;
@@ -579,14 +671,22 @@ for (const concert of concerts) {
   if (fs.existsSync(output)) {
     const current = fs.readFileSync(output, 'utf8');
     if (!current.includes(generatedMarker)) {
-      skipped += 1;
-      continue;
+      if (manualPageExceptions.has(concert.id)) {
+        skipped += 1;
+        exceptionSkipped += 1;
+        continue;
+      }
+      if (!overwriteManual) {
+        skipped += 1;
+        continue;
+      }
+      manualConverted += 1;
     }
   }
 
   fs.mkdirSync(path.dirname(output), { recursive: true });
-  fs.writeFileSync(output, render(concert));
+  fs.writeFileSync(output, render(concert).replace(/[ \t]+$/gm, ''));
   written += 1;
 }
 
-console.log(`generated concert pages: ${written}; skipped existing manual pages: ${skipped}`);
+console.log(`generated concert pages: ${written}; skipped existing manual pages: ${skipped}; converted manual pages: ${manualConverted}; manual exceptions: ${exceptionSkipped}`);

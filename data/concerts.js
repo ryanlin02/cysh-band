@@ -447,14 +447,18 @@ window.CONCERTS = [
     venue: "嘉義市政府文化局音樂廳",
     venueNote: "",
     hostHead: "",
+    intro: [
+      "依演出企劃書前言記載，嘉中管樂隊自民國 74 年（1985）起延續舉辦校友暨在校生聯合音樂會，至 2015 年已「連續舉辦整整三十屆從未中斷」。第 31 屆的三大宗旨為：讓畢業隊友重溫高中時代情誼；藉正式音樂會之演出及排練，提升在校生的演奏及行政能力；並首次將第三項宗旨由「免費索票」改為「以售票入場方式，倡導管樂欣賞與正當休閒之風氣」——這項措辭上的改變，正對應著本屆音樂會售票制度的正式啟動。",
+      "依籌備會議紀錄，主辦校友於會中特別提及：「今年為三十屆以來第一次售票演出，意義重大，籌備上也需要比往年更加謹慎。」門票定價 100 元、以五折優惠（50 元）銷售，預計服務觀眾 800 人；同時，本屆也是校方「想要讓校聯恢復由在校生主導」的一屆，各股股長首度全數由在校生擔任，藉籌備過程完成新舊幹部交接與訓練。籌備期間每週日上午團練，演出前一週（8/31-9/4）晚間集訓，9 月 5 日當天下午裝台彩排、晚間正式演出。"
+    ],
     organizers: [{ name: "蔡淳任", num: "9202", role: "舞台監督" }],
     conductors: [
-      { name: "鄭鈞元", num: "8431", role: "指揮" },
-      { name: "簡晟軒", num: "8861", role: "指揮" },
-      { name: "陳錫仁", num: "6301", role: "指揮" },
-      { name: "盧宓承", num: "7111", role: "指揮" }
+      { name: "鄭鈞元", num: "8431", role: "指揮", concertRole: "常任指揮", concertBio: "民國 84 年（1995）進入嘉義高中管樂社開始接觸薩克斯風，大學就讀國立臺灣藝術大學音樂系，師事顏慶賢老師，畢業後進入國防部示範樂隊服役。退伍後赴法國就讀法國國立馬爾梅松音樂院及馮特內蘇布瓦市立音樂院，於 2009 年獲得薩克管、室內樂第一獎演奏文憑以及音樂教育文憑。依 2015 年演出企劃書記載，時任南華大學民族音樂學系講師、嘉義高中管樂社指導老師，並擔任雲嘉南多所國中小學管樂團薩克管分部老師。" },
+      { name: "簡晟軒", num: "8861", role: "指揮", concertRole: "客席指揮", concertBio: "嘉義縣新港人，民國 88 年（1999）就讀嘉義高中學習長號，啟蒙於宋光清老師（國家交響樂團長號首席）及高崇文老師（高雄市立交響樂團長號演奏家）。2002 年就讀高雄師範大學音樂系，師事蔡佳融老師（臺北市立交響樂團長號演奏家）；2006 年進入國防部示範樂隊服役，2009 年赴德國萊比錫音樂院，師事 Helge von Niswandt 老師（柏林音樂廳交響樂團長號首席），2010 年考取亞洲青年管弦樂團（AYO），2012 年取得萊比錫音樂院長號演奏家文憑並回國，此後積極參與樂團演出及南部地區管樂教學。依 2015 年演出企劃書記載，時為嘉頌重奏團、嘉義市管樂團及高雄市管樂團團員，以及多所學校長號分部老師。" },
+      { name: "陳錫仁", num: "6301", role: "指揮", concertRole: "樂團指揮", concertBio: "畢業於嘉義高中並曾任嘉中管樂隊隊長，1982 年畢業於國立臺灣師範大學音樂系，為該系首位主修小號者；1991 年獲得美國聖保羅大學音樂學院（DePaul University）小號演奏碩士學位，成為國人首位獲得此樂器演奏碩士文憑者。曾創立台灣銅管五重奏團、陳錫仁藝術工作室與陳錫仁銅管樂集，並出版多本小號演奏專業著作，長年任教於中臺科技大學等校。" },
+      { name: "盧宓承", num: "7111", role: "指揮", concertRole: "樂團指揮", concertBio: "校友間暱稱「咪咪學長」，長笛聲部出身，國立中正大學資訊管理博士，長年任教於雲林縣立蔦松藝術高中，並非音樂科系出身的專職指揮，卻自 2010 年代中期起多次擔任校友聯演指揮，是校友團中兼跨資訊教育與管樂領域的代表人物。" }
     ],
-    soloists: [{ name: "陳韋希", num: "9132", instrument: "薩克斯風", work: "Andre Waignein: Deux Mouvements" }],
+    soloists: [{ name: "陳韋希", num: "9132", instrument: "薩克斯風", work: "Andre Waignein: Deux Mouvements", concertRole: "薩克斯風獨奏", concertBio: "依 2015 年演出企劃書記載，陳韋希取得法國國立聖康坦（Saint-Quentin）音樂院職業班薩克斯風演奏文憑，時為米特薩克斯風重奏團團員，本屆獨奏韋寧（Andre Waignein）薩克管協奏曲《兩個樂章》。" }],
     performers: [
       { name: "盧宓承", num: "7111", role: "長笛聲部" },
       { name: "黃耀瑩", num: "8912", role: "雙簧管聲部" },
@@ -476,28 +480,60 @@ window.CONCERTS = [
       { name: "陳英杰", num: "8991", role: "打擊聲部" },
       { name: "劉炫廷", num: "9921", role: "單簧管聲部" }
     ],
-    program: [
-      { title: "1812 序曲", composer: "Tchaikovsky", status: "confirmed" },
-      { title: "Deux Mouvements", composer: "Andre Waignein", status: "confirmed" },
-      { title: "Lincolnshire Posy", composer: "Percy Grainger", status: "confirmed" },
-      { title: "African Symphony", status: "confirmed" },
-      { title: "Yagibushi", status: "confirmed" },
-      { title: "Selections from The Sound of Music", status: "confirmed" },
-      { title: "American Graffiti XV", status: "confirmed" },
-      { title: "The Girl from Ipanema", status: "confirmed" },
-      { title: "Sing Sing Sing", status: "confirmed" }
+    performerGroups: [
+      { role: "長笛", people: ["7111 盧宓承", "9311 蔡沛霖", "9611 張容慈", "0001 陳政宏", "0011 周億琳"] },
+      { role: "雙簧管", people: ["8912 黃耀瑩"] },
+      { role: "巴松管", people: ["8711 劉怡汝"] },
+      { role: "單簧管", people: ["7222 李吉峯", "7921 莊富益", "8603 江俊漢", "8621 蔡嘉偉", "8722 張羽嫻", "8921 洪瑋辰", "8922 陳正龍", "9122 吳瑩娟", "9321 吳宜靜", "9721 葉哲良", "9802 李亞璿", "9902 趙耘浩", "9921 劉炫廷"] },
+      { role: "薩克斯風", people: ["8431 鄭鈞元", "8632 江嘉榮", "8832 陳韋志", "9132 陳韋希（獨奏）", "9331 郭軒竑"] },
+      { role: "法國號", people: ["7503 蔡文立", "8841 魏仕杰", "9302 洪敏睿", "9801 高士涵", "9841 洪筱涵"] },
+      { role: "小號", people: ["7571 陳昌遠", "8401 楊秉驊", "8601 古峻錡", "8651 劉全盛", "9202 蔡淳任", "9451 蔡育修", "9903 陳信慈"] },
+      { role: "長號", people: ["7901 高健雄", "8301 高崇文", "8861 簡晟軒", "9261 方崇任", "9601 張永澤", "9661 謝梓嫣", "9701 蔡政岳", "0002 王則旻"] },
+      { role: "上低音號", people: ["6801 游宗仁", "8671 吳仁庭"] },
+      { role: "低音號", people: ["7581 翁啟榮", "8501 丁肇賢", "9702 李旻其"] },
+      { role: "打擊", people: ["8193 李瑾佑", "8302 鄧杰翔", "8991 陳英杰", "9392 林祐成", "9895 詹琬婷", "0091 王耀德"] }
     ],
+    performerNote: "依 2015 年演出企劃書記載，全體演出人員（含編號）如下。企劃書原文註明「篇幅所限，以下僅列出部分團員」，全團演出規模約 70 人；本表為企劃書中留有編號紀錄之演出者，歡迎校友協助勘誤補充。",
+    adminRows: [
+      { role: "團長", people: ["6401 馮朝君"], duty: "統整團務與演出行政事務" },
+      { role: "音樂會總籌", people: ["8841 魏仕杰"], duty: "專責籌劃本屆聯演所有相關事宜" },
+      { role: "文書", people: ["8481 羅碩文"], duty: "節目單撰寫、文書庶務處理" },
+      { role: "財務", people: ["8802 劉議謙"], duty: "處理各項收支、記帳並徵信" },
+      { role: "譜務", people: ["7962 范庭福"], duty: "準備演出與排練所需之所有樂譜" },
+      { role: "美宣", people: ["9721 葉哲良"], duty: "海報、節目單封面設計與宣傳" },
+      { role: "舞台監督", people: ["9202 蔡淳任"], duty: "控制演出當天流程，與音樂廳館方接洽舞台事宜" }
+    ],
+    adminNote: "依籌備會議紀錄，本屆另設有在校生擔任的總籌、助理指揮、文書、財務、器管、譜務、宣傳票務、人事、公關等股，藉籌辦過程完成新舊幹部交接與訓練。",
+    program: [
+      { title: "1812 序曲", foreignTitle: "The Year 1812, Festival Overture in E-flat major, Op. 49", credit: "柴可夫斯基 Tchaikovsky", status: "confirmed", description: "柴可夫斯基應指揮家尼可萊．魯賓斯坦之邀，於 1880 年為紀念俄國擊退拿破崙入侵而作，樂曲中引用法國國歌《馬賽曲》代表入侵的法軍，並穿插俄羅斯民謠與聖詠《天佑沙皇》主題，管弦樂版本更以真實砲聲與鐘聲作結；是柴可夫斯基流傳最廣、最具戲劇張力的作品之一，管樂團版本以定音鼓與大鼓等打擊效果重現原曲的磅礡氣勢。" },
+      { title: "兩個樂章（薩克管協奏曲）", foreignTitle: "Deux Mouvements", credit: "安德烈．韋寧 Andre Waignein（薩克斯風獨奏：陳韋希）", status: "confirmed", description: "比利時作曲家韋寧應布魯塞爾皇家音樂院院長讓．貝里之邀，於 1989 年為該院薩克斯風班創作，並受薩克斯風教師阿蘭．克雷賓鼓勵完成。全曲分兩個樂章：第一樂章為悲歌（Elegie），旋律開闊抒情，賦予獨奏者充分的音樂自由；第二樂章隨想曲（Capriccio）則節奏多變、樂團伴奏份量吃重，獨奏者須以高音域的燦爛技巧為全曲畫下句點。" },
+      { title: "林肯郡花束", foreignTitle: "Lincolnshire Posy", credit: "葛人傑 Percy Grainger", status: "confirmed", description: "葛人傑應美國樂隊指揮協會之邀，於 1937 年完成這部管樂經典，全曲六個樂章均改編自他 1905-1906 年間親赴英格蘭林肯郡採集的民謠——葛人傑當年以愛迪生蠟筒錄音機記錄下每位民謠演唱者的原始唱腔，因此每個樂章都試圖呈現「歌者本人」的風格，而非單純的曲調改編。全曲於 1937 年由高德曼樂隊完整首演。" },
+      { title: "非洲交響曲", foreignTitle: "African Symphony", credit: "范麥考伊曲，岩井直溥編 Van McCoy, arr. Naohiro Iwai", status: "confirmed", description: "原曲由美國作曲家范麥考伊創作於迪斯可音樂盛行的年代，經有「日本吹奏樂波普之父」之稱的岩井直溥改編後，成為日本學生管樂團最廣為演出的通俗曲目之一，也是《New Sounds in Brass》系列的代表作品。" },
+      { title: "八木節", foreignTitle: "Yagibushi", credit: "日本民謠，岩井直溥編 arr. Naohiro Iwai", status: "confirmed", description: "源自日本栃木、群馬地區的傳統民謠，經岩井直溥改編為管樂團版本，節奏明快、帶有濃厚的日本鄉土色彩，是其改編之日本民謠代表作之一。" },
+      { title: "真善美選粹", foreignTitle: "Selections from The Sound of Music", credit: "羅傑斯與漢默斯坦", status: "confirmed", description: "改編自 1959 年百老匯音樂劇《真善美》，由理查．羅傑斯作曲、奧斯卡．漢默斯坦二世作詞，1965 年電影版更由茱莉．安德魯絲主演並風靡全球；本曲選粹集結劇中多首膾炙人口的旋律，是管樂團音樂會的常見曲目。" },
+      { title: "美國風情畫 15", foreignTitle: "American Graffiti XV", credit: "岩井直溥編 arr. Naohiro Iwai", status: "confirmed", description: "岩井直溥自 1970 年代起於《New Sounds in Brass》系列推出的長銷組曲，全系列共 23 部作品，以組曲形式串聯多首美國經典流行與電影歌曲；第 15 集取材自美國電影協會（AFI）於 2004 年紀念美國電影百年所公布的「百大電影歌曲」名單，是該系列中具代表性的一集。" },
+      { title: "伊帕內馬女孩", foreignTitle: "The Girl from Ipanema", credit: "裘賓曲，岩井直溥編 Antonio Carlos Jobim, arr. Naohiro Iwai", status: "confirmed", description: "由巴西作曲家裘賓與詩人德莫拉埃斯創作於 1962 年，是巴薩諾瓦（Bossa Nova）曲風最具代表性的名曲之一，1964 年史坦．蓋茲與雅斯楚．吉爾貝托的錄音版本更使其風靡全球；經岩井直溥改編後，成為管樂團經典的拉丁抒情曲目。" },
+      { title: "唱！唱！唱！", foreignTitle: "Sing Sing Sing", credit: "普利馬曲，岩井直溥編 Louis Prima, arr. Naohiro Iwai", status: "confirmed", description: "路易．普利馬創作於 1936 年的搖擺爵士名曲，因班尼．古德曼樂團 1937 年卡內基音樂廳的傳奇演出、鼓手金恩．克魯帕的招牌鼓點而聲名大噪；本屆演出岩井直溥改編的管樂團版本，作為下半場壓軸曲目。" }
+    ],
+    programNote: "曲目整理自 2015 年演出企劃書附件一與正式海報；下半場 4-9 曲為「岩井直溥特集」。主辦單位保留曲目更動之權利，樂曲背景資料另參考網路公開資料。",
     ticket: { type: "ticketed", price: "100", channels: ["兩廳院售票系統", "ibon"], note: "三十年來首度嘗試售票演出" },
     poster: "assets/img/concerts/2015.webp",
     page: "concerts/2015-31st.html",
     gallery: [],
+    photos: [
+      { src: "assets/img/gallery/2015/0905-01t.webp", full: "assets/img/gallery/2015/0905-01.webp", caption: "全團於嘉義市政府文化局音樂廳舞台合影" }
+    ],
+    sponsorParagraphs: [
+      "指導單位為嘉義市政府文化局；協辦單位為國立嘉義高中、國立嘉義高中校友會、嘉義高中管樂隊、嘉義市管樂團；贊助單位為嘉義高中家長會、雙燕樂器、藝研樂器。"
+    ],
     videos: [
       { label: "第 31 屆《三生情一世樂》錄影清單", url: "https://youtube.com/playlist?list=PLAVnw2heYVvlWoZvSn-QPXnABOTnjmDnY", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
     sources: ["concerts.html", "concerts/2015-31st.html", SOURCE_SOCIAL_VIDEO_LIST],
+    sourceNote: "本頁場地、曲目與演出人員資訊整理自 2015 年演出企劃書、籌備會議記錄、正式海報與售票文件（校友留存資料）；樂曲背景另參考公開音樂資料。如需更正或補充演出照片，歡迎透過粉絲專頁與我們聯繫。",
     status: "confirmed",
-    notes: "不可因此誤寫 2026 為首度售票。"
+    notes: "第 31 屆《三生。一世樂》由鄭鈞元、簡晟軒、陳錫仁、盧宓承四位校友共同執棒，並邀請旅法薩克斯風演奏家陳韋希擔任薩克斯風獨奏。依 2015 年演出企劃書與籌備會議紀錄，本屆是校友聯演三十年來首度嘗試售票演出，也是校方希望讓在校生重新承接籌備主體的一屆。不可因此誤寫 2026 為首度售票。"
   },
   {
     id: "2014-30th",
@@ -540,11 +576,15 @@ window.CONCERTS = [
     venue: "嘉義市政府文化局音樂廳",
     venueNote: "",
     hostHead: "",
+    intro: [
+      "依節目冊前言記載，嘉中管樂隊自民國 74 年（1985）起，每年暑假集合校友與在校生共同排練演出，「讓地方藝文界和學校更了解管樂發展趨勢」；至 2013 年已連續舉辦 28 年從未中斷，是嘉義表演藝術活動中深具特色的一道風景。第 29 屆的三大宗旨為：讓畢業隊友重溫高中時代情誼；藉正式音樂會之演出及排練，提升在校生的演奏及行政能力；以免票入場方式，倡導管樂欣賞與正當休閒之風氣。",
+      "「嘉義高中校友管樂團」於民國 97 年（2008）9 月正式登記成立為嘉義市藝文團體，本屆是立案後第 5 年舉辦的聯演。籌備期間每週週末團練，演出前 8 月 20 日至 22 日連續三天集訓，8 月 23 日當天下午裝台彩排、晚間正式演出。"
+    ],
     conductors: [
-      { name: "鄭鈞元", num: "8431", role: "指揮" },
-      { name: "陳錫仁", num: "6301", role: "客席指揮／小號獨奏" },
-      { name: "簡晟軒", num: "8861", role: "助理指揮" },
-      { name: "蔡淳任", num: "9202", role: "助理指揮" }
+      { name: "鄭鈞元", num: "8431", role: "指揮", concertRole: "樂團指揮", concertBio: "民國 84 年（1995）進入嘉義高中管樂社開始接觸薩克斯風，大學就讀國立臺灣藝術大學音樂系，師事顏慶賢老師，畢業後進入國防部示範樂隊服役。退伍後赴法國就讀法國國立馬爾梅松音樂院及馮特內蘇布瓦市立音樂院，師事丹尼爾．葛梅勒與克里斯丁．沃特二位大師，於 2009 年獲得薩克管、室內樂第一獎演奏文憑以及音樂教育文憑。2013 年時任南華大學民族音樂學系講師、嘉義高中管樂社指導老師，並擔任雲嘉南多所國中小學管樂團薩克管分部老師。" },
+      { name: "陳錫仁", num: "6301", role: "客席指揮／小號獨奏", concertRole: "客席指揮／小號獨奏", concertBio: "畢業於嘉義高中並曾任嘉中管樂隊隊長，啟蒙於謝北光老師，1982 年畢業於國立臺灣師範大學音樂系，為該系首位主修小號者。1991 年以優異成績獲得美國聖保羅大學音樂學院（The School of Music at DePaul University）小號演奏碩士學位，成為國人首位獲得此樂器演奏碩士文憑者。1993 年創立台灣銅管五重奏團並任團長，2000 年創立陳錫仁藝術工作室並任藝術總監，2001 年創立陳錫仁銅管樂集（國內首創常設性銅管合奏樂團），2002 年創立爵品爵士樂團。曾率團赴加拿大溫哥華與多倫多（2003）、美國洛杉磯（2004）演出；2008 年出版《小號演奏藝術研究》，為華人世界第一本小號演奏專業著作，2012 年再出版《小號初學者入門研究》與《小號練習方法研究》。曾任教於國立臺灣師範大學、國立臺中教育大學、國立嘉義大學、輔仁大學、東海大學音樂系及各級學校音樂班，並任台北醫學大學管弦樂團、中原大學管樂團等多個樂團指揮，亦曾擔任多屆全國音樂比賽評審。2013 年時任陳錫仁藝術工作室藝術總監、中臺科技大學專任副教授。" },
+      { name: "簡晟軒", num: "8861", role: "助理指揮", concertRole: "助理指揮", concertBio: "嘉義新港人，民國 88 年（1999）進入嘉中樂隊始習長號，啟蒙於宋光清老師，師事高崇文老師。2002 年於高師大音樂系師事蔡佳融老師，2009 年於德國萊比錫音樂院師事 Helge von Niswandt 教授，2012 年取得該院長號演奏家文憑。2013 年時任嘉義市嘉義高工、嘉義高中、嘉義家職、世賢國小、垂楊國小、博愛國小、嘉北國小等校管樂團，以及高雄市正興國中管弦樂團長號及銅管分部教師。" },
+      { name: "蔡淳任", num: "9202", role: "助理指揮", concertRole: "助理指揮／執行秘書．舞台監督", concertBio: "第一屆北興國中管樂班校友，先後畢業於嘉義高中與臺灣大學政治系。自國中起受段正泰老師啟蒙學習小號，高中加入嘉義高中管樂社，曾任副社長。大學時期加入臺大管樂團與幻響管樂團，受臺大管樂團指導老師劉紹棟與幻響管樂團指揮張穎中影響，開始學習指揮，曾任北興國中管樂班校友團及北興國中管樂團指揮。本屆同時擔任助理指揮與執行秘書／舞台監督。" }
     ],
     soloists: [{ name: "陳錫仁", num: "6301", instrument: "小號", work: "Haydn Trumpet Concerto in E-flat" }],
     performers: [
@@ -565,26 +605,58 @@ window.CONCERTS = [
       { name: "翁啟榮", num: "7581", role: "低音號聲部" },
       { name: "丁肇賢", num: "8501", role: "低音號聲部" }
     ],
-    program: [
-      { title: "The Hounds of Spring", composer: "Alfred Reed", status: "confirmed" },
-      { title: "Trumpet Concerto in E-flat", composer: "Haydn", status: "confirmed" },
-      { title: "English Folk Song Suite III", composer: "Vaughan Williams", status: "confirmed" },
-      { title: "Manzoni Requiem Excerpts", composer: "Verdi", status: "confirmed" },
-      { title: "Les Miserables", status: "confirmed" },
-      { title: "When You Wish Upon a Star", status: "confirmed" },
-      { title: "Sing Sing Sing", status: "confirmed" },
-      { title: "Songs from You Are the Apple of My Eye", status: "confirmed" },
-      { title: "Takarajima", status: "confirmed" }
+    performerGroups: [
+      { role: "長笛", people: ["7111 盧宓承", "9311 蔡沛霖", "9312 李子沛", "9611 張容慈"] },
+      { role: "雙簧管", people: ["8912 黃耀瑩"] },
+      { role: "巴松管", people: ["8711 劉怡汝"] },
+      { role: "單簧管", people: ["7921 莊富益", "8603 江俊漢", "8621 蔡嘉偉", "8722 張羽嫻", "8901 黃信又", "8922 陳正龍", "9122 吳瑩娟", "9321 吳宜靜", "9521 何寧賢", "9721 葉哲良"] },
+      { role: "薩克斯風", people: ["7222 李吉峯", "8431 鄭鈞元", "8632 江嘉榮", "8832 陳韋志", "9331 郭軒竑"] },
+      { role: "法國號", people: ["8841 魏仕杰", "9302 洪敏睿", "9741 廖恆毅", "9841 洪筱涵"] },
+      { role: "小號", people: ["6951 曾膺安", "8101 陳明陽", "8401 楊宗臻", "8601 古峻錡", "8651 劉全盛", "9202 蔡淳任", "9451 蔡育修", "9751 黃柏叡"] },
+      { role: "長號", people: ["7901 高健雄", "8301 高崇文", "8861 簡晟軒", "9261 方崇任", "9601 張永澤", "9701 蔡政岳"] },
+      { role: "上低音號", people: ["6801 游宗仁", "8671 吳仁庭", "8982 王騰寬"] },
+      { role: "低音號", people: ["7581 翁啟榮", "8501 丁肇賢", "9702 李旻其"] },
+      { role: "打擊", people: ["8193 李瑾佑", "9392 林祐成", "9691 袁舴", "9791 陳建宇", "9792 蔣承哲"] }
     ],
+    performerNote: "依 2013 年正式節目冊記載，全體演出人員（含編號）如下。節目冊原文註明「篇幅所限，以上僅列出部分團員」，全團演出規模約 80 人；本表為節目冊中留有編號紀錄之演出者，如與其他頁面編號略有出入（節目冊內部亦偶見同一人在不同段落編號誤植，如上低音號王騰寬另處誤植為 8981），已忠實依原始文件轉錄，歡迎校友協助勘誤補充。",
+    adminRows: [
+      { role: "團長", people: ["6401 馮朝君"], duty: "統整團務與演出行政事務" },
+      { role: "音樂會總籌", people: ["8841 魏仕杰"], duty: "專責籌劃本屆聯演所有相關事宜，並擔任節目冊編校" },
+      { role: "文書", people: ["8481 羅碩文"], duty: "節目單撰寫、文書庶務處理" },
+      { role: "財務", people: ["8802 劉議謙"], duty: "處理各項收支、記帳並徵信" },
+      { role: "譜務", people: ["7962 范庭福"], duty: "準備演出與排練所需之所有樂譜" },
+      { role: "美宣", people: ["9721 葉哲良"], duty: "海報、節目單封面設計與宣傳" },
+      { role: "執行秘書／舞台監督", people: ["9202 蔡淳任"], duty: "兼任助理指揮" }
+    ],
+    program: [
+      { section: "上半場", title: "春之獵犬", foreignTitle: "The Hounds of Spring", credit: "阿弗烈．呂德 Alfred Reed", status: "confirmed", description: "呂德（1912-2005）為美國著名管樂作曲家、編曲家及教育家，一生創作超過兩百五十首作品，涵蓋管樂、管弦樂、合唱及室內樂，並曾受臺灣小號演奏家葉樹涵教授委託創作小號協奏曲。《春之獵犬》完成於 1979 年冬，為加拿大約翰佛斯特高中（John L. Forster Secondary School）交響管樂團委託創作，靈感源自英國詩人 Algernon Charles Swinburne 據希臘悲劇寫成的長詩〈Atalanta in Calydon〉，開頭第一行「當春之獵犬沿著冬天的足跡來到」即為曲名由來。全曲以快-慢-快三段序曲形式，呈現青春的喜悅與愛的溫柔天真，最終兩段主題交融、光輝燦爛地劃下句點。" },
+      { section: "上半場", title: "小號協奏曲，降 E 大調", foreignTitle: "Trumpet Concerto in E-flat major", credit: "海頓曲，藍波洛編 Haydn, arr. Rumbelow（小號獨奏：陳錫仁）", status: "confirmed", description: "海頓（1732-1809）被譽為交響樂之父、弦樂四重奏之父。這首協奏曲寫於 1796 年，海頓 64 歲時應安東．魏丁格之邀，為其新發明的按鍵小號所作，也是海頓最後的協奏曲作品，原由管弦樂團伴奏，今晚演出藍波洛改編給小編制管樂團伴奏的版本。全曲依快-慢-快佈局：第一樂章為典型奏鳴曲式，第二樂章絃樂先奏出西西里舞曲節奏主題再由小號重覆，第三樂章為輪旋曲式終樂章，最後接上小號裝飾奏，於樂團齊奏中結束全曲。" },
+      { section: "上半場", title: "英國民謠組曲，第三樂章：薩默塞特民歌", foreignTitle: "English Folk Song Suite - III. Folk Songs from Somerset", credit: "佛漢．威廉斯 Vaughan Williams", status: "confirmed", description: "佛漢．威廉斯（1872-1958）為英國作曲家與民謠收集家。此曲 1923 年由作曲家根據英格蘭地方民謠改編，最初稱《民謠組曲》，1924 年其學生高登．雅科布再改編並經同意使用長名稱《英國民謠組曲》，由進行曲、間奏曲、進行曲三樂章組成。今晚僅演出第三樂章（同時也是 102 學年度學生音樂比賽指定曲之一），複合三段式結構融入〈吹走朝露〉〈高地德國〉〈口哨，女兒，口哨〉〈約翰．巴里空〉四首民謠，以 A-B-A→C-D-C-D→A-B-A 的形式串聯。" },
+      { section: "上半場", title: "曼佐尼安魂曲選粹", foreignTitle: "Manzoni Requiem Excerpts", credit: "威爾第曲，莫倫豪爾編 Verdi, arr. Mollenhauer", status: "confirmed", description: "威爾第（1813-1901）今年（2013）適逢誕生兩百週年紀念。《安魂曲》作於 1873-1874 年間，為紀念摯友、19 世紀歐洲浪漫主義文學代表人物曼佐尼（Alessandro Manzoni, 1785-1873）而作，於曼佐尼逝世一周年（1874）在米蘭首演，原曲共七樂章。今晚演出的管樂版，由美國編曲家莫倫豪爾從第二樂章（續抒詠）中選出〈神怒之日〉〈號角之聲〉〈我的救主〉〈我罪極深〉〈威耀之王〉五個段落編成。" },
+      { section: "下半場", title: "悲慘世界", foreignTitle: "Les Miserables", credit: "荀伯格曲，彼得斯編 Schonberg, arr. Peeters", status: "confirmed", description: "改編自法國作家雨果 1862 年發表的同名長篇小說，最著名的改編作品是法國音樂劇作曲家荀伯格與作詞家阿蘭．鮑伯利於 1980 年共同創作的同名音樂劇；2012 年翻拍為電影版，由休傑克曼、安海瑟薇、羅素克洛主演，於 2013 年春節檔期在臺上映。今晚演出版本由彼得斯挑選音樂劇中〈序曲〉〈一日將盡〉〈我曾有夢〉〈雲端城堡〉〈酒店主人〉〈與我共飲〉〈你可聽見人民在歌唱〉等名曲，依管弦樂版原調性改編而成。" },
+      { section: "下半場", title: "當你向星星許願", foreignTitle: "When You Wish Upon a Star", credit: "哈林曲，小山恭弘編 Harline, arr. Koyama", status: "confirmed", description: "由長笛、豎笛、薩克管組成的木管室內樂，加上爵士鼓，重新演繹迪士尼動畫《木偶奇遇記》主題曲；此曲曾獲 1940 年第 13 屆奧斯卡金像獎最佳電影原創歌曲獎。" },
+      { section: "下半場", title: "唱唱唱", foreignTitle: "Sing Sing Sing", credit: "普利馬曲，高橋宏樹編 Prima, arr. Takahashi", status: "confirmed", description: "經典搖擺（Swing）爵士樂名曲，自 1936 年問世後廣泛出現於爵士樂界、演出、廣告與電影等場合，今晚由小號、法國號、長號、上低音號、低音號組成的銅管家族，搭配經典爵士鼓節奏共同演出。" },
+      { section: "下半場", title: "《那些年，我們一起追的女孩》歌曲集", foreignTitle: "Songs from You Are the Apple of My Eye", credit: "陳揚、胡夏曲，陳昶安編", status: "confirmed", description: "電影由九把刀原著、編劇、導演，2011 年臺北電影節首映並獲國際青年導演競賽觀眾票選獎，亦於港澳、新加坡、馬來西亞、中國大陸上映，成為香港華語電影史上最賣座電影，並於 2012 年第 31 屆香港電影金像獎獲選兩岸最佳華語電影，柯震東憑本片獲第 48 屆金馬獎最佳新演員。今晚演出電影中最紅的兩首歌曲：林育群翻唱殷正洋的〈人海中遇見你〉，以及胡夏主唱的主題曲〈那些年〉。" },
+      { section: "下半場", title: "寶島", foreignTitle: "Takarajima", credit: "和泉宏隆曲，真島俊夫編 Izumi, arr. Mashima", status: "confirmed", description: "日本融合爵士（Fusion）天團 T-Square（方格子樂團）1976 年由吉他手安藤正容創團，1982 年鍵盤手和泉宏隆加入後成為當家鍵盤手，與安藤正容共同成為創作核心，樂團連續五年獲日本金唱片大賞 Fusion 爵士獎項年度最佳專輯，並四度拿下最佳爵士專輯獎。〈Takarajima〉發行於 1995 年，是和泉宏隆的代表作之一。" }
+    ],
+    programNote: "曲目與樂曲解說整理自 2013 年正式節目冊（撰文／張婷婷，資料來源／維基百科與網路資料，編校／魏仕杰，時任音樂會總籌）。籌備前期的企劃書與新聞稿曾預告華格納《唐懷瑟》選段、曼焦《桑契斯之子》等曲目，惟依正式節目冊與海報記載，最終定案曲目如上，主辦單位並保有曲目更動之權利。",
     ticket: { type: "free-ticket", price: "0", channels: ["嘉義市政府文化局服務台", "主辦單位"], note: "免費索票入場" },
     poster: "assets/img/concerts/2013.webp",
     page: "concerts/2013-29th.html",
     gallery: [],
+    photos: [
+      { src: "assets/img/gallery/2013/0823-01t.webp", full: "assets/img/gallery/2013/0823-01.webp", caption: "全團於嘉義市政府文化局音樂廳舞台合影" }
+    ],
+    sponsorParagraphs: [
+      "特別感謝嘉義市政府文化局、國立嘉義高中之指導；協力廠商為學明影印、DRINK 雋可樂活茶飲新生店。",
+      "本屆演出並獲得在地三十家店家與補習班贊助支持（依單位名稱筆劃順序排列）：二丫頭麻辣涼麵、力新補習班、小杜吉美術社、天才美術社、台北江麻辣臭豆腐、正義蚵仔麵線、立碁補習班、百鴻畫廊、利特髮廊、宏泰物理、李揚數學、味好麵食館、味鮮小吃、明興補習班、沱江小館、哈牛排、故鄉牛排館、洗鞋家、皇家豆花、食尚輕食生活餐飲、陳建宏化學、頂好麵食館、道成補習班、嘉興牙醫診所、舞醬館、諸羅山五金、羅文公民。"
+    ],
     videos: [
       { label: "第 29 屆《２９》錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qkLOi9_u0uwB7Q3EDJuOsv1", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
     sources: ["concerts.html", "concerts/2013-29th.html", SOURCE_SOCIAL_VIDEO_LIST],
+    sourceNote: "本頁曲目、演出人員與場地資訊整理自 2013 年正式節目冊、演出企劃書與新聞稿（校友留存資料）；如需更正或補充演出照片，歡迎透過粉絲專頁與我們聯繫。",
     status: "confirmed",
     notes: "全團約 80 人；正式節目冊資料完整。"
   },
@@ -631,6 +703,10 @@ window.CONCERTS = [
     venue: "",
     venueNote: "場地待考",
     hostHead: "",
+    intro: [
+      "2005 年 8 月 28 日，第 21 屆嘉義高中校友暨在校生聯合音樂會《神話》登場。這批校友珍藏的原始照片，記錄了演出前的後台花絮、正式登台演奏，到指揮謝幕的完整片刻。",
+      "本屆場地、指揮與曲目資訊仍在考證中；若您是當年參與的校友、或留有節目冊等資料，歡迎透過粉絲專頁與我們聯繫，協助補齊這段歷史。"
+    ],
     conductors: [],
     soloists: [],
     performers: [
@@ -667,6 +743,10 @@ window.CONCERTS = [
     venue: "嘉義高中校內",
     venueNote: "確切廳名待考",
     hostHead: "",
+    intro: [
+      "2010 年 8 月 21 日（六），第 26 屆嘉義高中校友暨在校生聯合音樂會登場，主題為《Music à la Carte》。校友保留的原始照片，記錄了午後烈日下的彩排，到晚間正式演出的完整過程。",
+      "本屆場地全名、指揮與完整曲目資訊仍在考證中；照片中舞台布條清楚可見「第二十六屆國立嘉義高中校友暨在校生聯合演奏會」字樣，確認了屆數與活動性質。若您是當年參與的校友，歡迎透過粉絲專頁與我們聯繫，協助補齊細節。"
+    ],
     conductors: [],
     soloists: [{ name: "方崇任", num: "9261", instrument: "長號", work: "Launy Grøndahl: Trombone Concerto" }],
     performers: [
@@ -679,11 +759,19 @@ window.CONCERTS = [
     poster: "",
     page: "concerts/2010-26th.html",
     gallery: [],
+    photos: [
+      { src: "assets/img/gallery/2010/0821-01t.webp", full: "assets/img/gallery/2010/0821-01.webp", caption: "午後彩排前，舞台上的 CYSH 字樣佈景" },
+      { src: "assets/img/gallery/2010/0821-02t.webp", full: "assets/img/gallery/2010/0821-02.webp", caption: "八月午後的彩排，電風扇是舞台上的必需品" },
+      { src: "assets/img/gallery/2010/0821-03t.webp", full: "assets/img/gallery/2010/0821-03.webp", caption: "舞台布條：「第二十六屆國立嘉義高中校友暨在校生聯合演奏會」" },
+      { src: "assets/img/gallery/2010/0821-04t.webp", full: "assets/img/gallery/2010/0821-04.webp", caption: "晚間正式演出，指揮帶領全團" },
+      { src: "assets/img/gallery/2010/0821-05t.webp", full: "assets/img/gallery/2010/0821-05.webp", caption: "銅管與木管聲部近景" }
+    ],
     videos: [
       { label: "第 26 屆錄影清單（現存小牛仔片段）", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qlvf60Z_F7TS6Ndv160NGTs", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
     sources: ["concerts.html", "concerts/2010-26th.html", SOURCE_SOCIAL_VIDEO_LIST],
+    sourceNote: "本頁照片由校友提供之原始相簿整理而成，依影像保存脈絡排列；場地全名、指揮、曲目等文字資訊仍待進一步查證與校友補充，如需更正請透過粉絲專頁與我們聯繫。",
     status: "partial",
     notes: "指揮、曲目、正式場地名稱待考。"
   },
@@ -830,11 +918,22 @@ window.CONCERTS = [
     poster: "",
     page: "concerts/2005-21st.html",
     gallery: [],
+    photos: [
+      { src: "assets/img/gallery/2005/0828-01t.webp", full: "assets/img/gallery/2005/0828-01.webp", caption: "演出前，更衣室裡的便當時光" },
+      { src: "assets/img/gallery/2005/0828-02t.webp", full: "assets/img/gallery/2005/0828-02.webp", caption: "後台走廊的合影，輕鬆的賽前一刻" },
+      { src: "assets/img/gallery/2005/0828-03t.webp", full: "assets/img/gallery/2005/0828-03.webp", caption: "指揮就位，準備開演" },
+      { src: "assets/img/gallery/2005/0828-04t.webp", full: "assets/img/gallery/2005/0828-04.webp", caption: "全團大合照，前排是當晚的特別演出者" },
+      { src: "assets/img/gallery/2005/0828-05t.webp", full: "assets/img/gallery/2005/0828-05.webp", caption: "指揮向團員鞠躬致意" },
+      { src: "assets/img/gallery/2005/0828-06t.webp", full: "assets/img/gallery/2005/0828-06.webp", caption: "銅管與打擊聲部" },
+      { src: "assets/img/gallery/2005/0828-07t.webp", full: "assets/img/gallery/2005/0828-07.webp", caption: "全團起立，接受觀眾掌聲" },
+      { src: "assets/img/gallery/2005/0828-08t.webp", full: "assets/img/gallery/2005/0828-08.webp", caption: "指揮深深一鞠躬，《神話》圓滿落幕" }
+    ],
     videos: [
       { label: "第 21 屆《神話》錄影清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qnayc53KBzO3qEKPjQUqcae", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
     sources: ["concerts.html", "concerts/2005-21st.html", SOURCE_SOCIAL_VIDEO_LIST],
+    sourceNote: "本頁照片由校友提供之原始相簿整理而成，依影像保存脈絡排列；場地、指揮、曲目等文字資訊仍待進一步查證與校友補充，如需更正請透過粉絲專頁與我們聯繫。",
     status: "partial",
     notes: "現存後台、正式演出、謝幕照片；場地、指揮、曲目待考。"
   },

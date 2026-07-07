@@ -17,7 +17,7 @@
 | numbers.html | 編號文化 |
 | people.html | 人物誌（精選故事，由 `data/people-profiles.js` 產生卡片） |
 | roster.html | 校友名錄（`data/alumni.js` 驅動，搜尋＋卡片／列表檢視＋字頭／年代分組＋聲部／資料狀態篩選） |
-| concerts.html | 校友聯演（最新消息＋本屆演出＋歷屆紀錄） |
+| concerts.html | 校友聯演（本屆演出＋最新消息文章索引＋歷屆紀錄典藏列表） |
 | gallery.html | 影像館（活動相簿制，點擊放大） |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
@@ -56,15 +56,15 @@ node scripts/generate-news-pages.js
 `node scripts/check-site.js` 會檢查 `content/news/` 與正式 `news/*.html` 是否同步；若忘記重跑產生腳本，檢查會提醒。
 
 ### 新增一屆聯演
-音樂會結束後，把 concerts.html「本屆演出」改寫為「歷屆紀錄」的一個 `concert-item`；目前已呈現的校友聯演屆別皆應有獨立資料頁，資料不足者以「資料待考」標示。缺頁可由 `node scripts/generate-concert-pages.js` 依 `data/concerts.js` 產生；既有人工頁不覆寫。生成頁會自動帶入可考海報／影像、指揮與獨奏者人物誌摘要、錄影清單與通用資料補充文字。
+音樂會結束後，把 concerts.html「本屆演出」改寫為「歷屆紀錄」的一個 `concert-item`；目前已呈現的校友聯演屆別皆應有獨立資料頁，資料不足者以「資料待考」標示。缺頁可由 `node scripts/generate-concert-pages.js` 依 `data/concerts.js` 產生；若要把舊人工頁改為資料驅動頁，使用 `node scripts/generate-concert-pages.js --overwrite-manual`。第 35 屆《正八音》（`concerts/2019-35th.html`）因雙場次、不同場地與人員變動保留為手寫例外。生成頁會自動帶入可考海報／影像、指揮與獨奏者人物誌摘要、錄影清單與通用資料補充文字。
 
-`concerts.html` 的歷屆卡片也由 `data/concerts.js` 產生：
+`concerts.html` 的歷屆紀錄典藏列表由 `data/concerts.js` 產生：
 
 ```
 node scripts/generate-concerts-index.js
 ```
 
-`node scripts/check-site.js` 會檢查總覽卡片是否同步；若修改 `data/concerts.js` 後忘記重跑，檢查會提醒。
+`node scripts/check-site.js` 會檢查總覽列表是否同步；若修改 `data/concerts.js` 後忘記重跑，檢查會提醒。
 
 ### 新增頁面時同步更新 SEO
 新增任何公開頁面（如 news 文章、屆別頁）後，在 `sitemap.xml` 加一行對應的 `<url>`（複製既有行修改網址與日期即可）
@@ -142,7 +142,7 @@ cwebp -q 82 -resize 1600 0 原圖.jpg -o 輸出.webp
 - [ ] 《為伍》正式曲目公告後更新
 - [ ] 演出照片（影像館《為伍》相簿）
 - [ ] 其餘屆別的聯演紀錄（concerts.html 目前已有 1、6、14、18、21–41 屆；缺 2–5、7–13、15–17、19–20 屆。6、14、22、25、27、32 屆已補入部分紀錄，仍待正式節目冊補齊細節）
-- [ ] 歷屆聯演獨立資料頁已先補齊至目前公開呈現屆別；總覽卡片與獨立頁目前皆以 `data/concerts.js` 為主要資料來源。下一階段可把人工頁與自動頁逐步統一欄位、補入更完整節目冊與團員名單。1990、1998、2016、2022、2024 已補入校友提供之海報或主視覺影像。
+- [ ] 歷屆聯演獨立資料頁已先補齊至目前公開呈現屆別；總覽列表與獨立頁目前皆以 `data/concerts.js` 為主要資料來源。下一階段可把人工頁與自動頁逐步統一欄位、補入更完整節目冊與團員名單。1990、1998、2016、2022、2024 已補入校友提供之海報或主視覺影像。
 - [ ] 社群協作文件已補入 2005、2008–2024 多屆錄影清單；2025《四方之音》錄影仍待王則量資料補充
 - [ ] 第 21 屆（2005《神話》）、第 26 屆（2010《Music à la Carte》）的確切場地、指揮、曲目待考證（見 `concerts/2005-21st.html`、`concerts/2010-26th.html`）
 - [ ] 第 29 屆（2013）、第 35 屆（2019《正八音》）已有完整節目冊／海報資訊，人工獨立頁見 `concerts/2013-29th.html`、`concerts/2019-35th.html`
