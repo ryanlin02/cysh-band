@@ -325,15 +325,64 @@ window.CONCERTS = [
     ],
     soloists: [],
     program: [
-      { title: "Fanfare - Young Pheasants in the Sky", composer: "Satoshi Yagisawa", status: "confirmed", note: "稚鳥飛翔" },
-      { title: "Abram's Pursuit", composer: "David Holsinger", status: "confirmed", note: "亞拉伯罕之追" },
-      { title: "Spartacus", composer: "Jan van der Roost", status: "confirmed", note: "交響詩－斯巴達克斯" },
-      { title: "Seven Cities of Gold", composer: "David Lovrien", status: "confirmed", note: "七座黃金城市" },
-      { title: "The Seventh Night of July", composer: "Itaru Sakai", status: "confirmed", note: "七夕" },
-      { title: "The Magnificent Seven", composer: "Elmer Bernstein", status: "confirmed", note: "豪勇七蛟龍" },
-      { title: "Bond... James Bond", arranger: "Stephen Bulla", status: "confirmed", note: "詹姆士龐德 007" },
-      { title: "America Graffiti VII", arranger: "Naohiro Iwai", status: "confirmed", note: "美國風情畫七" }
+      {
+        title: "稚鳥飛翔",
+        foreignTitle: "Fanfare - Young Pheasants in the Sky",
+        credit: "八木澤教司 Satoshi Yagisawa",
+        status: "confirmed",
+        description: "《稚鳥飛翔》是日本奈良縣立橿原高等學校為紀念創立 30 周年，委託八木澤教司創作的號角曲，2004 年由該校管樂團在年度音樂會首演。日文標題中的若雉子指年輕的雉鳥，也是橿原高等學校的吉祥物；作曲家以雉鳥比喻學生，將展翅高飛的祝福與期望寄託在作品中。全曲約兩分多鐘，兼具燦爛號角與富歌唱性的旋律線，適合作為音樂會開場曲。"
+      },
+      {
+        title: "亞拉伯罕之追",
+        foreignTitle: "Abram's Pursuit",
+        credit: "大衛．霍爾辛格 David Holsinger",
+        status: "confirmed",
+        description: "曲名典故出自舊約聖經《創世記》第 14 章。亞伯蘭 Abram，也就是後來的亞伯拉罕，是基督教、伊斯蘭教與猶太教經典中共同的先知。當時統治當地的幾位王發生戰爭，使亞伯蘭居住在所多瑪城的姪子羅德 Lot 被擄走；亞伯蘭帶領家丁 318 名連夜追擊，擊敗軍隊，救回姪子、財物與被擄民眾。雖然典故來自聖經故事，音樂卻不是教會聖歌風格，而是以緊湊節奏、木管快速音群與豐富鍵盤打擊樂，創造出充滿速度與緊張感的作品。"
+      },
+      {
+        title: "交響詩－斯巴達克斯",
+        foreignTitle: "Spartacus",
+        credit: "楊．樊．德．魯斯特 Jan van der Roost",
+        status: "confirmed",
+        description: "《交響詩－斯巴達克斯》是比利時作曲家楊．樊．德．魯斯特在安特衛普音樂院時，以義大利羅馬帝國歷史事件「斯巴達克斯起義」為背景創作的管樂團作品，也帶有向義大利作曲家雷史畢基對後世作曲家與電影配樂影響致敬的意圖。作品可分為三個大部分：第一樂章與開頭的異國風旋律描寫羅馬帝國的奴隸生涯，榮耀帝國與競技場建立在奴隸角鬥士的悲慘命運之上；第二樂章是作曲家想像斯巴達克斯與愛人邂逅的浪漫慢板；隨後音樂轉向起義角鬥士的悲劇命運，以不和諧和絃象徵壯烈戰鬥後戰敗投降、被釘上十字架的景象。最後音樂再現前兩個樂章的主題，回顧斯巴達克斯史詩般的一生。"
+      },
+      {
+        title: "七座黃金城市",
+        foreignTitle: "Seven Cities of Gold",
+        credit: "大衛．洛維林 David Lovrien",
+        status: "confirmed",
+        description: "《七座黃金城市》是一首帶有西班牙特色的進行曲，描寫探險家為尋找傳說中的黃金城，企圖穿越各種自然障礙的雄心壯志與出發時的意氣風發。七座黃金城並非實際存在的城市，而是 16 世紀流傳於西班牙殖民者之間的傳說；當時傳言認為穿越北美洲西南邊沙漠後可以找到七座黃金城。這個傳說使殖民探險者弗朗西斯科．科羅納多 Francisco Coronado 組織兩次大規模探險隊，從西班牙已開拓的墨西哥北部往今日美國西南部探索。科羅納多最終並未找到黃金城，但他的探險成果，讓今日著名的大峽谷與科羅拉多河與他的名字產生關聯。"
+      },
+      {
+        title: "七夕",
+        foreignTitle: "The Seventh Night of July",
+        credit: "酒井格 Itaru Sakai",
+        status: "confirmed",
+        description: "《七夕》是日本作曲家酒井格第一首管樂團作品，寫於作曲家高三時期，後由其就讀的大阪音樂大學首演。七夕除了紀念牛郎織女的愛情，古時候婦女也會在那天向織女祈求織布巧手；日本祈求巧手的習俗後來逐漸演變為在竹葉枝上掛各式祈願條。作曲家借用七夕典故，描寫高中參加樂團時的青春點滴。全曲採快慢快結構，在青春速度中夾入浪漫慢板旋律，並以薩克斯風與上低音號獨奏對唱，描寫當時樂團中演奏這兩樣樂器的情侶好友；隨後青春主題再度出現，音樂結束在輕快燦爛的旋律之中。"
+      },
+      {
+        title: "豪勇七蛟龍",
+        foreignTitle: "The Magnificent Seven",
+        credit: "艾爾莫．伯恩斯坦曲，Scott Richards 編 Elmer Bernstein, arr. Scott Richards",
+        status: "confirmed",
+        description: "《豪勇七蛟龍》是 1960 年上映的西部電影，故事情節源於日本導演黑澤明作品《七武士》，敘述墨西哥鄉民為抵禦欺侮他們的盜匪，決定集資招募槍手一起對抗。鄉民與七名槍手在村莊建立防禦工事，對抗數百名盜匪，最後七名槍手中有四名在大戰中犧牲。本曲為配樂大師艾爾莫．伯恩斯坦為該片創作的主題曲，已成為美國西部片配樂經典；除了為劇情營造典型西部氣氛，主題曲也廣泛出現在影集、紀錄片、典禮與商業場合。本次演出為 Scott Richards 改編的管樂團版本。"
+      },
+      {
+        title: "詹姆士龐德 007",
+        foreignTitle: "Bond... James Bond",
+        credit: "史蒂芬．布拉編 Stephen Bulla",
+        status: "confirmed",
+        description: "詹姆士龐德系列電影自 1962 年開始，至今已有多部系列電影。每部電影除了著名的詹姆士龐德主題，也會搭配電影主題邀請流行歌手製作主題歌曲；這些流行歌曲不只常登上當年流行音樂排行榜，也是各大電影獎項常客。本次演出的《詹姆士龐德 007》由史蒂芬．布拉改編給管樂團演出，除了著名的龐德間諜主題，也回顧系列中數首知名電影歌曲，包括 1964 年《金手指》Goldfinger、1977 年《海底城》A Spy Who Loved Me 主題曲 Nobody Does It Better、2012 年《空降危機》Skyfall，以及 1973 年由披頭四樂團團員保羅．麥卡尼操刀的《生死關頭》Live and Let Die。"
+      },
+      {
+        title: "美國風情畫七",
+        foreignTitle: "America Graffiti VII",
+        credit: "岩井直溥編 Naohiro Iwai",
+        status: "confirmed",
+        description: "岩井直溥是日本著名編曲家，被尊稱為大眾管樂之父。1972 年起，他與當時日本多位編曲家以 New Sounds in Brass 為名，每年出版一輯由流行音樂改編的管樂作品 CD 與樂譜，包含演歌、流行歌、電影配樂與動漫配樂等，為日本流行樂改編管樂作品發展打下深厚基礎。《美國風情畫七》收錄於 1996 年出版的 New Sounds in Brass 第 24 輯，選用美國 1950 至 1960 年代流行歌曲，集結成輕鬆熱鬧的管樂作品；內容包含木匠兄妹《Jambalaya》、康妮．法蘭西斯 Someone Else's Boy、帕蒂．佩奇 Tennessee Waltz、強尼．瑞 Just Walking in the Rain，以及史琪特．戴維斯 The End of The World。"
+      }
     ],
+    programNote: "曲目與樂曲解說整理自校友提供之 2018 年校友聯演曲目介紹社群協作文件；附件未標明上下半場，曲序仍待正式節目冊或校友補充資料校對。",
     ticket: { type: "ticketed", price: "100", channels: [], note: "" },
     poster: "assets/img/concerts/2018.webp",
     page: "concerts/2018-34th.html",
@@ -344,7 +393,11 @@ window.CONCERTS = [
     news: [],
     sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST, SOURCE_2018_PROGRAM_NOTES],
     status: "partial",
-    notes: "社群協作曲目介紹可補全本屆曲目；錄影清單註明因版權因素，YouTube 上傳後多有消音或版權宣告，現存清單多為示範帶。"
+    notes: "曲目與樂曲解說已依社群協作曲目介紹補入。錄影清單註明因版權因素，YouTube 上傳後多有消音或版權宣告，現存清單多為示範帶。",
+    intro: [
+      "本屆曲目與樂曲解說已依校友提供的 2018 年校友聯演曲目介紹整理入頁，8 首曲目皆已補入中文曲名、外文曲名、作曲／編曲資訊與單曲介紹。",
+      "附件未標明上下半場，曲序目前先依現存曲介順序呈現；後續若取得正式節目冊，可再校對曲序與演出人員名單。"
+    ]
   },
   {
     id: "2017-33rd",
