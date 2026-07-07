@@ -40,25 +40,61 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ---------- Lightbox（影像館） ---------- */
-  var galleryImgs = document.querySelectorAll('.gallery-grid figure img:not(.album-cover), .news-article figure img, .page-head .ph-poster img');
+  /* ---------- Lightbox（影像館／節目冊） ---------- */
+  var galleryImgs = document.querySelectorAll('.gallery-grid figure img:not(.album-cover), .program-book-strip figure img, .news-article figure img, .page-head .ph-poster img');
   if (galleryImgs.length) {
+    var lightboxItems = Array.prototype.slice.call(galleryImgs);
+    var currentLightboxIndex = 0;
     var lb = document.createElement('div');
     lb.className = 'lightbox';
-    lb.innerHTML = '<img alt=""><p class="lb-caption"></p>';
+    lb.innerHTML = '<button class="lb-nav lb-prev" type="button" aria-label="上一張">‹</button><img alt=""><button class="lb-nav lb-next" type="button" aria-label="下一張">›</button><p class="lb-caption"></p>';
     document.body.appendChild(lb);
     var lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-caption');
+    var lbPrev = lb.querySelector('.lb-prev'), lbNext = lb.querySelector('.lb-next');
+    function showLightboxImage(index) {
+      currentLightboxIndex = (index + lightboxItems.length) % lightboxItems.length;
+      var img = lightboxItems[currentLightboxIndex];
+      lbImg.src = img.dataset.full || img.src;
+      lbImg.alt = img.alt || '';
+      var cap = img.closest('figure') && img.closest('figure').querySelector('figcaption');
+      lbCap.textContent = cap ? cap.textContent : (img.alt || '');
+      var single = lightboxItems.length < 2;
+      lbPrev.hidden = single;
+      lbNext.hidden = single;
+    }
+    function closeLightbox() {
+      lb.classList.remove('show');
+    }
+    function moveLightbox(delta) {
+      showLightboxImage(currentLightboxIndex + delta);
+    }
     galleryImgs.forEach(function (img) {
       img.addEventListener('click', function () {
-        lbImg.src = img.dataset.full || img.src;
-        lbImg.alt = img.alt || '';
-        var cap = img.closest('figure') && img.closest('figure').querySelector('figcaption');
-        lbCap.textContent = cap ? cap.textContent : (img.alt || '');
+        showLightboxImage(lightboxItems.indexOf(img));
         lb.classList.add('show');
       });
     });
-    lb.addEventListener('click', function () { lb.classList.remove('show'); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.classList.remove('show'); });
+    lbPrev.addEventListener('click', function (e) { e.stopPropagation(); moveLightbox(-1); });
+    lbNext.addEventListener('click', function (e) { e.stopPropagation(); moveLightbox(1); });
+    lb.addEventListener('click', closeLightbox);
+    lbImg.addEventListener('click', function (e) { e.stopPropagation(); });
+    var touchStartX = null;
+    lb.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches && e.changedTouches.length ? e.changedTouches[0].clientX : null;
+    }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      if (touchStartX == null || !e.changedTouches || !e.changedTouches.length) return;
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      touchStartX = null;
+      if (Math.abs(dx) < 48) return;
+      moveLightbox(dx > 0 ? -1 : 1);
+    }, { passive: true });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('show')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') moveLightbox(-1);
+      if (e.key === 'ArrowRight') moveLightbox(1);
+    });
   }
 
   /* ---------- 導覽列陰影 + 進度 + 回頂按鈕 ---------- */

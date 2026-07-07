@@ -46,6 +46,7 @@ function publicNote(value, fallback) {
     .replace(/社群協作曲目介紹可補全本屆曲目；?/g, '現存曲目介紹可補全本屆曲目；')
     .replace(/錄影清單註明因版權因素，YouTube 上傳後多有消音或版權宣告，現存清單多為示範帶。?/g, '')
     .replace(/；?曲目檔確認部分曲目，室內樂重奏細目待補。?/, '')
+    .replace(/，。/g, '。')
     .replace(/^[；，、\s]+/, '')
     .replace(/\s+/g, ' ')
     .trim();
@@ -471,10 +472,12 @@ function renderGallerySection(concert) {
 function programBookSection(concert) {
   const scans = concert.programBook || concert.programScans || concert.booklet || [];
   if (!scans.length) return '<p class="muted">目前尚未整理到可公開呈現的完整節目冊掃描圖檔。</p>';
-  return `<div class="program-book-grid">
+  return `<p class="muted">節目冊與企劃書影像以縮圖列保存；可左右滑動瀏覽，點開圖片後可用左右鍵切換頁面。</p>
+    <div class="program-book-strip" aria-label="節目冊頁面縮圖">
       ${scans.map((scan, index) => {
     const item = typeof scan === 'string' ? { src: scan, caption: `節目冊第 ${index + 1} 頁` } : scan;
-    return `<figure><img src="../${escapeHtml(item.src)}" alt="${escapeHtml(item.caption || `節目冊第 ${index + 1} 頁`)}" loading="lazy"><figcaption>${escapeHtml(item.caption || `節目冊第 ${index + 1} 頁`)}</figcaption></figure>`;
+    const caption = item.caption || `節目冊第 ${index + 1} 頁`;
+    return `<figure><img src="../${escapeHtml(item.src)}" data-full="../${escapeHtml(item.full || item.src)}" alt="${escapeHtml(caption)}" loading="lazy"><figcaption>${escapeHtml(caption)}</figcaption></figure>`;
   }).join('\n      ')}
     </div>`;
 }
@@ -529,7 +532,7 @@ ${generatedMarker}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=20260707-poster-complete">
+<link rel="stylesheet" href="../css/style.css?v=20260707-book-strip">
 <script src="../js/main.js" defer></script>
 </head>
 <body>
@@ -626,7 +629,7 @@ ${generatedMarker}
     <h2>資料補充</h2>
     ${provenanceText(concert, missing)}
     <nav class="person-nav person-nav--single" aria-label="聯演頁面導覽">
-      <a class="btn ghost" href="../concerts.html">← 回到校友聯演</a>
+      <a class="btn ghost" href="../concerts.html#concert-${escapeHtml(concert.id)}">← 回到校友聯演</a>
       ${relatedPageLinks(concert)}
     </nav>
   </section>

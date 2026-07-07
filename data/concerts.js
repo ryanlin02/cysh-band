@@ -13,6 +13,37 @@
 */
 const SOURCE_SOCIAL_VIDEO_LIST = "20260704_嘉中管樂社官網_校友提供資料/04_社群匯出資料/02_Facebook私密社團匯出_原始檔/社群匯出/社群匯出__社群匯出__a4de9dcc__校友聯演歷年錄影連結列表.md";
 const SOURCE_2018_PROGRAM_NOTES = "20260704_嘉中管樂社官網_校友提供資料/04_社群匯出資料/02_Facebook私密社團匯出_原始檔/社群匯出/社群匯出__社群匯出__453ca74b__2018年校友聯演曲目介紹.md";
+const SOURCE_2002_PLAN = "嘉中校聯-歷年時間前 言.doc（2002 年第 18 屆活動企劃書，校友提供）";
+
+function earlyConcertRecord({ id, nth, year, rocYear, date, endDate = "", venue, venueNote = "", sessions = [] }) {
+  const multiSessionNote = sessions.length > 1 ? `本屆依列表包含 ${sessions.length} 場演出；` : "";
+  return {
+    id,
+    nth,
+    year,
+    rocYear,
+    title: `第 ${nth} 屆聯合音樂會`,
+    subtitle: "",
+    date,
+    endDate,
+    time: "",
+    venue,
+    venueNote,
+    hostHead: "",
+    conductors: [],
+    soloists: [],
+    program: [],
+    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    poster: "",
+    page: `concerts/${id}.html`,
+    gallery: [],
+    sessions,
+    news: [],
+    sources: [SOURCE_2002_PLAN],
+    status: "partial",
+    notes: `${multiSessionNote}日期與場地依 2002 年第 18 屆活動企劃書「歷屆校友演奏會」列表補入；指揮、曲目、正式主題與完整團員名單仍待節目冊、海報或校友資料補齊。`
+  };
+}
 
 window.CONCERTS = [
   {
@@ -754,18 +785,28 @@ window.CONCERTS = [
     date: "2011-07-16",
     time: "",
     venue: "",
-    venueNote: "場地待考",
+    venueNote: "",
     hostHead: "",
     intro: [
-      "2005 年 8 月 28 日，第 21 屆嘉義高中校友暨在校生聯合音樂會《神話》登場。這批校友珍藏的原始照片，記錄了演出前的後台花絮、正式登台演奏，到指揮謝幕的完整片刻。",
-      "本屆場地、指揮與曲目資訊仍在考證中；若您是當年參與的校友、或留有節目冊等資料，歡迎透過粉絲專頁與我們聯繫，協助補齊這段歷史。"
+      "第 27 屆聯合音樂會目前可由活動指定曲資料夾 README 補入 9 首曲目，包含八木澤教司《Perseus》、Philip Sparke《Carnival》、Artie Shaw《Concerto for Clarinet》與 Gershwin《Rhapsody in Blue》等作品。",
+      "日期暫列 2011.07.16，場地、指揮、正式主題與完整團員名單仍待節目冊、海報或校友補充資料確認。同年另有 WASBE 2011 嘉義世界管樂大會相關紀錄，現階段先作為同年背景保存，不直接併入本屆。"
     ],
     conductors: [],
     soloists: [],
     performers: [
       { name: "鄧杰翔", num: "8302", role: "打擊聲部" }
     ],
-    program: [],
+    program: [
+      { title: "英雄帕修斯", foreignTitle: "Perseus", credit: "八木澤教司 Satoshi Yagisawa", status: "confirmed" },
+      { title: "Carnival", note: "中音薩克斯風獨奏", credit: "Philip Sparke", status: "confirmed" },
+      { title: "Elsa's Procession to the Cathedral", credit: "Richard Wagner, arr. 待查", status: "confirmed" },
+      { title: "Concerto for Clarinet", credit: "Artie Shaw", status: "confirmed" },
+      { title: "祭典情景", foreignTitle: "Festal Scenes", credit: "伊藤康英 Yasuhide Ito", status: "confirmed" },
+      { title: "Rhapsody in Blue", credit: "George Gershwin, arr. 待查", status: "confirmed" },
+      { title: "American Graffiti 3", credit: "arr. 岩井直溥 Naohiro Iwai", status: "confirmed" },
+      { title: "Soliloquy and Dance", credit: "Philip Parker", status: "confirmed" },
+      { title: "Tico-Tico no Fuba", credit: "Zequinha de Abreu, arr. 待查", status: "confirmed" }
+    ],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "",
     page: "concerts/2011-27th.html",
@@ -779,10 +820,11 @@ window.CONCERTS = [
       SOURCE_SOCIAL_VIDEO_LIST,
       "content/people/8302.html",
       "people/8302.html",
+      "/Volumes/home-1/Drive/03【嘉義高中管樂社】/03_樂譜庫/04_活動指定曲/校聯指定曲/2011_第27屆/README.md",
       "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/2011_校友演奏會_待考/20_照片影像_公開候選"
     ],
     status: "partial",
-    notes: "2011 聯演存在與鄧杰翔打擊聲部由人物頁名單脈絡確認；日期由 2011.07.16 影像 EXIF 支持，場地、指揮、主題與完整曲目待節目冊或海報補齊。2011 世界管樂年會校友團協奏紀錄暫列為同年相關活動，未直接併入第 27 屆。"
+    notes: "2011 聯演存在與鄧杰翔打擊聲部由人物頁名單脈絡確認；日期由 2011.07.16 影像 EXIF 支持。曲目依 2011 第 27 屆活動指定曲 README 補入，場地、指揮、正式主題與完整團員名單仍待節目冊或海報補齊。2011 世界管樂年會校友團協奏紀錄暫列為同年相關活動，未直接併入第 27 屆。"
   },
   {
     id: "2010-26th",
@@ -998,8 +1040,8 @@ window.CONCERTS = [
     title: "第 18 屆聯合音樂會",
     subtitle: "",
     date: "2002-08-30",
-    time: "",
-    venue: "嘉義市音樂廳",
+    time: "19:30",
+    venue: "嘉義市立文化中心音樂廳",
     venueNote: "今嘉義市政府文化局音樂廳",
     hostHead: "",
     conductors: [],
@@ -1009,11 +1051,65 @@ window.CONCERTS = [
     poster: "assets/img/gallery/2002/0830c-06.webp",
     page: "concerts/2002-18th.html",
     gallery: ["gallery/2002-concert.html"],
+    programBook: [
+      { src: "assets/img/concerts/2002-program/preface.webp", caption: "2002 年活動企劃書：前言" },
+      { src: "assets/img/concerts/2002-program/team-intro.webp", caption: "2002 年活動企劃書：團隊簡介" }
+    ],
+    adminRows: [
+      { role: "指導單位", people: ["嘉義市政府"], duty: "活動企劃書之音樂演奏會相關單位" },
+      { role: "主辦單位", people: ["國立嘉義高級中學", "嘉義市文化局"], duty: "活動企劃書之音樂演奏會相關單位" },
+      { role: "協辦單位", people: ["國立嘉義高級中學校友會", "國立嘉義高級中學家長會", "嘉義市管樂團", "嘉義市愛樂學會"], duty: "活動企劃書之音樂演奏會相關單位" },
+      { role: "演出單位", people: ["國立嘉義高中管樂隊"], duty: "活動企劃書之音樂演奏會相關單位" },
+      { role: "長笛分部", people: ["7111 盧宓承"], duty: "暑期集訓分部負責" },
+      { role: "豎笛分部", people: ["7222 李吉峰"], duty: "暑期集訓分部負責" },
+      { role: "薩克斯風分部", people: ["8232 陳寬來"], duty: "暑期集訓分部負責" },
+      { role: "小號分部", people: ["8101 陳明陽"], duty: "暑期集訓分部負責" },
+      { role: "法國號分部", people: ["7503 蔡文立"], duty: "暑期集訓分部負責" },
+      { role: "長號分部", people: ["7901 高健雄"], duty: "暑期集訓分部負責" },
+      { role: "上低音號分部", people: ["6801 游宗仁"], duty: "暑期集訓分部負責" },
+      { role: "低音號分部", people: ["7581 翁啟榮"], duty: "暑期集訓分部負責" },
+      { role: "打擊分部", people: ["7502 陳志鳴"], duty: "暑期集訓分部負責" },
+      { role: "合奏指導", people: ["顏崇勝"], duty: "暑期集訓合奏練習指導" }
+    ],
+    adminNote: "本表依 2002 年第 18 屆活動企劃書「活動企劃」整理，只摘錄音樂演奏會相關單位與暑期集訓分部負責人；企劃書原文長笛部負責人作「盧宓成」，此處依網站既有校友名錄校正為盧宓承。",
     news: [],
-    sources: ["concerts.html", "gallery/2002-concert.html"],
+    sources: ["concerts.html", "gallery/2002-concert.html", SOURCE_2002_PLAN],
+    sourceNote: "本頁日期、時間、場地、演出相關單位、集訓分部負責人與節目冊影像，整理自 2002 年第 18 屆活動企劃書；照片整理自校友提供之 2002 年演出相簿。曲目、指揮、完整團員名單仍待正式節目冊或校友資料補齊。",
     status: "partial",
-    notes: "目前影像保存最完整的早期屆別；主題名稱與完整節目單待考。"
+    notes: "目前影像保存完整，且活動企劃書可考日期、時間、場地、演出相關單位與集訓分部負責；主題名稱、指揮與完整節目單仍待考。",
+    intro: [
+      "第 18 屆聯合音樂會依 2002 年活動企劃書記載，於 8 月 30 日 19:30 在嘉義市立文化中心音樂廳演出，該場地即今日嘉義市政府文化局音樂廳。",
+      "本次補入的企劃書影像保留了當年「前言」與「團隊簡介」原貌；活動企劃中的演出日期、時間、場地、相關單位與暑期集訓分部負責人，則整理為本頁演出資訊與幕後行政團隊資料。",
+      "目前仍待補齊本屆指揮、正式主題名稱、完整曲目與團員名單；既有照片與企劃書資料先共同保存第 18 屆的可考輪廓。"
+    ]
   },
+  earlyConcertRecord({
+    id: "2001-17th",
+    nth: 17,
+    year: 2001,
+    rocYear: 90,
+    date: "2001-08-28",
+    venue: "嘉義市立文化中心音樂廳",
+    venueNote: "今嘉義市政府文化局音樂廳"
+  }),
+  earlyConcertRecord({
+    id: "2000-16th",
+    nth: 16,
+    year: 2000,
+    rocYear: 89,
+    date: "2000-08-25",
+    venue: "嘉義市文化中心音樂廳",
+    venueNote: "今嘉義市政府文化局音樂廳"
+  }),
+  earlyConcertRecord({
+    id: "1999-15th",
+    nth: 15,
+    year: 1999,
+    rocYear: 88,
+    date: "1999-08-28",
+    venue: "嘉義市立文化中心音樂廳",
+    venueNote: "今嘉義市政府文化局音樂廳"
+  }),
   {
     id: "1998-14th",
     nth: 14,
@@ -1052,12 +1148,75 @@ window.CONCERTS = [
     news: [],
     sources: [
       "concerts.html",
+      SOURCE_2002_PLAN,
       "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/1990_早期校友演奏會_待考/10_節目冊海報文宣_公開候選/節目冊海報文宣__校友提供__6066c757__74568191_3528475503831025_8578050035239878656_n.jpg",
       "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/1990_早期校友演奏會_待考/10_節目冊海報文宣_公開候選/節目冊海報文宣__校友提供__267adef7__75279247_3528476053830970_5702877242284048384_n.jpg"
     ],
     status: "partial",
-    notes: "節目冊封面與曲目頁完整度高；屆次依 1985 年第 1 屆推算為第 14 屆，待正式屆次文字佐證。補充資料中同時保存其他早期年份影像，已依節目冊封面文字辨識本筆為 1998 年。"
+    notes: "節目冊封面與曲目頁完整度高；屆次依 1985 年第 1 屆推算為第 14 屆，待正式屆次文字佐證。日期與場地亦見 2002 年活動企劃書「歷屆校友演奏會」列表。補充資料中同時保存其他早期年份影像，已依節目冊封面文字辨識本筆為 1998 年。"
   },
+  earlyConcertRecord({
+    id: "1997-13th",
+    nth: 13,
+    year: 1997,
+    rocYear: 86,
+    date: "1997-08-23",
+    venue: "嘉義高中樹人堂"
+  }),
+  earlyConcertRecord({
+    id: "1996-12th",
+    nth: 12,
+    year: 1996,
+    rocYear: 85,
+    date: "1996-08-24",
+    venue: "嘉義高中樹人堂"
+  }),
+  earlyConcertRecord({
+    id: "1995-11th",
+    nth: 11,
+    year: 1995,
+    rocYear: 84,
+    date: "1995-08-19",
+    venue: "嘉義高中樹人堂"
+  }),
+  earlyConcertRecord({
+    id: "1994-10th",
+    nth: 10,
+    year: 1994,
+    rocYear: 83,
+    date: "1994-08-21",
+    venue: "嘉義高中樹人堂"
+  }),
+  earlyConcertRecord({
+    id: "1993-9th",
+    nth: 9,
+    year: 1993,
+    rocYear: 82,
+    date: "1993-08-22",
+    venue: "嘉義高中樹人堂"
+  }),
+  earlyConcertRecord({
+    id: "1992-8th",
+    nth: 8,
+    year: 1992,
+    rocYear: 81,
+    date: "1992-08-23",
+    venue: "嘉義高中樹人堂"
+  }),
+  earlyConcertRecord({
+    id: "1991-7th",
+    nth: 7,
+    year: 1991,
+    rocYear: 80,
+    date: "1991-08-22",
+    endDate: "1991-08-24",
+    venue: "台中市立文化中心中山堂、台南市立圖書館育樂堂、嘉義高中樹人堂",
+    sessions: [
+      { label: "台中場", date: "1991-08-22", venue: "台中市立文化中心中山堂" },
+      { label: "台南場", date: "1991-08-23", venue: "台南市立圖書館育樂堂" },
+      { label: "嘉義場", date: "1991-08-24", venue: "嘉義高中樹人堂" }
+    ]
+  }),
   {
     id: "1990-6th",
     nth: 6,
@@ -1080,11 +1239,49 @@ window.CONCERTS = [
     news: [],
     sources: [
       "concerts.html",
+      SOURCE_2002_PLAN,
       "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/1990_早期校友演奏會_待考/10_節目冊海報文宣_公開候選/節目冊海報文宣__校友提供__518498ed__74984677_3528475117164397_253369561129156608_n.jpg"
     ],
     status: "partial",
-    notes: "封面寫作「七九年校友聯合演奏會」，日期 8 月 23 日星期四與 1990 年相符；屆次依 1985 年第 1 屆推算為第 6 屆，待正式屆次文字、指揮、曲目與團員名單佐證。"
+    notes: "封面寫作「七九年校友聯合演奏會」，日期 8 月 23 日星期四與 1990 年相符，故本頁以海報日期為主；2002 年活動企劃書「歷屆校友演奏會」列表則記為民國 79 年 8 月 21 日於嘉義高中樹人堂演出，兩者差異待後續佐證。屆次依 1985 年第 1 屆推算為第 6 屆，待正式屆次文字、指揮、曲目與團員名單佐證。"
   },
+  earlyConcertRecord({
+    id: "1989-5th",
+    nth: 5,
+    year: 1989,
+    rocYear: 78,
+    date: "1989-08-26",
+    venue: "嘉義女中中正館"
+  }),
+  earlyConcertRecord({
+    id: "1988-4th",
+    nth: 4,
+    year: 1988,
+    rocYear: 77,
+    date: "1988-08-21",
+    venue: "嘉義女中中正館"
+  }),
+  earlyConcertRecord({
+    id: "1987-3rd",
+    nth: 3,
+    year: 1987,
+    rocYear: 76,
+    date: "1987-08-22",
+    endDate: "1987-08-23",
+    venue: "四湖鄉參天宮、嘉義女中進德堂",
+    sessions: [
+      { label: "四湖場", date: "1987-08-22", venue: "四湖鄉參天宮" },
+      { label: "嘉義場", date: "1987-08-23", venue: "嘉義女中進德堂" }
+    ]
+  }),
+  earlyConcertRecord({
+    id: "1986-2nd",
+    nth: 2,
+    year: 1986,
+    rocYear: 75,
+    date: "1986-08-23",
+    venue: "嘉義女中進德堂"
+  }),
   {
     id: "1985-1st",
     nth: 1,
@@ -1092,9 +1289,9 @@ window.CONCERTS = [
     rocYear: 74,
     title: "傳統的起點",
     subtitle: "",
-    date: "",
+    date: "1985-08-21",
     time: "",
-    venue: "",
+    venue: "嘉義高中樹人堂",
     venueNote: "",
     hostHead: "",
     conductors: [],
@@ -1105,8 +1302,8 @@ window.CONCERTS = [
     page: "concerts/1985-1st.html",
     gallery: [],
     news: [],
-    sources: ["concerts.html", "history.html"],
-    status: "pending",
-    notes: "校友暨在校生聯合音樂會傳統自 1985 年開始；第 1 屆細節待考。"
+    sources: ["concerts.html", "history.html", SOURCE_2002_PLAN],
+    status: "partial",
+    notes: "2002 年活動企劃書「歷屆校友演奏會」列表記載，民國 74 年 8 月 21 日首次以嘉義高中校友聯合演奏會名義返校從事管樂指導，並於嘉義高中樹人堂首演；指揮、曲目、正式主題與完整團員名單仍待補。"
   }
 ];
