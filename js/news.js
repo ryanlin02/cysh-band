@@ -1,6 +1,6 @@
 /* 最新消息渲染（資料來源 data/news.js）
    - #news-home：最新 2 則（首頁）
-   - #news-list：最新 4 則（校友聯演頁），超過時顯示「查看全部」
+   - #news-list：最新 2 則（校友聯演頁），超過時顯示「查看全部」
    - #news-all：全部文章（news/index.html 總覽頁，容器需設 data-base="../"） */
 document.addEventListener('DOMContentLoaded', function () {
   if (!window.NEWS) return;
@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var list = document.getElementById('news-list');
   if (list) {
-    var LIMIT = 4;
+    var LIMIT = 2;
     list.innerHTML = window.NEWS.slice(0, LIMIT).map(function (n) { return item(n); }).join('') || '<p class="muted">目前沒有新消息。</p>';
     if (window.NEWS.length > LIMIT) {
       list.insertAdjacentHTML('afterend',
-        '<p style="margin-top:16px"><a href="news/index.html">查看全部 ' + window.NEWS.length + ' 則消息 →</a></p>');
+        '<p class="news-more"><a href="news/index.html">查看全部 ' + window.NEWS.length + ' 則消息 →</a></p>');
     }
   }
 

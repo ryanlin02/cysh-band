@@ -1768,6 +1768,11 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 
 /* ---------- 最新消息 ---------- */
 .news-list { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+.section-note {
+  max-width: 48em;
+  margin: -8px 0 20px;
+  color: var(--ink-dim);
+}
 .news-item {
   display: flex; align-items: center; gap: 18px;
   background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-md);
@@ -1786,6 +1791,34 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   transition: transform var(--duration-base) var(--ease-standard);
 }
 .news-item:hover .news-thumb { transform: scale(1.05); }
+.concert-news-section {
+  padding-top: 30px;
+}
+.concert-news-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: none;
+}
+.concert-news-list .news-item {
+  min-height: 128px;
+  align-items: stretch;
+  border-top: 2px solid rgba(200,164,92,.34);
+  background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(248,245,238,.72));
+}
+.concert-news-list .news-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.concert-news-list .news-thumb {
+  width: 76px;
+  height: 76px;
+  align-self: center;
+}
+.news-more {
+  margin-top: 16px;
+}
 .news-article p { max-width: 42em; }
 .news-article figure { margin: 28px 0; max-width: 560px; }
 .news-article figure img {
@@ -1794,6 +1827,13 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .news-article figcaption { margin-top: 10px; font-size: .88rem; color: var(--ink-dim); }
 @media (max-width: 560px) {
+  .section-note {
+    margin-top: -2px;
+    font-size: .9rem;
+  }
+  .concert-news-list {
+    grid-template-columns: 1fr;
+  }
   .news-item { flex-wrap: wrap; gap: 6px 14px; }
   .news-arrow { display: none; }
   .news-date { flex-basis: 100%; }

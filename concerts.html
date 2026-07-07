@@ -30,10 +30,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260707-concerts">
 <script src="js/main.js" defer></script>
 <script src="data/news.js" defer></script>
-<script src="js/news.js" defer></script>
+<script src="js/news.js?v=20260707-concerts" defer></script>
 </head>
 <body>
 
@@ -67,12 +67,6 @@
 
 <main class="wrap">
 
-  <!-- 最新消息 -->
-  <section class="section">
-    <h2>最新消息</h2>
-    <div class="news-list" id="news-list"></div>
-  </section>
-
   <!-- 本屆精選 -->
   <section class="section">
     <h2>本屆演出</h2>
@@ -90,7 +84,7 @@
         ．小號協奏：校友<a href="people/1051.html">黃鈺芠</a>（編號 1051）／Philip Sparke 雙樂章小號協奏曲《Manhattan》<br>
         ．曲目方向：《Seagate Overture》、《The Seventh Night of July》（七夕）、《Flashing Winds》、Grainger《Ye Banks and Braes O' Bonnie Doon》、瑪利歐銀河交響組曲、City Pop 改編組曲等<span class="muted">（籌備中，實際節目以正式公告為準）</span></p>
         <p style="margin-top:20px">
-          <a class="btn" href="https://www.opentix.life" target="_blank" rel="noopener">OPENTIX 購票</a>
+          <a class="btn" href="https://www.opentix.life" target="_blank" rel="noopener">OPENTIX 資訊</a>
           <a class="btn ghost" href="concerts/2026-41st.html">演出資料</a>
         </p>
       </div>
@@ -99,6 +93,13 @@
     <blockquote>
       嘉中管樂隊歷史悠久，校友聯演多年來延續每年相聚的傳統，讓不同世代在同一座舞台上再次相遇。本場音樂會將以多元管樂作品串起青春、傳承與團隊默契，邀請觀眾一同感受屬於嘉義的管樂能量。
     </blockquote>
+  </section>
+
+  <!-- 最新消息 -->
+  <section class="section concert-news-section">
+    <h2>最新消息</h2>
+    <p class="section-note">團練、售票與活動更新會集中在這裡；完整消息列表可至最新消息總覽查看。</p>
+    <div class="news-list concert-news-list" id="news-list"></div>
   </section>
 
   <!-- 歷屆紀錄 -->

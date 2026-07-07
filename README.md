@@ -52,7 +52,7 @@ node scripts/generate-news-pages.js
 3. 在 `data/news.js` 陣列「最前面」加一筆。
 4. 執行 `node scripts/generate-news-pages.js`，確認 `news/*.html` 已產生。
 
-首頁自動顯示最新 2 則、校友聯演頁最新 4 則、news/index.html 總覽頁全部列出，皆由 `data/news.js` 自動處理。
+首頁自動顯示最新 2 則、校友聯演頁最新 2 則、news/index.html 總覽頁全部列出，皆由 `data/news.js` 自動處理。
 `node scripts/check-site.js` 會檢查 `content/news/` 與正式 `news/*.html` 是否同步；若忘記重跑產生腳本，檢查會提醒。
 
 ### 新增一屆聯演
