@@ -422,12 +422,37 @@ window.CONCERTS = [
       { label: "第 34 屆《當我的七仔好嗎》錄影與示範帶清單", url: "https://youtube.com/playlist?list=PLc3LYZ21H4qk-a2Ycs4OKFJr8FRU72K6V", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
-    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST, SOURCE_2018_PROGRAM_NOTES],
+    performerGroups: [
+      { role: "指揮", people: ["6951 曾膺安", "8861 簡晟軒"] },
+      { role: "長笛", people: ["9611 張容慈", "0411 蔡宛蓉", "0511 翁書偉", "0611 蔡詠竹"] },
+      { role: "豎笛", people: ["7002 顏聰文", "7221 李吉峰", "8521 賴俊甫", "8603 江俊漢", "8621 蔡嘉偉", "9721 葉哲良", "9802 李亞璿", "9921 劉炫廷", "0221 劉至遠", "0321 李承祐", "0323 董書菡", "0421 陳乃慎"] },
+      { role: "低音豎笛", people: ["戴誠佐"] },
+      { role: "中音薩克斯風", people: ["8431 鄭鈞元", "0431 許哲誠", "0301 顏駿", "0631 呂裕翔"] },
+      { role: "次中音薩克斯風", people: ["8632 江嘉榮", "江旻祐"] },
+      { role: "上低音薩克斯風", people: ["張又予"] },
+      { role: "雙簧管", people: [] },
+      { role: "低音管", people: [] },
+      { role: "法國號", people: ["7941 黃亭雲", "8841 魏仕杰", "9302 洪敏睿", "9841 洪筱涵", "0302 李怡貝", "葉丞竣"] },
+      { role: "小號", people: ["6851 周正倫", "7571 陳昌遠", "7751 李文慶", "8101 陳明陽", "8401 楊秉驊", "8601 古峻錡", "9202 蔡淳任", "9852 周宥騰", "0501 陳漢仲", "0651 林俞佑", "0652 陳浩維"] },
+      { role: "長號", people: ["7962 范庭福", "9601 張永澤", "0002 王則旻", "0402 方文志", "0661 王聖薺", "0662 賴譽平", "李奕憲", "0563 林岱宇", "紀政良", "陳弘曆"] },
+      { role: "上低音號", people: ["6801 游宗仁", "9871 陳韋龍", "0472 林郁凱", "林宗易"] },
+      { role: "低音號", people: ["7581 翁啟榮", "0103 葉韋廷", "0381 張仁瀚", "0601 葉思佑"] },
+      { role: "低音大提琴", people: ["陳映彤（原檔標註 04）", "蘇瑋彤"] },
+      { role: "打擊", people: ["8302 鄧杰翔", "8991 陳英杰", "9392 林祐成", "0591 張子明", "0593 陳勇志", "0691 謝宗霖", "0692 徐杰逸", "0693 涂宇杰"] }
+    ],
+    performerNote: "名單依 2018 年 6 月 22 日「2018校聯名單」整理；原文提示「歡迎編輯、編號自行補上」，此處僅保留原檔可辨識編號，不推算缺漏編號。",
+    sources: [
+      "concerts.html",
+      SOURCE_SOCIAL_VIDEO_LIST,
+      SOURCE_2018_PROGRAM_NOTES,
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/2018年第34屆/2018校聯名單.md"
+    ],
+    sourceNote: "本頁曲目與樂曲解說整理自 2018 年校友聯演曲目介紹社群協作文件；演出人員名單依 2018 年 6 月 22 日「2018校聯名單」整理。曲序與完整正式節目冊影像仍待校友資料補齊。",
     status: "partial",
-    notes: "曲目與樂曲解說已依社群協作曲目介紹補入。錄影清單註明因版權因素，YouTube 上傳後多有消音或版權宣告，現存清單多為示範帶。",
+    notes: "曲目與樂曲解說已依社群協作曲目介紹補入；演出人員名單依 2018校聯名單整理。錄影清單註明因版權因素，YouTube 上傳後多有消音或版權宣告，現存清單多為示範帶。",
     intro: [
       "本屆曲目與樂曲解說已依校友提供的 2018 年校友聯演曲目介紹整理入頁，8 首曲目皆已補入中文曲名、外文曲名、作曲／編曲資訊與單曲介紹。",
-      "附件未標明上下半場，曲序目前先依現存曲介順序呈現；後續若取得正式節目冊，可再校對曲序與演出人員名單。"
+      "2018 年 6 月 22 日的校聯名單也已補入演出人員區塊；附件未標明上下半場，曲序目前先依現存曲介順序呈現，後續若取得正式節目冊，可再校對曲序、職掌與名單缺漏編號。"
     ]
   },
   {
@@ -632,9 +657,109 @@ window.CONCERTS = [
     venue: "",
     venueNote: "",
     hostHead: "",
-    conductors: [],
+    conductors: [
+      { name: "陳錫仁", num: "6301", role: "指揮", concertRole: "指揮《木犀草序曲》", concertBio: "嘉中小號部校友，曾任嘉中管樂隊隊長。1982 年畢業於國立臺灣師範大學音樂系，1991 年獲美國 DePaul University 小號演奏碩士。2014 節目單記載時任陳錫仁藝術工作室藝術總監、中臺科技大學專任副教授。" },
+      { name: "曾膺安", num: "6951", role: "指揮", concertRole: "指揮《爺爺的大鐘》", concertBio: "1980 至 1983 年就讀嘉義高中並加入管樂隊學習小號，曾服役於國防部示範樂隊。東海大學音樂系主修小號，後於輔仁大學音樂研究所主修樂團指揮；1994 年起任職嘉義市管樂團，擔任指揮及藝術總監。" },
+      { name: "盧宓承", num: "7111", role: "指揮", concertRole: "指揮《英雄的證明》", concertBio: "1982 年進入嘉中初習管樂。曾任嘉義高中管樂隊指揮、指導老師，並曾任嘉義市音樂協進會第五及第六屆理事長、嘉義市政府員工合唱團指導老師。2014 節目單記載時任稻江大學專任教職。" },
+      { name: "朱慶展", num: "7321", role: "指揮", concertRole: "指揮《萬水千山縱橫》", concertBio: "嘉中豎笛部校友。2014 節目單以「1984 年當紅指揮」介紹，並記載當時在嘉義市文化路經營道地小吃「阿池魷魚肉羹」。" },
+      { name: "林中伍", num: "7361", role: "指揮", concertRole: "指揮《那些年，我們一起玩的音樂》", concertBio: "1984 年進入嘉中管樂隊，隨學長開始學習長號。1988 年起參與學校管樂社團教學，1994 年參與建立嘉義市青少年聯合管樂團，曾任分部指導、團員、銅管首席、會計幹事與事務經理等職務。" },
+      { name: "翁啟榮", num: "7581", role: "指揮", concertRole: "指揮《在菲利普布利斯的詩歌上》", concertBio: "1986 年進入嘉中管樂隊吹奏低音號，1990 年進入警大並擔任管樂隊室內指揮三年。1991 至 1997 年指導嘉中管樂隊，1994 年起參加嘉義市管樂團擔任低音號手。" },
+      { name: "李瑾佑", num: "8192", role: "指揮", concertRole: "指揮《新一日的黎明》", concertBio: "嘉義市人，畢業於嘉義高中、輔仁大學音樂系。高中時期曾任嘉義高中管樂隊指揮，並考上嘉義市青少年管樂團擔任打擊部團員；大學主修小提琴，長期參與弦樂團、管樂團、合唱伴奏與多類型演出。" },
+      { name: "鄭鈞元", num: "8431", role: "指揮", concertRole: "指揮《亞美尼亞舞曲（第一部分）》", concertBio: "1995 年進入嘉義高中參加管樂社開始接觸薩克斯風。大學就讀臺灣藝術大學音樂系，退伍後赴法國國立馬爾梅松音樂院及馮特內蘇布瓦市立音樂院深造，2009 年獲薩克管、室內樂第一獎演奏文憑及音樂教育文憑。" },
+      { name: "丁肇賢", num: "8501", role: "指揮", concertRole: "指揮《天馬座的飛行》", concertBio: "就讀嘉義高中時期開始接觸管樂並學習低音號，曾任隊長並參加銅管五重奏比賽獲優等。就讀淡江大學時受陳一夫老師啟蒙學習指揮，後連續三年擔任學生指揮；2014 節目單記載時任台北校友管樂團藝術總監、藝研國際有限公司業務主任。" },
+      { name: "簡晟軒", num: "8861", role: "指揮", concertRole: "指揮《阿巴金曲》", concertBio: "嘉義縣新港人，1999 年就讀嘉義高中學習長號。曾就讀高雄師範大學音樂系、德國萊比錫音樂院，並於 2012 年取得長號演奏家文憑；回國後積極參與樂團演出及南部地區管樂教學。" },
+      { name: "林唐禾", num: "8993", role: "指揮", concertRole: "指揮《諸神的命運》", concertBio: "畢業於嘉義國中音樂班、嘉義高中音樂班、國立臺北教育大學音樂系，研究所畢業於國立臺灣師範大學音樂研究所指揮組。高中期間加入嘉義高中管樂隊學習打擊樂並擔任學生指揮，2014 節目單記載時任國立臺灣大學醫學院杏林管弦樂團指揮。" }
+    ],
     soloists: [],
-    program: [],
+    program: [
+      {
+        title: "木犀草序曲",
+        foreignTitle: "Mignonette Overture",
+        credit: "J. Baumann",
+        conductor: "陳錫仁",
+        status: "confirmed",
+        description: "節目單記載，鮑曼的《木犀草序曲》在 1960 年代臺灣南部管樂風氣尚在萌芽、樂譜資源缺乏的年代，是一首令人耳目一新的作品。它以正式編制、優美旋律、較複雜的結構節奏及變化性的速度與和聲進行，標誌著管樂隊不只服務升降旗與典禮，也能演奏具有藝術價值的作品；嘉中樂隊曾以此曲作為省賽自選曲並獲優等第一。"
+      },
+      {
+        title: "爺爺的大鐘",
+        foreignTitle: "Grandfather's Clock",
+        credit: "Henry Clay Work, arr. 山下國俊",
+        conductor: "曾膺安",
+        status: "confirmed",
+        description: "美國歌曲《Grandfather's Clock》由 Henry Clay Work 作詞作曲，1876 年發表，當時在美國境內發行超過百萬份樂譜。節目單轉述其創作典故：英國約克郡與達勒姆郡邊緣一間旅館大廳的擺鐘，在經營旅館的兄弟相繼離世後逐漸故障並停止運作；Work 於 1875 年旅行英國時聽聞此故事，據此創作此曲。"
+      },
+      {
+        title: "英雄的證明",
+        foreignTitle: "英雄の証",
+        credit: "甲田雅人, arr. 森田一浩",
+        conductor: "盧宓承",
+        status: "confirmed",
+        description: "本曲為 CAPCOM 動作遊戲《魔物獵人》系列配樂之一。節目單介紹，遊戲以狩獵各式怪物為主，場景涵蓋雪山、樹林、沙漠與火山等自然環境；配樂為呼應場景與戰鬥而具多變風格與高水準作曲演奏效果。CAPCOM 亦曾於 2009、2011、2012 年舉辦「狩獵音樂祭」巡迴音樂會，以管弦樂現場演奏遊戲配樂並搭配燈光與畫面。"
+      },
+      {
+        title: "萬水千山縱橫",
+        credit: "顧嘉煇曲，黃霑詞，馮朝君編",
+        conductor: "朱慶展",
+        status: "confirmed",
+        description: "《萬水千山縱橫》為 1982 年香港電視劇《天龍八部之虛竹傳奇》主題曲。節目單介紹，該劇由香港電視廣播有限公司製作，改編自金庸小說《天龍八部》，臺灣台視於 1983 至 1984 年播出國語配音版本，也是臺灣老三台「港劇熱潮」中的重要作品；節目單並以幽默語氣記錄此曲當年在嘉中新生間的流行記憶。"
+      },
+      {
+        title: "那些年，我們一起玩的音樂",
+        credit: "進行曲組曲，林中伍編",
+        conductor: "林中伍",
+        status: "confirmed",
+        description: "指揮林中伍親自編寫的進行曲組曲，回望嘉中軍樂隊時期大量吹奏進行曲的共同記憶。節目單描述，當年的隊員會從文音第一頁的〈國歌〉吹到最後一頁的〈印凡卡其爾〉，不同聲部的譜也互相拿來練；本曲將國徽、起錨、巡邏兵、陸戰隊、砲兵、中華、學生軍、拉黛斯基、雷神、威風凜凜等進行曲素材摻在一起。"
+      },
+      {
+        title: "在菲利普布利斯的詩歌上",
+        foreignTitle: "On a Hymnsong of Philip Bliss",
+        credit: "David R. Holsinger",
+        conductor: "翁啟榮",
+        status: "confirmed",
+        description: "Philip Paul Bliss 是美國基督教詩歌作家與福音音樂歌手。作曲家 David R. Holsinger 以 Bliss 所作〈It Is Well with My Soul〉旋律為基礎加以變奏與發展，完成這首使人心靈平靜的小品；節目單也指出，本曲同時考驗管樂團的音準、和聲與音色。"
+      },
+      {
+        title: "新一日的黎明",
+        foreignTitle: "Dawn of a New Day",
+        credit: "James L. Swearingen",
+        conductor: "李瑾佑",
+        status: "confirmed",
+        description: "James L. Swearingen 是美國當代音樂教育學者、作曲家和編曲家，曾任美國首都大學音樂教育系主任。節目單介紹，其作品廣泛出現在美國及世界各級學校管樂團中，多為長度不超過十分鐘、快慢快三段結構、旋律簡明且具教育訓練用途的作品；《新一日的黎明》為其創作風格代表之一。"
+      },
+      {
+        title: "亞美尼亞舞曲（第一部分）",
+        foreignTitle: "Armenian Dances (Part 1)",
+        credit: "Alfred Reed",
+        conductor: "鄭鈞元",
+        status: "confirmed",
+        description: "Alfred Reed 於 1972 年發表《Armenian Dances (Part 1)》，素材來自亞美尼亞傳教士兼音樂學者 Komitas Vardapet 採集的亞美尼亞民謠。節目單列出全曲五段：〈杏樹〉、〈鷓鴣之歌〉、〈嘿，我的娜桑〉、〈阿拉雅茲山〉與〈去吧！去吧！〉，並指出作曲家在不破壞民謠精神的前提下，發揮管樂團音響效果，是管樂經典作品。"
+      },
+      {
+        title: "天馬座的飛行",
+        foreignTitle: "Flight of Pegasus",
+        credit: "David Shaffer",
+        conductor: "丁肇賢",
+        status: "confirmed",
+        description: "David Shaffer 於 1994 年發表此曲，靈感來自希臘神話的飛馬 Pegasus。節目單介紹，Pegasus 從美杜莎頸腔噴出的血中誕生，後來被雅典娜馴服並贈給柏勒洛豐，最終成為天馬座。曲子前段以快速號角與旋律線象徵刺激的飛行，中段轉為慢板與三拍華爾茲，像在繆思之泉旁歇息，最後接回快速終段直衝天際。"
+      },
+      {
+        title: "阿巴金曲",
+        foreignTitle: "ABBA Gold",
+        credit: "ABBA, arr. Ron Sebregts",
+        conductor: "簡晟軒",
+        status: "confirmed",
+        description: "ABBA 是 1970 年代瑞典流行樂代表團體，1974 年以〈Waterloo〉獲歐洲歌唱大賽冠軍後風靡歐洲與世界樂壇。節目單介紹，本曲以 ABBA 四首名曲編成，依序為〈Dancing Queen〉、〈Mamma Mia〉、〈Fernando〉與〈The Winner Takes It All〉，並註明 2014 年正逢 ABBA 獲歐洲歌唱大賽冠軍 40 週年。"
+      },
+      {
+        title: "諸神的命運",
+        foreignTitle: "Fate of the Gods",
+        credit: "Steven Reineke",
+        conductor: "林唐禾",
+        status: "confirmed",
+        description: "Steven Reineke 以北歐神話中的「諸神的黃昏」為題材創作此曲。節目單介紹，Ragnarok 描寫諸神與巨人、洛基等勢力的大戰及隨之而來的自然浩劫，世界沉入水底後又復甦重建。音樂隨故事進行可分成四大段落：末日的預兆、戰爭前夕、末日之戰與新世界。"
+      }
+    ],
+    programNote: "指揮、曲目、作曲／編曲資訊與曲目介紹依 2014 年《嘉中校聯節目單-指揮+曲介 V2.01》整理；原檔每位指揮對應一首曲目。",
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "assets/img/concerts/2014.webp",
     page: "concerts/2014-30th.html",
@@ -643,9 +768,14 @@ window.CONCERTS = [
       { label: "第 30 屆《３０而礫》錄影清單", url: "https://youtube.com/playlist?list=PLAVnw2heYVvn5-dmQCDPpVOIpMu5hdO5J", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
-    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
+    sources: [
+      "concerts.html",
+      SOURCE_SOCIAL_VIDEO_LIST,
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/2014年第30屆/2014嘉中校聯節目單-指揮+曲介V2.01.doc"
+    ],
+    sourceNote: "本頁指揮介紹、曲目、指揮對應曲目與樂曲解說，整理自 2014 年《嘉中校聯節目單-指揮+曲介 V2.01》；日期、時間、場地與完整演出人員名單仍待海報、節目冊定稿或校友資料補齊。",
     status: "partial",
-    notes: "社群錄影清單作《３０而礫》；現有主頁與海報替代文字作《三十而樂》，名稱仍需節目冊或海報圖像再核對。日期、場地、指揮、曲目待補。"
+    notes: "社群錄影清單作《３０而礫》；現有主頁與海報替代文字作《三十而樂》。2014 年節目單草稿已可考 11 位指揮與各自對應曲目；日期、時間、場地與完整演出人員名單仍待補。"
   },
   {
     id: "2013-29th",
@@ -783,30 +913,54 @@ window.CONCERTS = [
     title: "第 27 屆聯合音樂會",
     subtitle: "",
     date: "2011-07-16",
-    time: "",
-    venue: "",
-    venueNote: "",
+    time: "13:30-15:30",
+    venue: "嘉義市文化中心音樂廳",
+    venueNote: "為嘉義市國際管樂節正式節目之一；今嘉義市政府文化局音樂廳",
     hostHead: "",
     intro: [
-      "第 27 屆聯合音樂會目前可由活動指定曲資料夾 README 補入 9 首曲目，包含八木澤教司《Perseus》、Philip Sparke《Carnival》、Artie Shaw《Concerto for Clarinet》與 Gershwin《Rhapsody in Blue》等作品。",
-      "日期暫列 2011.07.16，場地、指揮、正式主題與完整團員名單仍待節目冊、海報或校友補充資料確認。同年另有 WASBE 2011 嘉義世界管樂大會相關紀錄，現階段先作為同年背景保存，不直接併入本屆。"
+      "第 27 屆嘉義高中管樂隊校友暨在校生聯合音樂會於 2011 年 7 月 16 日 13:30 至 15:30 在嘉義市文化中心音樂廳演出，並列為嘉義市國際管樂節正式節目之一。",
+      "本屆由鄭鈞元與丁肇賢共同擔任指揮，節目包含管樂原創、歌劇選粹、協奏曲與通俗改編作品；懶人包同時保存了正式演出人員名單、預定排練時程與樂譜進度，是第 27 屆目前可考的重要資料。"
     ],
-    conductors: [],
-    soloists: [],
-    performers: [
-      { name: "鄧杰翔", num: "8302", role: "打擊聲部" }
+    conductors: [
+      { name: "鄭鈞元", num: "8431", role: "指揮", concertRole: "指揮（曲目 1、2、7、8）" },
+      { name: "丁肇賢", num: "8501", role: "指揮", concertRole: "指揮（曲目 3、4、5、6）" }
     ],
+    soloists: [
+      { name: "黃耀瑩", num: "8912", instrument: "雙簧管", work: "Soliloquy and Dance for Oboe and Band" },
+      { name: "鄭鈞元", num: "8431", instrument: "薩克斯風", work: "Carnival for Saxophone & Concert Band" },
+      { name: "陳佩君", instrument: "鋼琴", work: "Rhapsody in Blue" },
+      { name: "謝介豪", instrument: "單簧管", work: "Concerto for Clarinet" }
+    ],
+    performerGroups: [
+      { role: "指揮", people: ["鄭鈞元", "丁肇賢"] },
+      { role: "獨奏家", people: ["雙簧管：黃耀瑩", "薩克斯風：鄭鈞元", "鋼琴：陳佩君", "單簧管：謝介豪"] },
+      { role: "長笛", people: ["盧宓承", "李子沛", "張容慈", "林宜增", "詹翔傑", "陳譽晨"] },
+      { role: "雙簧管", people: ["黃耀瑩"] },
+      { role: "低音管", people: ["劉怡汝"] },
+      { role: "單簧管", people: ["李吉峰", "江俊漢", "蔡嘉偉", "謝介豪", "葉哲良", "鄭凱陽", "謝俊宇", "何奇穎", "李亞璿", "余彥寬", "趙耘浩", "蔡昀翰", "劉炫廷", "陳沛穎"] },
+      { role: "薩克斯風", people: ["鄭鈞元", "陳韋志", "戴俊杉", "羅耿旻", "龔昱銘", "施丞彧", "陳映良"] },
+      { role: "法國號", people: ["蔡文立", "魏仕杰", "洪敏睿", "廖恆毅", "高士涵"] },
+      { role: "小號", people: ["陳明陽", "楊秉驊", "古峻錡", "劉全盛", "蔡育修", "周宥騰", "陳信慈"] },
+      { role: "長號", people: ["高健雄", "范庭福", "方崇任", "張永澤", "謝梓嫣", "蔡政岳", "黃楷傑"] },
+      { role: "上低音號", people: ["吳仁庭", "何志薪", "陳韋龍"] },
+      { role: "低音號", people: ["翁啟榮", "李函濰", "李旻其", "侯柏辰"] },
+      { role: "打擊", people: ["鄧杰翔", "陳建宇", "蔣承哲", "羅介伶", "許家誠", "詹琬婷", "徐儷慈", "徐立杰"] },
+      { role: "鋼琴", people: ["王騰寬"] }
+    ],
+    performerNote: "名單依 2011 年 5 月 16 日「2011校友聯演懶人包」確定版整理；原檔各聲部後方人數統計未列入姓名欄。",
     program: [
-      { title: "英雄帕修斯", foreignTitle: "Perseus", credit: "八木澤教司 Satoshi Yagisawa", status: "confirmed" },
-      { title: "Carnival", note: "中音薩克斯風獨奏", credit: "Philip Sparke", status: "confirmed" },
-      { title: "Elsa's Procession to the Cathedral", credit: "Richard Wagner, arr. 待查", status: "confirmed" },
-      { title: "Concerto for Clarinet", credit: "Artie Shaw", status: "confirmed" },
-      { title: "祭典情景", foreignTitle: "Festal Scenes", credit: "伊藤康英 Yasuhide Ito", status: "confirmed" },
-      { title: "Rhapsody in Blue", credit: "George Gershwin, arr. 待查", status: "confirmed" },
-      { title: "American Graffiti 3", credit: "arr. 岩井直溥 Naohiro Iwai", status: "confirmed" },
-      { title: "Soliloquy and Dance", credit: "Philip Parker", status: "confirmed" },
-      { title: "Tico-Tico no Fuba", credit: "Zequinha de Abreu, arr. 待查", status: "confirmed" }
+      { section: "上半場", title: "英仙座", foreignTitle: "Perseus", credit: "八木澤教司 Satoshi Yagisawa", conductor: "鄭鈞元", status: "confirmed" },
+      { section: "上半場", title: "為雙簧管與管樂團的獨白與舞曲", foreignTitle: "Soliloquy and Dance for Oboe and Band", credit: "Philip Parker", conductor: "鄭鈞元", soloist: "黃耀瑩（雙簧管）", status: "confirmed" },
+      { section: "上半場", title: "艾爾莎向著大教堂而去的行列", foreignTitle: "Elsa's Procession to the Cathedral from Lohengrin", credit: "Richard Wagner", conductor: "丁肇賢", note: "選自歌劇《羅恩格林》", status: "confirmed" },
+      { section: "上半場", title: "嘉年華", foreignTitle: "Carnival for Saxophone & Concert Band", credit: "Philip Sparke", conductor: "丁肇賢", soloist: "鄭鈞元（中音薩克斯風）", status: "confirmed" },
+      { section: "下半場", title: "藍色狂想曲", foreignTitle: "Rhapsody in Blue", credit: "George Gershwin", conductor: "丁肇賢", soloist: "陳佩君（鋼琴）", note: "原檔標註 Piano Concerto", status: "confirmed" },
+      { section: "下半場", title: "抒情的祭", foreignTitle: "Festal Scenes", credit: "伊藤康英 Yasuhide Ito", conductor: "丁肇賢", status: "confirmed" },
+      { section: "下半場", title: "單簧管協奏曲", foreignTitle: "Concerto for Clarinet", credit: "Artie Shaw", conductor: "鄭鈞元", soloist: "謝介豪（單簧管）", status: "confirmed" },
+      { section: "下半場", title: "美國風情畫 III", foreignTitle: "American Graffiti III", credit: "岩井直溥 Naohiro Iwai", conductor: "鄭鈞元", status: "confirmed" },
+      { section: "Encore", title: "Tico Tico", status: "confirmed" },
+      { section: "Encore", title: "Yesterday", status: "confirmed" }
     ],
+    programNote: "曲目順序、指揮分配與獨奏者依「2011校友聯演懶人包」整理；此前活動指定曲 README 作為曲目交叉來源保留。",
     ticket: { type: "unknown", price: "", channels: [], note: "" },
     poster: "",
     page: "concerts/2011-27th.html",
@@ -821,10 +975,12 @@ window.CONCERTS = [
       "content/people/8302.html",
       "people/8302.html",
       "/Volumes/home-1/Drive/03【嘉義高中管樂社】/03_樂譜庫/04_活動指定曲/校聯指定曲/2011_第27屆/README.md",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/2011年第27屆/2011校友聯演懶人包.md",
       "20260704_嘉中管樂社官網_校友提供資料/01_校友聯演與歷史活動史料/2011_校友演奏會_待考/20_照片影像_公開候選"
     ],
+    sourceNote: "本頁日期、時間、場地、指揮、獨奏者、曲目順序與演出人員名單，主要依 2011 年 5 月 16 日「2011校友聯演懶人包」整理；曲目另與第 27 屆活動指定曲 README 交叉保留。正式節目冊影像與更完整曲目介紹仍待補。",
     status: "partial",
-    notes: "2011 聯演存在與鄧杰翔打擊聲部由人物頁名單脈絡確認；日期由 2011.07.16 影像 EXIF 支持。曲目依 2011 第 27 屆活動指定曲 README 補入，場地、指揮、正式主題與完整團員名單仍待節目冊或海報補齊。2011 世界管樂年會校友團協奏紀錄暫列為同年相關活動，未直接併入第 27 屆。"
+    notes: "2011 懶人包記載第 27 屆於 2011.07.16 13:30-15:30 在嘉義市文化中心音樂廳演出，為嘉義市國際管樂節正式節目之一；指揮、獨奏者、曲目順序與完整演出名單已可考，正式節目冊影像與曲目介紹仍待補。"
   },
   {
     id: "2010-26th",
@@ -1048,7 +1204,7 @@ window.CONCERTS = [
     soloists: [],
     program: [{ title: "Blue Midnight", status: "partial", note: "照片檔名留下之曲目線索" }],
     ticket: { type: "unknown", price: "", channels: [], note: "" },
-    poster: "assets/img/gallery/2002/0830c-06.webp",
+    poster: "assets/img/concerts/2002.webp",
     page: "concerts/2002-18th.html",
     gallery: ["gallery/2002-concert.html"],
     programBook: [

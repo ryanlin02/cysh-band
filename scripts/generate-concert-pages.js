@@ -295,8 +295,15 @@ function programList(program, concert = {}) {
     return `${escapeHtml(main)}${foreign ? ` <i>${escapeHtml(foreign)}</i>` : ''}`;
   };
   const composerText = (work) => {
-    if (work.credit) return escapeHtml(work.credit);
-    return [work.composer, work.arranger ? `arr. ${work.arranger}` : '', work.note]
+    const base = work.credit
+      ? [work.credit]
+      : [work.composer, work.arranger ? `arr. ${work.arranger}` : ''];
+    return [
+      ...base,
+      work.conductor ? `指揮：${work.conductor}` : '',
+      work.soloist ? `獨奏：${work.soloist}` : '',
+      work.note
+    ]
       .filter(Boolean)
       .map(escapeHtml)
       .join('／');
