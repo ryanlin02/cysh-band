@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { createRenderer } = require('./lib/site-template');
+const { autoLinkHtml } = require('./lib/people-auto-link');
 
 const root = path.join(__dirname, '..');
 const { escapeHtml, renderPage } = createRenderer(root);
@@ -111,7 +112,7 @@ ${sections.map(renderSection).join('\n\n')}
 
 </main>`;
 
-  return renderPage({
+  const html = renderPage({
     title: "人物誌｜嘉義高中管樂隊傑出校友",
     description: "嘉義高中管樂隊近百年來培育的音樂人才：職業樂團演奏家、大學音樂教師、指揮家與作曲家。",
     ogTitle: "人物誌｜嘉義高中管樂隊傑出校友",
@@ -120,6 +121,7 @@ ${sections.map(renderSection).join('\n\n')}
     navActive: "people",
     content
   }).replace(/[ \t]+$/gm, '');
+  return autoLinkHtml(html, 'people.html', profiles);
 }
 
 function generatePeopleIndex() {

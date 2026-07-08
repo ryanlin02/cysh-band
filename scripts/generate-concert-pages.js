@@ -5,6 +5,7 @@
    用法：node scripts/generate-concert-pages.js [--overwrite-manual] [concert-id] */
 const fs = require('fs');
 const path = require('path');
+const { autoLinkHtml } = require('./lib/people-auto-link');
 
 global.window = global;
 require(path.join(__dirname, '..', 'data', 'concerts.js'));
@@ -407,10 +408,21 @@ function performerRows(concert) {
       group.people.push(person);
     }
   }
-  return `<div class="table-scroll"><table class="plain roster">
+  let html = `<div class="table-scroll"><table class="plain roster">
       <tr><th>聲部／角色</th><th>人員</th></tr>
       ${groups.map((group) => `<tr><td data-label="聲部／角色">${escapeHtml(group.key)}</td><td data-label="人員">${rosterPeopleText(group.people)}</td></tr>`).join('\n      ')}
     </table></div>${concert.performerNote ? `\n    <p class="muted">${escapeHtml(concert.performerNote)}</p>` : ''}`;
+  if (concert.performerSupplementGroups && concert.performerSupplementGroups.length) {
+    html += `\n    <h3>社群協作名單補充</h3>
+    <div class="table-scroll"><table class="plain roster">
+      <tr><th>聲部／角色</th><th>人員</th></tr>
+      ${concert.performerSupplementGroups.map((group) => `<tr><td data-label="聲部／角色">${escapeHtml(group.role || group.label || '補充名單')}</td><td data-label="人員">${rosterPeopleText(group.people || group.members || [])}</td></tr>`).join('\n      ')}
+    </table></div>`;
+  }
+  if (concert.performerSupplementNote) {
+    html += `\n    <p class="muted">${escapeHtml(concert.performerSupplementNote)}</p>`;
+  }
+  return html;
 }
 
 function adminTable(concert) {
@@ -437,6 +449,22 @@ function sponsorsText(concert) {
   if (sponsors.length) rows.push(`<p><b>贊助／協辦：</b>${sponsors.map(escapeHtml).join('、')}</p>`);
   if (thanks.length) rows.push(`<p><b>致謝：</b>${thanks.map(escapeHtml).join('、')}</p>`);
   return rows.join('\n    ');
+}
+
+function planningSection(concert) {
+  const rows = concert.planningRows || [];
+  const notes = concert.planningNotes || [];
+  if (!rows.length && !notes.length) return '';
+  const noteHtml = notes.map((text) => `<p>${escapeHtml(text)}</p>`).join('\n    ');
+  const rowsHtml = rows.length ? `<div class="table-scroll"><table class="plain roster">
+      <tr><th>時間</th><th>紀錄</th></tr>
+      ${rows.map((row) => `<tr><td data-label="時間">${escapeHtml(row.date || row.time || '')}</td><td data-label="紀錄">${escapeHtml(row.detail || row.description || '')}</td></tr>`).join('\n      ')}
+    </table></div>` : '';
+  return `<section class="section">
+    <h2>籌備紀錄</h2>
+    ${noteHtml}
+    ${rowsHtml}
+  </section>`;
 }
 
 function galleryPhotos(concert) {
@@ -474,6 +502,22 @@ function renderGallerySection(concert) {
     return `<figure><img src="../${escapeHtml(src)}"${full ? ` data-full="../${escapeHtml(full)}"` : ''} alt="${escapeHtml(caption)}" loading="lazy"><figcaption>${escapeHtml(caption)}</figcaption></figure>`;
   }).join('\n      ')}
     </div>`;
+}
+
+function promoImagesSection(concert) {
+  const images = concert.promoImages || [];
+  if (!images.length) return '';
+  return `<section class="section">
+    <h2>宣傳品</h2>
+    <div class="gallery-grid concert-gallery-grid">
+      ${images.map((item) => {
+    const src = typeof item === 'string' ? item : item.src;
+    const full = typeof item === 'string' ? item : (item.full || item.src);
+    const caption = typeof item === 'string' ? '宣傳品' : (item.caption || '宣傳品');
+    return `<figure><img src="../${escapeHtml(src)}"${full ? ` data-full="../${escapeHtml(full)}"` : ''} alt="${escapeHtml(caption)}" loading="lazy"><figcaption>${escapeHtml(caption)}</figcaption></figure>`;
+  }).join('\n      ')}
+    </div>
+  </section>`;
 }
 
 function programBookSection(concert) {
@@ -515,8 +559,10 @@ function render(concert) {
   const missing = missingFields(concert);
   const statusText = concert.status === 'planning' ? '籌備中' : concert.status === 'pending' ? '資料待考' : concert.status === 'confirmed' ? '已確認' : '部分可考';
   const canonical = `https://cysh.band/${concert.page}`;
+  const planningHtml = planningSection(concert);
+  const promoHtml = promoImagesSection(concert);
 
-  return `<!DOCTYPE html>
+  const html = `<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
 <meta charset="UTF-8">
@@ -584,7 +630,7 @@ ${generatedMarker}
   <section class="section">
     <h2>關於這場音樂會</h2>
     ${concertIntro(concert, desc)}
-  </section>
+  </section>${planningHtml ? `\n\n  ${planningHtml}` : ''}
 
   <section class="section">
     <h2>指揮與獨奏</h2>
@@ -615,7 +661,7 @@ ${generatedMarker}
   <section class="section">
     <h2>演出留影</h2>
     ${renderGallerySection(concert)}
-  </section>
+  </section>${promoHtml ? `\n\n  ${promoHtml}` : ''}
 
   <section class="section">
     <h2>節目冊</h2>
@@ -665,6 +711,7 @@ ${generatedMarker}
 </body>
 </html>
 `;
+  return autoLinkHtml(html, concert.page, peopleProfiles);
 }
 
 let written = 0;

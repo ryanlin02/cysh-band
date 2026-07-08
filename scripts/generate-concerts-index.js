@@ -5,6 +5,7 @@
    node scripts/generate-concerts-index.js --check */
 const fs = require('fs');
 const path = require('path');
+const { autoLinkHtml } = require('./lib/people-auto-link');
 
 const root = path.join(__dirname, '..');
 
@@ -29,7 +30,7 @@ const ARCHIVE_INTROS = {
   '2016-32nd': '《五字頭！》由五字頭校友承接主辦，2016 年 8 月 27 日於嘉義市文化公園演奏台演出。現存 DM 已能確認主題、屆次、日期、時間、場地與指揮名單，陳錫仁、翁啟榮、丁肇賢共同執棒；曲目包含《The Days of Wine and Roses》、重奏曲目、松田聖子歌曲選粹、《On the Mall》與《新天堂樂園》等。',
   '2015-31st': '《三生。一世樂》於 2015 年 9 月 5 日在嘉義市政府文化局音樂廳演出，由鄭鈞元、簡晟軒、陳錫仁、盧宓承共同執棒，陳韋希擔任薩克斯風協奏。本屆是聯合音樂會三十年來首度嘗試售票演出，透過兩廳院售票系統與 ibon 售票；節目涵蓋管樂經典、協奏曲與岩井直溥通俗名曲。',
   '2014-30th': '《三十而樂》紀念校友聯演傳統邁入第三十屆，副標「卅有其誓 × 出磊拔粹」延伸出屆次與青春記憶的雙關。2014 年節目單草稿保存 11 位指揮與各自對應曲目，從陳錫仁《木犀草序曲》到林唐禾《諸神的命運》，形成一人一曲的校友指揮群像；日期、場地與完整演出名單仍待補。',
-  '2013-29th': '第 29 屆聯合音樂會於 2013 年 8 月 23 日在嘉義市政府文化局音樂廳演出，由鄭鈞元擔任指揮，陳錫仁同時擔任客席指揮與小號獨奏，簡晟軒、蔡淳任擔任助理指揮，全團約 80 人。上半場包含管樂經典與協奏曲，下半場轉向音樂劇、電影配樂與爵士流行作品。',
+  '2013-29th': '第 29 屆聯合音樂會於 2013 年 8 月 23 日在嘉義市政府文化局音樂廳演出，由鄭鈞元擔任指揮，陳錫仁同時擔任客席指揮與小號獨奏，簡晟軒、蔡淳任擔任助理指揮，全團約 80 人。正式節目冊已整理為 20 頁影像並補入曲目解說、安可曲、FB Banner、籌備進度報告與社群協作演出名單補充。',
   '2012-28th': '《追憶-榮耀》於 2012 年 8 月 31 日在嘉義市文化局音樂廳演出，由鄭鈞元、丁肇賢擔任指揮，李子沛擔任長笛獨奏。現存海報顯示本屆由嘉義市文化局主辦、國立嘉義高中協辦，並獲行政院青年輔導委員會與教育部指導，是目前海報可考最早的音樂廳演出紀錄之一。',
   '2011-27th': '第 27 屆聯合音樂會於 2011 年 7 月 16 日 13:30 至 15:30 在嘉義市文化中心音樂廳演出，並列為嘉義市國際管樂節正式節目之一。鄭鈞元與丁肇賢共同擔任指揮，鄭鈞元、黃耀瑩、謝介豪、陳佩君分別擔任薩克斯風、雙簧管、單簧管與鋼琴獨奏；懶人包亦保存分部名單、曲目順序與排練時程，正式節目冊影像仍待補。',
   '2010-26th': '《Music à la Carte》於 2010 年 8 月 21 日晚間演出，現存照片顯示舞台布條寫有「第二十六屆國立嘉義高中校友暨在校生聯合演奏會」。目前可考協奏線索為方崇任演出 Launy Grøndahl 長號協奏曲；指揮、完整曲目與正式場地名稱仍待節目冊或海報補齊。',
@@ -313,8 +314,9 @@ function renderConcertsIndex() {
   if (archiveEnd === -1) throw new Error('concerts.html: archive section end not found.');
 
   const posterCount = concerts.filter((concert) => concert.poster && exists(concert.poster) && concert.status !== 'cancelled').length;
-  return `${current.slice(0, archiveStart)}${renderArchive()}${current.slice(archiveEnd)}`
+  const html = `${current.slice(0, archiveStart)}${renderArchive()}${current.slice(archiveEnd)}`
     .replace(/<div><b>\d+\+?<\/b><span>(?:現存海報|主視覺)<\/span><\/div>/, `<div><b>${posterCount}</b><span>主視覺</span></div>`);
+  return autoLinkHtml(html, 'concerts.html', profiles);
 }
 
 function writeConcertsIndex() {

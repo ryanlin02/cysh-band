@@ -4,9 +4,15 @@
 const fs = require('fs');
 const path = require('path');
 const { createRenderer } = require('./lib/site-template');
+const { autoLinkHtml } = require('./lib/people-auto-link');
 
 const root = path.join(__dirname, '..');
 const { escapeHtml, renderPage } = createRenderer(root);
+
+global.window = global;
+require(path.join(root, 'data', 'people-profiles.js'));
+
+const profiles = global.PEOPLE_PROFILES || [];
 
 const articles = [
   {
@@ -72,7 +78,7 @@ ${indentedBody}
   </article>
 </main>`;
 
-  return renderPage({
+  const html = renderPage({
     title: article.title,
     description: article.description,
     ogTitle: article.ogTitle,
@@ -83,6 +89,7 @@ ${indentedBody}
     navActive: 'concerts',
     content
   });
+  return autoLinkHtml(html, article.output, profiles);
 }
 
 function generateNewsPages() {

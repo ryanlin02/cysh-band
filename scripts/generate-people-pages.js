@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { createRenderer } = require('./lib/site-template');
+const { autoLinkHtml } = require('./lib/people-auto-link');
 
 const root = path.join(__dirname, '..');
 const { escapeHtml, renderPage } = createRenderer(root);
@@ -215,12 +216,12 @@ ${previewNote}${indentHtml(body)}
     <p class="sources">${profile.sourceHtml}</p>
 
     <nav class="${personNavClass}" aria-label="人物頁面導覽">
-${peopleBackLink}${officialPageLink}      <a class="btn" href="${escapeHtml(profile.rosterLink)}">在校友名錄查看${escapeHtml(profile.name)} →</a>
+${peopleBackLink}${officialPageLink}      <a class="btn" href="${escapeHtml(profile.rosterLink)}">在校友名錄查看資料 →</a>
     </nav>
   </article>
 </main>`;
 
-  return renderPage({
+  const html = renderPage({
     title: options.title || profile.title,
     description: options.description || profile.description,
     ogTitle: options.ogTitle || profile.ogTitle,
@@ -232,6 +233,7 @@ ${peopleBackLink}${officialPageLink}      <a class="btn" href="${escapeHtml(prof
     extraHead: [options.extraHead, renderPersonStructuredData(profile)].filter(Boolean).join('\n'),
     content
   }).replace(/[ \t]+$/gm, '');
+  return autoLinkHtml(html, profile.output, profiles);
 }
 
 function generatePeoplePages() {

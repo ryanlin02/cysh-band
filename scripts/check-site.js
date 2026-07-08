@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { hasUnlinkedPeopleNames } = require('./lib/people-auto-link');
 
 const root = path.join(__dirname, '..');
 const errors = [];
@@ -589,6 +590,21 @@ function checkPeopleProfilePages() {
   info.push(`People profile pages checked: ${profileFiles.length}; blank hero photos: ${blankHeroPhotos}; missing OG image dimensions: ${missingOgImageDimensions}`);
 }
 
+function checkPeopleNameLinks() {
+  const profiles = global.PEOPLE_PROFILES || [];
+  const files = walk(root, (file) => file.endsWith('.html'));
+  const outOfSync = [];
+  for (const file of files) {
+    const fileRel = rel(file);
+    const html = fs.readFileSync(file, 'utf8');
+    if (hasUnlinkedPeopleNames(html, fileRel, profiles)) outOfSync.push(fileRel);
+  }
+  if (outOfSync.length) {
+    addError(`people name links out of sync in ${outOfSync.length} file(s). Run node scripts/link-people-names.js: ${outOfSync.join(', ')}`);
+  }
+  info.push(`People name auto-links checked: ${files.length} HTML files`);
+}
+
 function printReport() {
   console.log('CYSH Band site health check');
   console.log('===========================');
@@ -623,4 +639,5 @@ checkGeneratedPeopleIndex();
 checkGeneratedConcertsIndex();
 checkPeopleIndexCards();
 checkPeopleProfilePages();
+checkPeopleNameLinks();
 printReport();
