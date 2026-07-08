@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { hasUnlinkedPeopleNames } = require('./lib/people-auto-link');
+const { createAlumniRosterResolver, cleanName } = require('./lib/alumni-roster');
 
 const root = path.join(__dirname, '..');
 const errors = [];
@@ -155,6 +156,14 @@ function checkDataReferences() {
       addError(`data/people-profiles.js: ${label} no matching data/alumni.js record.`);
     } else if (alumniPerson.link !== profile.output) {
       addError(`data/people-profiles.js: ${label} output mismatch with data/alumni.js link: ${profile.output} / ${alumniPerson.link}`);
+    } else if (alumniPerson.photo && alumniPerson.photo !== 'blank') {
+      const profilePhoto = String(profile.photo || '')
+        .replace(/^\.\.\//, '')
+        .replace(/^assets\/img\/members\//, '')
+        .replace(/\.webp$/, '');
+      if (profilePhoto && profilePhoto !== alumniPerson.photo) {
+        addError(`data/people-profiles.js: ${label} photo mismatch with data/alumni.js: ${profilePhoto} / ${alumniPerson.photo}`);
+      }
     }
   }
 
@@ -273,6 +282,41 @@ function checkDataReferences() {
       }
     }
   }
+
+  const rosterResolver = createAlumniRosterResolver(alumni);
+  let rosterEntries = 0;
+  let rosterResolved = 0;
+  let rosterAmbiguous = 0;
+  let rosterUnmatched = 0;
+  const checkRosterEntry = (entry) => {
+    if (!entry) return;
+    if (typeof entry === 'object' && !entry.name && !entry.text) return;
+    const resolved = rosterResolver.resolveEntry(entry.text || entry);
+    if (!resolved || !resolved.name) return;
+    rosterEntries += 1;
+    if (resolved.num) {
+      rosterResolved += 1;
+      return;
+    }
+    const matches = rosterResolver.byName.get(cleanName(resolved.name)) || [];
+    if (matches.length > 1) rosterAmbiguous += 1;
+    else rosterUnmatched += 1;
+  };
+
+  for (const concert of concerts) {
+    for (const field of ['conductors', 'soloists', 'organizers', 'performers']) {
+      for (const person of concert[field] || []) checkRosterEntry(person);
+    }
+    for (const field of ['performerGroups', 'performerSupplementGroups']) {
+      for (const group of concert[field] || []) {
+        for (const person of group.people || group.members || []) checkRosterEntry(person);
+      }
+    }
+    for (const row of concert.adminRows || []) {
+      for (const person of row.people || row.members || []) checkRosterEntry(person);
+    }
+  }
+  info.push(`Concert roster alumni cross-check: entries ${rosterEntries}; numbered or unique ${rosterResolved}; ambiguous ${rosterAmbiguous}; unmatched/non-alumni ${rosterUnmatched}`);
 
   const lookupByNum = new Map(lookup.map((person) => [person.num, person]));
   for (const person of alumni) {

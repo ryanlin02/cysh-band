@@ -6,16 +6,20 @@
 const fs = require('fs');
 const path = require('path');
 const { autoLinkHtml } = require('./lib/people-auto-link');
+const { createAlumniRosterResolver } = require('./lib/alumni-roster');
 
 global.window = global;
+require(path.join(__dirname, '..', 'data', 'alumni.js'));
 require(path.join(__dirname, '..', 'data', 'concerts.js'));
 require(path.join(__dirname, '..', 'data', 'people-profiles.js'));
 require(path.join(__dirname, '..', 'data', 'news.js'));
 
 const root = path.join(__dirname, '..');
+const alumni = global.ALUMNI || [];
 const concerts = global.CONCERTS || [];
 const peopleProfiles = global.PEOPLE_PROFILES || [];
 const newsItems = global.NEWS || [];
+const rosterResolver = createAlumniRosterResolver(alumni);
 const generatedMarker = '<!-- GENERATED CONCERT PAGE -->';
 const args = process.argv.slice(2);
 const overwriteManual = args.includes('--overwrite-manual');
@@ -364,19 +368,23 @@ function provenanceText(concert, missing) {
 
 function rosterPersonText(entry) {
   if (!entry) return '';
+  const resolved = rosterResolver.resolveEntry(entry);
   if (typeof entry === 'string') {
-    const match = entry.match(/^(\d{4})\s+(.+)$/);
-    if (!match) return escapeHtml(entry);
-    const [, num] = match;
+    if (!resolved) return escapeHtml(entry);
+    const num = resolved.num;
+    const label = num
+      ? `${resolved.prefix || ''}${num} ${resolved.name || (resolved.person && resolved.person.name) || ''}`.trim()
+      : resolved.raw;
+    if (!num) return escapeHtml(label);
     return exists(`people/${num}.html`)
-      ? `<a href="../people/${escapeHtml(num)}.html">${escapeHtml(entry)}</a>`
-      : escapeHtml(entry);
+      ? `<a href="../people/${escapeHtml(num)}.html">${escapeHtml(label)}</a>`
+      : escapeHtml(label);
   }
   if (entry.text) return rosterPersonText(entry.text);
-  const key = entry.num || entry.id;
+  const key = (resolved && resolved.num) || entry.num || entry.id;
   const label = [
-    entry.num,
-    entry.name,
+    key,
+    entry.name || (resolved && resolved.name),
     entry.note ? `(${entry.note})` : ''
   ].filter(Boolean).join(' ');
   return key && exists(`people/${key}.html`)
