@@ -983,7 +983,7 @@ window.CONCERTS = [
       { role: "長笛", people: [{ name: "盧宓承", num: "7111" }, { name: "高健雄", num: "7901" }, { name: "李子沛", num: "9312" }, { name: "陳譽晨" }, { name: "陳政宏" }] },
       { role: "雙簧管", people: [{ name: "黃耀瑩", num: "8912" }] },
       { role: "低音管", people: [{ name: "劉怡汝" }, { name: "程旻稜" }] },
-      { role: "單簧管", people: [{ name: "李吉峰" }, { name: "蔡嘉偉" }, { name: "吳瑩娟" }, { name: "葉哲良", num: "9721" }, { name: "李亞璇" }, { name: "趙耘浩" }, { name: "劉炫廷", num: "9921" }] },
+      { role: "單簧管", people: [{ name: "李吉峰" }, { name: "蔡嘉偉" }, { name: "吳瑩娟" }, { name: "葉哲良", num: "9721" }, { name: "李亞璿" }, { name: "趙耘浩" }, { name: "劉炫廷", num: "9921" }] },
       { role: "薩克管", people: [{ name: "鄭鈞元", num: "8431" }, { name: "江嘉榮" }, { name: "陳韋志" }, { name: "陳韋希" }, { name: "龔昱銘" }, { name: "詹凱婷" }] },
       { role: "法國號", people: [{ name: "吳金河" }, { name: "洪敏睿" }, { name: "高士涵" }, { name: "洪筱涵", num: "9841" }] },
       { role: "小號", people: [{ name: "楊秉驊", num: "8401" }, { name: "古峻錡" }, { name: "劉全盛" }, { name: "蔡淳任", num: "9202" }, { name: "蔡育修" }, { name: "陳信慈" }] },
@@ -1002,7 +1002,7 @@ window.CONCERTS = [
       { role: "文書", people: [{ name: "羅碩文" }] },
       { role: "財務", people: [{ name: "張永澤", num: "9601" }] },
       { role: "譜務", people: [{ name: "翁啟榮", num: "7581" }] },
-      { role: "美宣", people: [{ name: "朱育嘉" }] }
+      { role: "美宣", people: [{ name: "朱翊嘉" }] }
     ],
     program: [
       {
