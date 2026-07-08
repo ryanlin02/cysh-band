@@ -561,6 +561,9 @@ function render(concert) {
   const canonical = `https://cysh.band/${concert.page}`;
   const planningHtml = planningSection(concert);
   const promoHtml = promoImagesSection(concert);
+  const programOrderHint = concert.program && concert.program.length && !concert.program.some((work) => work.section || work.part || work.half)
+    ? '\n    <p class="muted">若尚未顯示上下半場或完整曲序，表示目前資料尚不足以確認正式節目順序；後續會依節目冊與校友補充資料校對。</p>'
+    : '';
 
   const html = `<!DOCTYPE html>
 <html lang="zh-Hant-TW">
@@ -639,8 +642,7 @@ ${generatedMarker}
 
   <section class="section">
     <h2>曲目</h2>
-    ${programList(concert.program, concert)}
-    <p class="muted">若尚未顯示上下半場或完整曲序，表示目前資料尚不足以確認正式節目順序；後續會依節目冊與校友補充資料校對。</p>
+    ${programList(concert.program, concert)}${programOrderHint}
   </section>
 
   <section class="section">

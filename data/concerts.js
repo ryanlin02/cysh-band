@@ -950,26 +950,177 @@ window.CONCERTS = [
     date: "2012-08-31",
     time: "19:30",
     venue: "嘉義市文化局音樂廳",
-    venueNote: "現存海報可考最早的音樂廳演出紀錄",
-    hostHead: "",
-    organizers: [{ name: "張永澤", num: "9601", role: "主要籌備與行政統籌" }],
+    venueNote: "今嘉義市政府文化局音樂廳",
+    hostHead: "96 字頭",
+    organizers: [{ name: "張永澤", num: "9601", role: "財務" }],
     conductors: [
-      { name: "鄭鈞元", num: "8431", role: "指揮" },
-      { name: "丁肇賢", num: "8501", role: "指揮" }
+      {
+        name: "鄭鈞元",
+        num: "8431",
+        role: "樂團指揮",
+        concertBio: "民國 84 年進入嘉義高中參加管樂社開始接觸薩克斯風，大學就讀於台灣藝術大學音樂系，師事顏慶賢老師。畢業後進入國防部示範樂隊，退伍後赴法國就讀法國國立馬爾梅松音樂院及馮特內蘇布瓦市立音樂院，於 2009 年獲得薩克管、室內樂第一獎演奏文憑以及音樂教育文憑。2012 年時任南華大學民族音樂學系講師、嘉義高中管樂社指導老師及雲嘉南多所國中小學管樂團薩克管分部老師。"
+      },
+      {
+        name: "丁肇賢",
+        num: "8501",
+        role: "樂團指揮",
+        concertBio: "民國 85 年進入嘉義高中參加管樂社開始接觸低音號，曾師事段富軒教授、何佶老師、湯志偉老師。就讀淡江大學期間加入該校管樂團，擔任低音號聲部負責人以及樂團助理指揮，指揮技巧啟蒙於陳一夫老師，並受多位中生代指揮影響。2010 年接受美國辛辛那提音樂院主任 Rodney Winther 教授指導。2012 年時任新北市立金山高級中學管樂團、桃園大有國中管樂團指導老師。"
+      }
     ],
-    soloists: [{ name: "李子沛", num: "9312", instrument: "長笛", work: "" }],
-    program: [],
-    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    soloists: [
+      {
+        name: "李子沛",
+        num: "9312",
+        instrument: "長笛",
+        work: "Divertimento for Flute and Band",
+        role: "長笛獨奏／留法青年長笛家",
+        concertBio: "1988 年生於嘉義市，就讀嘉義市立嘉義國中音樂班、國立嘉義高中音樂班，畢業後赴法國巴黎深造。2012 年時就讀巴黎師範音樂院最高長笛獨奏家文憑，師事現代樂長笛大師 Pierre-Yves Arthaud 和巴黎高等音樂院助教 Couix Yoann；旅法期間多次參與音樂會，並通過長笛演奏、教育文憑等考試。"
+      }
+    ],
+    performerGroups: [
+      { role: "指揮", people: [{ name: "鄭鈞元", num: "8431" }, { name: "丁肇賢", num: "8501" }] },
+      { role: "獨奏", people: [{ name: "李子沛", num: "9312", role: "長笛" }] },
+      { role: "長笛", people: [{ name: "盧宓承", num: "7111" }, { name: "高健雄", num: "7901" }, { name: "李子沛", num: "9312" }, { name: "陳譽晨" }, { name: "陳政宏" }] },
+      { role: "雙簧管", people: [{ name: "黃耀瑩", num: "8912" }] },
+      { role: "低音管", people: [{ name: "劉怡汝" }, { name: "程旻稜" }] },
+      { role: "單簧管", people: [{ name: "李吉峰" }, { name: "蔡嘉偉" }, { name: "吳瑩娟" }, { name: "葉哲良", num: "9721" }, { name: "李亞璇" }, { name: "趙耘浩" }, { name: "劉炫廷", num: "9921" }] },
+      { role: "薩克管", people: [{ name: "鄭鈞元", num: "8431" }, { name: "江嘉榮" }, { name: "陳韋志" }, { name: "陳韋希" }, { name: "龔昱銘" }, { name: "詹凱婷" }] },
+      { role: "法國號", people: [{ name: "吳金河" }, { name: "洪敏睿" }, { name: "高士涵" }, { name: "洪筱涵", num: "9841" }] },
+      { role: "小號", people: [{ name: "楊秉驊", num: "8401" }, { name: "古峻錡" }, { name: "劉全盛" }, { name: "蔡淳任", num: "9202" }, { name: "蔡育修" }, { name: "陳信慈" }] },
+      { role: "長號", people: [{ name: "簡晟軒", num: "8861" }, { name: "張永澤", num: "9601" }, { name: "蔡政岳", num: "9701" }, { name: "黃楷傑" }, { name: "方寓田" }, { name: "王則旻" }] },
+      { role: "上低音號", people: [{ name: "游宗仁" }, { name: "吳仁庭" }, { name: "陳韋龍" }] },
+      { role: "低音號", people: [{ name: "翁啟榮", num: "7581" }, { name: "丁肇賢", num: "8501" }] },
+      { role: "大提琴", people: [{ name: "詹舒閔" }] },
+      { role: "低音大提琴", people: [{ name: "羅介伶" }, { name: "陳映儒" }] },
+      { role: "鋼琴", people: [{ name: "李姿瑩" }] },
+      { role: "打擊", people: [{ name: "陳英杰", num: "8991" }, { name: "馬維寧" }, { name: "陳建宇" }, { name: "蔣承哲" }, { name: "許家誠" }, { name: "詹琬婷" }, { name: "徐儷慈" }, { name: "賴炫叡" }, { name: "陳立昱" }, { name: "王耀德" }] }
+    ],
+    performerNote: "演出人員名單依 2012 年正式節目冊轉錄；少數字形不易辨識者參考同資料夾「確定演出名單」校對，仍歡迎校友協助勘誤。",
+    adminRows: [
+      { role: "團長", people: [{ name: "馮朝君", num: "6401" }] },
+      { role: "指揮", people: [{ name: "鄭鈞元", num: "8431" }, { name: "丁肇賢", num: "8501" }] },
+      { role: "文書", people: [{ name: "羅碩文" }] },
+      { role: "財務", people: [{ name: "張永澤", num: "9601" }] },
+      { role: "譜務", people: [{ name: "翁啟榮", num: "7581" }] },
+      { role: "美宣", people: [{ name: "朱育嘉" }] }
+    ],
+    program: [
+      {
+        section: "上半場",
+        title: "湯賽德序曲",
+        foreignTitle: "Tameside Overture",
+        composer: "Philip Sparke",
+        note: "飛利浦・斯巴克",
+        description: "Philip Sparke 生於英國倫敦，於皇家音樂院學習小號、作曲與鋼琴；畢業後因為紐西蘭銅管樂團比賽譜曲一舉成名。Tameside 是英格蘭西北部的一個自治型都市，此曲為作曲家受 Tameside 市委託，以該市為創作主題的作品。"
+      },
+      {
+        section: "上半場",
+        title: "長笛嬉遊曲",
+        foreignTitle: "Divertimento for Flute and Band",
+        composer: "Alfred Reed",
+        note: "阿佛瑞・呂德／長笛獨奏：李子沛",
+        description: "呂德是美國管樂作曲家、編曲家與教育家。此曲受 Band of Blue Club 委託，完成於 1996 年秋天，由 Cindy McNeal 與田納西州立大學樂隊首演；雖為單一樂章，音樂仍分為抒情與詼諧兩個部份，展現獨奏者抒情技巧。"
+      },
+      {
+        section: "上半場",
+        title: "威風凜凜搖滾版",
+        foreignTitle: "威風堂々の歌 BRASS ROCK",
+        composer: "Mikio Gohma",
+        note: "鄉間幹雄",
+        description: "艾爾加《威風凜凜》第一號因中段旋律後被譜入英王加冕頌歌而廣為人知。本次演出改編成 BRASS ROCK 版本，在保留原曲素材之下，以搖滾風格呈現。"
+      },
+      {
+        section: "上半場",
+        title: "天使之糧",
+        foreignTitle: "Panis Angelicus",
+        composer: "Alfred Reed",
+        note: "阿佛瑞・呂德",
+        description: "此曲拉丁文原名 Panis Angelicus，意為自天使得來的靈糧。潔淨的鋼琴前奏後接著單純而空靈的合音，彷彿以雙手捧著珍貴的天使之糧，述說恩典、潔淨與上主包容的愛。"
+      },
+      {
+        section: "上半場",
+        title: "航海王組曲",
+        foreignTitle: "J-POP Stage Vol-3",
+        composer: "山里佐和子",
+        description: "J-pop 是 Japanese pop 的縮寫，泛指受到西方影響的日本流行音樂。第三彈 J-POP 系列收錄人氣動畫《航海王》ONE PIECE 的流行主題曲集合，曲風從搖滾到桑巴，節目冊記載共收錄 11 首歌曲。"
+      },
+      {
+        section: "下半場",
+        title: "第三號交響曲（第三樂章）",
+        foreignTitle: "The Third Symphony Mov. III",
+        composer: "James Barnes",
+        note: "詹姆士・邦恩斯",
+        description: "《第三交響曲》受美國空軍樂隊委託創作。James Barnes 在女兒 Natalie 夭折後開始寫作此曲，第三樂章是作曲家想像女兒若還在世的光景，也深刻表達「珍重再見」；本次只演出第三樂章。"
+      },
+      {
+        section: "下半場",
+        title: "皮克斯電影魔力",
+        foreignTitle: "Pixar Movie Magic",
+        composer: "Michael Brown",
+        note: "尼可・伯朗",
+        description: "皮克斯自 1995 年以來創造許多令人難忘的動畫角色，電影音樂亦是作品魅力的重要部分。本曲串連《玩具總動員》、《天外奇蹟》、《超人特攻隊》、《汽車總動員》與《料理鼠王》等熟悉旋律。"
+      },
+      {
+        section: "下半場",
+        title: "Saving all my Love for You",
+        foreignTitle: "Saving all my Love for you",
+        composer: "Katsuhiro Morita",
+        note: "森田一浩",
+        description: "惠妮休斯頓於 2012 年 2 月逝世，是 80、90 年代極具代表性的 R&B 歌手。節目冊以此曲回望她的深情歌曲與跨足電影的經典記憶。"
+      },
+      {
+        section: "下半場",
+        title: "追憶鳳飛飛－掌聲響起",
+        foreignTitle: "Applause Raise Up",
+        composer: "Louis Kihara",
+        note: "木原塁",
+        description: "鳳飛飛為台灣一代歌后，70 至 80 年代在華人歌壇與鄧麗君齊名，有「帽子歌后」美譽。本曲以《掌聲響起》追憶她溫暖而樸實的歌聲，以及歌曲帶給聽眾的人生記憶。"
+      }
+    ],
+    programNote: "曲序、曲名、作曲者與曲目介紹以 2012 年正式節目冊為主；同資料夾社群曲介檔作為轉錄校對輔助。節目冊第 3 頁以中場休息分為上下半場。",
+    ticket: { type: "free-ticket", price: "", channels: [], note: "免費索票入場" },
     poster: "assets/img/concerts/2012.webp",
+    promoImages: [
+      { src: "assets/img/concerts/2012-fb-cover.webp", caption: "2012 第 28 屆《追憶-榮耀》FB 封面宣傳圖" }
+    ],
+    programBook: [
+      { src: "assets/img/concerts/2012-program/page-01.webp", caption: "2012 正式節目冊：封面" },
+      { src: "assets/img/concerts/2012-program/page-02.webp", caption: "2012 正式節目冊：團隊簡介" },
+      { src: "assets/img/concerts/2012-program/page-03.webp", caption: "2012 正式節目冊：演出曲目" },
+      { src: "assets/img/concerts/2012-program/page-04.webp", caption: "2012 正式節目冊：樂團指揮介紹" },
+      { src: "assets/img/concerts/2012-program/page-05.webp", caption: "2012 正式節目冊：長笛獨奏介紹" },
+      { src: "assets/img/concerts/2012-program/page-06.webp", caption: "2012 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2012-program/page-07.webp", caption: "2012 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2012-program/page-08.webp", caption: "2012 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2012-program/page-09.webp", caption: "2012 正式節目冊：特別感謝" },
+      { src: "assets/img/concerts/2012-program/page-10.webp", caption: "2012 正式節目冊：行政團隊與演出人員名單" },
+      { src: "assets/img/concerts/2012-program/page-11.webp", caption: "2012 正式節目冊：空白內頁" },
+      { src: "assets/img/concerts/2012-program/page-12.webp", caption: "2012 正式節目冊：封底背景" }
+    ],
     page: "concerts/2012-28th.html",
     gallery: [],
     videos: [
       { label: "第 28 屆錄影清單", url: "https://youtube.com/playlist?list=PL59A19BE790C3493A", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
-    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
-    status: "partial",
-    notes: "嘉義市文化局主辦，國立嘉義高中協辦，行政院青輔會與教育部指導。"
+    sponsorParagraphs: [
+      "特別感謝：行政院青年輔導委員會、財團法人民生建設基金會、莊小寬數學、宏泰物理、李捷英文、趙祥凱皮膚科診所、元生堂蔘藥房、垂楊火雞肉飯、故鄉牛排館、哈牛排、火雞大王、舞醬館無國界料理。"
+    ],
+    sources: [
+      "concerts.html",
+      SOURCE_SOCIAL_VIDEO_LIST,
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/節目單01.pdf",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/3-團 隊 簡 介.docx",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/個人簡介-鄭鈞元(指揮sax).docx",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/個人簡介-丁肇賢(指揮).doc",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/確定演出名單.docx",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/2012年沒按照順序而且有點長的曲目介紹.md",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/第三交響曲-曲介.md",
+      "/Users/linjiunyu/Desktop/【進行中專案】/20260707_嘉中校友團資料/03-校友聯演/20120831｜28屆/校友連演fb封面.jpg"
+    ],
+    sourceNote: "本頁正式日期、時間、場地、主辦／協辦／指導單位、曲目、指揮、獨奏、行政團隊、特別感謝與演出人員名單，主要依 2012 年正式節目冊整理；Word 檔作為團隊簡介、指揮簡介與名單校對來源；社群曲介僅作節目冊曲目介紹轉錄輔助。現有主視覺海報已保留，另補入 FB 封面宣傳圖與完整節目冊影像。",
+    status: "confirmed",
+    notes: "2012 年第 28 屆《追憶-榮耀》由嘉義市文化局主辦、國立嘉義高中協辦，行政院青年輔導委員會與教育部指導，於 8 月 31 日晚間在嘉義市文化局音樂廳免費索票入場。正式節目冊已可考 9 首曲目、兩位指揮、長笛獨奏、行政團隊、特別感謝與演出人員名單。"
   },
   {
     id: "2011-27th",
