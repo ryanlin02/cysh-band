@@ -410,6 +410,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
 .person-photo-link { display: block; flex: none; border-radius: 50%; }
 .person-photo-link:hover img { transform: scale(1.04); box-shadow: var(--shadow-md); }
 .person-byline h3 { margin: 0; }
+.person-byline .person-number { display: inline-block; margin-left: 10px; color: var(--ink-dim); font-family: var(--sans); font-size: .78rem; font-weight: 400; letter-spacing: .04em; }
 .person-byline .role { color: var(--gold); font-size: .88rem; letter-spacing: .08em; margin: 4px 0 0; }
 @media (max-width: 560px) { .person-byline img { width: 56px; height: 56px; } }
 
@@ -443,6 +444,7 @@ a.card-head:hover .num { color: var(--gold-soft); }
   object-position: center;
   border-radius: var(--radius-md);
   border: 1px solid rgba(160,124,49,.45);
+  box-sizing: border-box;
   background: rgba(255,255,255,.72);
   box-shadow: 0 0 0 4px rgba(200,164,92,.10), var(--shadow-md);
   cursor: zoom-in; transition: transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base);
@@ -452,8 +454,9 @@ a.card-head:hover .num { color: var(--gold-soft); }
 @media (prefers-reduced-motion: reduce) { .page-head.has-poster .ph-poster::before { animation: none; } }
 @media (max-width: 760px) {
   .page-head.has-poster { grid-template-columns: 1fr; gap: 28px; }
-  .page-head.has-poster .ph-poster { order: -1; justify-self: stretch; width: 100%; margin: 0 auto; }
-  .page-head.has-poster .ph-poster img { max-height: min(62vh, 520px); margin: 0 auto; }
+  .page-head.has-poster .ph-poster { order: -1; justify-self: center; width: min(340px, 82vw); margin: 0 auto; }
+  .page-head.has-poster .ph-poster::before { display: none; }
+  .page-head.has-poster .ph-poster img { width: 100%; max-height: none; margin: 0 auto; box-shadow: var(--shadow-sm); }
 }
 
 /* 同屆多場次快速跳轉（如 2019 第 35 屆兩地演出） */
@@ -2110,6 +2113,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 /* ---------- 小螢幕微調 ---------- */
 @media (max-width: 640px) {
   .page-head { padding: 48px 20px 30px; }
+  .page-head.has-poster .ph-poster { width: min(320px, 76vw); }
   .hero { padding: 80px 20px 64px; }
   .section { padding: 44px 0; }
   .stat { padding: 8px 18px; }

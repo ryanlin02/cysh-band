@@ -58,6 +58,23 @@ function publicNote(value, fallback) {
   return text || fallback;
 }
 
+function compactSummary(value, max = 260) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (!text) return '';
+  if (text.length <= max) return text;
+  const slice = text.slice(0, max);
+  const sentenceEnd = Math.max(slice.lastIndexOf('。'), slice.lastIndexOf('；'));
+  if (sentenceEnd > 120) return slice.slice(0, sentenceEnd + 1).trim();
+  return `${slice.slice(0, max - 1).trim()}…`;
+}
+
+function concertLead(concert, fallback) {
+  if (concert.lede) return compactSummary(concert.lede);
+  if (concert.summary) return compactSummary(concert.summary);
+  if (concert.intro && concert.intro.length) return compactSummary(concert.intro.join(''));
+  return publicNote(concert.notes, fallback);
+}
+
 function displayTitle(concert) {
   if (!concert.title) return `第 ${concert.nth || '?'} 屆聯合音樂會`;
   if (/^第\s*\d+\s*屆/.test(concert.title) || concert.title === '傳統的起點') return concert.title;
@@ -157,6 +174,7 @@ function renderPersonByline(person, fallbackRole) {
   const name = href
     ? `<a href="${href}">${escapeHtml(person.name)}</a>`
     : escapeHtml(person.name);
+  const number = person.num ? `<span class="person-number">編號 ${escapeHtml(person.num)}</span>` : '';
   const photo = `<img src="${personPhoto(profile)}" alt="${escapeHtml(person.name)}">`;
   const photoNode = href ? `<a class="person-photo-link" href="${href}" aria-label="查看${escapeHtml(person.name)}人物誌">${photo}</a>` : photo;
   const role = roleText(person, fallbackRole);
@@ -164,7 +182,7 @@ function renderPersonByline(person, fallbackRole) {
   return `<div class="person-byline">
       ${photoNode}
       <div>
-        <h3>${name}</h3>
+        <h3>${name}${number}</h3>
         ${role ? `<p class="role">${role}</p>` : ''}
         <p>${summary}${linkToFullProfile(href)}</p>
       </div>
@@ -243,7 +261,8 @@ function concertIntro(concert, desc) {
   if (concert.sessions && concert.sessions.length > 1) {
     paragraphs.push(`本屆包含 ${concert.sessions.length} 場演出，場次資訊已依目前可考資料分列於演出資訊表；各場曲目與完整演出人員仍會隨節目冊與校友補充資料持續校對。`);
   }
-  if (concert.program && concert.program.length) {
+  const hasProgramContext = Boolean(concert.programNote || (concert.programBook && concert.programBook.length));
+  if (concert.program && concert.program.length && !hasProgramContext) {
     paragraphs.push(`目前已整理出 ${concert.program.length} 首曲目線索；若尚未能確認上下半場或完整順序，網站先以可考曲目建立清單，後續再依節目冊補齊曲序與樂曲介紹。`);
   }
   const missing = missingFields(concert);
@@ -562,7 +581,7 @@ function render(concert) {
   const title = pageTitle(concert);
   const plainTitle = `${title}｜校友聯演｜嘉義高中管樂隊`;
   const desc = `${concert.year} 年第 ${concert.nth} 屆嘉義高中校友暨在校生聯合音樂會${displayTitle(concert)}資料頁：整理日期、場地、指揮、曲目、錄影與待考資訊。`;
-  const lede = publicNote(concert.notes, desc);
+  const lede = concertLead(concert, desc);
   const hasPoster = concert.poster && exists(concert.poster);
   const missing = missingFields(concert);
   const statusText = concert.status === 'planning' ? '籌備中' : concert.status === 'pending' ? '資料待考' : concert.status === 'confirmed' ? '已確認' : '部分可考';
@@ -596,7 +615,7 @@ ${generatedMarker}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=20260707-book-strip">
+<link rel="stylesheet" href="../css/style.css?v=20260708-concert-booklet-text">
 <script src="../js/main.js" defer></script>
 </head>
 <body>

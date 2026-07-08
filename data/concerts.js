@@ -194,28 +194,111 @@ window.CONCERTS = [
     venue: "嘉義高中樹人堂",
     venueNote: "嘉中百年校慶前哨",
     hostHead: "一字頭",
-    organizers: [{ name: "翁啟榮", num: "7581", role: "籌備統籌" }],
+    organizers: [
+      { name: "蔡淳任", num: "9202", role: "總召" },
+      { name: "翁啟榮", num: "7581", role: "籌備統籌" }
+    ],
     conductors: [
-      { name: "盧宓承", num: "7111", role: "指揮" },
-      { name: "丁肇賢", num: "8501", role: "指揮" },
-      { name: "簡晟軒", num: "8861", role: "指揮" }
+      { name: "盧宓承", num: "7111", role: "指揮", concertRole: "指揮", concertBio: "盧宓承為嘉義高中校友管樂團團長及指揮，曾於南應大藝術學院音樂研究所修習管弦樂指揮，並長期擔任民雄國中音樂班管樂團指揮。過往也曾任嘉義市音樂協進會理事長、嘉義市青少年聯合管樂團常任指揮，以及多所學校管樂團指導老師；其所指導團隊多次於音樂比賽獲得優等與特優成績。" },
+      { name: "丁肇賢", num: "8501", role: "指揮", concertRole: "指揮", concertBio: "丁肇賢畢業於國立臺灣師範大學音樂系研究所指揮組，曾受美國辛辛那提音樂學院 Rodney Winther 教授指導。除指導中正大學、淡江大學、金山高中、大有國中等各級學校管樂團外，也曾帶領臺北音樂家管弦樂團與享響樂集進行展演與公益演出，並與伊甸基金會合作，長期在附屬療養院演出，實踐音樂與社會關懷的連結。" },
+      { name: "簡晟軒", num: "8861", role: "指揮", concertRole: "指揮", concertBio: "簡晟軒為嘉義縣新港人，1999 年就讀嘉義高中時開始學習長號，後就讀高雄師範大學音樂系，並曾於國防部示範樂隊服役。2009 年赴德國萊比錫音樂院深造，2010 年考取亞洲青年管弦樂團團員，2012 年取得長號演奏家文憑；回國後投入樂團演出與管樂教學，2019 年取得國立高雄師範大學音樂系研究所指揮組碩士文憑，當時任嘉義市管樂團、嘉頌重奏團及高雄市管樂團團員，並擔任多所學校管樂團與分部教師。" }
     ],
     soloists: [],
     performers: [
-      { name: "劉炫廷", num: "9921", role: "雙簧管聲部" }
+      { name: "劉炫廷", num: "9921", role: "雙簧管聲部" },
+      { name: "謝介豪", num: "9101", role: "豎笛聲部" },
+      { name: "葉哲良", num: "9721", role: "豎笛聲部／《旭陵慶典》作曲" },
+      { name: "鄭鈞元", num: "8431", role: "薩克管聲部" },
+      { name: "許哲誠", num: "0431", role: "薩克管聲部" },
+      { name: "黃鈺芠", num: "1051", role: "小號聲部" },
+      { name: "魏仕杰", num: "8841", role: "法國號聲部" },
+      { name: "高健雄", num: "7901", role: "長號聲部" },
+      { name: "方崇任", num: "9261", role: "長號聲部" },
+      { name: "蔡政岳", num: "9701", role: "長號聲部" },
+      { name: "張永澤", num: "9601", role: "長號聲部" },
+      { name: "莊宗儒", num: "0271", role: "上低音號聲部" },
+      { name: "陳英杰", num: "8991", role: "打擊聲部" },
+      { name: "王聖安", num: "9161", role: "鋼琴" }
     ],
-    program: [{ title: "旭陵慶典", composer: "葉哲良", status: "confirmed", note: "首演" }],
-    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    summary: "《一樹起響》呼應嘉中校園老樹與樹人堂意象，也為隔年的百年校慶揭開序幕。第 38 屆由蔡淳任擔任總召、翁啟榮籌備統籌，盧宓承、丁肇賢、簡晟軒共同擔任指揮；曲目從《創世紀》出發，串連臺灣主題、古典戲劇配樂、慶典性作品、動畫與電影音樂，下半場首演葉哲良為嘉義高中百年校慶創作的《旭陵慶典》。",
+    intro: [
+      "第 38 屆《一樹起響》於 2023 年 8 月 27 日 14:30 在嘉義高中樹人堂演出。這一年距離嘉義高中百年校慶只剩一步，音樂不只是生活樂趣，也讓演出者、聆賞者與作曲者在同一個現場互相溝通；管樂合奏經過百年發展，從遊行與典禮角色中走向更精緻、多元而能感動人的音樂型態。",
+      "嘉義高中管樂隊自 1931 年成立以來，培育了許多音樂人才。1976 年起在全國音樂比賽高中職組管樂比賽取得優等後，嘉中管樂隊持續累積佳績；2001 年代表臺灣參加日本濱松國際管樂節，2002 年在臺灣管樂協會盃大賽再獲優異成績。這些成果既是團員努力練習的結果，也回應了嘉義市各界長年對嘉中管樂的支持。",
+      "作為年度聯演，第 38 屆延續自 1985 年開始的校友暨在校生聯合音樂會傳統。除了 2021 年受疫情影響停辦外，校友聯演已連續舉辦至第 38 屆；它不只聯繫校友與在校生，也成為嘉義表演藝術活動中具有嘉中特色的一道風景。",
+      "本屆主題《一樹起響》與視覺意象，呼應嘉義高中「百年樹人」與樹人堂，也呼應一字頭主辦。「一」是主辦字頭，「起」可以理解為音樂生命的起點，也與「一」合成「一起」；「響」則把記憶、校園與音樂重新帶回舞台。英文副標 Saeculum illuminate 取「啟蒙的一百年」之意，讓這場聯演成為迎接百年校慶的前奏。",
+      "節目安排從《創世紀》出發，以管樂學習者熟悉的合奏曲象徵下一個世紀的開端；接著經由臺灣主題、古典戲劇配樂、慶典性作品、動畫與電影音樂，展現校友聯演能容納的曲風幅度。下半場首演葉哲良為嘉中百年校慶創作的《旭陵慶典》，以校歌旋律為素材，將嘉中人的校園記憶與百年精神放入新的管樂作品。"
+    ],
+    program: [
+      { section: "上半場", title: "創世紀", foreignTitle: "Centuria", composer: "James Swearingen", description: "James Swearingen 為美國當代作曲家、編曲家與指揮家，創作生涯超過 450 部作品，許多作品為不同年級與編制的學校管樂團而寫。《創世紀》是為紀念 C. L. Barnhouse 出版社創立 100 周年而創作，也是在臺灣管樂界許多學生初學合奏時熟悉的曲目；本屆以此曲開場，既呼應校友共同的學習記憶，也象徵嘉中邁向下一個世紀。", status: "confirmed" },
+      { section: "上半場", title: "交響詩「臺灣」，湖－生命的起源", foreignTitle: "A Symphony Poem \"Taiwan\" - Dalubaling The Symbol of Originality", composer: "Toshio Mashima", description: "此曲由日本作曲家真島俊夫於 2011 年受臺北室內合奏團委託，為當年的臺灣國際音樂節創作。作曲家以臺灣原住民古調為素材，並將旋律轉化為兼具真島俊夫個人風格與臺灣色彩的作品；其中取材自魯凱族古謠「鬼湖之戀」，以充滿活力的段落、抒情而悠長的旋律與回歸性的主題，描繪臺灣山海、族群故事與臺日之間的深厚情誼。", status: "confirmed" },
+      { section: "上半場", title: "艾格蒙序曲", foreignTitle: "Egmont Overture", composer: "Ludwig van Beethoven", arranger: "Frank Winterbottom", description: "貝多芬《艾格蒙序曲》創作於 1809 至 1810 年間，靈感來自歌德同名戲劇，描寫荷蘭獨立運動領袖艾格蒙伯爵反抗壓迫、最後殉難的故事。作品以沉重的 f 小調和弦開場，經過薩拉邦德式的段落、激烈而悲劇性的發展，以及木管如葬禮祈禱般的歌唱，最後在勝利音樂中宣告自由精神的勝利；本屆演出採 Frank Winterbottom 於 1924 年出版的管樂改編版本。", status: "confirmed" },
+      { section: "上半場", title: "歡慶", foreignTitle: "Celebrate", composer: "Daisuke Shimizu", description: "《歡慶》由日本作曲家清水大輔於 2002 年創作，受日本上野之森銅管五重奏低音號手杉山純的自由演奏會企劃委託並首演。作品如其名，以快、慢、快的形式建立慶祝場景，音樂熱鬧、明亮而有活力，呈現自由演奏會不受年齡、樂器與程度限制的開放精神。", status: "confirmed" },
+      { section: "下半場", title: "《機械巨神》動畫選粹", foreignTitle: "GR Selection", composer: "Masamichi Amano", description: "「GR」為 Giant Robot 的簡稱，源自橫山光輝 1967 年的科幻漫畫，臺灣譯作《機械巨神》或《鋼鐵巨神》。1992 年今川泰宏導演以《機械巨神－地球靜止之日》為題製作動畫電影，並由天野正道以全交響樂編制譜寫配樂；本屆演出的是作曲家自動畫配樂中選取主題、重新編寫給管樂團的版本。音樂從小聲樂段與三連音陰謀動機出發，經過多聲部對唱、衝突段落與凄美樂段，最後以溫暖旋律與勝利終點收束。", status: "confirmed" },
+      { section: "下半場", title: "永遠的木匠兄妹", foreignTitle: "Carpenters Forever", arranger: "Toshio Mashima", description: "木匠兄妹由妹妹 Karen 與哥哥 Richard 組成，是 1970 至 1980 年代初期風靡一時的演唱組合。本曲由真島俊夫編曲，串連〈Sing〉、〈We've Only Just Begun〉、〈Top of the World〉、〈Close to You〉、〈Superstar〉與〈For All We Know〉等耳熟能詳的歌曲；編曲者依照樂器音色設計段落，例如以小號獨奏呈現抒情氣息、以長號唱出深沉情感，最後再將主題重新揉合，展現管樂編曲的功力與巧思。", status: "confirmed" },
+      { section: "下半場", title: "《鈴芽之旅》電影音樂選粹", foreignTitle: "Suzume no Tojimari Collection", arranger: "Miyagawa Seiji", description: "《鈴芽之旅》為新海誠編劇並執導的日本動畫電影，於 2022 年在日本上映，並與《你的名字》、《天氣之子》並稱新海誠的「災難三部曲」。宮川成治將電影中與主角相關的主題歌改編為管樂曲，包含標誌性的主題、主角阿姨的主題、鈴芽的眼淚，以及片尾曲〈遙遠的彼方〉等素材，讓電影中的冒險旅程以管樂團聲響重新呈現。", status: "confirmed" },
+      { section: "下半場", title: "旭陵慶典", composer: "葉哲良", note: "嘉義高中百年紀念作品，首演", description: "為迎接嘉義高中百年校慶，嘉中管樂隊特邀校友葉哲良以校歌旋律為素材創作《旭陵慶典》。作品由小號號角揭開序幕，木管製造明亮華麗的聲響，低音銅管以厚重三連音呈現嘉中人質實剛健的性格；經過拍號與轉調的變換後，樂曲進入沉穩鐘聲般的中段，將校歌旋律巧妙藏在不同聲部之間，最後以輕快三拍子象徵嘉義高中勇往前進，迎接下一個百年。", status: "confirmed" }
+    ],
+    programNote: "曲目、曲序與樂曲介紹以 2023 年正式節目冊為主；《旭陵慶典》另參考校友提供之單頁介紹簡報補充創作說明。",
+    ticket: { type: "free-ticket", price: "0", channels: [], note: "免費索票入場；公開索票方式待節目冊外公告補充" },
     poster: "assets/img/concerts/2023.webp",
     page: "concerts/2023-38th.html",
     gallery: [],
+    performerGroups: [
+      { role: "雙簧管", people: ["劉炫廷"] },
+      { role: "長笛", people: ["林信任", "盧宓承", "何權烈", "許景斌", "張容慈", "蔡緯宸", "湯喻絜", "王有涵"] },
+      { role: "豎笛", people: ["李吉峰", "莊富益", "賴俊甫", "謝介豪", "吳瑩娟", "尹威群", "李亞璿", "葉哲良", "王顯銘"] },
+      { role: "低音豎笛", people: ["林奕安"] },
+      { role: "薩克管", people: ["鄭鈞元", "陳韋希", "許峻榮", "許哲誠", "邱瀚賢", "周知鈺", "呂裕翔", "陳思翰"] },
+      { role: "小號", people: ["陳昌遠", "蔡淳任", "范宇安", "范尚華", "黃鈺芠", "郭鈴", "李威德"] },
+      { role: "法國號", people: ["魏仕杰", "林庭凱"] },
+      { role: "長號", people: ["高健雄", "范庭福", "曾裕圓", "簡晟軒", "方崇任", "蔡政岳", "張永澤", "董書菡", "林佑瑄", "吳侑珉"] },
+      { role: "上低音號", people: ["游宗仁", "蔡智明", "莊宗儒", "李帛容", "郭宥均", "侯鈞瀚"] },
+      { role: "低音號", people: ["翁啟榮", "丁肇賢", "葉韋廷", "葉思佑", "侯翔升", "徐麒舜"] },
+      { role: "打擊", people: ["陳英杰", "許有恩", "許翔禹", "溫旻翔", "賴楚元", "李運昶", "蔡程弘", "張尚融"] },
+      { role: "鋼琴", people: ["王聖安"] }
+    ],
+    performerNote: "演出人員依 2023 年正式節目冊第 7 頁整理；姓名與編號由網站公開名錄自動交叉比對，無法唯一確認者僅顯示節目冊姓名。",
+    adminRows: [
+      { role: "總召", people: ["9202 蔡淳任"], duty: "依魏仕杰演出宣傳貼文記載" },
+      { role: "籌備統籌", people: ["7581 翁啟榮"], duty: "依網站既有資料與校友補充脈絡保留" }
+    ],
+    programBook: [
+      { src: "assets/img/concerts/2023-program/page-01.webp", caption: "2023 正式節目冊：封面" },
+      { src: "assets/img/concerts/2023-program/page-02.webp", caption: "2023 正式節目冊：緣起" },
+      { src: "assets/img/concerts/2023-program/page-03.webp", caption: "2023 正式節目冊：團隊介紹" },
+      { src: "assets/img/concerts/2023-program/page-04.webp", caption: "2023 正式節目冊：指揮盧宓承" },
+      { src: "assets/img/concerts/2023-program/page-05.webp", caption: "2023 正式節目冊：指揮丁肇賢" },
+      { src: "assets/img/concerts/2023-program/page-06.webp", caption: "2023 正式節目冊：指揮簡晟軒" },
+      { src: "assets/img/concerts/2023-program/page-07.webp", caption: "2023 正式節目冊：演出人員" },
+      { src: "assets/img/concerts/2023-program/page-08.webp", caption: "2023 正式節目冊：演出曲目" },
+      { src: "assets/img/concerts/2023-program/page-09.webp", caption: "2023 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2023-program/page-10.webp", caption: "2023 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2023-program/page-11.webp", caption: "2023 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2023-program/page-12.webp", caption: "2023 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2023-program/page-13.webp", caption: "2023 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2023-program/page-14.webp", caption: "2023 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2023-program/page-15.webp", caption: "2023 正式節目冊：曲目介紹" },
+      { src: "assets/img/concerts/2023-program/page-16.webp", caption: "2023 正式節目冊：特別感謝" }
+    ],
+    sponsorParagraphs: [
+      "節目冊公開特別感謝：國立嘉義高級中學、fotosian 映像記憶王家馨學長、嘉義高中管樂團與 2023 校友暨在校生第 38 屆聯合音樂會籌備團隊。"
+    ],
     videos: [
-      { label: "第 38 屆《一樹起響》錄影清單（吳明德學長手機錄影）", url: "https://youtube.com/playlist?list=PLrgre0LUNSYDPJu7FjDyfow4dvdFImMTa&si=nlORMnALVCRH-HQ8", source: SOURCE_SOCIAL_VIDEO_LIST }
+      { label: "第 38 屆《一樹起響》錄影清單", url: "https://www.youtube.com/playlist?list=PLrgre0LUNSYDPJu7FjDyfow4dvdFImMTa", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
-    sources: ["concerts.html", SOURCE_SOCIAL_VIDEO_LIST],
+    sources: [
+      "concerts.html",
+      "校友提供：2023校友聯演 節目冊.pdf",
+      "校友提供：20230820_演出發文_01_魏仕杰.md",
+      "校友提供：翁啓榮-臉書發文.md",
+      "校友提供：旭陵慶典介紹.pptx",
+      "校友提供：第 38 屆內部收支表（僅作票務線索與公開範圍判斷）",
+      SOURCE_SOCIAL_VIDEO_LIST
+    ],
+    sourceNote: "本頁演出日期、時間、場地、指揮、曲目、演出人員、緣起、團隊介紹、指揮介紹與曲目介紹，以 2023 年正式節目冊為主要依據；《旭陵慶典》創作說明另參考校友提供簡報，主題命名脈絡與總召資訊參考校友公開宣傳貼文。內部收支表僅用於判斷票務屬索票入場，不公開個人捐款或財務明細。",
     status: "partial",
-    notes: "翁啟榮籌備統籌；中央社報導伍佰高中副隊長與低音號故事。"
+    notes: "2023 年正式節目冊之緣起、團隊介紹、指揮介紹、曲目、曲目介紹、演出人員與節目冊影像已補入；蔡淳任為總召、翁啟榮為籌備統籌。《旭陵慶典》為葉哲良受託為嘉義高中百年校慶創作之首演作品。"
   },
   {
     id: "2022-37th",
@@ -331,6 +414,7 @@ window.CONCERTS = [
       { name: "洪筱涵", num: "9841", instrument: "法國號", work: "Richard Strauss: Horn Concerto No. 1, mvt. I" }
     ],
     performers: [
+      { name: "蔡詠竹", num: "0611", role: "長笛聲部（8/31、9/1）" },
       { name: "葉哲良", num: "9721", role: "單簧管聲部（8/31、9/1）" },
       { name: "鄭鈞元", num: "8431", role: "薩克斯風聲部（8/31、9/1）" },
       { name: "許哲誠", num: "0431", role: "薩克斯風聲部（8/31、9/1）" },
@@ -349,12 +433,24 @@ window.CONCERTS = [
       { name: "陳羿弦", num: "0741", role: "法國號聲部（9/1）" }
     ],
     program: [
-      { title: "Slava!", status: "confirmed" },
-      { title: "Dynamica", status: "confirmed" },
-      { title: "Arutiunian Trumpet Concerto", status: "confirmed" },
-      { title: "Bolero", status: "confirmed" },
-      { title: "Riverdance", status: "confirmed" },
-      { title: "Armenian Dances Part I", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "可愛的玫瑰花", foreignTitle: "お手やわらかに", composer: "川口真", arranger: "Tang Hong", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "龍貓", foreignTitle: "となりのトトロ・メドレー", composer: "久石讓", arranger: "磯崎敦博", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "貓的報恩 電影主題曲—幻化成風", foreignTitle: "風になる", composer: "辻亞彌乃", arranger: "小島里美", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "搖滾卡農", foreignTitle: "カノン／Brass Rock", composer: "Johann Pachelbel", arranger: "鄉間幹男", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "探戈組曲", foreignTitle: "Tango a la carte", arranger: "森田一浩", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "阿法瑪序曲", foreignTitle: "Alvamar Overture", composer: "James Barnes", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "崖上的波妞", foreignTitle: "崖の上のポニョ", composer: "久石讓", arranger: "三浦秀秋", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "無心的呢喃", foreignTitle: "Careless Whisper", composer: "George Michael and Andrew Ridgeley", arranger: "岩井直溥", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "永遠的星條旗進行曲", foreignTitle: "Stars and Stripes Forever", composer: "John Philip Sousa", arranger: "Brion/Shissel", status: "confirmed" },
+      { section: "8/31 嘉義高中樹人堂", title: "日本風情畫五", foreignTitle: "Japanese Graffiti V", arranger: "磯崎敦博", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "光榮！", foreignTitle: "Slava!", composer: "Leonard Bernstein", arranger: "Clare Grundman", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "動態", foreignTitle: "Dynamica", composer: "Jan Van der Roost", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "阿爾圖尼亞小號協奏曲", foreignTitle: "Trumpet Concerto", composer: "A. Arutiunian", arranger: "Guy M. Duker", soloist: "陳錫仁", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "杭亭頓慶典", foreignTitle: "A Huntingdon Celebration", composer: "Philip Sparke", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "阿帕拉契序曲", foreignTitle: "Appalachian Overture", composer: "James Barnes", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "理查．史特勞斯第一號法國號協奏曲", foreignTitle: "Horn Concerto No. I, mvt. I", composer: "Richard Strauss", arranger: "Tim Laughlin", soloist: "洪筱涵", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "大河之舞", foreignTitle: "Riverdance", composer: "Bill Whelan", arranger: "Catl Strommen", status: "confirmed" },
+      { section: "9/1 北港文化中心家湖廳", title: "亞美尼亞舞曲 第一部", foreignTitle: "Armenian Dances Part I", composer: "Alfred Reed", status: "confirmed" },
       { title: "Yesterday", status: "confirmed", note: "Encore" }
     ],
     ticket: { type: "free", price: "0", channels: [], note: "免票入場" },
@@ -366,7 +462,16 @@ window.CONCERTS = [
       { label: "第 35 屆《正八音》北港場錄影清單", url: "https://youtube.com/playlist?list=PLzUX_mdxEPjXYhGIosLIcPNW9DgrdXMmt", source: SOURCE_SOCIAL_VIDEO_LIST }
     ],
     news: [],
-    sources: ["concerts.html", "concerts/2019-35th.html", SOURCE_SOCIAL_VIDEO_LIST],
+    sources: [
+      "concerts.html",
+      "concerts/2019-35th.html",
+      "校友提供：20190831節目冊.pdf",
+      "校友提供：20190901節目冊.pdf",
+      "校友提供：指揮獨奏簡介.txt",
+      "校友提供：2019嘉中校友聯演企劃書.pdf",
+      "校友提供：第 35 屆文宣節目單圖檔",
+      SOURCE_SOCIAL_VIDEO_LIST
+    ],
     status: "confirmed",
     notes: "兩場合計約 550 名觀眾；動員 76 人、計 129 人次。"
   },
@@ -632,7 +737,7 @@ window.CONCERTS = [
       { role: "長號", people: ["7901 高健雄", "8301 高崇文", "8861 簡晟軒", "9261 方崇任", "9601 張永澤", "9661 謝梓嫣", "9701 蔡政岳", "0002 王則旻"] },
       { role: "上低音號", people: ["6801 游宗仁", "8671 吳仁庭"] },
       { role: "低音號", people: ["7581 翁啟榮", "8501 丁肇賢", "9702 李旻其"] },
-      { role: "打擊", people: ["8193 李瑾佑", "8302 鄧杰翔", "8991 陳英杰", "9392 林祐成", "9895 詹琬婷", "0091 王耀德"] }
+      { role: "打擊", people: ["8192 李瑾佑", "8302 鄧杰翔", "8991 陳英杰", "9392 林祐成", "9895 詹琬婷", "0091 王耀德"] }
     ],
     performerNote: "依 2015 年演出企劃書記載，全體演出人員（含編號）如下。企劃書原文註明「篇幅所限，以下僅列出部分團員」，全團演出規模約 70 人；本表為企劃書中留有編號紀錄之演出者，歡迎校友協助勘誤補充。",
     adminRows: [
@@ -823,7 +928,7 @@ window.CONCERTS = [
     venueNote: "",
     hostHead: "",
     intro: [
-      "依節目冊前言記載，嘉中管樂隊自民國 74 年（1985）起，每年暑假集合校友與在校生共同排練演出，「讓地方藝文界和學校更了解管樂發展趨勢」；至 2013 年已連續舉辦 28 年從未中斷，是嘉義表演藝術活動中深具特色的一道風景。第 29 屆的三大宗旨為：讓畢業隊友重溫高中時代情誼；藉正式音樂會之演出及排練，提升在校生的演奏及行政能力；以免票入場方式，倡導管樂欣賞與正當休閒之風氣。",
+      "嘉中管樂隊自民國 74 年（1985）起，每年暑假集合校友與在校生共同排練演出，「讓地方藝文界和學校更了解管樂發展趨勢」；至 2013 年已連續舉辦 28 年從未中斷，是嘉義表演藝術活動中深具特色的一道風景。第 29 屆的三大宗旨為：讓畢業隊友重溫高中時代情誼；藉正式音樂會之演出及排練，提升在校生的演奏及行政能力；以免票入場方式，倡導管樂欣賞與正當休閒之風氣。",
       "「嘉義高中校友管樂團」於民國 97 年（2008）9 月正式登記成立為嘉義市藝文團體，本屆是立案後第 5 年舉辦的聯演。籌備期間每週週末團練，演出前 8 月 20 日至 22 日連續三天集訓，8 月 23 日當天下午裝台彩排、晚間正式演出。",
       "新聞稿指出，本屆在曲目與演出形式上嘗試更多面向：上半場安排管樂經典、協奏曲、歌劇與古典改編作品；下半場則轉向音樂劇、電影配樂與流行歌曲，並交織管樂合奏與室內樂重奏。演出後進度報告記錄實際安可為《Yesterday》與《Do You Hear the People Sing?》，錄影清單於 2013 年 8 月 28 日公布。"
     ],
@@ -875,9 +980,9 @@ window.CONCERTS = [
       { role: "長號", people: ["7901 高健雄", "8301 高崇文", "8861 簡晟軒", "9261 方崇任", "9601 張永澤", "9701 蔡政岳"] },
       { role: "上低音號", people: ["6801 游宗仁", "8671 吳仁庭", "8982 王騰寬"] },
       { role: "低音號", people: ["7581 翁啟榮", "8501 丁肇賢", "9702 李旻其"] },
-      { role: "打擊", people: ["8193 李瑾佑", "9392 林祐成", "9691 袁舴", "9791 陳建宇", "9792 蔣承哲"] }
+      { role: "打擊", people: ["8192 李瑾佑", "9392 林祐成", "9691 袁舴", "9791 陳建宇", "9792 蔣承哲"] }
     ],
-    performerNote: "依 2013 年正式節目冊記載，全體演出人員（含編號）如下。節目冊原文註明「篇幅所限，以上僅列出部分團員」，全團演出規模約 80 人；本表為節目冊中留有編號紀錄之演出者，如與其他頁面編號略有出入（節目冊內部亦偶見同一人在不同段落編號誤植，如上低音號王騰寬另處誤植為 8981），已忠實依原始文件轉錄，歡迎校友協助勘誤補充。",
+    performerNote: "全體演出人員（含編號）如下。節目冊原文註明「篇幅所限，以上僅列出部分團員」，全團演出規模約 80 人；本表為節目冊中留有編號紀錄之演出者，如與其他頁面編號略有出入（節目冊內部亦偶見同一人在不同段落編號誤植，如上低音號王騰寬另處誤植為 8981），已忠實依原始文件轉錄，歡迎校友協助勘誤補充。",
     performerSupplementGroups: [
       { role: "指揮／獨奏", people: ["8431 鄭鈞元", "6301 陳錫仁（指揮／小號獨奏）", "8861 簡晟軒（助理指揮）", "9202 蔡淳任（助理指揮）"] },
       { role: "長笛", people: ["7111 盧宓承", "9001 許景斌", "9611 張容慈", "0001 陳政宏", "100-周億琳"] },
@@ -1074,7 +1179,7 @@ window.CONCERTS = [
         title: "航海王組曲",
         foreignTitle: "J-POP Stage Vol-3",
         composer: "山里佐和子",
-        description: "J-pop 是 Japanese pop 的縮寫，泛指受到西方影響的日本流行音樂。第三彈 J-POP 系列收錄人氣動畫《航海王》ONE PIECE 的流行主題曲集合，曲風從搖滾到桑巴，節目冊記載共收錄 11 首歌曲。"
+        description: "J-pop 是 Japanese pop 的縮寫，泛指受到西方影響的日本流行音樂。第三彈 J-POP 系列收錄人氣動畫《航海王》ONE PIECE 的流行主題曲集合，曲風從搖滾到桑巴，共收錄 11 首歌曲。"
       },
       {
         section: "下半場",
@@ -1152,7 +1257,7 @@ window.CONCERTS = [
     ],
     sourceNote: "本頁正式日期、時間、場地、主辦／協辦／指導單位、曲目、指揮、獨奏、行政團隊、特別感謝與演出人員名單，主要依 2012 年正式節目冊整理；Word 檔作為團隊簡介、指揮簡介與名單校對來源；社群曲介僅作節目冊曲目介紹轉錄輔助。現有主視覺海報已保留，另補入 FB 封面宣傳圖與完整節目冊影像。",
     status: "confirmed",
-    notes: "2012 年第 28 屆《追憶-榮耀》由嘉義市文化局主辦、國立嘉義高中協辦，行政院青年輔導委員會與教育部指導，於 8 月 31 日晚間在嘉義市文化局音樂廳免費索票入場。正式節目冊已可考 9 首曲目、兩位指揮、長笛獨奏、行政團隊、特別感謝與演出人員名單。"
+    notes: "2012 年第 28 屆《追憶-榮耀》由嘉義市文化局主辦、國立嘉義高中協辦，行政院青年輔導委員會與教育部指導，於 8 月 31 日晚間在嘉義市文化局音樂廳免費索票入場。節目包含 9 首曲目，由鄭鈞元、丁肇賢擔任指揮，李子沛擔任長笛獨奏，並保留行政團隊、特別感謝與演出人員名單。"
   },
   {
     id: "2011-27th",

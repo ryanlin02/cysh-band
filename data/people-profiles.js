@@ -102,6 +102,33 @@ window.PEOPLE_PROFILES = [
     sourceHtml: "本文整理自以下公開資料與本人 2026 年校友資料登錄：<a href=\"https://www.youtube.com/watch?v=QYNxu6jThYw\" target=\"_blank\" rel=\"noopener\">世賢國小校慶音樂會公開影像</a>、<a href=\"https://www.youtube.com/watch?v=Wy1hc4ll_nk\" target=\"_blank\" rel=\"noopener\">北興國中管樂班成果發表公開影像</a>、<a href=\"https://www.msjh.cy.edu.tw/uploads/1668157834510oOWsOhWD.pdf\" target=\"_blank\" rel=\"noopener\">嘉義市 111 學年度學生音樂比賽秩序冊</a>、<a href=\"https://www.youtube.com/watch?v=Au2GSuSfkYo\" target=\"_blank\" rel=\"noopener\">嘉義高中管樂社 2023 嘉義市國際管樂節公開影像</a>、<a href=\"https://www.youtube.com/watch?v=mcttO3a8wKs\" target=\"_blank\" rel=\"noopener\">嘉中第 38 屆聯演《旭陵慶典》公開影像</a>。若本人日後補充師承、比賽成績或演出履歷，本文將再行更新。"
   },
   {
+    num: "0611",
+    name: "蔡詠竹",
+    source: "content/people/0611.html",
+    output: "people/0611.html",
+    title: "蔡詠竹（0611）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉義在地管樂教育養成到長笛、鍵盤、美編與攝影——蔡詠竹（編號 0611）是嘉中長笛聲部年輕校友。",
+    ogTitle: "蔡詠竹（0611）｜從嘉中長笛聲部出發的青年藝術工作者",
+    ogDescription: "嘉中長笛聲部校友，曾任譜務，後續參與長笛演奏、鍵盤演出、美編、攝影與青年藝術活動。",
+    headlineHtml: "蔡詠竹：從嘉中長笛聲部<br>走進青年藝術現場",
+    photo: "../assets/img/members/0611.webp",
+    facts: [
+      ["編號", "<b>0611</b>（民國 106 年入學．長笛聲部）"],
+      ["主要樂器", "長笛、鍵盤"],
+      ["嘉中角色", "嘉義高中管樂社曾任譜務"],
+      ["學歷", "公開資料列載曾就讀國立中山大學音樂學系"],
+      ["藝術參與", "公開資料列載曾參與嘉頌重奏團、鍵盤演出、美編與攝影紀錄"]
+    ],
+    peopleLink: "../people.html#p-0611",
+    rosterLink: "../roster.html#p-0611",
+    relatedLinks: [
+      { label: "嘉頌重奏團〈蔡詠竹〉", url: "https://www.chiasong.com/team-2/%E8%94%A1%E8%A9%A0%E7%AB%B9", type: "公開人物資料" },
+      { label: "第 34 屆《青春の極短篇》演出紀錄", url: "../concerts/2018-34th.html", type: "校友聯演紀錄" },
+      { label: "第 35 屆《正八音》演出紀錄", url: "../concerts/2019-35th.html", type: "校友聯演紀錄" }
+    ],
+    sourceHtml: "本文整理自嘉中管樂社公開幹部介紹、嘉頌重奏團公開團員資料、校友聯演演出名單、校友名錄與校友團整理之人物資料；目前現職與任教資訊尚待本人校對，本站先以公開資料可確認之長笛、鍵盤、美編、攝影與青年藝術參與經歷呈現。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
     num: "6301",
     name: "陳錫仁",
     source: "content/people/6301.html",
@@ -231,6 +258,33 @@ window.PEOPLE_PROFILES = [
     sourceHtml: "本文整理自以下公開資料與本人自述：<a href=\"https://cywo1994.com/member/\" target=\"_blank\" rel=\"noopener\">嘉義市管樂團官方網站〈團員介紹〉</a>、<a href=\"https://www.cna.com.tw/news/ahel/202308240299.aspx\" target=\"_blank\" rel=\"noopener\">中央社 2023 年報導</a>、<a href=\"https://www.chiayi.gov.tw/News_Content.aspx?n=455&amp;s=351712\" target=\"_blank\" rel=\"noopener\">嘉義市政府《管不住的樂音》紀錄片介紹（2013）</a>、<a href=\"https://www.atanews.net/?news=35122\" target=\"_blank\" rel=\"noopener\">亞太新聞網 2017 年第 33 屆校友演奏會報導</a>，以及本人 2009 年發表之校友回憶與 2026 年校友資料登錄。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
+    num: "8192",
+    name: "李瑾佑",
+    source: "content/people/8192.html",
+    output: "people/8192.html",
+    title: "李瑾佑（8192）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉中管樂出發，李瑾佑（編號 8192）以打擊、弦樂、鍵盤與劇場現場音樂能力，穿梭於管樂、合唱、劇場與地方藝文活動之間。",
+    ogTitle: "李瑾佑（8192）｜從嘉中管樂出發的跨界音樂工作者",
+    ogDescription: "嘉中打擊聲部校友、第 30 屆校友聯演指揮，編號 8192 的多重樂器與劇場現場音樂道路。",
+    headlineHtml: "李瑾佑：從嘉中管樂出發<br>走向跨界音樂現場",
+    photo: "../assets/img/members/8192.webp",
+    facts: [
+      ["編號", "<b>8192</b>（民國 81 年入學．打擊聲部）"],
+      ["主要領域", "打擊、弦樂、鍵盤與劇場現場音樂"],
+      ["學歷", "公開演職人員資料列載曾就讀輔仁大學音樂系"],
+      ["校友聯演", "第 30 屆《管樂。故鄉情》指揮《新一日的黎明》"],
+      ["地方藝文", "公開資料列載曾參與嘉義市管樂團與劇場跨界製作"]
+    ],
+    peopleLink: "../people.html#p-8192",
+    rosterLink: "../roster.html#p-8192",
+    relatedLinks: [
+      { label: "第 30 屆《管樂。故鄉情》演出紀錄", url: "../concerts/2014-30th.html", type: "校友聯演紀錄" },
+      { label: "嘉義市管樂團〈團員介紹〉", url: "https://cywo1994.com/member/", type: "公開團員資料" },
+      { label: "傳藝中心義興閣掌中劇團演出資料", url: "https://www.ncfta.gov.tw/News_Content3.aspx?n=7406&s=236904", type: "公開演出資料" }
+    ],
+    sourceHtml: "本文整理自第 30 屆校友聯演節目資料、嘉中校友名錄、嘉義市管樂團公開團員資料、傳藝中心與演職人員公開資料，以及校友團整理之人物資料；跨界劇場與現職細節待本人校對後可再補強。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
     num: "8301",
     name: "高崇文",
     source: "content/people/8301.html",
@@ -322,6 +376,58 @@ window.PEOPLE_PROFILES = [
     rosterLink: "../roster.html#p-8501",
     relatedLinks: [],
     sourceHtml: "本文整理自以下公開資料：OPENTIX 兩廳院文化生活與台北音樂家管弦樂團演出簡介、淡江大學校內新聞、嘉義市管樂團團員與演出名單、嘉義高中校友暨在校生聯合音樂會歷年公開報導。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
+    num: "8522",
+    name: "廖淑卿",
+    source: "content/people/8522.html",
+    output: "people/8522.html",
+    title: "廖淑卿（8522）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉中豎笛聲部到美術教育與親子藝術推廣——廖淑卿（編號 8522）以「糖果老師」形象投入兒童、成人與家庭的藝術教育。",
+    ogTitle: "廖淑卿（8522）｜從嘉中管樂走向美術教育與親子藝術",
+    ogDescription: "嘉中豎笛聲部校友，公開資料常以「糖果老師」之名出現，投入美術教育、親子手作與生活美學課程。",
+    headlineHtml: "廖淑卿：從嘉中管樂出發<br>走向美術教育與親子藝術",
+    photo: "../assets/img/members/8522.webp",
+    facts: [
+      ["編號", "<b>8522</b>（民國 85 年入學．豎笛聲部）"],
+      ["公開稱呼", "糖果老師"],
+      ["主要領域", "美術教育、兒童藝術、成人繪畫、親子手作"],
+      ["教育資料", "公開教育資料收錄《幫孩子找到他生命中的貴人》"],
+      ["網站處理", "不公開課程頁中的電話、LINE 等聯絡資訊"]
+    ],
+    peopleLink: "../people.html#p-8522",
+    rosterLink: "../roster.html#p-8522",
+    relatedLinks: [
+      { label: "國家教育研究院《幫孩子找到他生命中的貴人》", url: "https://teric.naer.edu.tw/wSite/ct?ctNode=645&mp=teric&xItem=1800055", type: "公開教育資料" },
+      { label: "蜜糖 Art Cooking 公開課程頁", url: "https://ocu.oneqr.app/honey", type: "公開課程資料" }
+    ],
+    sourceHtml: "本文整理自嘉中校友名錄、國家教育研究院臺灣教育研究資訊網、公開課程頁與校友團整理之人物資料。課程頁雖有公開聯絡資訊，本站基於個資保護不轉載電話、LINE 或私人聯絡方式；現職、學歷與品牌沿革待本人校對後可再補強。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
+    num: "8602",
+    name: "張嘉宏",
+    source: "content/people/8602.html",
+    output: "people/8602.html",
+    title: "張嘉宏（8602）｜嘉義高中管樂隊校友",
+    description: "從嘉中法國號聲部與副社長，到紅茶品飲、甜點搭配與嘉義在地餐飲品牌經營——張嘉宏（編號 8602）的返鄉創業故事。",
+    ogTitle: "張嘉宏（8602）｜從嘉中管樂到紅茶世界的返鄉創業者",
+    ogDescription: "嘉中法國號聲部校友、曾任副社長，編號 8602 的道路從軟體工程走向紅茶、甜點與嘉義在地餐飲品牌。",
+    headlineHtml: "張嘉宏：從嘉中管樂<br>到紅茶世界的返鄉創業者",
+    photo: "../assets/img/members/8602.webp",
+    facts: [
+      ["編號", "<b>8602</b>（民國 86 年入學．法國號聲部、當屆副社長）"],
+      ["原有專業", "公開資料列載曾為軟體工程師"],
+      ["創業領域", "紅茶品飲、甜點搭配、嘉義在地餐飲品牌"],
+      ["代表店舖", "Infusion 蛋糕。紅茶專賣店"],
+      ["人物誌首頁", "依使用者指定：僅製作個人頁，不列入人物誌首頁策展卡片"]
+    ],
+    navActive: "roster",
+    rosterLink: "../roster.html#p-8602",
+    relatedLinks: [
+      { label: "鏡週刊：嘉義巷仔內甜點店侍茶師巧搭世界紅茶", url: "https://www.mirrormedia.mg/story/20191220food001", type: "新聞報導" },
+      { label: "嘉義市政府建設處數位優化補助成果", url: "https://economic.chiayi.gov.tw/News_Content.aspx?n=4&s=797772", type: "公開新聞資料" }
+    ],
+    sourceHtml: "本文整理自嘉中校友名錄、鏡週刊公開報導、嘉義市政府建設處公開資料、在地美食與店舖介紹資料，以及校友團整理之人物資料；Infusion 與後續品牌沿革、目前職務與嘉中時期社團細節待本人校對後可再補強。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
     num: "8841",
@@ -664,6 +770,33 @@ window.PEOPLE_PROFILES = [
     sourceHtml: "本文整理自臺大公開演出與論文資料、嘉義大學公開榜單、嘉北國小與藝術教育研討會公開資料、校友聯演紀錄、校友名錄與校友團整理之人物資料；心理師執業狀態與現職細節以本人或官方最新資料為準。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
+    num: "9132",
+    name: "陳韋希",
+    source: "content/people/9132.html",
+    output: "people/9132.html",
+    title: "陳韋希（9132）｜人物誌｜嘉義高中管樂隊",
+    description: "從嘉中管樂社開始學習薩克斯風，陳韋希（編號 9132）赴法深造後返臺投入演奏、教學、重奏推廣與創作。",
+    ogTitle: "陳韋希（9132）｜從嘉中管樂走向國際舞台的薩克斯風音樂家",
+    ogDescription: "嘉中薩克斯風聲部校友、旅法薩克斯風演奏家、米特薩克斯風重奏團團員，第 31 屆聯演協奏者。",
+    headlineHtml: "陳韋希：從嘉中管樂出發<br>走向國際舞台的薩克斯風",
+    photo: "../assets/img/members/9132.webp",
+    facts: [
+      ["編號", "<b>9132</b>（民國 91 年入學．薩克斯風聲部）"],
+      ["主要樂器", "薩克斯風"],
+      ["學歷", "公開資料列載畢業於國立臺北藝術大學音樂系，並赴法取得巴黎市立音樂院高等音樂教育文憑等文憑"],
+      ["樂團角色", "米特薩克斯風重奏團團員"],
+      ["校友聯演", "第 31 屆《三生。一世樂》薩克斯風協奏"]
+    ],
+    peopleLink: "../people.html#p-9132",
+    rosterLink: "../roster.html#p-9132",
+    relatedLinks: [
+      { label: "米特薩克斯風重奏團〈陳韋希〉", url: "https://www.mit-sax.com/%E9%97%9C%E6%96%BC%E7%B1%B3%E7%89%B9/%E7%B1%B3%E7%89%B9%E5%9C%98%E5%93%A1%E4%BB%8B%E7%B4%B9/%E9%99%B3%E9%9F%8B%E5%B8%8C/", type: "公開人物資料" },
+      { label: "米特薩克斯風重奏團《戀語》作品介紹", url: "https://www.mit-sax.com/%E3%80%90%E5%A7%94%E8%A8%97%E5%89%B5%E4%BD%9C%E6%9B%B2%E3%80%91%E9%99%B3%E9%9F%8B%E5%B8%8C-%E3%80%8A%E6%88%80%E8%AA%9E%E3%80%8B/", type: "作品介紹" },
+      { label: "第 31 屆《三生。一世樂》演出紀錄", url: "../concerts/2015-31st.html", type: "校友聯演紀錄" }
+    ],
+    sourceHtml: "本文整理自米特薩克斯風重奏團公開人物資料、米特作品介紹、2015 年第 31 屆校友聯演資料、嘉中校友名錄與校友團整理之人物資料；任教學校與現職細節可能隨時間變動，本站先以公開資料可確認之學歷、演奏、重奏團與校友聯演紀錄呈現。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
     num: "9202",
     name: "蔡淳任",
     source: "content/people/9202.html",
@@ -880,9 +1013,19 @@ window.PEOPLE_FEATURED_SECTIONS = [
     title: "聯演舞台上的靈魂人物",
     items: [
       {
+        profile: "8192",
+        role: "跨界音樂工作者．校友聯演指揮",
+        summaryHtml: "民國81年入學，打擊聲部。公開資料列載其音樂工作橫跨打擊、弦樂、鍵盤、合唱與劇場現場音樂；第30屆《管樂。故鄉情》擔任指揮，指揮《新一日的黎明》。從校友聯演舞台到地方藝文與跨界劇場，展現嘉中管樂校友的多重音樂能力。"
+      },
+      {
         profile: "8301",
         role: "長號演奏家．音樂班教師",
         summaryHtml: "阿里山鄒族校友，國立臺北藝術大學音樂碩士。1999年台灣區音樂比賽長號獨奏成人組第一名，2004至2014年任高雄市交響樂團長號專任團員。現任教多校音樂班，並任台灣獨奏家交響樂團、高雄市管樂團、台南市交響樂團長號演奏員，也是<a href=\"people/8861.html\">簡晟軒</a>在嘉中的啟蒙老師之一。"
+      },
+      {
+        profile: "8522",
+        role: "美術教育．親子藝術推廣",
+        summaryHtml: "民國85年入學，豎笛聲部。公開資料常以「糖果老師」之名出現，投入兒童美術、成人繪畫、親子手作與生活美學課程；教育資料亦收錄其正向管教文章。她讓嘉中管樂校友群像延伸到美術教育、親子藝術與日常美感推廣，也把舞台訓練中累積的陪伴經驗轉化為面向孩子與家庭的創作課程。"
       },
       {
         profile: "9261",
@@ -908,6 +1051,11 @@ window.PEOPLE_FEATURED_SECTIONS = [
         profile: "9101",
         role: "單簧管演奏家．BON 重奏團團長",
         summaryHtml: "嘉中管樂社社長，由李吉峰老師啟蒙開始學習單簧管。國立臺灣藝術大學音樂系畢業，在學期間任音樂系管樂團單簧管首席；後取得臺北藝術大學管絃與擊樂研究所碩士。2011年與嘉中校友團於世界管樂年會協奏，2013年起擔任BON單簧管重奏團團長，現任富瑜室內樂團單簧管首席。"
+      },
+      {
+        profile: "9132",
+        role: "薩克斯風演奏家．校友聯演協奏",
+        summaryHtml: "民國91年入學，薩克斯風聲部。從嘉中管樂社開始學習薩克斯風，後續赴法深造並返臺加入米特薩克斯風重奏團。2015年第31屆《三生。一世樂》擔任薩克斯風協奏，演出 André Waignein《Deux Mouvements》，是從嘉中走向專業舞台再回到校友聯演的代表。"
       },
       {
         profile: "9721",
@@ -969,6 +1117,11 @@ window.PEOPLE_FEATURED_SECTIONS = [
         profile: "9921",
         role: "多樂器演奏．編曲製譜",
         summaryHtml: "民國99年入學，單簧管聲部。公開紀錄顯示，他曾在第38屆《一樹起響》擔任雙簧管，並於嘉義市管樂團列為打擊樂器團員，也能在跨界演出中擔任爵士鼓。除演奏外，他投入管樂編曲、製譜、影像剪輯與視覺內容製作，是跨聲部、跨媒材參與樂團的年輕校友。"
+      },
+      {
+        profile: "0611",
+        role: "長笛演奏．青年藝術工作",
+        summaryHtml: "民國106年入學，長笛聲部，嘉中管樂社曾任譜務。公開資料列載其曾就讀國立中山大學音樂學系，參與長笛演奏、鍵盤演出、美編、攝影與青年藝術活動；2018與2019年均可見於校友聯演名單，是年輕世代跨角色參與音樂現場的代表。"
       },
       {
         profile: "linshaofan",
