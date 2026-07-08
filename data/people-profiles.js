@@ -382,7 +382,7 @@ window.PEOPLE_PROFILES = [
     name: "廖淑卿",
     source: "content/people/8522.html",
     output: "people/8522.html",
-    title: "廖淑卿（8522）｜人物誌｜嘉義高中管樂隊",
+    title: "廖淑卿（8522）｜嘉義高中管樂隊校友",
     description: "從嘉中豎笛聲部到美術教育與親子藝術推廣——廖淑卿（編號 8522）以「糖果老師」形象投入兒童、成人與家庭的藝術教育。",
     ogTitle: "廖淑卿（8522）｜從嘉中管樂走向美術教育與親子藝術",
     ogDescription: "嘉中豎笛聲部校友，公開資料常以「糖果老師」之名出現，投入美術教育、親子手作與生活美學課程。",
@@ -395,7 +395,7 @@ window.PEOPLE_PROFILES = [
       ["教育資料", "公開教育資料收錄《幫孩子找到他生命中的貴人》"],
       ["網站處理", "不公開課程頁中的電話、LINE 等聯絡資訊"]
     ],
-    peopleLink: "../people.html#p-8522",
+    navActive: "roster",
     rosterLink: "../roster.html#p-8522",
     relatedLinks: [
       { label: "國家教育研究院《幫孩子找到他生命中的貴人》", url: "https://teric.naer.edu.tw/wSite/ct?ctNode=645&mp=teric&xItem=1800055", type: "公開教育資料" },
@@ -1021,11 +1021,6 @@ window.PEOPLE_FEATURED_SECTIONS = [
         profile: "8301",
         role: "長號演奏家．音樂班教師",
         summaryHtml: "阿里山鄒族校友，國立臺北藝術大學音樂碩士。1999年台灣區音樂比賽長號獨奏成人組第一名，2004至2014年任高雄市交響樂團長號專任團員。現任教多校音樂班，並任台灣獨奏家交響樂團、高雄市管樂團、台南市交響樂團長號演奏員，也是<a href=\"people/8861.html\">簡晟軒</a>在嘉中的啟蒙老師之一。"
-      },
-      {
-        profile: "8522",
-        role: "美術教育．親子藝術推廣",
-        summaryHtml: "民國85年入學，豎笛聲部。公開資料常以「糖果老師」之名出現，投入兒童美術、成人繪畫、親子手作與生活美學課程；教育資料亦收錄其正向管教文章。她讓嘉中管樂校友群像延伸到美術教育、親子藝術與日常美感推廣，也把舞台訓練中累積的陪伴經驗轉化為面向孩子與家庭的創作課程。"
       },
       {
         profile: "9261",
