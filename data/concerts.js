@@ -100,17 +100,49 @@ window.CONCERTS = [
     venue: "嘉義高中樹人堂",
     venueNote: "",
     hostHead: "四字頭",
-    conductors: [{ name: "簡晟軒", num: "8861", role: "指揮" }],
+    organizers: [{ name: "陳乃慎", role: "總召" }],
+    conductors: [
+      { name: "盧宓承", num: "7111", role: "指揮" },
+      { name: "簡晟軒", num: "8861", role: "指揮" },
+      { name: "陳乃慎", role: "指揮" }
+    ],
     soloists: [],
-    program: [],
-    ticket: { type: "unknown", price: "", channels: [], note: "" },
+    intro: [
+      "第 40 屆《四方之音》於 2025 年 8 月 16 日 14:00 在嘉義高中樹人堂演出，13:30 開放觀眾進場。",
+      "本屆由四字頭校友承接籌辦，104 年入學的陳乃慎擔任總召，並與盧宓承、簡晟軒共同擔任指揮。宣傳貼文指出，校友聯演自 1985 年開始，除 2021 年因防疫政策暫停外，至本屆邁入第 40 屆。",
+      "曲目橫跨管樂原創、古典改編、爵士與流行曲風；正式曲目先依《四方之音》宣傳貼文與現場曲目表照片共同確認。參考錄音資料夾中另列部分曲目，是否為正式曲目、備用曲或安可仍待錄影或節目冊交叉確認。"
+    ],
+    program: [
+      { section: "上半場", title: "杭汀頓慶典", foreignTitle: "A Huntingdon Celebration", status: "confirmed" },
+      { section: "上半場", title: "羅馬慶典", foreignTitle: "Feste Romane", composer: "Ottorino Respighi", arranger: "Ton van Grevenbroek", note: "宣傳貼文標註 I. 節選 + IV. 全", status: "confirmed" },
+      { section: "上半場", title: "王者之道", foreignTitle: "El Camino Real", composer: "Alfred Reed", status: "confirmed" },
+      { section: "下半場", title: "快速音樂會", foreignTitle: "Instant Concert", composer: "Harold L. Walters", status: "confirmed" },
+      { section: "下半場", title: "演歌集錦 第二輯", foreignTitle: "演歌メドレー Vol.2", note: "宣傳貼文標註曲目含〈津輕海峽冬景色〉〈与作〉〈浪花節人生〉", status: "confirmed" },
+      { section: "下半場", title: "北門車站", foreignTitle: "Beimen Station", status: "confirmed" },
+      { section: "下半場", title: "日本風情畫 14", foreignTitle: "Japanese Graffiti XIV", note: "宣傳貼文標註 ARASHI", status: "confirmed" },
+      { section: "下半場", title: "Sing Sing Sing", status: "confirmed" }
+    ],
+    programNote: "曲目與順序以《四方之音》宣傳貼文及現場曲目表照片共同確認；參考錄音截圖另列〈安平追想曲〉、Chiikawa 與 Yesterday，是否正式演出或安可待節目冊、錄影或校友補充確認。",
+    ticket: { type: "unknown", price: "", channels: [], note: "宣傳貼文記載 13:30 開放觀眾進場；票務方式待正式節目冊或公告補充" },
     poster: "assets/img/concerts/2025.webp",
     page: "concerts/2025-40th.html",
     gallery: [],
+    photos: [
+      { src: "assets/img/gallery/2025/0816-01t.webp", full: "assets/img/gallery/2025/0816-01.webp", caption: "現場曲目表與樹人堂演出現場，保留第 40 屆《四方之音》的曲序線索" },
+      { src: "assets/img/gallery/2025/0816-02t.webp", full: "assets/img/gallery/2025/0816-02.webp", caption: "第 40 屆《四方之音》全團合影，團員以「40」標示本屆里程碑" },
+      { src: "assets/img/gallery/2025/0816-03t.webp", full: "assets/img/gallery/2025/0816-03.webp", caption: "嘉義高中樹人堂正式演出，全團於校友指揮帶領下登台" }
+    ],
     news: [],
-    sources: ["concerts.html"],
+    sources: [
+      "concerts.html",
+      "校友提供：《四方之音貼文-01.md》",
+      "校友提供：第 40 屆演出照片與現場曲目表照片",
+      "使用者提供：2025 嘉中校友管樂團參考錄音截圖",
+      "校友提供：第 40 屆內部收支表（僅作公開範圍判斷，未公開明細）"
+    ],
+    sourceNote: "本頁日期、時間、開放入場時間、場地、指揮、總召、曲目與宣傳文字，主要依《四方之音貼文-01.md》整理；現場曲目表照片作曲序交叉驗證，參考錄音截圖保留為曲目待確認線索。收支表含捐款、匯款、購買、餐費與車牌等內部行政資料，本次僅用於判斷不宜公開個人金額與明細，未列入公開致謝名單。",
     status: "partial",
-    notes: "總召陳乃慎；鄭鈞元與許哲誠相關協演脈絡見校友演出紀錄。"
+    notes: "總召陳乃慎；第 40 屆由盧宓承、簡晟軒與陳乃慎共同擔任指揮，曲目與三張演出照片已依校友提供貼文、照片與參考錄音線索補入。完整團員名單、正式節目冊與是否含安可曲仍待補。"
   },
   {
     id: "2024-39th",
