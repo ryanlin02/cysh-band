@@ -322,6 +322,47 @@ html.js .hero .est { animation-delay: .44s; }
 .btn.ghost { background: transparent; border: 1px solid var(--gold); color: var(--gold); margin-left: 12px; box-shadow: none; }
 .btn.ghost:hover { border-color: var(--gold); background: rgba(200,164,92,.14); transform: translateY(var(--lift-sm)); }
 
+.concert-page-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.concert-page-nav .btn.ghost {
+  margin-left: 0;
+  min-height: 82px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  letter-spacing: .06em;
+  line-height: 1.35;
+}
+.concert-page-nav .btn.ghost span {
+  font-size: .82rem;
+  color: var(--ink-dim);
+  letter-spacing: .12em;
+}
+.concert-page-nav .btn.ghost b {
+  display: block;
+  color: var(--gold);
+  font-weight: 700;
+}
+.concert-page-nav .previous { text-align: left; align-items: flex-start; }
+.concert-page-nav .overview { text-align: center; align-items: center; }
+.concert-page-nav .next { text-align: right; align-items: flex-end; }
+@media (max-width: 760px) {
+  .concert-page-nav { grid-template-columns: 1fr; }
+  .concert-page-nav .btn.ghost {
+    min-height: auto;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 /* ---------- 雙向入口 ---------- */
 .two-way { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0 8px; }
 .way {

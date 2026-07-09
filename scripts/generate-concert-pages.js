@@ -577,6 +577,39 @@ function relatedPageLinks(concert) {
   return links.join('\n      ');
 }
 
+function concertNavLabel(concert) {
+  const title = displayTitle(concert);
+  if (/^第\s*\d+\s*屆/.test(title)) return title;
+  return `第 ${concert.nth} 屆${title}`;
+}
+
+function adjacentConcerts(concert) {
+  const pageConcerts = concerts
+    .filter((item) => item.page && exists(item.page) && item.status !== 'cancelled')
+    .sort((a, b) => Number(a.nth || 0) - Number(b.nth || 0));
+  const index = pageConcerts.findIndex((item) => item.id === concert.id);
+  if (index < 0) return { previous: null, next: null };
+  return {
+    previous: pageConcerts[index - 1] || null,
+    next: pageConcerts[index + 1] || null
+  };
+}
+
+function concertPageNav(concert) {
+  const { previous, next } = adjacentConcerts(concert);
+  const links = [];
+  if (previous) {
+    links.push(`<a class="btn ghost concert-page-nav-link previous" href="../${escapeHtml(previous.page)}"><span>← 上一屆</span><b>${escapeHtml(concertNavLabel(previous))}</b></a>`);
+  }
+  links.push(`<a class="btn ghost concert-page-nav-link overview" href="../concerts.html#concert-${escapeHtml(concert.id)}"><span>回到</span><b>校友聯演</b></a>`);
+  if (next) {
+    links.push(`<a class="btn ghost concert-page-nav-link next" href="../${escapeHtml(next.page)}"><span>下一屆 →</span><b>${escapeHtml(concertNavLabel(next))}</b></a>`);
+  }
+  return `<nav class="concert-page-nav" aria-label="聯演頁面導覽">
+      ${links.join('\n      ')}
+    </nav>`;
+}
+
 function render(concert) {
   const title = pageTitle(concert);
   const plainTitle = `${title}｜校友聯演｜嘉義高中管樂隊`;
@@ -710,10 +743,7 @@ ${generatedMarker}
   <section class="section">
     <h2>資料補充</h2>
     ${provenanceText(concert, missing)}
-    <nav class="person-nav person-nav--single" aria-label="聯演頁面導覽">
-      <a class="btn ghost" href="../concerts.html#concert-${escapeHtml(concert.id)}">← 回到校友聯演</a>
-      ${relatedPageLinks(concert)}
-    </nav>
+    ${concertPageNav(concert)}
   </section>
 </main>
 
