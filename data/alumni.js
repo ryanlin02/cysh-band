@@ -131,6 +131,7 @@ window.ALUMNI = [
   { num: "1051", name: "黃鈺芠", year: 110, part: "小號", tags: ["小號"], role: "臺北市立大學音樂系．《為伍》小號協奏", desc: "民國 110 年入學，小號聲部，現就讀臺北市立大學音樂系，將於《為伍》擔任小號協奏。", photo: "1051", link: "people/1051.html" },
   { num: "0755", name: "許祥倫", year: 107, part: "小號", tags: ["小號"], role: "研究生", desc: "民國 107 年入學，小號聲部校友。", photo: "0755", link: "" },
   { num: null, id: "linshaofan", name: "林少凡", year: 107, part: "小號", tags: ["小號"], role: "小號演奏．音樂研究生", desc: "民國 107 年入學，小號聲部。屏東大學音樂系畢業，現就讀北教大音樂系碩士班演奏組，演出經驗含歌劇舞台與棒球應援。", photo: "linshaofan", link: "people/linshaofan.html" },
+  { num: null, id: "linxuyang", name: "林旭颺", year: 107, part: "上低音號", tags: ["上低音號"], role: "", desc: "民國 107 年入學，上低音號聲部校友；四碼編號待補。", photo: "blank", link: "" },
   { num: "9161", name: "王聖安", year: 91, part: "長號", tags: ["長號"], role: "音樂教育．諮商心理", desc: "民國 91 年入學，長號聲部校友。具鋼琴與長號背景，取得臺大音樂學與嘉大輔導諮商碩士，投身教育與助人專業。", photo: "9161", link: "people/9161.html" },
   { num: "0271", name: "莊宗儒", year: 102, part: "上低音號", tags: ["上低音號"], role: "上低音號演奏家．低音銅管教師", desc: "北藝大管絃與擊樂研究所畢業，返嘉投入上低音號教學與演出，2022 年聯演獨奏者。", photo: "0271", link: "people/0271.html" },
   { num: "0741", name: "陳羿弦", year: 107, part: "法國號", tags: ["法國號"], role: "法國號．藝術管理研究生", desc: "民國 107 年入學，法國號聲部，第 89 屆學生指揮，現就讀中山大學藝術管理所。", photo: "0741", link: "people/0741.html" },
