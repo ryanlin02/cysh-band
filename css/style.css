@@ -363,6 +363,47 @@ html.js .hero .est { animation-delay: .44s; }
   }
 }
 
+.article-page-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.article-page-nav .btn.ghost {
+  margin-left: 0;
+  min-height: 78px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  letter-spacing: .06em;
+  line-height: 1.35;
+}
+.article-page-nav .btn.ghost span {
+  font-size: .82rem;
+  color: var(--ink-dim);
+  letter-spacing: .12em;
+}
+.article-page-nav .btn.ghost b {
+  display: block;
+  color: var(--gold);
+  font-weight: 700;
+}
+.article-page-nav .previous { text-align: left; align-items: flex-start; }
+.article-page-nav .overview { text-align: center; align-items: center; }
+.article-page-nav .next { text-align: right; align-items: flex-end; }
+@media (max-width: 760px) {
+  .article-page-nav { grid-template-columns: 1fr; }
+  .article-page-nav .btn.ghost {
+    min-height: auto;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 /* ---------- 雙向入口 ---------- */
 .two-way { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0 8px; }
 .way {
@@ -1303,16 +1344,16 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .person-article .sources a { word-break: break-all; }
 
 /* ---------- 人物頁尾導覽（回人物誌／看校友名錄） ---------- */
-.person-nav {
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
-  gap: 16px; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line);
+.person-nav { margin-top: 48px; }
+.person-nav.person-nav--single {
+  grid-template-columns: minmax(220px, 360px);
+  justify-content: end;
 }
-.person-nav .btn { letter-spacing: .04em; padding: 12px 28px; font-size: .92rem; }
-.person-nav .btn.ghost { margin-left: 0; }
-.person-nav.person-nav--single { justify-content: flex-end; }
-@media (max-width: 560px) {
-  .person-nav { flex-direction: column; align-items: stretch; }
-  .person-nav .btn { display: block; width: 100%; text-align: center; box-sizing: border-box; }
+@media (max-width: 760px) {
+  .person-nav.person-nav--single {
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
 }
 
 /* ---------- 回到頂端 ---------- */

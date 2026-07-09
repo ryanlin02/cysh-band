@@ -190,9 +190,9 @@ function renderProfile(profile, options = {}) {
     : '';
   const previewSuffix = options.preview ? '．PREVIEW' : '';
   const relatedLinksHtml = renderRelatedLinks(profile.relatedLinks);
-  const personNavClass = profile.peopleLink ? 'person-nav' : 'person-nav person-nav--single';
+  const personNavClass = profile.peopleLink ? 'person-nav article-page-nav' : 'person-nav article-page-nav person-nav--single';
   const peopleBackLink = profile.peopleLink
-    ? `      <a class="btn ghost" href="${escapeHtml(profile.peopleLink)}">← 回人物誌總覽</a>\n`
+    ? `      <a class="btn ghost article-page-nav-link overview" href="${escapeHtml(profile.peopleLink)}"><span>回到</span><b>人物誌總覽</b></a>\n`
     : '';
 
   const content = `<header class="page-head">
@@ -216,7 +216,7 @@ ${previewNote}${indentHtml(body)}
     <p class="sources">${profile.sourceHtml}</p>
 
     <nav class="${personNavClass}" aria-label="人物頁面導覽">
-${peopleBackLink}${officialPageLink}      <a class="btn" href="${escapeHtml(profile.rosterLink)}">在校友名錄查看資料 →</a>
+${peopleBackLink}${officialPageLink}      <a class="btn ghost article-page-nav-link next" href="${escapeHtml(profile.rosterLink)}"><span>校友資料</span><b>在名錄查看</b></a>
     </nav>
   </article>
 </main>`;

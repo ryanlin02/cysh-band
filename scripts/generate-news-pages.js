@@ -64,6 +64,38 @@ const articles = [
   }
 ];
 
+function textFromHtml(html) {
+  return String(html || '').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function articleNavLabel(article) {
+  return textFromHtml(article.ogTitle || article.title).replace(/｜.*$/, '');
+}
+
+function adjacentArticles(article) {
+  const index = articles.findIndex((item) => item.output === article.output);
+  if (index < 0) return { previous: null, next: null };
+  return {
+    previous: articles[index - 1] || null,
+    next: articles[index + 1] || null
+  };
+}
+
+function articlePageNav(article) {
+  const { previous, next } = adjacentArticles(article);
+  const links = [];
+  if (previous) {
+    links.push(`<a class="btn ghost article-page-nav-link previous" href="../${escapeHtml(previous.output)}"><span>← 上一篇消息</span><b>${escapeHtml(articleNavLabel(previous))}</b></a>`);
+  }
+  links.push('<a class="btn ghost article-page-nav-link overview" href="../news/index.html"><span>回到</span><b>最新消息總覽</b></a>');
+  if (next) {
+    links.push(`<a class="btn ghost article-page-nav-link next" href="../${escapeHtml(next.output)}"><span>下一篇消息 →</span><b>${escapeHtml(articleNavLabel(next))}</b></a>`);
+  }
+  return `<nav class="article-page-nav news-page-nav" aria-label="最新消息文章導覽">
+      ${links.join('\n      ')}
+    </nav>`;
+}
+
 function renderArticle(article) {
   const body = fs.readFileSync(path.join(root, article.source), 'utf8').trim();
   const indentedBody = body.split('\n').map((line) => (line ? `    ${line}` : line)).join('\n');
@@ -75,6 +107,8 @@ function renderArticle(article) {
 <main class="wrap">
   <article class="section news-article">
 ${indentedBody}
+
+    ${articlePageNav(article)}
   </article>
 </main>`;
 
