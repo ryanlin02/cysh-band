@@ -7,6 +7,13 @@
 */
 window.NEWS = [
   {
+    date: "2026-07-10",
+    title: "因巴威颱風影響，7/11 團練取消",
+    summary: "受巴威颱風影響，7/11（六）團練取消；7/12（日）是否照常團練將依天候另行通知，後續團練時間表同步公告。",
+    url: "news/2026-07-10-typhoon-bavi-rehearsal.html",
+    thumb: "assets/img/news/2026-07-10-typhoon-bavi-cwa-thumb.webp"
+  },
+  {
     date: "2026-07-04",
     title: "7/4 團練日：火雞肉飯、團練室與一壺咖啡",
     summary: "《為伍》第二個週末團練日，翁啟榮學長從簡單火雞肉飯回到嘉中團練室，也煮起咖啡和大家一起喝。",

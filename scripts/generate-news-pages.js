@@ -16,6 +16,16 @@ const profiles = global.PEOPLE_PROFILES || [];
 
 const articles = [
   {
+    date: '2026-07-10',
+    source: 'content/news/2026-07-10-typhoon-bavi-rehearsal.html',
+    output: 'news/2026-07-10-typhoon-bavi-rehearsal.html',
+    title: '因巴威颱風影響，7/11 團練取消｜最新消息｜嘉義高中管樂隊',
+    ogTitle: '因巴威颱風影響，7/11 團練取消',
+    description: '受巴威颱風影響，7/11 團練取消；7/12 團練將依颱風動向與嘉義地區天候狀況另行通知，後續團練時間表同步公告。',
+    ogDescription: '7/11 團練取消，7/12 是否照常進行將依颱風動向與天候狀況更新，請校友與在校生留意後續公告。',
+    headlineHtml: '因巴威颱風影響，<br>7/11 團練取消'
+  },
+  {
     date: '2026-07-04',
     source: 'content/news/2026-07-04-rehearsal-coffee.html',
     output: 'news/2026-07-04-rehearsal-coffee.html',

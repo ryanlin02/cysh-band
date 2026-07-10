@@ -295,3 +295,5 @@ git diff --check
 - 不要把歷史資料整理成過度華麗、不可查證的宣傳語。
 
 這個網站的價值不只在漂亮，而在於把多年散落的記憶慢慢整理成可信、可延續、能讓下一代接住的資料。
+
+## Imported Claude Cowork project instructions
