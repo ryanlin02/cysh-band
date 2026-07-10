@@ -360,7 +360,9 @@ function vSyncHandle() {
   const trackH = $("#scrubberTrack").clientHeight || 400;
   const denom = Math.max(1, V.total - window.innerHeight);
   const frac = Math.min(1, Math.max(0, (window.scrollY - V.contentTop) / denom));
-  $("#scrubHandle").style.top = (frac * (trackH - 40)) + "px";
+  const topPx = frac * (trackH - 40);
+  $("#scrubHandle").style.top = topPx + "px";
+  $("#floatDate").style.top = (topPx + 20) + "px"; // 日期籤跟著把手走（同 Google Photos）
 }
 function scrubTo(clientY) {
   const rect = trackRect();
@@ -514,6 +516,37 @@ function renderPersonDetail(personId) {
 
 /* ---------- 檢視：搜尋 ---------- */
 let searchTimer = null;
+/* 搜尋建議索引：從 AI 標籤、活動名稱、人名統計詞頻（只建一次） */
+let SUGGEST = null;
+function buildSuggest() {
+  if (SUGGEST) return SUGGEST;
+  const freq = new Map();
+  const add = (t, w) => {
+    t = (t || "").trim();
+    if (t.length < 2 || t.length > 12) return;
+    freq.set(t, (freq.get(t) || 0) + (w || 1));
+  };
+  for (const p of DB.photos) for (const t of (p.k || [])) add(t, 1);
+  for (const a of DB.albums) add(a.title, 5);
+  for (const p of PEOPLE) add(p.name, 10);
+  SUGGEST = [...freq.entries()].sort((a, b) => b[1] - a[1]);
+  return SUGGEST;
+}
+/* 即時搜尋建議：打字時列出最相關的詞（資料都在本機，零延遲） */
+function updateSuggest(q) {
+  const box = $("#suggestBox");
+  if (!box) return;
+  q = (q || "").trim().toLowerCase();
+  if (!q) { box.classList.add("hidden"); return; }
+  const hits = buildSuggest()
+    .filter(([t]) => t.toLowerCase().includes(q) && t.toLowerCase() !== q)
+    .slice(0, 8);
+  if (!hits.length) { box.classList.add("hidden"); return; }
+  box.innerHTML = hits.map(([t, c]) =>
+    `<div class="sug" data-t="${esc(t)}"><svg class="ico-svg" style="width:15px;height:15px;opacity:.5"><use href="#i-search"/></svg>${esc(t)}<span class="sug-n">${c}</span></div>`
+  ).join("");
+  box.classList.remove("hidden");
+}
 function renderSearch(initialQ) {
   resetContent();
   $("#subHeader").classList.remove("hidden");
@@ -521,9 +554,14 @@ function renderSearch(initialQ) {
   $("#subHeader").innerHTML =
     `<div class="search-wrap"><div class="search-box"><svg class="ico-svg" style="color:var(--ink-dim)"><use href="#i-search"/></svg> <input id="searchInput" type="search" ` +
     `placeholder="搜尋活動、人物、照片內容…" value="${esc(initialQ || "")}" enterkeyhint="search"></div>` +
+    `<div id="suggestBox" class="hidden"></div>` +
     `<div class="search-hint">可搜尋：活動名稱、人名、AI 照片內容標註（目前已完成 ${annotated.toLocaleString()} / ${total.toLocaleString()} 張，持續增加中）</div>` +
     `<div class="chips" id="searchChips"></div></div>`;
-  const chips = ["合照", "演出", "團練", "比賽", "露營", "薩克斯風", "小號", "長笛", "打擊", "指揮", "舞台", "社辦"];
+  // 熱門標籤：依實際出現次數自動產生（照片越多、標註越多會自動更新）
+  const chips = buildSuggest()
+    .filter(([t]) => t.length >= 2 && t.length <= 6)
+    .slice(0, 18)
+    .map(([t]) => t);
   const chipBox = $("#searchChips");
   for (const kw of chips) {
     const b = document.createElement("button");
@@ -537,18 +575,30 @@ function renderSearch(initialQ) {
   input.addEventListener("compositionstart", () => { composing = true; });
   input.addEventListener("compositionend", () => {
     composing = false;
+    updateSuggest(input.value);
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => doSearch(input.value), 300);
   });
   input.addEventListener("input", () => {
     if (composing) return;
+    updateSuggest(input.value);
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => doSearch(input.value), 300);
   });
   input.addEventListener("keydown", (e) => {
     if (e.isComposing || e.keyCode === 229) return;
-    if (e.key === "Enter") { clearTimeout(searchTimer); doSearch(input.value); input.blur(); }
+    if (e.key === "Enter") { clearTimeout(searchTimer); $("#suggestBox").classList.add("hidden"); doSearch(input.value); input.blur(); }
+    if (e.key === "Escape") $("#suggestBox").classList.add("hidden");
   });
+  // 點選建議詞直接搜尋
+  $("#suggestBox").addEventListener("mousedown", (e) => {
+    const sug = e.target.closest(".sug");
+    if (!sug) return;
+    input.value = sug.dataset.t;
+    $("#suggestBox").classList.add("hidden");
+    doSearch(sug.dataset.t);
+  });
+  input.addEventListener("blur", () => setTimeout(() => $("#suggestBox") && $("#suggestBox").classList.add("hidden"), 200));
   if (initialQ) doSearch(initialQ); else input.focus();
 }
 // 同義詞表：搜尋任一詞時，同組的其他寫法也視為符合
@@ -751,7 +801,7 @@ function toggleSlideshow() {
 }
 function updatePanel(p) {
   const alb = DB.albums[p.a];
-  let html = "";
+  let html = `<button class="panel-close" aria-label="關閉資訊欄" onclick="document.getElementById('lbPanel').classList.add('hidden')"><svg class="ico-svg"><use href="#i-close"/></svg></button>`;
   if (p.c) html += `<div class="cap">${esc(p.c)}</div>`;
   html += `<h3>日期／活動</h3><div>${esc(albumDateLabel(alb))} · <a class="alb-link" href="#/album/${encodeURIComponent(alb.id)}" onclick="document.getElementById('lbClose').click()">${esc(alb.title)}</a></div>`;
   if (p.p && p.p.length) {

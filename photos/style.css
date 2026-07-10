@@ -158,15 +158,17 @@ button { font-family: inherit; }
 .vrow .ph img.ok { opacity: 1; }
 .vrow .ph:hover img { transform: scale(1.03); }
 
-/* 浮動日期籤：捲動時顯示目前位置的日期 */
+/* 浮動日期籤：捲動時顯示在把手旁（同 Google Photos），拖曳時讓位給年份氣泡 */
 #floatDate {
-  position: fixed; top: calc(var(--topbar-h) + 12px); left: 14px; z-index: 46;
+  position: absolute; right: 44px; transform: translateY(-50%);
   background: var(--bg-card); border: 1px solid var(--line); color: var(--ink);
-  font-family: var(--serif); font-weight: 900; font-size: 14px;
-  padding: 6px 14px; border-radius: 999px; box-shadow: var(--shadow-md);
-  pointer-events: none; transition: opacity .4s var(--ease); opacity: 1;
+  font-family: var(--serif); font-weight: 900; font-size: 13px;
+  padding: 5px 13px; border-radius: 999px; box-shadow: var(--shadow-md);
+  pointer-events: none; white-space: nowrap;
+  transition: opacity .4s var(--ease); opacity: 1;
 }
 #floatDate.fading { opacity: 0; }
+body.scrubbing #floatDate { display: none; }
 
 /* ============ 相簿卡片 ============ */
 .year-header { font-family: var(--serif); font-size: 22px; font-weight: 900; padding: 24px 6px 10px; }
@@ -382,10 +384,33 @@ body.scrubbing { user-select: none; }
   color: var(--gold); margin-left: 6px; letter-spacing: .05em;
 }
 .pp-num { color: rgba(236,229,216,.75); }
-#desktopNav a.nav-home { color: var(--gold); border: 1px solid var(--line); }
-#desktopNav a.nav-home:hover { background: rgba(160,124,49,.1); border-color: var(--gold-soft); }
+@media (max-width: 767px) { #homeBtn { margin-left: auto; } }
 
 /* 時間軸檢視隱藏瀏覽器原生捲軸（同 Google Photos：由右側時間軸把手取代，
    滾輪、觸控、鍵盤捲動全部照常，只是不顯示原生捲軸避免誤觸） */
 html.no-scrollbar { scrollbar-width: none; }
 html.no-scrollbar::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+/* 資訊欄右上角的關閉按鈕 */
+.panel-close {
+  position: absolute; top: 10px; right: 10px;
+  border: 0; background: rgba(255,255,255,.1); color: #ece5d8;
+  width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--fast) var(--ease);
+}
+.panel-close:hover { background: rgba(255,255,255,.22); }
+.panel-close .ico-svg { width: 18px; height: 18px; }
+@media (min-width: 768px) { .panel-close { top: 64px; } }
+
+/* 即時搜尋建議下拉 */
+#suggestBox {
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: var(--shadow-md); margin-top: 6px; overflow: hidden;
+}
+#suggestBox .sug {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; font-size: 15px; cursor: pointer;
+}
+#suggestBox .sug:hover { background: var(--bg-soft); }
+#suggestBox .sug-n { margin-left: auto; font-size: 12px; color: var(--ink-dim); font-family: var(--latin); }
