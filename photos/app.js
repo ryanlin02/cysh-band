@@ -480,7 +480,7 @@ function renderPeople() {
     card.className = "person-card";
     card.innerHTML =
       `<div class="face">${p.avatar ? `<img loading="lazy" src="${CFG.dataBase}/${encPath(p.avatar)}" alt="">` : ""}</div>` +
-      `<div class="p-name">${esc(p.name)}</div><div class="p-count">${p.count} 張</div>`;
+      `<div class="p-name">${esc(p.name)}${p.num ? `<span class="p-num">${p.num}</span>` : ""}</div><div class="p-count">${p.count} 張</div>`;
     card.onclick = () => { location.hash = "#/person/" + encodeURIComponent(p.id); };
     grid.appendChild(card);
   }
@@ -495,7 +495,7 @@ function renderPersonDetail(personId) {
   $("#subHeader").innerHTML =
     `<div class="sub-title">` +
     (person.avatar ? `<img class="sub-avatar" src="${CFG.dataBase}/${encPath(person.avatar)}">` : "") +
-    `${esc(person.name)}</div><div class="sub-meta">出現在 ${person.count} 張照片中（依人臉辨識結果，可能有誤判）</div>`;
+    `${esc(person.name)}${person.num ? `<span class="p-num">${person.num}</span>` : ""}</div><div class="sub-meta">出現在 ${person.count} 張照片中（依人臉辨識結果，可能有誤判）</div>`;
   const secs = [];
   for (const ai of DB.albumOrder) {
     const ph = DB.photosByAlbum[ai].filter((p) => p.p && p.p.includes(pi));
@@ -759,7 +759,8 @@ function updatePanel(p) {
         const face = person.avatar
           ? `<img class="pp-face" src="${CFG.dataBase}/${encPath(person.avatar)}" alt="">`
           : "";
-        return `<span class="pp-chip" onclick="location.hash='#/person/${person.id}';document.getElementById('lbClose').click()">${face}${esc(person.name)}</span>`;
+        const numTag = person.num ? `<span class="pp-num">${person.num}</span>` : "";
+        return `<span class="pp-chip" onclick="location.hash='#/person/${person.id}';document.getElementById('lbClose').click()">${face}${esc(person.name)}${numTag}</span>`;
       }).join("") + `</div>`;
   }
   if (p.k && p.k.length) {

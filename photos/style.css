@@ -375,3 +375,12 @@ body.scrubbing { user-select: none; }
 /* 空狀態 */
 .empty { text-align: center; color: var(--ink-dim); padding: 60px 20px; font-size: 15px; line-height: 2; }
 .empty .big { font-size: 40px; }
+
+/* ============ 校友編號與回官網 ============ */
+.p-num, .pp-num {
+  font-family: var(--latin); font-weight: 600; font-size: 12px;
+  color: var(--gold); margin-left: 6px; letter-spacing: .05em;
+}
+.pp-num { color: rgba(236,229,216,.75); }
+#desktopNav a.nav-home { color: var(--gold); border: 1px solid var(--line); }
+#desktopNav a.nav-home:hover { background: rgba(160,124,49,.1); border-color: var(--gold-soft); }
