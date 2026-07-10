@@ -8,6 +8,13 @@
 window.NEWS = [
   {
     date: "2026-07-10",
+    title: "嘉義市 7/11 停止上班上課，請留意巴威颱風動態",
+    summary: "嘉義市政府已發布巴威颱風停班停課通知，7/11（六）全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。",
+    url: "news/2026-07-10-chiayi-city-closure.html",
+    thumb: "assets/img/news/2026-07-10-chiayi-city-closure-thumb.webp"
+  },
+  {
+    date: "2026-07-10",
     title: "因巴威颱風影響，7/11 團練取消",
     summary: "受巴威颱風影響，7/11（六）團練取消；7/12（日）是否照常團練將依天候另行通知，後續團練時間表同步公告。",
     url: "news/2026-07-10-typhoon-bavi-rehearsal.html",

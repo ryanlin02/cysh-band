@@ -17,6 +17,16 @@ const profiles = global.PEOPLE_PROFILES || [];
 const articles = [
   {
     date: '2026-07-10',
+    source: 'content/news/2026-07-10-chiayi-city-closure.html',
+    output: 'news/2026-07-10-chiayi-city-closure.html',
+    title: '嘉義市 7/11 停止上班上課，請留意巴威颱風動態｜最新消息｜嘉義高中管樂隊',
+    ogTitle: '嘉義市 7/11 停止上班上課，請留意巴威颱風動態',
+    description: '嘉義市政府已發布巴威颱風停班停課通知，7/11 全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。',
+    ogDescription: '嘉義市 7/11 停止上班上課，7/11 團練取消；請團員與家長留意巴威颱風動態與後續團練公告。',
+    headlineHtml: '嘉義市 7/11 停止上班上課，<br>請留意巴威颱風動態'
+  },
+  {
+    date: '2026-07-10',
     source: 'content/news/2026-07-10-typhoon-bavi-rehearsal.html',
     output: 'news/2026-07-10-typhoon-bavi-rehearsal.html',
     title: '因巴威颱風影響，7/11 團練取消｜最新消息｜嘉義高中管樂隊',
