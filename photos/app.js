@@ -1,6 +1,11 @@
 /* ============================================================
-   嘉義高中管樂社 照片集 — 主程式
+   嘉義高中管樂隊 影像館 — 主程式
    純前端靜態網站：讀取 data/site-index.json 與 data/people.json
+
+   時間軸採「預先計算版面＋虛擬化渲染」架構（同 Google Photos）：
+   載入時先用數學算出全部照片的位置（不建立畫面元素），
+   捲動時只掛載視窗附近的列、離開的列立即卸載。
+   因此時間軸可以瞬間跳到任何年份，記憶體用量恆定，不會閃爍跳動。
    ============================================================ */
 "use strict";
 
@@ -9,8 +14,7 @@ const $ = (sel) => document.querySelector(sel);
 
 let DB = null;          // { albums, photos }
 let PEOPLE = [];        // 公開人物
-let currentList = [];   // 目前畫面上照片的順序（給燈箱前後切換用）
-let renderQueue = [];   // 尚未渲染的區段
+let currentList = [];   // 目前檢視全部照片的順序（給燈箱前後切換用）
 let zoomMode = "album"; // album | month | year
 let currentView = "";
 let scrollPositions = {}; // 各檢視的捲動位置記憶
@@ -58,11 +62,9 @@ async function loadData() {
   ]);
   DB = idx;
   PEOPLE = ppl;
-  // 相簿由新到舊排序後的索引清單（時間軸用）
   DB.albumOrder = DB.albums
     .map((a, i) => i)
     .sort((x, y) => (DB.albums[y].sortDate || "").localeCompare(DB.albums[x].sortDate || ""));
-  // 每本相簿的照片
   DB.photosByAlbum = DB.albums.map(() => []);
   DB.photoById = {};
   for (const p of DB.photos) {
@@ -72,132 +74,192 @@ async function loadData() {
   DB.aiCount = DB.photos.filter((p) => p.c || p.k).length;
 }
 
-/* ---------- 版面：照片牆（等高排排版） ---------- */
-function targetRowHeight() {
-  const w = Math.min(window.innerWidth, 1500);
-  const base = zoomMode === "year" ? 74 : zoomMode === "month" ? 110 : 170;
-  return w < 500 ? base * 0.75 : base;
-}
+/* ============================================================
+   虛擬化照片牆引擎
+   ============================================================ */
+const V = {
+  rows: [],        // [{t:'h', top, h, html} | {t:'p', top, h, items:[{p, gi, r}], justify}]
+  secs: [],        // [{chip, year, top}]
+  total: 0,
+  mounted: new Map(),
+  contentTop: 0,
+  buffer: 1500,
+  active: false,
+  lastSections: null,
+};
+const HEADER_H = 56;
+const ROW_GAP = 4;
+
 function contentInnerWidth() {
   const c = $("#content");
   const cs = getComputedStyle(c);
   return c.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
 }
-function buildGrid(photos, listOffset) {
-  // Google Photos 式等高排版：
-  // 每一排是一個 flex 容器；排內每張照片以「長寬比」作為 flex-grow 權重，
-  // 由瀏覽器精確分配寬度 → 左右邊緣必定切齊，無捨入誤差。
-  // 只有最後一排（未填滿）維持固定尺寸、靠左排列。
-  const grid = document.createElement("div");
-  grid.className = "pgrid";
-  const W = contentInnerWidth();
-  const H = targetRowHeight();
-  const GAP = 4; // 每張照片左右 margin 2px
-  let row = [], rowRatio = 0;
-  const flushJustified = () => {
-    if (!row.length) return;
-    const h = (W - row.length * GAP) / rowRatio;
-    const rowEl = document.createElement("div");
-    rowEl.className = "prow";
-    for (const item of row) {
-      item.el.style.height = h.toFixed(2) + "px";
-      item.el.style.flex = `${item.ratio} 1 0%`; // 依比例精確分配寬度
-      rowEl.appendChild(item.el);
-    }
-    grid.appendChild(rowEl);
-    row = []; rowRatio = 0;
-  };
-  const flushLast = () => {
-    if (!row.length) return;
-    const rowEl = document.createElement("div");
-    rowEl.className = "prow";
-    for (const item of row) {
-      item.el.style.height = H.toFixed(2) + "px";
-      item.el.style.width = (H * item.ratio).toFixed(2) + "px";
-      item.el.style.flex = "0 0 auto";
-      rowEl.appendChild(item.el);
-    }
-    grid.appendChild(rowEl);
-    row = []; rowRatio = 0;
-  };
-  photos.forEach((p, k) => {
-    const ratio = (p.w && p.h) ? Math.min(3, Math.max(0.3, p.w / p.h)) : 1;
-    const el = document.createElement("div");
-    el.className = "ph";
-    el.dataset.idx = listOffset + k;
-    const img = document.createElement("img");
-    img.decoding = "async";
-    img.dataset.src = thumbUrl(p); // 由 imgObserver 控制載入/卸載
-    img.alt = "";
-    img.onload = () => img.classList.add("ok");
-    el.appendChild(img);
-    imgObserver.observe(img);
-    row.push({ el, ratio });
-    rowRatio += ratio;
-    // 這一排以目標高度排列已達（或超過）容器寬度 → 收斂成一排
-    if (rowRatio * H + row.length * GAP >= W) flushJustified();
-  });
-  flushLast();
-  return grid;
+function targetRowHeight() {
+  const w = Math.min(window.innerWidth, 1500);
+  const base = zoomMode === "year" ? 74 : zoomMode === "month" ? 110 : 170;
+  return w < 500 ? base * 0.75 : base;
 }
-
-/* ---------- 縮圖記憶體管理 ----------
-   數千張縮圖若同時留在記憶體會拖垮瀏覽器（尤其手機）。
-   做法：只有「視窗上下 1500px 範圍內」的縮圖才實際載入，
-   捲遠之後自動卸載（釋放解碼後的圖像記憶體），捲回來再載入
-   （通常仍在瀏覽器快取中，重新顯示很快）。 */
-const imgObserver = new IntersectionObserver((entries) => {
-  for (const en of entries) {
-    const img = en.target;
-    if (en.isIntersecting) {
-      if (!img.getAttribute("src")) img.src = img.dataset.src;
-    } else if (img.getAttribute("src")) {
-      img.removeAttribute("src");
-      img.classList.remove("ok");
-    }
-  }
-}, { rootMargin: "1500px 0px" });
-
-/* ---------- 區段渲染（漸進式載入） ---------- */
-const sentinelObs = new IntersectionObserver((entries) => {
-  if (entries.some((e) => e.isIntersecting)) renderNextChunk();
-}, { rootMargin: "1200px" });
-
+function vClear() {
+  V.active = false;
+  V.rows = []; V.secs = []; V.total = 0; V.lastSections = null;
+  for (const el of V.mounted.values()) el.remove();
+  V.mounted.clear();
+  $("#content").style.height = "";
+  $("#floatDate").classList.add("hidden");
+}
 function resetContent() {
+  vClear();
   const c = $("#content");
-  imgObserver.disconnect(); // 舊畫面的縮圖全部停止觀察
   c.innerHTML = "";
-  renderQueue = [];
   currentList = [];
   $("#loading").classList.add("hidden");
-  // 重新觸發檢視切換淡入動畫（0.28 秒，不阻擋操作）
   c.classList.remove("fade-in");
   void c.offsetWidth;
   c.classList.add("fade-in");
 }
-function queueSections(sections) {
-  renderQueue = sections.slice();
-  renderNextChunk();
-  sentinelObs.observe($("#sentinel"));
-}
-function renderNextChunk() {
-  if (!renderQueue.length) { $("#loading").classList.add("hidden"); return; }
-  $("#loading").classList.remove("hidden");
-  let budget = 350; // 每批照片數
-  const frag = document.createDocumentFragment();
-  while (renderQueue.length && budget > 0) {
-    const sec = renderQueue.shift();
-    const header = document.createElement("div");
-    header.className = "section-header";
-    header.id = sec.anchor || "";
-    header.innerHTML = sec.headerHtml;
-    frag.appendChild(header);
-    frag.appendChild(buildGrid(sec.photos, currentList.length));
-    currentList.push(...sec.photos);
-    budget -= sec.photos.length;
+
+/* 版面預計算：一次算出所有列的位置（純數學，不建立元素，8 千張照片只需幾毫秒） */
+function vBuild(sections) {
+  for (const el of V.mounted.values()) el.remove();
+  V.mounted.clear();
+  V.rows = []; V.secs = [];
+  currentList = [];
+  V.lastSections = sections;
+
+  const W = contentInnerWidth();
+  const H = targetRowHeight();
+  let top = 8;
+
+  for (const sec of sections) {
+    V.secs.push({ chip: sec.chip || "", year: sec.year || null, top });
+    V.rows.push({ t: "h", top, h: HEADER_H, html: sec.headerHtml });
+    top += HEADER_H;
+    let row = [], ratio = 0;
+    const flush = () => {
+      if (!row.length) return;
+      const filled = ratio * H + row.length * ROW_GAP >= W;
+      const h = filled ? (W - row.length * ROW_GAP) / ratio : H;
+      V.rows.push({ t: "p", top, h, items: row, justify: filled });
+      top += h + ROW_GAP;
+      row = []; ratio = 0;
+    };
+    for (const p of sec.photos) {
+      const r = (p.w && p.h) ? Math.min(3, Math.max(0.3, p.w / p.h)) : 1;
+      row.push({ p, gi: currentList.length, r });
+      currentList.push(p);
+      ratio += r;
+      if (ratio * H + row.length * ROW_GAP >= W) flush();
+    }
+    flush();
+    top += 10;
   }
-  $("#content").appendChild(frag);
-  if (!renderQueue.length) $("#loading").classList.add("hidden");
+  V.total = top;
+  const c = $("#content");
+  c.style.height = top + "px";
+  V.contentTop = c.getBoundingClientRect().top + window.scrollY;
+  V.active = true;
+  vUpdate();
+}
+
+/* 建立單一列的畫面元素 */
+function vRowEl(row) {
+  const el = document.createElement("div");
+  if (row.t === "h") {
+    el.className = "vheader";
+    el.innerHTML = row.html;
+  } else {
+    el.className = "vrow";
+    el.style.height = row.h.toFixed(2) + "px";
+    for (const item of row.items) {
+      const ph = document.createElement("div");
+      ph.className = "ph";
+      ph.dataset.idx = item.gi;
+      if (row.justify) ph.style.flex = `${item.r} 1 0%`;
+      else { ph.style.width = (row.h * item.r).toFixed(2) + "px"; ph.style.flex = "0 0 auto"; }
+      const img = document.createElement("img");
+      img.decoding = "async";
+      img.src = thumbUrl(item.p);
+      img.alt = "";
+      img.onload = () => img.classList.add("ok");
+      ph.appendChild(img);
+      el.appendChild(ph);
+    }
+  }
+  el.style.top = row.top.toFixed(2) + "px";
+  return el;
+}
+
+/* 捲動更新：二分搜尋可見範圍，掛載缺少的列、卸載離開的列 */
+function vUpdate() {
+  if (!V.active) return;
+  const y = window.scrollY - V.contentTop;
+  const start = y - V.buffer;
+  const end = y + window.innerHeight + V.buffer;
+  let lo = 0, hi = V.rows.length - 1, first = V.rows.length;
+  while (lo <= hi) {
+    const m = (lo + hi) >> 1;
+    if (V.rows[m].top + V.rows[m].h > start) { first = m; hi = m - 1; } else lo = m + 1;
+  }
+  const need = new Set();
+  for (let i = first; i < V.rows.length && V.rows[i].top < end; i++) need.add(i);
+  for (const [i, el] of V.mounted) {
+    if (!need.has(i)) { el.remove(); V.mounted.delete(i); }
+  }
+  let frag = null;
+  for (const i of need) {
+    if (!V.mounted.has(i)) {
+      const el = vRowEl(V.rows[i]);
+      V.mounted.set(i, el);
+      (frag = frag || document.createDocumentFragment()).appendChild(el);
+    }
+  }
+  if (frag) $("#content").appendChild(frag);
+}
+
+/* 目前（或指定）捲動位置對應的區段 */
+function vCurrentSec(scrollPos) {
+  const y = (scrollPos !== undefined ? scrollPos : window.scrollY) - V.contentTop + 70;
+  let cur = V.secs[0];
+  let lo = 0, hi = V.secs.length - 1;
+  while (lo <= hi) {
+    const m = (lo + hi) >> 1;
+    if (V.secs[m].top <= y) { cur = V.secs[m]; lo = m + 1; } else hi = m - 1;
+  }
+  return cur;
+}
+
+/* 視窗大小改變：以目前看到的第一張照片為錨點重建版面 */
+function vRelayout() {
+  if (!V.active || !V.lastSections) return;
+  const y = window.scrollY - V.contentTop;
+  let anchorGi = null;
+  for (const row of V.rows) {
+    if (row.t === "p" && row.top + row.h > y + 60) { anchorGi = row.items[0].gi; break; }
+  }
+  vBuild(V.lastSections);
+  if (anchorGi !== null) {
+    for (const row of V.rows) {
+      if (row.t === "p" && row.items.some((it) => it.gi === anchorGi)) {
+        window.scrollTo({ top: V.contentTop + row.top - 70, behavior: "auto" });
+        break;
+      }
+    }
+  }
+  buildScrubber();
+}
+
+/* ---------- 浮動日期籤（捲動時顯示目前區段） ---------- */
+let floatTimer = null;
+function showFloatDate() {
+  if (!V.active || !V.secs.length) return;
+  const sec = vCurrentSec();
+  if (!sec || !sec.chip) return;
+  const fd = $("#floatDate");
+  fd.textContent = sec.chip;
+  fd.classList.remove("hidden", "fading");
+  clearTimeout(floatTimer);
+  floatTimer = setTimeout(() => fd.classList.add("fading"), 900);
 }
 
 /* ---------- 檢視：時間軸 ---------- */
@@ -209,8 +271,8 @@ function timelineSections() {
       const ph = DB.photosByAlbum[ai];
       if (!ph.length) continue;
       secs.push({
-        anchor: "y" + (albumYear(alb) || "unknown") + "_a" + ai,
         year: albumYear(alb),
+        chip: albumDateLabel(alb),
         headerHtml:
           `<span class="sec-date">${esc(albumDateLabel(alb))}</span>` +
           `<span class="sec-title">${esc(alb.title)}</span>` +
@@ -239,9 +301,7 @@ function timelineSections() {
       const key = keyOf(alb);
       if (key !== curKey) {
         curKey = key;
-        cur = { anchor: "y" + (key === "unknown" ? "unknown" : key.slice(0, 4)) + "_k" + key,
-                year: key === "unknown" ? null : key.slice(0, 4),
-                headerHtml: "", photos: [], _label: labelOf(key) };
+        cur = { year: key === "unknown" ? null : key.slice(0, 4), chip: labelOf(key), headerHtml: "", photos: [], _label: labelOf(key) };
         secs.push(cur);
       }
       cur.photos = cur.photos.concat(ph);
@@ -252,103 +312,102 @@ function timelineSections() {
   }
   return secs;
 }
+function showTimeline() {
+  resetContent();
+  $("#zoomBar").classList.remove("hidden");
+  $("#scrubber").classList.remove("hidden");
+  vBuild(timelineSections());
+  buildScrubber();
+}
 
-/* ---------- 年份捲動條 ---------- */
+/* ---------- 年份捲動條 ----------
+   平時只顯示小把手；拖曳時出現年份氣泡並可即時跳轉，
+   切換到不同年份時手機會輕微震動（支援 vibrate 的裝置）。 */
 let scrubYears = [];
-function buildScrubber(sections) {
+let scrubActive = false, lastHapticYear = null;
+function trackRect() { return $("#scrubberTrack").getBoundingClientRect(); }
+function buildScrubber() {
   const track = $("#scrubberTrack");
-  track.innerHTML = "";
-  const totals = {};
-  let total = 0;
-  for (const s of sections) {
-    const y = s.year || "不詳";
-    totals[y] = (totals[y] || 0) + s.photos.length;
-    total += s.photos.length;
-  }
+  track.querySelectorAll(".scrub-year").forEach((n) => n.remove());
   scrubYears = [];
-  let acc = 0;
-  const years = Object.keys(totals).sort((a, b) => (b === "不詳" ? -1 : a === "不詳" ? 1 : b.localeCompare(a)));
-  for (const y of years) {
-    scrubYears.push({ year: y, frac: acc / total });
-    acc += totals[y];
+  if (!V.active || !V.secs.length) return;
+  const seen = new Set();
+  for (const s of V.secs) {
+    const y = s.year || "不詳";
+    if (seen.has(y)) continue;
+    seen.add(y);
+    scrubYears.push({ year: y, top: s.top });
   }
   const trackH = track.clientHeight || 400;
+  const denom = Math.max(1, V.total - window.innerHeight);
   let lastPx = -100;
   for (const sy of scrubYears) {
-    const px = sy.frac * trackH;
-    if (px - lastPx < 26) continue; // 避免標籤重疊
-    lastPx = px;
+    sy.trackY = Math.min(1, sy.top / denom) * (trackH - 40);
+    if (sy.trackY - lastPx < 24) continue; // 避免標籤重疊（僅影響顯示，不影響拖曳）
+    lastPx = sy.trackY;
     const el = document.createElement("div");
     el.className = "scrub-year";
-    el.style.top = px + "px";
+    el.style.top = (sy.trackY + 20) + "px";
     el.textContent = sy.year;
     track.appendChild(el);
   }
+  vSyncHandle();
 }
-function scrubberJump(clientY) {
-  const track = $("#scrubberTrack");
-  const rect = track.getBoundingClientRect();
-  const frac = Math.min(1, Math.max(0, (clientY - rect.top) / rect.height));
-  let target = scrubYears[0];
-  for (const sy of scrubYears) if (sy.frac <= frac) target = sy;
-  if (!target) return;
+function vSyncHandle() {
+  if (!V.active) return;
+  const trackH = $("#scrubberTrack").clientHeight || 400;
+  const denom = Math.max(1, V.total - window.innerHeight);
+  const frac = Math.min(1, Math.max(0, (window.scrollY - V.contentTop) / denom));
+  $("#scrubHandle").style.top = (frac * (trackH - 40)) + "px";
+}
+function scrubTo(clientY) {
+  const rect = trackRect();
+  const usable = Math.max(1, rect.height - 40);
+  const frac = Math.min(1, Math.max(0, (clientY - rect.top - 20) / usable));
+  const denom = Math.max(0, V.total - window.innerHeight);
+  const target = V.contentTop + frac * denom;
+  window.scrollTo({ top: target, behavior: "auto" });
+  vSyncHandle();
+  const sec = vCurrentSec(target);
   const bubble = $("#scrubberBubble");
-  bubble.textContent = target.year;
-  bubble.style.top = (frac * rect.height) + "px";
-  bubble.classList.remove("hidden");
-  // 需要的區段可能還沒渲染 → 先渲染到該年份為止
-  ensureYearRendered(target.year);
-  const el = document.querySelector(`.section-header[id^="y${target.year}_"]`);
-  if (el) window.scrollTo({ top: el.offsetTop - 60, behavior: "auto" });
-}
-function ensureYearRendered(year) {
-  let guard = 200;
-  const match = () => document.querySelector(`.section-header[id^="y${year}_"]`);
-  while (!match() && renderQueue.length && guard-- > 0) renderNextChunk();
+  if (sec) {
+    const label = sec.year || "不詳";
+    bubble.textContent = label;
+    bubble.style.top = (frac * usable + 20) + "px";
+    bubble.classList.remove("hidden");
+    if (label !== lastHapticYear) {
+      lastHapticYear = label;
+      if (navigator.vibrate) navigator.vibrate(8);
+    }
+  }
 }
 function initScrubberEvents() {
   const sc = $("#scrubber");
-  let active = false;
   const move = (e) => {
-    if (!active) return;
+    if (!scrubActive) return;
     const y = e.touches ? e.touches[0].clientY : e.clientY;
-    scrubberJump(y);
+    scrubTo(y);
     e.preventDefault();
   };
-  const end = () => { active = false; setTimeout(() => $("#scrubberBubble").classList.add("hidden"), 400); };
-  sc.addEventListener("mousedown", (e) => { active = true; move(e); });
-  sc.addEventListener("touchstart", (e) => { active = true; move(e); }, { passive: false });
+  const end = () => {
+    if (!scrubActive) return;
+    scrubActive = false;
+    lastHapticYear = null;
+    document.body.classList.remove("scrubbing");
+    setTimeout(() => $("#scrubberBubble").classList.add("hidden"), 350);
+  };
+  const begin = (e) => {
+    if (!V.active) return;
+    scrubActive = true;
+    document.body.classList.add("scrubbing");
+    move(e);
+  };
+  sc.addEventListener("mousedown", begin);
+  sc.addEventListener("touchstart", begin, { passive: false });
   window.addEventListener("mousemove", move);
   window.addEventListener("touchmove", move, { passive: false });
   window.addEventListener("mouseup", end);
   window.addEventListener("touchend", end);
-  // 頁面捲動時，在軌道上顯示「目前年份」指示（一段時間後淡出）
-  let ticking = false, fadeTimer = null;
-  window.addEventListener("scroll", () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      ticking = false;
-      if (sc.classList.contains("hidden") || !scrubYears.length) return;
-      const top = window.scrollY + 70;
-      let year = null;
-      for (const h of document.querySelectorAll(".section-header[id]")) {
-        if (h.offsetTop <= top) year = (h.id.match(/^y(\w+)_/) || [])[1] || year;
-        else break;
-      }
-      if (!year) return;
-      if (year === "unknown") year = "不詳";
-      const sy = scrubYears.find((s) => s.year === year);
-      if (!sy) return;
-      const ind = $("#scrubIndicator");
-      const trackH = $("#scrubberTrack").clientHeight || 400;
-      ind.textContent = year;
-      ind.style.top = (sy.frac * trackH) + "px";
-      ind.classList.remove("hidden", "fading");
-      clearTimeout(fadeTimer);
-      fadeTimer = setTimeout(() => ind.classList.add("fading"), 1400);
-    });
-  }, { passive: true });
 }
 
 /* ---------- 檢視：相簿列表 ---------- */
@@ -401,7 +460,8 @@ function renderAlbumDetail(albumId) {
     `<div class="sub-title">${esc(alb.title)}</div>` +
     `<div class="sub-meta">${esc(albumDateLabel(alb))} · ${ph.length} 張` +
     (alb.review ? ` · <span class="badge-review">日期待考</span>` : "") + `</div>`;
-  queueSections([{ headerHtml: `<span class="sec-count">${ph.length} 張照片</span>`, photos: ph }]);
+  vBuild([{ chip: albumDateLabel(alb), year: albumYear(alb),
+            headerHtml: `<span class="sec-count">${ph.length} 張照片</span>`, photos: ph }]);
 }
 
 /* ---------- 檢視：人物 ---------- */
@@ -436,21 +496,21 @@ function renderPersonDetail(personId) {
     `<div class="sub-title">` +
     (person.avatar ? `<img class="sub-avatar" src="${CFG.dataBase}/${encPath(person.avatar)}">` : "") +
     `${esc(person.name)}</div><div class="sub-meta">出現在 ${person.count} 張照片中（依人臉辨識結果，可能有誤判）</div>`;
-  // 依相簿分區段
   const secs = [];
   for (const ai of DB.albumOrder) {
     const ph = DB.photosByAlbum[ai].filter((p) => p.p && p.p.includes(pi));
     if (!ph.length) continue;
     const alb = DB.albums[ai];
     secs.push({
+      chip: albumDateLabel(alb), year: albumYear(alb),
       headerHtml: `<span class="sec-date">${esc(albumDateLabel(alb))}</span><span class="sec-title">${esc(alb.title)}</span><span class="sec-count">${ph.length} 張</span>`,
       photos: ph,
     });
   }
-  queueSections(secs);
+  vBuild(secs);
 }
 
-/* ---------- 檢視:搜尋 ---------- */
+/* ---------- 檢視：搜尋 ---------- */
 let searchTimer = null;
 function renderSearch(initialQ) {
   resetContent();
@@ -470,8 +530,7 @@ function renderSearch(initialQ) {
     chipBox.appendChild(b);
   }
   const input = $("#searchInput");
-  // 中文輸入法（IME）保護：選字過程中的 Enter 與 input 事件不觸發搜尋，
-  // 避免「文字重複出現、搜尋內容錯誤」的問題
+  // 中文輸入法（IME）保護：選字過程中的 Enter 與 input 事件不觸發搜尋
   let composing = false;
   input.addEventListener("compositionstart", () => { composing = true; });
   input.addEventListener("compositionend", () => {
@@ -485,7 +544,7 @@ function renderSearch(initialQ) {
     searchTimer = setTimeout(() => doSearch(input.value), 300);
   });
   input.addEventListener("keydown", (e) => {
-    if (e.isComposing || e.keyCode === 229) return; // 輸入法選字中，忽略
+    if (e.isComposing || e.keyCode === 229) return;
     if (e.key === "Enter") { clearTimeout(searchTimer); doSearch(input.value); input.blur(); }
   });
   if (initialQ) doSearch(initialQ); else input.focus();
@@ -533,7 +592,6 @@ function albumText(ai) {
   return a._txt;
 }
 function runQuery(termGroups) {
-  // 每個詞（含同義詞）至少要命中一處；多個詞之間為「同時成立」
   const matchedPeople = new Set();
   PEOPLE.forEach((p, i) => {
     const n = p.name.toLowerCase();
@@ -550,21 +608,21 @@ function runQuery(termGroups) {
 }
 function doSearch(q) {
   q = (q || "").trim();
-  resetContentKeepHeader();
+  vClear();
+  $("#content").innerHTML = "";
+  currentList = [];
   if (!q) return;
   history.replaceState(null, "", "#/search/" + encodeURIComponent(q));
   const rawTerms = [...new Set(q.toLowerCase().split(/\s+/).filter(Boolean))];
   let results = runQuery(rawTerms.map(expandTerm));
   let fuzzyNote = "";
-  // 找不到時的遞補策略：把查詢字串拆成兩字一組的「相近字詞」再搜一次
-  // （可處理輸入法重複字、詞序不同、多打字等情況）
+  // 找不到時的遞補策略：把查詢拆成兩字一組的相近字詞再搜一次
   if (!results.length) {
     const joined = rawTerms.join("");
     const bigrams = new Set();
     for (let i = 0; i + 1 < joined.length; i++) bigrams.add(joined.slice(i, i + 2));
     if (bigrams.size) {
       const groups = [...bigrams].map(expandTerm);
-      // 相近搜尋採「命中任一相近詞即可」，並依命中數排序
       const scored = [];
       for (const p of DB.photos) {
         let score = 0;
@@ -577,7 +635,7 @@ function doSearch(q) {
       const best = Math.max(0, ...scored.map(([s]) => s));
       if (best > 0) {
         results = scored.filter(([s]) => s === best).map(([, p]) => p);
-        fuzzyNote = `找不到完全符合「${esc(q)}」的結果，以下是相近字詞的結果：`;
+        fuzzyNote = `找不到完全符合「${esc(q)}」的結果，以下為相近字詞的結果，`;
       }
     }
   }
@@ -586,51 +644,40 @@ function doSearch(q) {
       <small>提示：AI 內容標註還在進行中（${DB.aiCount.toLocaleString()}/${DB.photos.length.toLocaleString()} 張），之後會找到更多結果</small></div>`;
     return;
   }
-  if (fuzzyNote) {
-    const n = document.createElement("div");
-    n.className = "search-hint";
-    n.innerHTML = fuzzyNote;
-    $("#content").appendChild(n);
-  }
-  // 依相簿分區段呈現
   const byAlbum = new Map();
   for (const p of results) {
     if (!byAlbum.has(p.a)) byAlbum.set(p.a, []);
     byAlbum.get(p.a).push(p);
   }
-  const secs = [];
+  const secs = [{
+    chip: "", year: null,
+    headerHtml: `<span class="sec-count">${fuzzyNote}共找到 ${results.length.toLocaleString()} 張照片</span>`,
+    photos: [],
+  }];
   const order = [...byAlbum.keys()].sort((x, y) => (DB.albums[y].sortDate || "").localeCompare(DB.albums[x].sortDate || ""));
   for (const ai of order) {
     const alb = DB.albums[ai];
     secs.push({
+      chip: albumDateLabel(alb), year: albumYear(alb),
       headerHtml: `<span class="sec-date">${esc(albumDateLabel(alb))}</span><span class="sec-title">${esc(alb.title)}</span><span class="sec-count">${byAlbum.get(ai).length} 張</span>`,
       photos: byAlbum.get(ai),
     });
   }
-  const info = document.createElement("div");
-  info.className = "search-hint";
-  info.textContent = `共找到 ${results.length.toLocaleString()} 張照片`;
-  $("#content").appendChild(info);
-  queueSections(secs);
-}
-function resetContentKeepHeader() {
-  $("#content").innerHTML = "";
-  renderQueue = [];
-  currentList = [];
+  vBuild(secs);
 }
 
 /* ---------- 燈箱 ---------- */
 let lbIndex = -1;
 let lbScale = 1, lbTx = 0, lbTy = 0;
-let lbFront = null;    // 目前顯示中的圖層
-let lbLoadToken = 0;   // 快速連續切換時，忽略過期的載入結果
+let lbFront = null;
+let lbLoadToken = 0;
 function activeImg() { return lbFront || $("#lbImg"); }
 function openLightbox(idx) {
   if (idx < 0 || idx >= currentList.length) return;
   lbIndex = idx;
   const p = currentList[idx];
   resetZoom();
-  // 交叉淡化：先在背景圖層載入並解碼完成，才淡入蓋過舊照片（全程無黑畫面）
+  // 交叉淡化：背景圖層載入解碼完成後才淡入蓋過舊照片（全程無黑畫面）
   const token = ++lbLoadToken;
   const front = activeImg();
   const back = front === $("#lbImg") ? $("#lbImg2") : $("#lbImg");
@@ -638,7 +685,7 @@ function openLightbox(idx) {
   const pre = new Image();
   pre.src = url;
   const show = () => {
-    if (token !== lbLoadToken) return; // 使用者已切到別張，放棄這次結果
+    if (token !== lbLoadToken) return;
     back.src = url;
     back.classList.remove("kb");
     back.style.zIndex = 2;
@@ -655,7 +702,6 @@ function openLightbox(idx) {
   $("#lightbox").classList.remove("hidden");
   document.body.style.overflow = "hidden";
   updatePanel(p);
-  // 預先載入前後兩張
   for (const off of [1, -1]) {
     const q = currentList[idx + off];
     if (q) { const im = new Image(); im.src = largeUrl(q); }
@@ -663,7 +709,7 @@ function openLightbox(idx) {
 }
 function closeLightbox() {
   stopSlideshow();
-  lbLoadToken++; // 取消進行中的載入
+  lbLoadToken++;
   $("#lightbox").classList.add("hidden");
   $("#lbPanel").classList.add("hidden");
   for (const im of document.querySelectorAll(".lb-photo")) {
@@ -695,10 +741,10 @@ function toggleSlideshow() {
   const b = $("#lbPlay");
   b.innerHTML = '<svg class="ico-svg"><use href="#i-pause"/></svg>';
   b.title = "暫停播放";
-  activeImg().classList.add("kb"); // 目前這張也開始緩慢放大
+  activeImg().classList.add("kb");
   slideTimer = setInterval(() => {
     if (lbIndex < currentList.length - 1) openLightbox(lbIndex + 1);
-    else stopSlideshow(); // 播到最後一張自動停止
+    else stopSlideshow();
   }, 3500);
 }
 function updatePanel(p) {
@@ -732,7 +778,7 @@ function resetZoom() {
 function applyZoom() {
   const img = activeImg();
   if (lbScale === 1) { img.style.transform = ""; img.style.transformOrigin = ""; return; }
-  img.classList.remove("kb"); // 手動縮放時停用過場動畫，避免衝突
+  img.classList.remove("kb");
   img.style.transformOrigin = "0 0";
   img.style.transform = `translate(${lbTx}px, ${lbTy}px) scale(${lbScale})`;
 }
@@ -742,7 +788,7 @@ function initLightboxEvents() {
   $("#lbNext").onclick = () => { stopSlideshow(); lbStep(1); };
   $("#lbInfo").onclick = () => $("#lbPanel").classList.toggle("hidden");
   $("#lbPlay").onclick = toggleSlideshow;
-  // 下載：一律提供 JPG。若網站圖檔是 WebP，於瀏覽器內即時轉成 JPG 再下載
+  // 下載：一律提供 JPG。網站圖檔是 WebP 時，於瀏覽器內即時轉成 JPG 再下載
   $("#lbDownload").addEventListener("click", async (e) => {
     e.preventDefault();
     const p = currentList[lbIndex];
@@ -752,7 +798,7 @@ function initLightboxEvents() {
     try {
       const blob = await (await fetch(url)).blob();
       let out = blob;
-      if (!/jpe?g/i.test(blob.type)) { // WebP（或其他格式）→ 轉 JPG
+      if (!/jpe?g/i.test(blob.type)) {
         const bmp = await createImageBitmap(blob);
         const canvas = document.createElement("canvas");
         canvas.width = bmp.width; canvas.height = bmp.height;
@@ -767,7 +813,7 @@ function initLightboxEvents() {
       setTimeout(() => URL.revokeObjectURL(a.href), 8000);
       toast("已開始下載");
     } catch (err) {
-      window.open(url, "_blank"); // 轉檔失敗時退回直接開圖
+      window.open(url, "_blank");
     }
   });
   $("#lbShare").onclick = async () => {
@@ -781,7 +827,6 @@ function initLightboxEvents() {
   document.addEventListener("keydown", (e) => {
     if ($("#lightbox").classList.contains("hidden")) return;
     if (e.key === "Escape") {
-      // ESC 分層關閉：資訊欄開著就先關資訊欄，再按一次才離開照片
       const panel = $("#lbPanel");
       if (!panel.classList.contains("hidden")) panel.classList.add("hidden");
       else closeLightbox();
@@ -790,7 +835,7 @@ function initLightboxEvents() {
     if (e.key === "ArrowRight") { stopSlideshow(); lbStep(1); }
     if (e.key === " ") { e.preventDefault(); toggleSlideshow(); }
   });
-  // 觸控：滑動換頁、雙指縮放、雙擊放大
+  // 觸控：滑動換頁、雙指縮放、雙擊放大、上滑資訊、下滑收合/關閉
   const stage = $("#lbStage");
   let touchStartX = 0, touchStartY = 0, startDist = 0, startScale = 1, panning = false, lastTap = 0;
   let startTx = 0, startTy = 0, panStartX = 0, panStartY = 0;
@@ -803,7 +848,7 @@ function initLightboxEvents() {
       touchStartY = e.touches[0].clientY;
       if (lbScale > 1) { panning = true; panStartX = touchStartX; panStartY = touchStartY; startTx = lbTx; startTy = lbTy; }
       const now = Date.now();
-      if (now - lastTap < 300) { // 雙擊
+      if (now - lastTap < 300) {
         if (lbScale > 1) resetZoom();
         else { lbScale = 2.5; lbTx = -touchStartX * 1.5; lbTy = -touchStartY * 1.5; applyZoom(); }
       }
@@ -829,9 +874,8 @@ function initLightboxEvents() {
         const dx = e.changedTouches[0].clientX - touchStartX;
         const dy = e.changedTouches[0].clientY - touchStartY;
         if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) { stopSlideshow(); lbStep(dx < 0 ? 1 : -1); }
-        else if (dy < -70 && Math.abs(dy) > Math.abs(dx) * 1.5) $("#lbPanel").classList.remove("hidden"); // 上滑看資訊
+        else if (dy < -70 && Math.abs(dy) > Math.abs(dx) * 1.5) $("#lbPanel").classList.remove("hidden");
         else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.5) {
-          // 下滑：資訊面板開著就先收合，否則關閉照片
           if (!$("#lbPanel").classList.contains("hidden")) $("#lbPanel").classList.add("hidden");
           else closeLightbox();
         }
@@ -839,7 +883,6 @@ function initLightboxEvents() {
       panning = false;
     }
   });
-  // 點照片以外的空白區域：資訊欄開著就先關資訊欄，否則關閉照片
   stage.addEventListener("click", (e) => {
     if (e.target !== stage) return;
     const panel = $("#lbPanel");
@@ -864,22 +907,18 @@ function route() {
   const hash = decodeURIComponent(location.hash || "#/timeline");
   const parts = hash.replace(/^#\//, "").split("/");
   const view = parts[0] || "timeline";
-  // 記住舊檢視捲動位置
   if (currentView) scrollPositions[currentView] = window.scrollY;
   $("#subHeader").classList.add("hidden");
   $("#zoomBar").classList.add("hidden");
   $("#scrubber").classList.add("hidden");
   $("#backBtn").classList.toggle("hidden", !["album", "person"].includes(view));
   if (view === "photo" && parts[1]) {
-    // 直接連結某張照片：以時間軸為背景開燈箱
+    // 直接連結某張照片：版面預先含全部照片，直接找得到位置
     showTimeline();
     setNav("timeline");
     const p = DB.photoById[parts[1]];
     if (p) {
-      // 確保該照片已在 currentList 中
-      let idx = currentList.indexOf(p);
-      let guard = 300;
-      while (idx < 0 && renderQueue.length && guard-- > 0) { renderNextChunk(); idx = currentList.indexOf(p); }
+      const idx = currentList.indexOf(p);
       if (idx >= 0) openLightbox(idx);
     }
     currentView = "timeline";
@@ -896,17 +935,10 @@ function route() {
   const back = scrollPositions[view + (parts[1] || "")];
   window.scrollTo({ top: view === currentView ? (back || 0) : 0, behavior: "auto" });
   currentView = view;
-}
-function showTimeline() {
-  resetContent();
-  $("#zoomBar").classList.remove("hidden");
-  $("#scrubber").classList.remove("hidden");
-  const secs = timelineSections();
-  buildScrubber(secs);
-  queueSections(secs);
+  vUpdate();
 }
 
-/* ---------- 事件绑定與啟動 ---------- */
+/* ---------- 事件綁定與啟動 ---------- */
 function initEvents() {
   window.addEventListener("hashchange", route);
   $("#backBtn").onclick = () => history.back();
@@ -917,6 +949,7 @@ function initEvents() {
       b.classList.add("active");
       zoomMode = b.dataset.zoom;
       showTimeline();
+      window.scrollTo({ top: 0, behavior: "auto" });
     };
   });
   // 點縮圖開燈箱（事件委派）
@@ -924,11 +957,22 @@ function initEvents() {
     const ph = e.target.closest(".ph");
     if (ph) openLightbox(+ph.dataset.idx);
   });
-  // 視窗大小改變 → 重新排版目前檢視
+  // 捲動：更新虛擬列 + 浮動日期 + 把手位置（rAF 節流）
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      vUpdate();
+      if (!scrubActive && V.active) { showFloatDate(); vSyncHandle(); }
+    });
+  }, { passive: true });
+  // 視窗大小改變：以錨點照片重建版面
   let rt = null;
   window.addEventListener("resize", () => {
     clearTimeout(rt);
-    rt = setTimeout(() => route(), 250);
+    rt = setTimeout(() => { if (V.active) vRelayout(); }, 250);
   });
   initLightboxEvents();
   initScrubberEvents();
@@ -941,10 +985,11 @@ function initEvents() {
     await loadData();
   } catch (err) {
     $("#content").innerHTML = `<div class="empty"><div class="big">⚠️</div>資料載入失敗：${esc(err.message)}<br>
-      <small>請確認是用「啟動照片網站預覽.command」開啟，而不是直接雙擊 index.html</small></div>`;
+      <small>請稍後重新整理；若持續發生請回報管理者</small></div>`;
     $("#loading").classList.add("hidden");
     return;
   }
+  $("#loading").classList.add("hidden");
   initEvents();
   route();
 })();

@@ -43,15 +43,17 @@
 <!-- 子頁面標頭（相簿內頁 / 人物內頁 / 搜尋） -->
 <div id="subHeader" class="hidden"></div>
 
-<!-- 主要內容 -->
+<!-- 主要內容（時間軸為虛擬化渲染：只掛載視窗附近的照片列） -->
 <main id="content"></main>
-<div id="sentinel"></div>
 <div id="loading"><div class="spin"></div>照片載入中…</div>
 
-<!-- 年份快速捲動條 -->
+<!-- 捲動時浮現的目前日期 -->
+<div id="floatDate" class="hidden"></div>
+
+<!-- 年份快速捲動條：平時只顯示小把手，拖曳時顯示年份氣泡 -->
 <div id="scrubber" class="hidden">
   <div id="scrubberTrack"></div>
-  <div id="scrubIndicator" class="hidden"></div>
+  <div id="scrubHandle">︿<br>﹀</div>
   <div id="scrubberBubble" class="hidden"></div>
 </div>
 

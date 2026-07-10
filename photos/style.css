@@ -123,7 +123,7 @@ button { font-family: inherit; }
 .seg button.active { background: var(--bg-card); color: var(--gold); font-weight: 700; box-shadow: var(--shadow-sm); }
 
 /* ============ 內容區 ============ */
-#content { max-width: 1500px; margin: 0 auto; padding: 4px 8px 40px; }
+#content { max-width: 1500px; margin: 0 auto; padding: 4px 8px 40px; position: relative; }
 /* 檢視切換時的淡入（不阻擋操作，只是視覺柔化） */
 #content.fade-in { animation: viewIn .28s var(--ease); }
 @keyframes viewIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
@@ -135,30 +135,38 @@ button { font-family: inherit; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* 區段（黏著標題 + 照片牆） */
-.section-header {
-  position: sticky; top: var(--topbar-h); z-index: 30;
-  background: rgba(250,248,243,.94); backdrop-filter: blur(8px);
-  padding: 12px 6px 8px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+/* 虛擬化照片牆：所有列都是絕對定位（位置由 JS 預先算好） */
+.vheader {
+  position: absolute; left: 6px; right: 6px;
+  display: flex; align-items: flex-end; gap: 10px; flex-wrap: nowrap;
+  padding-bottom: 10px; height: 56px; box-sizing: border-box; overflow: hidden;
 }
-.section-header .sec-date { font-family: var(--serif); font-size: 16px; font-weight: 900; }
-.section-header .sec-title { font-size: 14px; color: var(--ink-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%; }
-.section-header .sec-count { font-size: 12px; color: var(--ink-dim); }
-.badge-review { font-size: 11px; color: #8a6414; background: rgba(200,164,92,.18); padding: 2px 8px; border-radius: 999px; }
+.vheader .sec-date { font-family: var(--serif); font-size: 16px; font-weight: 900; white-space: nowrap; }
+.vheader .sec-title { font-size: 14px; color: var(--ink-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vheader .sec-count { font-size: 12px; color: var(--ink-dim); white-space: nowrap; }
+.badge-review { font-size: 11px; color: #8a6414; background: rgba(200,164,92,.18); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
 
-/* 照片牆（左右切齊的等高排版，排版由 JS 計算） */
-.pgrid { }
-.prow { display: flex; }
-.prow .ph {
-  position: relative; overflow: hidden; cursor: pointer; margin: 2px; border-radius: 4px;
-  background: var(--bg-soft);
+.vrow { position: absolute; left: 8px; right: 8px; display: flex; }
+.vrow .ph {
+  position: relative; overflow: hidden; cursor: pointer; margin: 0 2px; border-radius: 4px;
+  background: var(--bg-soft); height: 100%;
 }
-.prow .ph img {
+.vrow .ph img {
   width: 100%; height: 100%; object-fit: cover; opacity: 0;
   transition: opacity .3s var(--ease), transform .25s var(--ease);
 }
-.prow .ph img.ok { opacity: 1; }
-.prow .ph:hover img { transform: scale(1.03); }
+.vrow .ph img.ok { opacity: 1; }
+.vrow .ph:hover img { transform: scale(1.03); }
+
+/* 浮動日期籤：捲動時顯示目前位置的日期 */
+#floatDate {
+  position: fixed; top: calc(var(--topbar-h) + 12px); left: 14px; z-index: 46;
+  background: var(--bg-card); border: 1px solid var(--line); color: var(--ink);
+  font-family: var(--serif); font-weight: 900; font-size: 14px;
+  padding: 6px 14px; border-radius: 999px; box-shadow: var(--shadow-md);
+  pointer-events: none; transition: opacity .4s var(--ease); opacity: 1;
+}
+#floatDate.fading { opacity: 0; }
 
 /* ============ 相簿卡片 ============ */
 .year-header { font-family: var(--serif); font-size: 22px; font-weight: 900; padding: 24px 6px 10px; }
@@ -225,39 +233,45 @@ button { font-family: inherit; }
 }
 .chip:hover { background: rgba(160,124,49,.1); border-color: var(--gold-soft); color: var(--gold); }
 
-/* ============ 年份捲動條 ============ */
+/* ============ 年份捲動條 ============
+   平時只顯示小把手（不遮擋照片）；拖曳時出現年份氣泡。
+   電腦版滑鼠移入時額外顯示年份標記。 */
 #scrubber {
-  position: fixed; right: 0; top: calc(var(--topbar-h) + 40px); bottom: 90px; z-index: 45;
-  width: 44px; touch-action: none;
+  position: fixed; right: 0; top: calc(var(--topbar-h) + 44px); bottom: 90px; z-index: 45;
+  width: 48px; touch-action: none;
 }
 @media (max-width: 767px) { #scrubber { bottom: calc(var(--bottomnav-h) + 20px); } }
-#scrubberTrack { position: absolute; inset: 0 4px 0 auto; width: 36px; }
-/* 可見的軌道線，提示這裡可以拖曳 */
-#scrubberTrack::before {
-  content: ""; position: absolute; top: 0; bottom: 0; right: 15px; width: 2px;
-  background: var(--line); border-radius: 1px;
+#scrubberTrack { position: absolute; inset: 0 4px 0 auto; width: 40px; }
+/* 把手：跟著頁面捲動位置移動，可直接拖曳 */
+#scrubHandle {
+  position: absolute; right: 6px; width: 30px; height: 40px;
+  background: var(--bg-card); border: 1px solid var(--line); border-radius: 999px;
+  box-shadow: var(--shadow-md); cursor: grab;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 8px; line-height: 1.2; color: var(--ink-dim); user-select: none;
+  transition: box-shadow var(--fast) var(--ease);
 }
+body.scrubbing #scrubHandle { cursor: grabbing; border-color: var(--gold-soft); color: var(--gold); }
+/* 年份標記：電腦版滑鼠移入或拖曳時顯示；手機平時隱藏避免遮擋照片 */
 .scrub-year {
   position: absolute; right: 2px; font-size: 10px; color: var(--ink-dim);
   background: rgba(250,248,243,.95); border: 1px solid var(--line); border-radius: 6px; padding: 1px 5px;
-  user-select: none; font-family: var(--latin); font-weight: 600;
+  user-select: none; font-family: var(--latin); font-weight: 600; pointer-events: none;
+  opacity: 0; transition: opacity .25s var(--ease);
 }
-/* 捲動時顯示的「目前年份」指示 */
-#scrubIndicator {
-  position: absolute; right: 38px; transform: translateY(-50%);
-  background: var(--bg-card); border: 1px solid var(--gold-soft); color: var(--gold);
-  font-family: var(--latin); font-weight: 600; font-size: 13px;
-  padding: 3px 12px; border-radius: 999px; box-shadow: var(--shadow-sm);
-  pointer-events: none; white-space: nowrap;
-  transition: opacity .35s var(--ease); opacity: 1;
+@media (hover: hover) {
+  #scrubber:hover .scrub-year { opacity: 1; }
 }
-#scrubIndicator.fading { opacity: 0; }
+body.scrubbing .scrub-year { opacity: 1; }
+/* 拖曳中的年份氣泡 */
 #scrubberBubble {
-  position: absolute; right: 46px; transform: translateY(-50%);
-  background: var(--gold); color: #fff; font-size: 15px; font-weight: 700;
-  padding: 6px 14px; border-radius: 10px; white-space: nowrap;
-  box-shadow: var(--shadow-md); font-family: var(--latin);
+  position: absolute; right: 50px; transform: translateY(-50%);
+  background: var(--gold); color: #fff; font-size: 17px; font-weight: 700;
+  padding: 8px 16px; border-radius: 12px; white-space: nowrap;
+  box-shadow: var(--shadow-md); font-family: var(--latin); pointer-events: none;
 }
+/* 拖曳時停用文字選取 */
+body.scrubbing { user-select: none; }
 
 /* ============ 燈箱 ============ */
 #lightbox {
