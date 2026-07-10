@@ -2200,15 +2200,62 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 10px;
+  gap: 8px;
   margin-top: 18px;
   color: var(--ink-dim);
+}
+.article-meta .article-tags {
+  flex: 1 1 320px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+  min-width: 0;
+}
+.article-meta .news-category-pill,
+.article-meta .news-priority-badge,
+.article-meta .article-tags a,
+.article-meta time {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--sans);
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .03em;
 }
 .article-meta time {
   font-family: var(--latin);
   color: var(--gold);
-  font-weight: 700;
-  letter-spacing: .06em;
+  font-size: .88rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .08em;
+  padding-inline: 4px 8px;
+  background: transparent;
+}
+.article-meta .news-priority-badge {
+  background: rgba(160,124,49,.13);
+}
+@media (max-width: 560px) {
+  .article-meta {
+    gap: 7px;
+    margin-top: 16px;
+  }
+  .article-meta .article-tags {
+    flex-basis: 100%;
+    gap: 7px;
+  }
+  .article-meta .news-category-pill,
+  .article-meta .news-priority-badge,
+  .article-meta .article-tags a,
+  .article-meta time {
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: .76rem;
+  }
 }
 .related-news {
   margin-top: 34px;

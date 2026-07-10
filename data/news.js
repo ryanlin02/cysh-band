@@ -159,5 +159,27 @@ window.NEWS = [
     headlineHtml: "校友歸隊召集令：<br>《為伍》團練時程公布",
     relatedConcert: "2026-41st",
     status: "published"
+  },
+  {
+    id: "2019-05-26-tsai-yung-chu-officer",
+    date: "2019-05-26",
+    time: "12:00",
+    category: "歷史補檔",
+    tags: ["社團幹部", "譜務", "長笛", "蔡詠竹", "飛越肆國"],
+    pinned: false,
+    priority: "normal",
+    title: "社團幹部介紹：譜務蔡詠竹",
+    summary: "2019 年嘉中管樂社成果發表會前的幹部介紹，記錄譜務蔡詠竹的長笛學習歷程、譜務工作與成發前的準備心情。",
+    source: "content/news/2019-05-26-tsai-yung-chu-officer.html",
+    output: "news/2019-05-26-tsai-yung-chu-officer.html",
+    url: "news/2019-05-26-tsai-yung-chu-officer.html",
+    thumb: "assets/img/news/2019-05-26-tsai-yung-chu-officer-thumb.webp",
+    pageTitle: "社團幹部介紹：譜務蔡詠竹｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "社團幹部介紹：譜務蔡詠竹",
+    description: "2019 年嘉中管樂社成果發表會前的幹部介紹，記錄譜務蔡詠竹的長笛學習歷程、譜務工作與成發前的準備心情。",
+    ogDescription: "2019 年嘉中管樂社成果發表會前的幹部介紹，記錄譜務蔡詠竹的長笛學習歷程與成發前的準備心情。",
+    headlineHtml: "社團幹部介紹：<br>譜務蔡詠竹",
+    relatedConcert: "2019-35th",
+    status: "published"
   }
 ];
