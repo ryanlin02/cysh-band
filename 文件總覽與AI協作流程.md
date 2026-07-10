@@ -27,6 +27,7 @@
 |---|---|---|---|
 | `AGENTS.md` | AI 協作入口 | 常用、持續更新 | 每次由 AI 接手修改網站前先讀 |
 | `README.md` | 日常維護快速指南 | 常用、持續更新 | 人工或 AI 要新增消息、人物、相簿、聯演時 |
+| `最新消息發布完整教學.md` | 最新消息發布工作手冊 | 常用、持續更新 | 非程式背景維護者要準備、發布、檢查最新消息時 |
 | `網站製作規範.md` | 正式製作規範 | 最高規範、持續更新 | 改頁面、CSS、JS、SEO、資料流程、內容準則時 |
 | `嘉義高中管樂隊暨校友管樂團完整資訊整理.md` | 內容知識庫 | 內容權威、持續更新 | 寫歷史、人物、聯演、編號文化與對外文案前 |
 | `校友資料管理與驗證流程.md` | 校友資料與隱私治理 | 專題規範、持續更新 | 新增或整理校友、名錄、查號資料、內部名冊來源時 |
@@ -68,12 +69,13 @@
 
 ### 4.2 新增最新消息
 
-1. `README.md` 的「發布最新消息」
-2. `AGENTS.md` 的「最新消息」
-3. `網站製作規範.md` 的 5.2、7.1、SEO 相關段落
-4. 視內容查 `嘉義高中管樂隊暨校友管樂團完整資訊整理.md`
-5. 修改 `content/news/`、`scripts/generate-news-pages.js`、`data/news.js`、`sitemap.xml`、`feed.xml`
-6. 執行 `node scripts/generate-news-pages.js` 與 `node scripts/check-site.js`
+1. `最新消息發布完整教學.md`
+2. `README.md` 的「發布最新消息」
+3. `AGENTS.md` 的「最新消息」
+4. `網站製作規範.md` 的 5.2、7.1、SEO 相關段落
+5. 視內容查 `嘉義高中管樂隊暨校友管樂團完整資訊整理.md`
+6. 修改 `content/news/`、`data/news.js`、`sitemap.xml`、必要圖片與 `網站修改歷程紀錄.md`
+7. 執行 `node scripts/generate-news-pages.js` 與 `node scripts/check-site.js`
 
 ### 4.3 新增或更新人物
 

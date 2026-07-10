@@ -25,13 +25,17 @@
 <meta property="og:description" content="音樂會公告、團練紀錄、幹部交接與各項活動動態。">
 <meta property="og:url" content="https://cysh.band/news/index.html">
 <meta property="og:image" content="https://cysh.band/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=20260707-archive-list">
+<link rel="stylesheet" href="../css/style.css">
 <script src="../js/main.js" defer></script>
 <script src="../data/news.js" defer></script>
 <script src="../js/news.js" defer></script>
+
 </head>
 <body>
 
@@ -52,18 +56,125 @@
   </div>
 </nav>
 
+
 <header class="page-head">
   <p class="kicker">NEWS</p>
   <h1>最新消息總覽</h1>
-  <p class="lede">音樂會公告、團練紀錄、幹部交接與各項活動動態，依時間由新到舊排列。</p>
+  <p class="lede">音樂會公告、團練紀錄、幹部交接與各項活動動態，依時間由新到舊排列。可依分類或標籤快速篩選。</p>
 </header>
 
 <main class="wrap">
-  <section class="section">
-    <div class="news-list" id="news-all" data-base="../">
-      <noscript><p>消息列表需要啟用 JavaScript 才能顯示。</p></noscript>
+  <section class="section news-index-layout">
+    <div class="news-index-main">
+      <div class="news-filter-bar" aria-label="最新消息分類篩選">
+        <button class="news-filter active" type="button" data-news-filter="all">全部<span>7</span></button>
+          <button class="news-filter" type="button" data-news-filter="活動紀錄">活動紀錄<span>3</span></button>
+          <button class="news-filter" type="button" data-news-filter="團練通知">團練通知<span>2</span></button>
+          <button class="news-filter" type="button" data-news-filter="行政公告">行政公告<span>1</span></button>
+          <button class="news-filter" type="button" data-news-filter="演出公告">演出公告<span>1</span></button>
+      </div>
+      <p class="news-result-count" id="news-result-count">目前顯示全部 7 則消息</p>
+      <div class="news-list news-index-list" id="news-all" data-base="../" data-static="true">
+        <a class="news-item is-pinned is-urgent" href="../news/2026-07-10-chiayi-city-closure.html" data-category="行政公告" data-tags="巴威颱風|停班停課|團練通知|為伍" data-news-id="2026-07-10-chiayi-city-closure">
+      <span class="news-date"><span>行政公告</span><time datetime="2026-07-10">2026-07-10</time></span>
+      <span class="news-body">
+        <span class="news-title-line"><em>重要</em><b>嘉義市 7/11 停止上班上課，請留意巴威颱風動態</b></span>
+        <span class="news-summary">嘉義市政府已發布巴威颱風停班停課通知，7/11（六）全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。</span>
+        <span class="news-tags"><span>#巴威颱風</span><span>#停班停課</span><span>#團練通知</span><span>#為伍</span></span>
+      </span>
+      <img class="news-thumb" src="../assets/img/news/2026-07-10-chiayi-city-closure-thumb.webp" alt="" loading="lazy">
+    </a>
+        <a class="news-item" href="../news/2026-07-10-typhoon-bavi-rehearsal.html" data-category="團練通知" data-tags="巴威颱風|團練通知|為伍" data-news-id="2026-07-10-typhoon-bavi-rehearsal">
+      <span class="news-date"><span>團練通知</span><time datetime="2026-07-10">2026-07-10</time></span>
+      <span class="news-body">
+        <span class="news-title-line"><b>因巴威颱風影響，7/11 團練取消</b></span>
+        <span class="news-summary">受巴威颱風影響，7/11（六）團練取消；7/12（日）是否照常團練將依天候另行通知，後續團練時間表同步公告。</span>
+        <span class="news-tags"><span>#巴威颱風</span><span>#團練通知</span><span>#為伍</span></span>
+      </span>
+      <img class="news-thumb" src="../assets/img/news/2026-07-10-typhoon-bavi-cwa-thumb.webp" alt="" loading="lazy">
+    </a>
+        <a class="news-item" href="../news/2026-07-04-rehearsal-coffee.html" data-category="活動紀錄" data-tags="團練|為伍|校友歸隊|嘉義日常" data-news-id="2026-07-04-rehearsal-coffee">
+      <span class="news-date"><span>活動紀錄</span><time datetime="2026-07-04">2026-07-04</time></span>
+      <span class="news-body">
+        <span class="news-title-line"><b>7/4 團練日：火雞肉飯、團練室與一壺咖啡</b></span>
+        <span class="news-summary">《為伍》第二個週末團練日，翁啟榮學長從簡單火雞肉飯回到嘉中團練室，也煮起咖啡和大家一起喝。</span>
+        <span class="news-tags"><span>#團練</span><span>#為伍</span><span>#校友歸隊</span><span>#嘉義日常</span></span>
+      </span>
+      <img class="news-thumb" src="../assets/img/news/2026-07-04-rehearsal-thumb.webp" alt="" loading="lazy">
+    </a>
+        <a class="news-item" href="../news/2026-07-02-weiwu-announce.html" data-category="演出公告" data-tags="為伍|校友聯演|文化局音樂廳|OPENTIX" data-news-id="2026-07-02-weiwu-announce">
+      <span class="news-date"><span>演出公告</span><time datetime="2026-07-02">2026-07-02</time></span>
+      <span class="news-body">
+        <span class="news-title-line"><b>第 41 屆聯合音樂會《為伍》8/8 文化局音樂廳登場</b></span>
+        <span class="news-summary">睽違六年重返嘉義市政府文化局音樂廳，透過 OPENTIX 公開售票，售票資訊將於近期公布。</span>
+        <span class="news-tags"><span>#為伍</span><span>#校友聯演</span><span>#文化局音樂廳</span><span>#OPENTIX</span></span>
+      </span>
+      <img class="news-thumb" src="../assets/img/poster_weiwu_2026_thumb.webp" alt="" loading="lazy">
+    </a>
+        <a class="news-item" href="../news/2026-06-30-summer-bbq.html" data-category="活動紀錄" data-tags="在校生|暑假|為伍|團練" data-news-id="2026-06-30-summer-bbq">
+      <span class="news-date"><span>活動紀錄</span><time datetime="2026-06-30">2026-06-30</time></span>
+      <span class="news-body">
+        <span class="news-title-line"><b>期末考結束，肉趴開烤！在校生迎接《為伍》的暑假</b></span>
+        <span class="news-summary">指導老師簡晟軒帶著在校生舉辦期末烤肉聚會，暑假密集團練即將展開。</span>
+        <span class="news-tags"><span>#在校生</span><span>#暑假</span><span>#為伍</span><span>#團練</span></span>
+      </span>
+      <img class="news-thumb" src="../assets/img/news/2026-06-30-bbq.webp" alt="" loading="lazy">
+    </a>
+        <a class="news-item" href="../news/2026-06-27-first-rehearsal.html" data-category="活動紀錄" data-tags="第一次團練|為伍|校友歸隊|火雞肉飯" data-news-id="2026-06-27-first-rehearsal">
+      <span class="news-date"><span>活動紀錄</span><time datetime="2026-06-27">2026-06-27</time></span>
+      <span class="news-body">
+        <span class="news-title-line"><b>《為伍》第一次團練啟動！警伯依然是第一個到的人</b></span>
+        <span class="news-summary">第 41 屆校友聯演第一次團練展開，翁啟榮學長一如往常第一個到場開門，團練後再回味一碗嘉中人的火雞肉飯。</span>
+        <span class="news-tags"><span>#第一次團練</span><span>#為伍</span><span>#校友歸隊</span><span>#火雞肉飯</span></span>
+      </span>
+      <img class="news-thumb" src="../assets/img/news/2026-06-27-turkeyrice.webp" alt="" loading="lazy">
+    </a>
+        <a class="news-item" href="../news/2026-06-12-rehearsal-schedule.html" data-category="團練通知" data-tags="團練時程|為伍|校友歸隊|校友聯演" data-news-id="2026-06-12-rehearsal-schedule">
+      <span class="news-date"><span>團練通知</span><time datetime="2026-06-12">2026-06-12</time></span>
+      <span class="news-body">
+        <span class="news-title-line"><b>校友歸隊召集令：《為伍》團練時程公布</b></span>
+        <span class="news-summary">6/27 起每週六日下午團練、8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台，歡迎校友歸隊、親友探班。</span>
+        <span class="news-tags"><span>#團練時程</span><span>#為伍</span><span>#校友歸隊</span><span>#校友聯演</span></span>
+      </span>
+      <span class="news-arrow">→</span>
+    </a>
+      </div>
+      <p class="news-more"><a href="../concerts.html">← 回校友聯演</a></p>
     </div>
-    <p style="margin-top:20px"><a href="../concerts.html">← 回校友聯演</a></p>
+    <aside class="news-sidebar" aria-label="最新消息輔助導覽">
+      <section>
+        <h2>熱門標籤</h2>
+        <div class="news-tag-cloud">
+          <a href="?tag=%E7%82%BA%E4%BC%8D" data-news-tag="為伍">#為伍<span>7</span></a>
+          <a href="?tag=%E6%A0%A1%E5%8F%8B%E6%AD%B8%E9%9A%8A" data-news-tag="校友歸隊">#校友歸隊<span>3</span></a>
+          <a href="?tag=%E5%B7%B4%E5%A8%81%E9%A2%B1%E9%A2%A8" data-news-tag="巴威颱風">#巴威颱風<span>2</span></a>
+          <a href="?tag=%E6%A0%A1%E5%8F%8B%E8%81%AF%E6%BC%94" data-news-tag="校友聯演">#校友聯演<span>2</span></a>
+          <a href="?tag=%E5%9C%98%E7%B7%B4" data-news-tag="團練">#團練<span>2</span></a>
+          <a href="?tag=%E5%9C%98%E7%B7%B4%E9%80%9A%E7%9F%A5" data-news-tag="團練通知">#團練通知<span>2</span></a>
+          <a href="?tag=%E6%96%87%E5%8C%96%E5%B1%80%E9%9F%B3%E6%A8%82%E5%BB%B3" data-news-tag="文化局音樂廳">#文化局音樂廳<span>1</span></a>
+          <a href="?tag=%E7%81%AB%E9%9B%9E%E8%82%89%E9%A3%AF" data-news-tag="火雞肉飯">#火雞肉飯<span>1</span></a>
+          <a href="?tag=%E5%9C%A8%E6%A0%A1%E7%94%9F" data-news-tag="在校生">#在校生<span>1</span></a>
+          <a href="?tag=%E5%81%9C%E7%8F%AD%E5%81%9C%E8%AA%B2" data-news-tag="停班停課">#停班停課<span>1</span></a>
+          <a href="?tag=%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%9C%98%E7%B7%B4" data-news-tag="第一次團練">#第一次團練<span>1</span></a>
+          <a href="?tag=%E6%9A%91%E5%81%87" data-news-tag="暑假">#暑假<span>1</span></a>
+        </div>
+      </section>
+      <section>
+        <h2>消息分類</h2>
+        <div class="news-category-list">
+          <a href="?category=%E6%B4%BB%E5%8B%95%E7%B4%80%E9%8C%84" data-news-filter="活動紀錄">活動紀錄<span>3</span></a>
+          <a href="?category=%E5%9C%98%E7%B7%B4%E9%80%9A%E7%9F%A5" data-news-filter="團練通知">團練通知<span>2</span></a>
+          <a href="?category=%E8%A1%8C%E6%94%BF%E5%85%AC%E5%91%8A" data-news-filter="行政公告">行政公告<span>1</span></a>
+          <a href="?category=%E6%BC%94%E5%87%BA%E5%85%AC%E5%91%8A" data-news-filter="演出公告">演出公告<span>1</span></a>
+        </div>
+      </section>
+      <section>
+        <h2>重要公告</h2>
+        <div class="news-sidebar-featured">
+          <a href="../news/2026-07-10-chiayi-city-closure.html"><span>2026-07-10</span><b>嘉義市 7/11 停止上班上課，請留意巴威颱風動態</b></a>
+        </div>
+      </section>
+    </aside>
   </section>
 </main>
 
@@ -86,6 +197,7 @@
   </div>
   <p class="copy">© 2026 嘉義高中校友管樂團</p>
 </footer>
+
 
 </body>
 </html>

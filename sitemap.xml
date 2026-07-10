@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://cysh.band/</loc><lastmod>2026-07-03</lastmod><priority>1.0</priority></url>
+  <url><loc>https://cysh.band/</loc><lastmod>2026-07-11</lastmod><priority>1.0</priority></url>
   <url><loc>https://cysh.band/photos/</loc><lastmod>2026-07-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://cysh.band/about.html</loc><lastmod>2026-07-03</lastmod><priority>0.8</priority></url>
   <url><loc>https://cysh.band/history.html</loc><lastmod>2026-07-03</lastmod><priority>0.8</priority></url>
   <url><loc>https://cysh.band/numbers.html</loc><lastmod>2026-07-03</lastmod><priority>0.8</priority></url>
   <url><loc>https://cysh.band/people.html</loc><lastmod>2026-07-06</lastmod><priority>0.8</priority></url>
   <url><loc>https://cysh.band/roster.html</loc><lastmod>2026-07-06</lastmod><priority>0.8</priority></url>
-  <url><loc>https://cysh.band/concerts.html</loc><lastmod>2026-07-07</lastmod><priority>0.9</priority></url>
+  <url><loc>https://cysh.band/concerts.html</loc><lastmod>2026-07-11</lastmod><priority>0.9</priority></url>
   <url><loc>https://cysh.band/gallery/2002-concert.html</loc><lastmod>2026-07-03</lastmod><priority>0.6</priority></url>
   <url><loc>https://cysh.band/concerts/1985-1st.html</loc><lastmod>2026-07-07</lastmod><priority>0.5</priority></url>
   <url><loc>https://cysh.band/concerts/1986-2nd.html</loc><lastmod>2026-07-07</lastmod><priority>0.5</priority></url>
@@ -88,7 +88,7 @@
   <url><loc>https://cysh.band/people/0431.html</loc><lastmod>2026-07-04</lastmod><priority>0.7</priority></url>
   <url><loc>https://cysh.band/people/0741.html</loc><lastmod>2026-07-04</lastmod><priority>0.6</priority></url>
   <url><loc>https://cysh.band/people/linshaofan.html</loc><lastmod>2026-07-06</lastmod><priority>0.7</priority></url>
-  <url><loc>https://cysh.band/news/index.html</loc><lastmod>2026-07-10</lastmod><priority>0.7</priority></url>
+  <url><loc>https://cysh.band/news/index.html</loc><lastmod>2026-07-11</lastmod><priority>0.7</priority></url>
   <url><loc>https://cysh.band/news/2026-07-10-chiayi-city-closure.html</loc><lastmod>2026-07-10</lastmod><priority>0.7</priority></url>
   <url><loc>https://cysh.band/news/2026-07-10-typhoon-bavi-rehearsal.html</loc><lastmod>2026-07-10</lastmod><priority>0.7</priority></url>
   <url><loc>https://cysh.band/news/2026-07-04-rehearsal-coffee.html</loc><lastmod>2026-07-04</lastmod><priority>0.7</priority></url>

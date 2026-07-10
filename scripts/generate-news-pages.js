@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* 產生已模板化的最新消息文章。
+/* 產生已模板化的最新消息文章、最新消息總覽與 RSS。
    GitHub Pages 仍使用輸出的靜態 HTML；此腳本只在本地維護時執行。 */
 const fs = require('fs');
 const path = require('path');
@@ -10,79 +10,35 @@ const root = path.join(__dirname, '..');
 const { escapeHtml, renderPage } = createRenderer(root);
 
 global.window = global;
+require(path.join(root, 'data', 'news.js'));
 require(path.join(root, 'data', 'people-profiles.js'));
 
 const profiles = global.PEOPLE_PROFILES || [];
 
-const articles = [
-  {
-    date: '2026-07-10',
-    source: 'content/news/2026-07-10-chiayi-city-closure.html',
-    output: 'news/2026-07-10-chiayi-city-closure.html',
-    title: '嘉義市 7/11 停止上班上課，請留意巴威颱風動態｜最新消息｜嘉義高中管樂隊',
-    ogTitle: '嘉義市 7/11 停止上班上課，請留意巴威颱風動態',
-    description: '嘉義市政府已發布巴威颱風停班停課通知，7/11 全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。',
-    ogDescription: '嘉義市 7/11 停止上班上課，7/11 團練取消；請團員與家長留意巴威颱風動態與後續團練公告。',
-    headlineHtml: '嘉義市 7/11 停止上班上課，<br>請留意巴威颱風動態'
-  },
-  {
-    date: '2026-07-10',
-    source: 'content/news/2026-07-10-typhoon-bavi-rehearsal.html',
-    output: 'news/2026-07-10-typhoon-bavi-rehearsal.html',
-    title: '因巴威颱風影響，7/11 團練取消｜最新消息｜嘉義高中管樂隊',
-    ogTitle: '因巴威颱風影響，7/11 團練取消',
-    description: '受巴威颱風影響，7/11 團練取消；7/12 團練將依颱風動向與嘉義地區天候狀況另行通知，後續團練時間表同步公告。',
-    ogDescription: '7/11 團練取消，7/12 是否照常進行將依颱風動向與天候狀況更新，請校友與在校生留意後續公告。',
-    headlineHtml: '因巴威颱風影響，<br>7/11 團練取消'
-  },
-  {
-    date: '2026-07-04',
-    source: 'content/news/2026-07-04-rehearsal-coffee.html',
-    output: 'news/2026-07-04-rehearsal-coffee.html',
-    title: '7/4 團練日：火雞肉飯、團練室與一壺咖啡｜最新消息｜嘉義高中管樂隊',
-    ogTitle: '7/4 團練日：火雞肉飯、團練室與一壺咖啡',
-    description: '第 41 屆校友聯演《為伍》7 月 4 日週末團練紀錄：翁啟榮學長中午先到簡單火雞肉飯，下午回到嘉中團練室，還煮起咖啡和大家一起喝。',
-    ogDescription: '第 41 屆校友聯演《為伍》7 月 4 日週末團練紀錄：午餐、團練與咖啡，都是校友歸隊的一部分。',
-    headlineHtml: '7/4 團練日：<br>火雞肉飯、團練室與一壺咖啡'
-  },
-  {
-    date: '2026-07-02',
-    source: 'content/news/2026-07-02-weiwu-announce.html',
-    output: 'news/2026-07-02-weiwu-announce.html',
-    title: '《為伍》8/8 文化局音樂廳登場｜最新消息｜嘉義高中管樂隊',
-    ogTitle: '《為伍》8/8 文化局音樂廳登場｜最新消息｜嘉義高中管樂隊',
-    description: '第 41 屆校友暨在校生聯合音樂會《為伍》，2026 年 8 月 8 日於嘉義市政府文化局音樂廳演出。',
-    headlineHtml: '第 41 屆聯合音樂會《為伍》<br>8/8 文化局音樂廳登場'
-  },
-  {
-    date: '2026-06-30',
-    source: 'content/news/2026-06-30-summer-bbq.html',
-    output: 'news/2026-06-30-summer-bbq.html',
-    title: '期末考結束，肉趴開烤！在校生迎接《為伍》暑假｜最新消息｜嘉義高中管樂隊',
-    ogTitle: '期末考結束，肉趴開烤！在校生迎接《為伍》暑假',
-    description: '6 月 30 日晚間，在校生管樂社在指導老師簡晟軒帶領下舉辦期末烤肉聚會，為暑假的《為伍》密集團練暖身。',
-    headlineHtml: '期末考結束，肉趴開烤！<br>在校生迎接《為伍》的暑假'
-  },
-  {
-    date: '2026-06-27',
-    source: 'content/news/2026-06-27-first-rehearsal.html',
-    output: 'news/2026-06-27-first-rehearsal.html',
-    title: '《為伍》第一次團練啟動｜最新消息｜嘉義高中管樂隊',
-    ogTitle: '《為伍》第一次團練啟動｜嘉義高中管樂隊',
-    description: '第 41 屆校友聯演《為伍》6 月 27 日展開第一次團練，翁啟榮學長一如往常第一個到場開門，團練後再回味一碗嘉中人的火雞肉飯。',
-    headlineHtml: '《為伍》第一次團練啟動！<br>警伯依然是第一個到的人'
-  },
-  {
-    date: '2026-06-12',
-    source: 'content/news/2026-06-12-rehearsal-schedule.html',
-    output: 'news/2026-06-12-rehearsal-schedule.html',
-    title: '校友歸隊召集令：《為伍》團練時程公布｜最新消息｜嘉義高中管樂隊',
-    ogTitle: '校友歸隊召集令：《為伍》團練時程公布',
-    ogDescription: '6/27 起每週六日下午團練，8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台。歡迎校友歸隊。',
-    description: '第 41 屆校友聯演《為伍》團練時程公布：6/27 起每週六日下午團練，8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台。歡迎校友歸隊。',
-    headlineHtml: '校友歸隊召集令：<br>《為伍》團練時程公布'
-  }
-];
+function normalizeArticle(item) {
+  const output = item.output || item.url;
+  const title = item.title || item.ogTitle || '';
+  return {
+    ...item,
+    id: item.id || output.replace(/^news\//, '').replace(/\.html$/, ''),
+    output,
+    url: item.url || output,
+    source: item.source,
+    title,
+    pageTitle: item.pageTitle || `${title}｜最新消息｜嘉義高中管樂隊`,
+    ogTitle: item.ogTitle || title,
+    description: item.description || item.summary || title,
+    ogDescription: item.ogDescription || item.description || item.summary || title,
+    headlineHtml: item.headlineHtml || escapeHtml(title),
+    category: item.category || '最新消息',
+    tags: Array.isArray(item.tags) ? item.tags : [],
+    priority: item.priority || (item.pinned ? 'important' : 'normal'),
+    time: item.time || '12:00',
+    status: item.status || 'published'
+  };
+}
+
+const articles = (global.NEWS || []).map(normalizeArticle);
 
 function textFromHtml(html) {
   return String(html || '').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
@@ -99,6 +55,57 @@ function adjacentArticles(article) {
     previous: articles[index - 1] || null,
     next: articles[index + 1] || null
   };
+}
+
+function tagLink(tag, assetPrefix = '../') {
+  return `${assetPrefix}news/index.html?tag=${encodeURIComponent(tag)}`;
+}
+
+function categoryLink(category, assetPrefix = '../') {
+  return `${assetPrefix}news/index.html?category=${encodeURIComponent(category)}`;
+}
+
+function articleMeta(article) {
+  const tags = article.tags.map((tag) => `<a href="${escapeHtml(tagLink(tag))}">#${escapeHtml(tag)}</a>`).join('');
+  const meta = [
+    `<a class="news-category-pill" href="${escapeHtml(categoryLink(article.category))}">${escapeHtml(article.category)}</a>`,
+    `<time datetime="${escapeHtml(article.date)}">${escapeHtml(article.date)}</time>`
+  ];
+  if (article.pinned) meta.push('<span class="news-priority-badge">重要</span>');
+  meta.push(`<span class="article-tags">${tags}</span>`);
+  return `<div class="article-meta">
+    ${meta.join('\n    ')}
+  </div>`;
+}
+
+function relatedArticles(article) {
+  const related = articles
+    .filter((item) => item.output !== article.output)
+    .map((item) => {
+      const sharedTags = item.tags.filter((tag) => article.tags.includes(tag)).length;
+      const sameCategory = item.category === article.category ? 1 : 0;
+      const sameConcert = item.relatedConcert && item.relatedConcert === article.relatedConcert ? 1 : 0;
+      return { item, score: sharedTags * 3 + sameCategory * 2 + sameConcert };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || articles.indexOf(a.item) - articles.indexOf(b.item))
+    .slice(0, 3)
+    .map(({ item }) => item);
+
+  if (!related.length) return '';
+  return `<section class="related-news" aria-label="相關消息">
+      <h3>相關消息</h3>
+      <div class="related-news-list">
+        ${scoredNewsLinks(related)}
+      </div>
+    </section>`;
+}
+
+function scoredNewsLinks(items) {
+  return items.map((item) => `<a href="../${escapeHtml(item.output)}">
+          <span>${escapeHtml(item.category)}</span>
+          <b>${escapeHtml(item.title)}</b>
+        </a>`).join('\n        ');
 }
 
 function articlePageNav(article) {
@@ -122,18 +129,21 @@ function renderArticle(article) {
   const content = `<header class="page-head">
   <p class="kicker">NEWS．${escapeHtml(article.date)}</p>
   <h1>${article.headlineHtml}</h1>
+  ${articleMeta(article)}
 </header>
 
 <main class="wrap">
   <article class="section news-article">
 ${indentedBody}
 
+    ${relatedArticles(article)}
+
     ${articlePageNav(article)}
   </article>
 </main>`;
 
   const html = renderPage({
-    title: article.title,
+    title: article.pageTitle,
     description: article.description,
     ogTitle: article.ogTitle,
     ogDescription: article.ogDescription,
@@ -146,16 +156,184 @@ ${indentedBody}
   return autoLinkHtml(html, article.output, profiles);
 }
 
+function countBy(items, selector) {
+  const counts = new Map();
+  for (const item of items) {
+    const values = selector(item);
+    for (const value of Array.isArray(values) ? values : [values]) {
+      if (!value) continue;
+      counts.set(value, (counts.get(value) || 0) + 1);
+    }
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-Hant'));
+}
+
+function renderNewsItem(article, assetPrefix = '../') {
+  const tags = article.tags || [];
+  const tagHtml = tags.slice(0, 4).map((tag) => `<span>#${escapeHtml(tag)}</span>`).join('');
+  const tail = article.thumb
+    ? `<img class="news-thumb" src="${escapeHtml(assetPrefix + article.thumb)}" alt="" loading="lazy">`
+    : '<span class="news-arrow">→</span>';
+  const classes = ['news-item'];
+  if (article.pinned) classes.push('is-pinned');
+  if (article.priority === 'urgent') classes.push('is-urgent');
+  return `<a class="${classes.join(' ')}" href="${escapeHtml(assetPrefix + article.output)}" data-category="${escapeHtml(article.category)}" data-tags="${escapeHtml(tags.join('|'))}" data-news-id="${escapeHtml(article.id)}">
+      <span class="news-date"><span>${escapeHtml(article.category)}</span><time datetime="${escapeHtml(article.date)}">${escapeHtml(article.date)}</time></span>
+      <span class="news-body">
+        <span class="news-title-line">${article.pinned ? '<em>重要</em>' : ''}<b>${escapeHtml(article.title)}</b></span>
+        <span class="news-summary">${escapeHtml(article.summary)}</span>
+        ${tagHtml ? `<span class="news-tags">${tagHtml}</span>` : ''}
+      </span>
+      ${tail}
+    </a>`;
+}
+
+function renderFilterButton(label, count, attr, value, active = false) {
+  return `<button class="news-filter${active ? ' active' : ''}" type="button" ${attr}="${escapeHtml(value)}">${escapeHtml(label)}<span>${count}</span></button>`;
+}
+
+function renderNewsIndex() {
+  const categoryCounts = countBy(articles, (item) => item.category);
+  const tagCounts = countBy(articles, (item) => item.tags);
+  const pinned = articles.filter((item) => item.pinned);
+  const regular = articles.filter((item) => !item.pinned);
+  const allItems = [...pinned, ...regular];
+
+  const filters = [
+    renderFilterButton('全部', articles.length, 'data-news-filter', 'all', true),
+    ...categoryCounts.map(([category, count]) => renderFilterButton(category, count, 'data-news-filter', category))
+  ].join('\n          ');
+
+  const hotTags = tagCounts.slice(0, 12).map(([tag, count]) => (
+    `<a href="?tag=${encodeURIComponent(tag)}" data-news-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}<span>${count}</span></a>`
+  )).join('\n          ');
+
+  const categoryLinks = categoryCounts.map(([category, count]) => (
+    `<a href="?category=${encodeURIComponent(category)}" data-news-filter="${escapeHtml(category)}">${escapeHtml(category)}<span>${count}</span></a>`
+  )).join('\n          ');
+
+  const content = `<header class="page-head">
+  <p class="kicker">NEWS</p>
+  <h1>最新消息總覽</h1>
+  <p class="lede">音樂會公告、團練紀錄、幹部交接與各項活動動態，依時間由新到舊排列。可依分類或標籤快速篩選。</p>
+</header>
+
+<main class="wrap">
+  <section class="section news-index-layout">
+    <div class="news-index-main">
+      <div class="news-filter-bar" aria-label="最新消息分類篩選">
+        ${filters}
+      </div>
+      <p class="news-result-count" id="news-result-count">目前顯示全部 ${articles.length} 則消息</p>
+      <div class="news-list news-index-list" id="news-all" data-base="../" data-static="true">
+        ${allItems.map((article) => renderNewsItem(article)).join('\n        ')}
+      </div>
+      <p class="news-more"><a href="../concerts.html">← 回校友聯演</a></p>
+    </div>
+    <aside class="news-sidebar" aria-label="最新消息輔助導覽">
+      <section>
+        <h2>熱門標籤</h2>
+        <div class="news-tag-cloud">
+          ${hotTags}
+        </div>
+      </section>
+      <section>
+        <h2>消息分類</h2>
+        <div class="news-category-list">
+          ${categoryLinks}
+        </div>
+      </section>
+      <section>
+        <h2>重要公告</h2>
+        <div class="news-sidebar-featured">
+          ${(pinned.length ? pinned : articles.slice(0, 1)).map((article) => `<a href="../${escapeHtml(article.output)}"><span>${escapeHtml(article.date)}</span><b>${escapeHtml(article.title)}</b></a>`).join('\n          ')}
+        </div>
+      </section>
+    </aside>
+  </section>
+</main>`;
+
+  return renderPage({
+    title: '最新消息總覽｜嘉義高中管樂隊',
+    description: '嘉義高中管樂隊暨校友管樂團的所有消息：音樂會公告、團練紀錄、幹部交接與各項活動動態。',
+    ogTitle: '最新消息總覽｜嘉義高中管樂隊',
+    ogDescription: '音樂會公告、團練紀錄、幹部交接與各項活動動態。',
+    url: 'https://cysh.band/news/index.html',
+    ogType: 'website',
+    assetPrefix: '../',
+    navActive: 'concerts',
+    extraScripts: '<script src="../data/news.js" defer></script>\n<script src="../js/news.js" defer></script>',
+    content
+  });
+}
+
+function weekdayName(date, time) {
+  const [year, month, day] = date.split('-').map(Number);
+  const jsDate = new Date(Date.UTC(year, month - 1, day));
+  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][jsDate.getUTCDay()];
+}
+
+function rssDate(article) {
+  const [year, month, day] = article.date.split('-').map(Number);
+  const [hour, minute] = article.time.split(':').map(Number);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${weekdayName(article.date, article.time)}, ${String(day).padStart(2, '0')} ${months[month - 1]} ${year} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00 +0800`;
+}
+
+function xmlEscape(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderFeed() {
+  const latest = articles[0];
+  const items = articles.map((article) => `  <item>
+    <title>${xmlEscape(article.title)}</title>
+    <link>https://cysh.band/${xmlEscape(article.output)}</link>
+    <guid>https://cysh.band/${xmlEscape(article.output)}</guid>
+    <pubDate>${rssDate(article)}</pubDate>
+    <description>${xmlEscape(article.summary)}</description>
+  </item>`).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>嘉義高中管樂隊暨校友管樂團｜最新消息</title>
+  <link>https://cysh.band/</link>
+  <description>音樂會公告、團練紀錄、幹部交接與各項活動動態。</description>
+  <language>zh-TW</language>
+  <lastBuildDate>${rssDate(latest)}</lastBuildDate>
+  <atom:link href="https://cysh.band/feed.xml" rel="self" type="application/rss+xml"/>
+${items}
+</channel>
+</rss>
+`;
+}
+
 function generateNewsPages() {
   for (const article of articles) {
     const outputPath = path.join(root, article.output);
     fs.writeFileSync(outputPath, renderArticle(article));
     console.log(article.output);
   }
+  fs.writeFileSync(path.join(root, 'news', 'index.html'), renderNewsIndex());
+  console.log('news/index.html');
+  fs.writeFileSync(path.join(root, 'feed.xml'), renderFeed());
+  console.log('feed.xml');
 }
 
 if (require.main === module) {
   generateNewsPages();
 }
 
-module.exports = { articles, renderArticle, generateNewsPages };
+module.exports = {
+  articles,
+  renderArticle,
+  renderNewsIndex,
+  renderFeed,
+  generateNewsPages,
+  renderNewsItem
+};

@@ -1,57 +1,163 @@
 /* 最新消息資料檔
    發布新消息的步驟：
-   1. 複製 news/_template.html 改名為 news/YYYY-MM-DD-主題.html，編輯內容
-   2. 在下方陣列「最前面」加一筆（新的在前，依日期排序）
-   欄位：date 日期、title 標題、summary 一句摘要、url 文章路徑
-        thumb 縮圖路徑（選填；正方形顯示，沒有就不放）
+   1. 在 content/news/ 新增正文來源檔，只放文章正文 HTML。
+   2. 在下方陣列「最前面」加一筆（新的在前，依日期與時間排序）。
+   3. 執行 node scripts/generate-news-pages.js 產生文章、總覽與 RSS。
+
+   重要欄位：
+   id 唯一代碼、date 日期、time 發布時間、category 分類、tags 標籤、
+   title 列表標題、summary 列表摘要、source 正文來源、output 正式頁、
+   thumb 縮圖路徑、pinned 是否置頂、priority 重要程度。
 */
 window.NEWS = [
   {
+    id: "2026-07-10-chiayi-city-closure",
     date: "2026-07-10",
+    time: "21:30",
+    category: "行政公告",
+    tags: ["巴威颱風", "停班停課", "團練通知", "為伍"],
+    pinned: true,
+    priority: "urgent",
     title: "嘉義市 7/11 停止上班上課，請留意巴威颱風動態",
     summary: "嘉義市政府已發布巴威颱風停班停課通知，7/11（六）全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。",
+    source: "content/news/2026-07-10-chiayi-city-closure.html",
+    output: "news/2026-07-10-chiayi-city-closure.html",
     url: "news/2026-07-10-chiayi-city-closure.html",
-    thumb: "assets/img/news/2026-07-10-chiayi-city-closure-thumb.webp"
+    thumb: "assets/img/news/2026-07-10-chiayi-city-closure-thumb.webp",
+    pageTitle: "嘉義市 7/11 停止上班上課，請留意巴威颱風動態｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "嘉義市 7/11 停止上班上課，請留意巴威颱風動態",
+    description: "嘉義市政府已發布巴威颱風停班停課通知，7/11 全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。",
+    ogDescription: "嘉義市 7/11 停止上班上課，7/11 團練取消；請團員與家長留意巴威颱風動態與後續團練公告。",
+    headlineHtml: "嘉義市 7/11 停止上班上課，<br>請留意巴威颱風動態",
+    relatedConcert: "2026-41st",
+    status: "published"
   },
   {
+    id: "2026-07-10-typhoon-bavi-rehearsal",
     date: "2026-07-10",
+    time: "19:10",
+    category: "團練通知",
+    tags: ["巴威颱風", "團練通知", "為伍"],
+    pinned: false,
+    priority: "normal",
     title: "因巴威颱風影響，7/11 團練取消",
     summary: "受巴威颱風影響，7/11（六）團練取消；7/12（日）是否照常團練將依天候另行通知，後續團練時間表同步公告。",
+    source: "content/news/2026-07-10-typhoon-bavi-rehearsal.html",
+    output: "news/2026-07-10-typhoon-bavi-rehearsal.html",
     url: "news/2026-07-10-typhoon-bavi-rehearsal.html",
-    thumb: "assets/img/news/2026-07-10-typhoon-bavi-cwa-thumb.webp"
+    thumb: "assets/img/news/2026-07-10-typhoon-bavi-cwa-thumb.webp",
+    pageTitle: "因巴威颱風影響，7/11 團練取消｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "因巴威颱風影響，7/11 團練取消",
+    description: "受巴威颱風影響，7/11 團練取消；7/12 團練將依颱風動向與嘉義地區天候狀況另行通知，後續團練時間表同步公告。",
+    ogDescription: "7/11 團練取消，7/12 是否照常進行將依颱風動向與天候狀況更新，請校友與在校生留意後續公告。",
+    headlineHtml: "因巴威颱風影響，<br>7/11 團練取消",
+    relatedConcert: "2026-41st",
+    status: "published"
   },
   {
+    id: "2026-07-04-rehearsal-coffee",
     date: "2026-07-04",
+    time: "19:30",
+    category: "活動紀錄",
+    tags: ["團練", "為伍", "校友歸隊", "嘉義日常"],
+    pinned: false,
+    priority: "normal",
     title: "7/4 團練日：火雞肉飯、團練室與一壺咖啡",
     summary: "《為伍》第二個週末團練日，翁啟榮學長從簡單火雞肉飯回到嘉中團練室，也煮起咖啡和大家一起喝。",
+    source: "content/news/2026-07-04-rehearsal-coffee.html",
+    output: "news/2026-07-04-rehearsal-coffee.html",
     url: "news/2026-07-04-rehearsal-coffee.html",
-    thumb: "assets/img/news/2026-07-04-rehearsal-thumb.webp"
+    thumb: "assets/img/news/2026-07-04-rehearsal-thumb.webp",
+    pageTitle: "7/4 團練日：火雞肉飯、團練室與一壺咖啡｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "7/4 團練日：火雞肉飯、團練室與一壺咖啡",
+    description: "第 41 屆校友聯演《為伍》7 月 4 日週末團練紀錄：翁啟榮學長中午先到簡單火雞肉飯，下午回到嘉中團練室，還煮起咖啡和大家一起喝。",
+    ogDescription: "第 41 屆校友聯演《為伍》7 月 4 日週末團練紀錄：午餐、團練與咖啡，都是校友歸隊的一部分。",
+    headlineHtml: "7/4 團練日：<br>火雞肉飯、團練室與一壺咖啡",
+    relatedConcert: "2026-41st",
+    status: "published"
   },
   {
+    id: "2026-07-02-weiwu-announce",
     date: "2026-07-02",
+    time: "12:00",
+    category: "演出公告",
+    tags: ["為伍", "校友聯演", "文化局音樂廳", "OPENTIX"],
+    pinned: false,
+    priority: "normal",
     title: "第 41 屆聯合音樂會《為伍》8/8 文化局音樂廳登場",
     summary: "睽違六年重返嘉義市政府文化局音樂廳，透過 OPENTIX 公開售票，售票資訊將於近期公布。",
+    source: "content/news/2026-07-02-weiwu-announce.html",
+    output: "news/2026-07-02-weiwu-announce.html",
     url: "news/2026-07-02-weiwu-announce.html",
-    thumb: "assets/img/poster_weiwu_2026_thumb.webp"
+    thumb: "assets/img/poster_weiwu_2026_thumb.webp",
+    pageTitle: "《為伍》8/8 文化局音樂廳登場｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "《為伍》8/8 文化局音樂廳登場｜最新消息｜嘉義高中管樂隊",
+    description: "第 41 屆校友暨在校生聯合音樂會《為伍》，2026 年 8 月 8 日於嘉義市政府文化局音樂廳演出。",
+    headlineHtml: "第 41 屆聯合音樂會《為伍》<br>8/8 文化局音樂廳登場",
+    relatedConcert: "2026-41st",
+    status: "published"
   },
   {
+    id: "2026-06-30-summer-bbq",
     date: "2026-06-30",
+    time: "20:00",
+    category: "活動紀錄",
+    tags: ["在校生", "暑假", "為伍", "團練"],
+    pinned: false,
+    priority: "normal",
     title: "期末考結束，肉趴開烤！在校生迎接《為伍》的暑假",
     summary: "指導老師簡晟軒帶著在校生舉辦期末烤肉聚會，暑假密集團練即將展開。",
+    source: "content/news/2026-06-30-summer-bbq.html",
+    output: "news/2026-06-30-summer-bbq.html",
     url: "news/2026-06-30-summer-bbq.html",
-    thumb: "assets/img/news/2026-06-30-bbq.webp"
+    thumb: "assets/img/news/2026-06-30-bbq.webp",
+    pageTitle: "期末考結束，肉趴開烤！在校生迎接《為伍》暑假｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "期末考結束，肉趴開烤！在校生迎接《為伍》暑假",
+    description: "6 月 30 日晚間，在校生管樂社在指導老師簡晟軒帶領下舉辦期末烤肉聚會，為暑假的《為伍》密集團練暖身。",
+    headlineHtml: "期末考結束，肉趴開烤！<br>在校生迎接《為伍》的暑假",
+    relatedConcert: "2026-41st",
+    status: "published"
   },
   {
+    id: "2026-06-27-first-rehearsal",
     date: "2026-06-27",
+    time: "18:00",
+    category: "活動紀錄",
+    tags: ["第一次團練", "為伍", "校友歸隊", "火雞肉飯"],
+    pinned: false,
+    priority: "normal",
     title: "《為伍》第一次團練啟動！警伯依然是第一個到的人",
     summary: "第 41 屆校友聯演第一次團練展開，翁啟榮學長一如往常第一個到場開門，團練後再回味一碗嘉中人的火雞肉飯。",
+    source: "content/news/2026-06-27-first-rehearsal.html",
+    output: "news/2026-06-27-first-rehearsal.html",
     url: "news/2026-06-27-first-rehearsal.html",
-    thumb: "assets/img/news/2026-06-27-turkeyrice.webp"
+    thumb: "assets/img/news/2026-06-27-turkeyrice.webp",
+    pageTitle: "《為伍》第一次團練啟動｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "《為伍》第一次團練啟動｜嘉義高中管樂隊",
+    description: "第 41 屆校友聯演《為伍》6 月 27 日展開第一次團練，翁啟榮學長一如往常第一個到場開門，團練後再回味一碗嘉中人的火雞肉飯。",
+    headlineHtml: "《為伍》第一次團練啟動！<br>警伯依然是第一個到的人",
+    relatedConcert: "2026-41st",
+    status: "published"
   },
   {
+    id: "2026-06-12-rehearsal-schedule",
     date: "2026-06-12",
+    time: "16:42",
+    category: "團練通知",
+    tags: ["團練時程", "為伍", "校友歸隊", "校友聯演"],
+    pinned: false,
+    priority: "normal",
     title: "校友歸隊召集令：《為伍》團練時程公布",
     summary: "6/27 起每週六日下午團練、8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台，歡迎校友歸隊、親友探班。",
-    url: "news/2026-06-12-rehearsal-schedule.html"
+    source: "content/news/2026-06-12-rehearsal-schedule.html",
+    output: "news/2026-06-12-rehearsal-schedule.html",
+    url: "news/2026-06-12-rehearsal-schedule.html",
+    pageTitle: "校友歸隊召集令：《為伍》團練時程公布｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "校友歸隊召集令：《為伍》團練時程公布",
+    ogDescription: "6/27 起每週六日下午團練，8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台。歡迎校友歸隊。",
+    description: "第 41 屆校友聯演《為伍》團練時程公布：6/27 起每週六日下午團練，8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台。歡迎校友歸隊。",
+    headlineHtml: "校友歸隊召集令：<br>《為伍》團練時程公布",
+    relatedConcert: "2026-41st",
+    status: "published"
   }
 ];

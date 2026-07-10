@@ -5,6 +5,7 @@
 
 > 本文件是日常維護的快速操作指南；完整的設計系統、圖片規格、內容準則與檢查清單見 **`網站製作規範.md`**。
 > 根目錄 Markdown 文件的角色分工、權威順序與 AI 協作讀取路徑，見 **`文件總覽與AI協作流程.md`**。
+> 給非程式背景維護者使用的最新消息發布教學，見 **`最新消息發布完整教學.md`**。
 > 校友名錄、編號查詢、人物頁與內部名冊之間的資料分工，見 **`校友資料管理與驗證流程.md`**。
 > 人物個人頁的模板化方向、標準區塊與後續檢查規劃，見 **`人物頁模板化規格與檢查清單.md`**。
 
@@ -22,6 +23,7 @@
 | gallery.html | 影像館（活動相簿制，點擊放大） |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
+| 最新消息發布完整教學.md | 給非程式背景維護者的最新消息發布完整工作手冊 |
 | content/people/ | 人物個人頁正文來源檔（32 個人物頁皆已模板化） |
 | data/alumni.js | 校友名錄資料檔 |
 | data/people-profiles.js | 已模板化人物個人頁 metadata（32 個人物頁皆已納入） |
@@ -49,12 +51,12 @@ node scripts/generate-news-pages.js
 
 新增消息時：
 1. 在 `content/news/` 新增 `YYYY-MM-DD-主題.html`，只放文章正文。
-2. 在 `scripts/generate-news-pages.js` 的 `articles` 陣列新增該篇標題、摘要、輸出路徑。
-3. 在 `data/news.js` 陣列「最前面」加一筆。
-4. 執行 `node scripts/generate-news-pages.js`，確認 `news/*.html` 已產生。
+2. 在 `data/news.js` 陣列「最前面」加一筆，填入 `id`、`date`、`time`、`category`、`tags`、`title`、`summary`、`source`、`output`、`thumb` 等欄位。
+3. 需要首頁優先顯示時加 `pinned: true`；一般消息維持 `pinned: false`。
+4. 執行 `node scripts/generate-news-pages.js`，確認 `news/*.html`、`news/index.html` 與 `feed.xml` 已產生。
 
-首頁自動顯示最新 2 則、校友聯演頁最新 2 則、news/index.html 總覽頁全部列出，皆由 `data/news.js` 自動處理。
-`node scripts/check-site.js` 會檢查 `content/news/` 與正式 `news/*.html` 是否同步；若忘記重跑產生腳本，檢查會提醒。
+首頁與校友聯演頁會優先顯示置頂重要公告，並另列最新 2 則一般消息。`news/index.html` 總覽頁由 `data/news.js` 產生完整靜態列表，並用分類與標籤篩選作為漸進增強。
+`node scripts/check-site.js` 會檢查 `content/news/`、正式 `news/*.html`、`news/index.html` 與 `feed.xml` 是否同步；若忘記重跑產生腳本，檢查會提醒。
 
 ### 新增一屆聯演
 音樂會結束後，把 concerts.html「本屆演出」改寫為「歷屆紀錄」的一個 `concert-item`；目前已呈現的校友聯演屆別皆應有獨立資料頁，資料不足者以「資料待考」標示。缺頁可由 `node scripts/generate-concert-pages.js` 依 `data/concerts.js` 產生；若要把舊人工頁改為資料驅動頁，使用 `node scripts/generate-concert-pages.js --overwrite-manual`。第 35 屆《正八音》（`concerts/2019-35th.html`）因雙場次、不同場地與人員變動保留為手寫例外。生成頁會自動帶入可考海報／影像、指揮與獨奏者人物誌摘要、錄影清單與通用資料補充文字。

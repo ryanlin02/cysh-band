@@ -122,6 +122,13 @@ function checkDataReferences() {
   }
 
   for (const item of news) {
+    const label = item.title || item.id || item.url || '(untitled news)';
+    for (const field of ['id', 'date', 'title', 'summary', 'source', 'output', 'category']) {
+      if (!item[field]) addError(`data/news.js: "${label}" missing ${field}.`);
+    }
+    if (!Array.isArray(item.tags) || !item.tags.length) addError(`data/news.js: "${label}" tags must be a non-empty array.`);
+    if (item.output && item.url && item.output !== item.url) addError(`data/news.js: "${label}" output/url mismatch: ${item.output} / ${item.url}`);
+    if (item.source && !exists(item.source)) addError(`data/news.js: missing news source for "${label}": ${item.source}`);
     if (!item.url || !exists(item.url)) addError(`data/news.js: missing news page: ${item.url || '(empty url)'}`);
     if (item.thumb && !exists(item.thumb)) addError(`data/news.js: missing news thumb for "${item.title}": ${item.thumb}`);
   }
@@ -474,7 +481,7 @@ function checkFontUrlEncoding() {
 }
 
 function checkGeneratedNewsPages() {
-  const { articles, renderArticle } = require('./generate-news-pages');
+  const { articles, renderArticle, renderNewsIndex, renderFeed } = require('./generate-news-pages');
   for (const article of articles) {
     const outputPath = path.join(root, article.output);
     if (!fs.existsSync(outputPath)) {
@@ -486,6 +493,16 @@ function checkGeneratedNewsPages() {
     if (actual !== expected) {
       addError(`${article.output}: generated HTML is out of sync. Run node scripts/generate-news-pages.js`);
     }
+  }
+  const expectedIndex = renderNewsIndex();
+  const actualIndex = read('news/index.html');
+  if (actualIndex !== expectedIndex) {
+    addError('news/index.html: generated HTML is out of sync. Run node scripts/generate-news-pages.js');
+  }
+  const expectedFeed = renderFeed();
+  const actualFeed = read('feed.xml');
+  if (actualFeed !== expectedFeed) {
+    addError('feed.xml: generated RSS is out of sync. Run node scripts/generate-news-pages.js');
   }
   info.push(`Generated news pages checked: ${articles.length}`);
 }
