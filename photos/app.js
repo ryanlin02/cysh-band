@@ -316,6 +316,8 @@ function showTimeline() {
   resetContent();
   $("#zoomBar").classList.remove("hidden");
   $("#scrubber").classList.remove("hidden");
+  // 時間軸檢視：隱藏瀏覽器原生捲軸（右側把手取代其功能，避免誤觸；捲動功能不受影響）
+  document.documentElement.classList.add("no-scrollbar");
   vBuild(timelineSections());
   buildScrubber();
 }
@@ -912,6 +914,7 @@ function route() {
   $("#subHeader").classList.add("hidden");
   $("#zoomBar").classList.add("hidden");
   $("#scrubber").classList.add("hidden");
+  document.documentElement.classList.remove("no-scrollbar");
   $("#backBtn").classList.toggle("hidden", !["album", "person"].includes(view));
   if (view === "photo" && parts[1]) {
     // 直接連結某張照片：版面預先含全部照片，直接找得到位置

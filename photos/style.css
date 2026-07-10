@@ -384,3 +384,8 @@ body.scrubbing { user-select: none; }
 .pp-num { color: rgba(236,229,216,.75); }
 #desktopNav a.nav-home { color: var(--gold); border: 1px solid var(--line); }
 #desktopNav a.nav-home:hover { background: rgba(160,124,49,.1); border-color: var(--gold-soft); }
+
+/* 時間軸檢視隱藏瀏覽器原生捲軸（同 Google Photos：由右側時間軸把手取代，
+   滾輪、觸控、鍵盤捲動全部照常，只是不顯示原生捲軸避免誤觸） */
+html.no-scrollbar { scrollbar-width: none; }
+html.no-scrollbar::-webkit-scrollbar { width: 0; height: 0; display: none; }
