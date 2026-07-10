@@ -234,11 +234,14 @@ html.js .hero .est { animation-delay: .44s; }
 
 /* 數字帶 */
 .stats {
-  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 180px));
+  justify-content: center;
+  gap: 12px;
   padding: 42px 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   background: var(--bg-soft);
 }
-.stat { text-align: center; padding: 10px 34px; }
+.stat { text-align: center; min-width: 0; padding: 10px 24px; }
 .stat b { display: block; font-family: var(--latin); font-size: 2.6rem; color: var(--gold); font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
 .stat span { font-size: .85rem; color: var(--ink-dim); letter-spacing: .15em; }
 
@@ -2197,9 +2200,28 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .page-head { padding: 48px 20px 30px; }
   .page-head.has-poster .ph-poster { width: min(320px, 76vw); }
   .hero { padding: 80px 20px 64px; }
+  .hero .sub {
+    line-height: 1.85;
+    letter-spacing: .06em;
+  }
+  .hero .sub > span {
+    display: block;
+  }
+  .hero .sub-punct {
+    display: none;
+  }
   .section { padding: 44px 0; }
-  .stat { padding: 8px 18px; }
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 34px 0;
+    padding: 42px 20px;
+  }
+  .stat { padding: 8px 10px; }
   .stat b { font-size: 2rem; }
+  .stat span {
+    display: block;
+    letter-spacing: .08em;
+  }
 }
 @media (max-width: 560px) {
   .page-head h1 {
