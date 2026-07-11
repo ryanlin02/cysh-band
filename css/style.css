@@ -2101,21 +2101,50 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 @media (max-width: 760px) {
   .roster-controls {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 10px;
-    padding-top: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px 8px;
+    padding-top: 14px;
   }
   .roster-search,
-  .roster-mode-control,
   .roster-filter-panel {
     grid-column: 1 / -1;
   }
   .roster-control-group {
     min-width: 0;
+    gap: 4px;
+  }
+  .roster-search {
+    gap: 5px;
+  }
+  .roster-search input {
+    min-height: 40px;
+    padding: 8px 14px;
+    font-size: .92rem;
+  }
+  .roster-search span,
+  .roster-control-group > span {
+    font-size: .74rem;
+    letter-spacing: .12em;
   }
   .roster-controls .filter-bar {
-    flex-wrap: wrap;
-    gap: 7px;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+  .roster-mode-control .state-toggle-btn,
+  .roster-order-control .state-toggle-btn,
+  .roster-view-control .state-toggle-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 36px;
+    gap: 5px;
+    padding: 5px 8px;
+    font-size: .84rem;
+    letter-spacing: .04em;
+  }
+  .roster-mode-control .state-toggle-icon,
+  .roster-order-control .state-toggle-icon,
+  .roster-view-control .state-toggle-icon {
+    min-width: 1em;
   }
   .roster-filter-panel {
     min-width: 0;
@@ -2130,9 +2159,9 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    min-height: 44px;
-    padding: 11px 14px;
+    gap: 10px;
+    min-height: 40px;
+    padding: 8px 11px;
     border: none;
     border-radius: 0;
     background: transparent;
@@ -2146,8 +2175,8 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   }
   .roster-filter-panel summary b {
     color: var(--gold);
-    font-size: .82rem;
-    letter-spacing: .16em;
+    font-size: .78rem;
+    letter-spacing: .13em;
   }
   .roster-filter-panel[open] summary {
     background: transparent;
@@ -2156,16 +2185,16 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   }
   .roster-filter-panel summary small {
     display: block;
-    margin-top: 3px;
+    margin-top: 2px;
     color: var(--ink-dim);
-    font-size: .78rem;
-    letter-spacing: .04em;
-    line-height: 1.45;
+    font-size: .72rem;
+    letter-spacing: .02em;
+    line-height: 1.35;
   }
   .filter-panel-icon {
     flex: 0 0 auto;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border: 1px solid var(--line);
     border-radius: 50%;
     color: var(--gold);
@@ -2183,7 +2212,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     width: 100%;
     max-height: none;
     overflow: visible;
-    padding: 0 16px 16px;
+    padding: 0 12px 12px;
     border-top: 1px solid var(--line);
     border-left: none;
     border-right: none;
@@ -2196,42 +2225,43 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     display: none;
   }
   .roster-filter-group {
-    padding-top: 14px;
+    padding-top: 10px;
   }
   .roster-filter-group + .roster-filter-group {
     margin-top: 0;
   }
   .roster-filter-group p {
     display: block;
-    margin: 0 0 8px;
+    margin: 0 0 6px;
     color: var(--gold);
-    font-size: .76rem;
+    font-size: .72rem;
     font-weight: 700;
-    letter-spacing: .16em;
+    letter-spacing: .13em;
   }
   .roster-filter-panel .filter-bar {
     padding: 0;
-    gap: 7px;
+    gap: 6px;
+    flex-wrap: wrap;
   }
   .roster-filter-panel .filter-btn {
-    min-height: 38px;
-    padding: 7px 13px;
-    font-size: .84rem;
-    letter-spacing: .06em;
+    min-height: 34px;
+    padding: 5px 11px;
+    font-size: .8rem;
+    letter-spacing: .04em;
   }
   .roster-active-filters {
-    gap: 7px;
-    margin-top: 14px;
+    gap: 6px;
+    margin-top: 10px;
   }
   .roster-active-title {
     width: 100%;
-    font-size: .76rem;
+    font-size: .72rem;
   }
   .roster-active-chip,
   .roster-clear-filters {
-    min-height: 30px;
-    padding: 6px 11px;
-    font-size: .78rem;
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: .74rem;
   }
   .roster-sticky-tools {
     top: 70px;
