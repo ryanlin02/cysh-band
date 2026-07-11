@@ -5,8 +5,15 @@
   <link>https://cysh.band/</link>
   <description>音樂會公告、團練紀錄、幹部交接與各項活動動態。</description>
   <language>zh-TW</language>
-  <lastBuildDate>Fri, 10 Jul 2026 21:30:00 +0800</lastBuildDate>
+  <lastBuildDate>Sat, 11 Jul 2026 18:30:00 +0800</lastBuildDate>
   <atom:link href="https://cysh.band/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>7/12 團練恢復，明天記得帶譜回來</title>
+    <link>https://cysh.band/news/2026-07-11-rehearsal-resumes.html</link>
+    <guid>https://cysh.band/news/2026-07-11-rehearsal-resumes.html</guid>
+    <pubDate>Sat, 11 Jul 2026 18:30:00 +0800</pubDate>
+    <description>嘉義市 7/12 正常上班上課，《為伍》團練恢復進行；請團員明天記得帶譜，沒有演出的校友也歡迎回來看看。</description>
+  </item>
   <item>
     <title>嘉義市 7/11 停止上班上課，請留意巴威颱風動態</title>
     <link>https://cysh.band/news/2026-07-10-chiayi-city-closure.html</link>
