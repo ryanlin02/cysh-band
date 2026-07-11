@@ -407,6 +407,130 @@ html.js .hero .est { animation-delay: .44s; }
   }
 }
 
+/* ---------- 內容頁結尾導流 ---------- */
+.page-next {
+  padding-top: 52px;
+}
+.page-next .next-lede {
+  color: var(--ink-dim);
+  margin-top: -10px;
+}
+.page-next-grid {
+  display: grid;
+  max-width: 780px;
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.page-next-link {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 4px 22px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  transition: color var(--duration-fast), padding-left var(--duration-fast);
+}
+.page-next-link:hover {
+  color: var(--gold);
+  padding-left: 4px;
+}
+.page-next-link span {
+  display: block;
+  color: var(--gold);
+  font-size: .76rem;
+  letter-spacing: .18em;
+  margin-top: .12rem;
+  grid-row: 1 / span 2;
+}
+.page-next-link b {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  letter-spacing: .08em;
+  line-height: 1.55;
+}
+.page-next-link p {
+  color: var(--ink-dim);
+  font-size: .9rem;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ---------- 支持與匯款資訊 ---------- */
+.support-callout {
+  max-width: 50em;
+  padding: 2px 0 2px 24px;
+  border-left: 3px solid var(--gold-soft);
+}
+.support-callout p {
+  max-width: 46em;
+}
+.support-callout .support-actions {
+  margin-top: 16px;
+}
+.support-callout .btn.ghost {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  margin-left: 0;
+  letter-spacing: .12em;
+}
+.support-callout .btn.ghost:hover {
+  background: transparent;
+  transform: none;
+}
+.support-page .section p {
+  max-width: 50em;
+}
+.support-note {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-left: 3px solid var(--gold-soft);
+  background: rgba(242,238,228,.56);
+  color: var(--ink-dim);
+  font-size: .94rem;
+}
+.account-table {
+  max-width: 720px;
+}
+.account-table table.plain {
+  min-width: 560px;
+}
+.account-table th {
+  width: 160px;
+}
+.account-code {
+  font-family: var(--latin), var(--sans);
+  font-size: 1.08rem;
+  letter-spacing: .06em;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 640px) {
+  .page-next {
+    padding-top: 44px;
+  }
+  .page-next-grid {
+    max-width: none;
+  }
+  .page-next-link {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    padding: 15px 0;
+  }
+  .page-next-link:hover {
+    padding-left: 0;
+  }
+  .page-next-link span {
+    grid-row: auto;
+    margin: 0;
+    font-size: .72rem;
+  }
+  .support-callout {
+    padding-left: 18px;
+  }
+}
+
 /* ---------- 雙向入口 ---------- */
 .two-way { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0 8px; }
 .way {
@@ -2589,11 +2713,38 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 
 /* ---------- 頁尾（保留深色收尾） ---------- */
-.footer { border-top: none; background: linear-gradient(180deg, var(--dark-2), var(--dark)); margin-top: 80px; }
-.footer-inner { max-width: 1080px; margin: 0 auto; padding: 52px 20px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
-.footer h4 { font-family: var(--serif); color: var(--gold-soft); letter-spacing: .15em; margin-bottom: 10px; font-size: 1rem; }
+.footer { border-top: none; background: linear-gradient(180deg, var(--dark-2), var(--dark)); margin-top: 72px; }
+.footer-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 36px 20px 34px;
+  display: grid;
+  grid-template-columns: minmax(260px, 1.25fr) minmax(260px, 1fr) minmax(220px, .85fr);
+  gap: 28px;
+  align-items: start;
+}
+.footer h4 { font-family: var(--serif); color: var(--gold-soft); letter-spacing: .14em; margin-bottom: 10px; font-size: .96rem; }
 .footer p, .footer li { color: var(--dark-ink-dim); font-size: .88rem; }
 .footer a { color: var(--gold-soft); }
 .footer a:hover { color: #e0c07a; }
-.footer ul { list-style: none; }
-.footer .copy { text-align: center; padding: 18px; border-top: 1px solid rgba(236,229,216,.12); color: var(--dark-ink-dim); font-size: .8rem; letter-spacing: .1em; }
+.footer ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+.footer li {
+  line-height: 1.75;
+}
+.footer .copy { text-align: center; padding: 14px 18px; border-top: 1px solid rgba(236,229,216,.12); color: var(--dark-ink-dim); font-size: .8rem; letter-spacing: .1em; }
+@media (max-width: 860px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+@media (max-width: 560px) {
+  .footer-inner {
+    padding: 32px 20px 30px;
+  }
+}

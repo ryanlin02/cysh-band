@@ -169,17 +169,37 @@ ${cards}
 </main>
 <footer class="footer">
   <div class="footer-inner">
-    <div>
+    <div class="footer-about">
       <h4>測試輸出</h4>
       <p>由 scripts/generate-concerts-preview.js 產生。</p>
     </div>
-    <div>
+    <div class="footer-links">
       <h4>資料來源</h4>
       <p>data/concerts.js</p>
     </div>
-    <div>
+    <div class="footer-links">
       <h4>用途</h4>
       <p>僅供本地比對，不列入 sitemap。</p>
+    </div>
+    <div class="footer-links">
+      <h4>網站導覽</h4>
+      <ul>
+        <li><a href="../about.html">關於樂團</a></li>
+        <li><a href="../history.html">九十五年</a></li>
+        <li><a href="../numbers.html">編號文化</a></li>
+        <li><a href="../people.html">人物誌</a></li>
+        <li><a href="../roster.html">校友名錄</a></li>
+        <li><a href="../concerts.html">校友聯演</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>追蹤與支持</h4>
+      <ul>
+        <li><a href="../news/index.html">最新消息</a></li>
+        <li><a href="../support.html">支持我們</a></li>
+        <li><a href="../photos/">影像館</a></li>
+        <li><a href="https://www.facebook.com/cyshband/" target="_blank" rel="noopener">嘉義高中管樂社 CYSH Band 粉絲專頁</a></li>
+      </ul>
     </div>
   </div>
 </footer>

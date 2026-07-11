@@ -420,6 +420,73 @@ function checkPublicHtmlQuality() {
   info.push(`Public HTML quality checked: ${publicHtml.length} files`);
 }
 
+function expectedAssetPrefix(fileRel) {
+  const dir = path.dirname(fileRel);
+  if (dir === '.') return '';
+  return '../'.repeat(dir.split('/').length);
+}
+
+function checkSharedChromeConsistency() {
+  const publicHtml = walk(root, (file) => (
+    file.endsWith('.html')
+    && !file.includes(`${path.sep}content${path.sep}`)
+    && !file.includes(`${path.sep}_generated${path.sep}`)
+    && !file.includes(`${path.sep}templates${path.sep}`)
+    && !file.endsWith(`${path.sep}news${path.sep}_template.html`)
+    && !file.includes(`${path.sep}photos${path.sep}`)
+    && rel(file) !== 'gallery.html'
+  ));
+
+  const navTargets = [
+    ['index.html', '首頁'],
+    ['about.html', '關於樂團'],
+    ['history.html', '九十五年'],
+    ['numbers.html', '編號'],
+    ['people.html', '人物誌'],
+    ['roster.html', '校友名錄'],
+    ['concerts.html', '校友聯演'],
+    ['photos/', '影像館']
+  ];
+  const footerTargets = [
+    ['about.html', '關於樂團'],
+    ['history.html', '九十五年'],
+    ['numbers.html', '編號文化'],
+    ['people.html', '人物誌'],
+    ['roster.html', '校友名錄'],
+    ['concerts.html', '校友聯演'],
+    ['news/index.html', '最新消息'],
+    ['support.html', '支持我們'],
+    ['photos/', '影像館']
+  ];
+
+  for (const file of publicHtml) {
+    const fileRel = rel(file);
+    const text = fs.readFileSync(file, 'utf8');
+    const prefix = expectedAssetPrefix(fileRel);
+
+    if (!text.includes('<nav class="nav">')) addError(`${fileRel}: missing shared top navigation.`);
+    for (const [target, label] of navTargets) {
+      if (!text.includes(`href="${prefix}${target}"`) || !text.includes(`>${label}</a>`)) {
+        addError(`${fileRel}: shared top navigation missing ${label} -> ${prefix}${target}.`);
+      }
+    }
+
+    if (!text.includes('<footer class="footer">')) addError(`${fileRel}: missing shared footer.`);
+    if (text.includes('第 41 屆聯合音樂會《為伍》</h4>')) {
+      addError(`${fileRel}: footer still contains event-specific legacy block.`);
+    }
+    if (!text.includes('<h4>網站導覽</h4>')) addError(`${fileRel}: shared footer missing 網站導覽 group.`);
+    if (!text.includes('<h4>追蹤與支持</h4>')) addError(`${fileRel}: shared footer missing 追蹤與支持 group.`);
+    for (const [target, label] of footerTargets) {
+      if (!text.includes(`href="${prefix}${target}"`) || !text.includes(`>${label}</a>`)) {
+        addError(`${fileRel}: shared footer missing ${label} -> ${prefix}${target}.`);
+      }
+    }
+  }
+
+  info.push(`Shared nav/footer consistency checked: ${publicHtml.length} files`);
+}
+
 function checkSitemapAndFeed() {
   const sitemapUrls = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   for (const url of sitemapUrls) {
@@ -505,6 +572,23 @@ function checkGeneratedNewsPages() {
     addError('feed.xml: generated RSS is out of sync. Run node scripts/generate-news-pages.js');
   }
   info.push(`Generated news pages checked: ${articles.length}`);
+}
+
+function checkGeneratedCorePages() {
+  const { pages, renderCorePage } = require('./generate-core-pages');
+  for (const page of pages) {
+    const outputPath = path.join(root, page.output);
+    if (!fs.existsSync(outputPath)) {
+      addError(`generated core page missing: ${page.output}`);
+      continue;
+    }
+    const expected = `${renderCorePage(page).trim()}\n`;
+    const actual = fs.readFileSync(outputPath, 'utf8');
+    if (actual !== expected) {
+      addError(`${page.output}: generated HTML is out of sync. Run node scripts/generate-core-pages.js`);
+    }
+  }
+  info.push(`Generated core pages checked: ${pages.length}`);
 }
 
 function checkGeneratedPeoplePages() {
@@ -691,9 +775,11 @@ loadData();
 checkDataReferences();
 checkHtmlReferences();
 checkPublicHtmlQuality();
+checkSharedChromeConsistency();
 checkSitemapAndFeed();
 checkStructuredData();
 checkFontUrlEncoding();
+checkGeneratedCorePages();
 checkGeneratedNewsPages();
 checkGeneratedPeoplePages();
 checkGeneratedPeopleIndex();
