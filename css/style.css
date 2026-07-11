@@ -10,6 +10,7 @@
   --gold: #a07c31;
   --gold-soft: #c8a45c;
   --line: #e6dfd0;
+  --line-strong: #d2c5ad;
   --dark: #17140f;
   --dark-2: #221c14;
   --dark-ink: #ece5d8;
@@ -1518,17 +1519,19 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 /* ---------- 名錄篩選列與群組 ---------- */
 .roster-controls {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px 18px;
+  grid-template-columns: minmax(280px, 1fr) auto auto auto auto;
+  gap: 10px 12px;
   align-items: end;
-  padding: 30px 0 0;
+  padding: 24px 0 0;
+  position: relative;
 }
 .roster-search {
   display: grid;
-  gap: 8px;
-  max-width: 560px;
+  gap: 6px;
+  min-width: 0;
 }
-.roster-search span {
+.roster-search span,
+.roster-control-group > span {
   color: var(--gold);
   font-size: .82rem;
   font-weight: 700;
@@ -1536,7 +1539,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .roster-search input {
   width: 100%;
-  min-height: 46px;
+  min-height: 44px;
   padding: 10px 16px;
   border: 1px solid var(--line);
   border-radius: var(--radius-pill);
@@ -1552,27 +1555,96 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   box-shadow: var(--shadow-focus), var(--shadow-sm);
 }
 .roster-search input::placeholder { color: rgba(111,103,87,.72); }
-.roster-view {
-  justify-content: flex-end;
+.roster-control-group {
+  display: grid;
+  gap: 6px;
+  min-width: max-content;
+}
+.roster-controls .filter-bar {
   padding: 0;
+  gap: 6px;
+  flex-wrap: nowrap;
 }
 .roster-filter-panel {
-  margin: 28px 0 0;
+  position: relative;
+  min-width: max-content;
 }
 .roster-filter-panel summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 13px;
+  border: 1px solid rgba(198,150,59,.34);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.72);
+  color: var(--gold);
+  cursor: pointer;
+  list-style: none;
+  box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+}
+.roster-filter-panel summary::-webkit-details-marker {
   display: none;
+}
+.roster-filter-panel summary b {
+  display: block;
+  font-size: .82rem;
+  letter-spacing: .12em;
+}
+.roster-filter-panel summary small {
+  display: none;
+}
+.roster-filter-panel[open] summary {
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: #fff;
+  border-color: transparent;
+}
+.filter-panel-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.roster-filter-panel[open] .filter-panel-icon {
+  transform: rotate(45deg);
 }
 .roster-filter-panel-body {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  z-index: 90;
   display: block;
+  width: min(640px, calc(100vw - 44px));
+  max-height: min(70vh, 540px);
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(250,248,243,.97);
+  box-shadow: var(--shadow-lg);
 }
-.roster-filter-group + .roster-filter-group {
-  margin-top: 8px;
-}
-.roster-filter-group p {
+.roster-filter-panel:not([open]) .roster-filter-panel-body {
   display: none;
 }
+.roster-filter-group + .roster-filter-group {
+  margin-top: 12px;
+}
+.roster-filter-group p {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--gold);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
 .roster-filter-panel .filter-bar {
-  padding: 0 0 4px;
+  padding: 0;
+  flex-wrap: wrap;
 }
 .roster-active-filters {
   display: none;
@@ -1620,7 +1692,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .roster-sticky-tools {
   position: fixed;
-  top: 68px;
+  top: 72px;
   left: 50%;
   z-index: 95;
   display: flex;
@@ -1628,7 +1700,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   gap: 12px;
   width: min(calc(100vw - (var(--page-x) * 2)), var(--layout-max));
   margin: 0;
-  padding: 8px 10px 8px 14px;
+  padding: 7px 9px 7px 14px;
   border: 1px solid rgba(226,217,202,.82);
   border-radius: var(--radius-md);
   background: rgba(250,248,243,.9);
@@ -1695,8 +1767,8 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   position: absolute;
   top: calc(100% + 9px);
   right: 0;
-  width: min(680px, calc(100vw - 44px));
-  max-height: min(70vh, 560px);
+  width: min(640px, calc(100vw - 44px));
+  max-height: min(68vh, 540px);
   overflow: auto;
   padding: 16px;
   border: 1px solid var(--line);
@@ -1792,7 +1864,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  margin: 28px 0 -24px;
+  margin: 20px 0 -18px;
 }
 .roster-group-actions button {
   min-height: 32px;
@@ -1860,14 +1932,67 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 28px 0 4px; }
 .filter-bar.roster-filter { padding-top: 8px; }
 .filter-btn {
-  padding: 8px 18px; border-radius: var(--radius-pill); border: 1px solid var(--line);
+  min-height: 42px;
+  padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid var(--line);
   background: var(--bg-card); color: var(--ink-dim); font-family: var(--sans);
   font-size: .9rem; letter-spacing: .08em; cursor: pointer;
   transition: color var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast), box-shadow var(--duration-fast);
 }
 .filter-btn:hover { border-color: var(--gold-soft); color: var(--ink); }
 .filter-btn.on { background: linear-gradient(135deg, var(--gold-soft), var(--gold)); color: #fff; border-color: transparent; }
+.filter-btn.icon-btn {
+  width: 42px;
+  padding: 0;
+  font-size: 1.08rem;
+  letter-spacing: 0;
+}
+.state-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 98px;
+  white-space: nowrap;
+}
+.state-toggle-icon {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.2em;
+  font-family: var(--sans);
+  font-weight: 700;
+  line-height: 1;
+}
 .roster-group h2 .group-sub { display: inline-block; min-width: 0; font-family: var(--sans); font-size: .82rem; font-weight: 400; color: var(--ink-dim); letter-spacing: .1em; }
+.roster-scroll-marker {
+  position: fixed;
+  top: 150px;
+  left: 50%;
+  z-index: 94;
+  max-width: min(520px, calc(100vw - 40px));
+  padding: 8px 14px;
+  border: 1px solid rgba(198,150,59,.28);
+  border-radius: var(--radius-pill);
+  background: rgba(250,248,243,.92);
+  color: var(--gold);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--sans);
+  font-size: .82rem;
+  letter-spacing: .08em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
+}
+.roster-scroll-marker.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.roster-sticky-tools:has(.roster-sticky-filter-panel[open]) + .roster-scroll-marker {
+  opacity: 0;
+}
 .roster-card p { font-size: .9rem; }
 .roster-card .more { margin-top: 10px; font-size: .88rem; }
 .roster-list {
@@ -1935,13 +2060,25 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 @media (max-width: 760px) {
   .roster-controls {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 10px;
+    padding-top: 18px;
   }
-  .roster-view {
-    justify-content: flex-start;
+  .roster-search,
+  .roster-mode-control,
+  .roster-filter-panel {
+    grid-column: 1 / -1;
+  }
+  .roster-control-group {
+    min-width: 0;
+  }
+  .roster-controls .filter-bar {
+    flex-wrap: wrap;
+    gap: 7px;
   }
   .roster-filter-panel {
-    margin: 22px 0 0;
+    min-width: 0;
+    margin: 0;
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     background: rgba(255,255,255,.76);
@@ -1953,7 +2090,12 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    padding: 14px 16px;
+    min-height: 44px;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
     cursor: pointer;
     list-style: none;
     -webkit-tap-highlight-color: transparent;
@@ -1966,6 +2108,11 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     font-size: .82rem;
     letter-spacing: .16em;
   }
+  .roster-filter-panel[open] summary {
+    background: transparent;
+    color: var(--gold);
+    border-color: transparent;
+  }
   .roster-filter-panel summary small {
     display: block;
     margin-top: 3px;
@@ -1975,8 +2122,6 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     line-height: 1.45;
   }
   .filter-panel-icon {
-    display: inline-grid;
-    place-items: center;
     flex: 0 0 auto;
     width: 30px;
     height: 30px;
@@ -1993,8 +2138,18 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     background: rgba(198,150,59,.08);
   }
   .roster-filter-panel-body {
+    position: static;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
     padding: 0 16px 16px;
     border-top: 1px solid var(--line);
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
   .roster-filter-panel:not([open]) .roster-filter-panel-body {
     display: none;
@@ -2018,6 +2173,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     gap: 7px;
   }
   .roster-filter-panel .filter-btn {
+    min-height: 38px;
     padding: 7px 13px;
     font-size: .84rem;
     letter-spacing: .06em;
@@ -2037,7 +2193,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     font-size: .78rem;
   }
   .roster-sticky-tools {
-    top: 60px;
+    top: 70px;
     flex-wrap: wrap;
     gap: 8px;
     width: calc(100vw - 28px);
@@ -2059,25 +2215,75 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     flex-basis: 100%;
   }
   .roster-sticky-filter-panel-body {
-    position: static;
-    width: 100%;
-    max-height: min(58vh, 420px);
-    margin-top: 9px;
-    padding: 14px;
+    position: fixed;
+    top: 116px;
+    left: 14px;
+    right: 14px;
+    width: auto;
+    max-height: calc(100dvh - 132px);
+    margin-top: 0;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+  }
+  .roster-sticky-filter-panel-body .roster-filter-group {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 4px 8px;
+    align-items: start;
+    padding-top: 5px;
+  }
+  .roster-sticky-filter-panel-body .roster-filter-group + .roster-filter-group {
+    margin-top: 5px;
+  }
+  .roster-sticky-filter-panel-body .roster-filter-group p {
+    margin: 0;
+    padding-top: 8px;
+    font-size: .7rem;
+    letter-spacing: .12em;
+  }
+  .roster-sticky-filter-panel-body .filter-bar {
+    gap: 6px;
+  }
+  .roster-sticky-filter-panel-body .filter-btn {
+    min-height: 34px;
+    padding: 5px 10px;
+    font-size: .78rem;
+    letter-spacing: .04em;
+  }
+  .roster-sticky-filter-panel-body .filter-btn.icon-btn {
+    width: 36px;
+    min-height: 36px;
+    font-size: 1rem;
+  }
+  .roster-sticky-filter-panel-body .state-toggle-btn {
+    justify-self: start;
+    min-width: 98px;
+  }
+  .roster-sticky-search {
+    display: block;
+    margin-bottom: 6px;
+  }
+  .roster-sticky-search span {
+    display: none;
+  }
+  .roster-sticky-search input {
+    min-height: 38px;
+    padding: 7px 12px;
+    font-size: .9rem;
   }
   .roster-sticky-actions {
-    bottom: -14px;
-    margin: 14px -14px -14px;
-    padding: 10px 14px;
+    bottom: -10px;
+    margin: 10px -12px -10px;
+    padding: 8px 12px;
   }
   .roster-sticky-actions button {
     min-height: 32px;
-    padding: 6px 12px;
+    padding: 5px 11px;
     font-size: .76rem;
   }
   .roster-group-actions {
     justify-content: flex-start;
-    margin: 18px 0 -10px;
+    margin: 18px 0 -6px;
   }
   .roster-group-actions button {
     min-height: 30px;
@@ -2138,6 +2344,11 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
     margin-top: -4px;
     font-size: .78rem;
   }
+  .roster-scroll-marker {
+    top: 188px;
+    max-width: calc(100vw - 28px);
+    font-size: .76rem;
+  }
 }
 @media (max-width: 420px) {
   .roster-row {
@@ -2187,6 +2398,9 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .news-item:hover {
   color: var(--ink);
   border-bottom-color: rgba(160,124,49,.42);
+}
+.news-item[hidden] {
+  display: none;
 }
 .news-item.is-pinned {
   padding-left: 14px;
@@ -2419,26 +2633,46 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .news-index-main {
   min-width: 0;
 }
+.news-filter-panel {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.news-filter-label {
+  display: none;
+  margin: 0 0 6px;
+  color: var(--gold);
+  font-family: var(--latin);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
 .news-filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 14px;
+  display: none;
+  flex-wrap: nowrap;
+  gap: 7px;
+  margin: 0 0 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
 }
 .news-filter {
   display: inline-flex;
   align-items: center;
+  flex: 0 0 auto;
   gap: 7px;
-  min-height: 34px;
-  padding: 5px 12px;
+  min-height: 32px;
+  padding: 4px 11px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--paper);
+  background: transparent;
   color: var(--ink-dim);
   font: inherit;
-  font-size: .9rem;
+  font-size: .86rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast), box-shadow var(--duration-fast);
 }
 .news-filter span,
 .news-tag-cloud span,
@@ -2450,13 +2684,53 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .news-filter.active,
 .news-filter:hover {
   border-color: rgba(160,124,49,.42);
-  background: rgba(160,124,49,.1);
+  background: rgba(160,124,49,.08);
   color: var(--ink);
 }
+.news-filter.active {
+  box-shadow: inset 0 0 0 1px rgba(160,124,49,.34);
+}
+.news-filter-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 28px;
+}
 .news-result-count {
-  margin: 0 0 16px;
+  margin: 0;
   color: var(--ink-dim);
-  font-size: .9rem;
+  font-size: .84rem;
+}
+.news-clear-filter {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 2px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(160,124,49,.45);
+  background: transparent;
+  color: var(--gold);
+  font: inherit;
+  font-size: .84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.news-clear-filter:hover {
+  color: #7d5f22;
+}
+.news-empty-state {
+  max-width: 860px;
+  margin: 22px 0 0;
+  padding: 18px 20px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  color: var(--ink-dim);
+  background: rgba(255,255,255,.4);
+}
+.news-index-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 22px;
 }
 .news-sidebar {
   position: sticky;
@@ -2473,30 +2747,46 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   font-size: 1rem;
   line-height: 1.4;
 }
+.news-sidebar-note {
+  margin: -4px 0 12px;
+  color: var(--ink-dim);
+  font-size: .84rem;
+  line-height: 1.7;
+}
 .news-tag-cloud,
 .news-category-list,
 .news-sidebar-featured {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 .news-tag-cloud a,
 .news-category-list a {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 0;
+  min-height: 40px;
+  padding: 8px 10px;
   color: var(--ink-dim);
-  border-bottom: 1px solid rgba(45,62,54,.08);
+  border: 1px solid transparent;
+  border-bottom-color: rgba(45,62,54,.08);
+  border-radius: var(--radius-sm);
+  transition: background var(--duration-fast), border-color var(--duration-fast), color var(--duration-fast);
 }
 .news-tag-cloud a:hover,
 .news-tag-cloud a.active,
 .news-category-list a:hover,
 .news-category-list a.active {
   color: var(--ink);
+  border-color: rgba(160,124,49,.32);
+  background: rgba(160,124,49,.08);
 }
 .news-sidebar-featured a {
   display: grid;
   gap: 4px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(45,62,54,.08);
   color: var(--ink);
 }
 .news-sidebar-featured span {
@@ -2563,18 +2853,39 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .news-index-layout {
     display: block;
   }
+  .news-filter-panel {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+  }
+  .news-filter-label {
+    display: block;
+  }
+  .news-filter-status {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
   .news-sidebar {
     position: static;
     margin-top: 28px;
   }
   .news-filter-bar {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    display: flex;
     padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
   }
   .news-filter {
-    flex: 0 0 auto;
+    min-height: 44px;
+  }
+  .news-tag-cloud,
+  .news-category-list {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+  }
+  .news-tag-cloud a,
+  .news-category-list a {
+    flex: 1 1 auto;
+    min-height: 44px;
   }
 }
 

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var root = document.getElementById('roster');
   if (!root || !window.ALUMNI) return;
 
-  var PARTS = ['全部', '幹部', '長笛', '豎笛', '薩克斯風', '小號', '法國號', '長號', '上低音號', '低音號', '打擊'];
+  var PARTS = ['全部', '幹部', '長笛', '豎笛', '薩克斯風', '法國號', '小號', '長號', '上低音號', '低音號', '打擊'];
   var STATUS_FILTERS = [
     { key: 'all', label: '全部狀態' },
     { key: 'profile', label: '有個人頁' },
@@ -13,12 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
     { key: 'leader', label: '幹部' }
   ];
   var DIGITS = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
   var selectedParts = [];
   var currentStatus = 'all';
-  var mode = 'head'; /* head=依字頭, decade=依入學年代 */
-  var view = 'card'; /* card=卡片, list=精簡列表 */
+  var mode = defaultMode(); /* head=依字頭, decade=依入學年代 */
+  var view = defaultView(); /* card=卡片, list=精簡列表 */
+  var sortDirection = 'asc'; /* asc=順序, desc=逆序 */
   var query = '';
   var groupOpenState = {};
+  var groupObserver = null;
+  var scrollMarkerTimer = null;
+  var currentMarkerText = '';
   var filterPanel = document.querySelector('.roster-filter-panel');
   var filterSummary = document.getElementById('roster-filter-summary');
   var activeFilters = document.getElementById('roster-active-filters');
@@ -26,9 +31,17 @@ document.addEventListener('DOMContentLoaded', function () {
   var stickyPanel = document.querySelector('.roster-sticky-filter-panel');
   var stickyCount = document.getElementById('roster-sticky-count');
   var stickySummary = document.getElementById('roster-sticky-summary');
-  var isMobileRoster = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+  var scrollMarker = document.getElementById('roster-scroll-marker');
   if (filterPanel && isMobileRoster) filterPanel.removeAttribute('open');
   readStateFromUrl();
+
+  function defaultMode() {
+    return 'decade';
+  }
+
+  function defaultView() {
+    return isMobileRoster ? 'list' : 'card';
+  }
 
   function isValidPart(value) {
     return PARTS.indexOf(value) >= 0;
@@ -42,12 +55,14 @@ document.addEventListener('DOMContentLoaded', function () {
     var params = new URLSearchParams(window.location.search);
     var nextMode = params.get('mode');
     var nextView = params.get('view');
+    var nextOrder = params.get('order');
     var nextParts = [];
     var nextStatus = params.get('status');
     var nextQuery = params.get('q');
 
     if (nextMode === 'head' || nextMode === 'decade') mode = nextMode;
     if (nextView === 'card' || nextView === 'list') view = nextView;
+    if (nextOrder === 'asc' || nextOrder === 'desc') sortDirection = nextOrder;
     params.getAll('part').forEach(function (partParam) {
       partParam.split(',').forEach(function (part) {
         var cleanPart = part.trim();
@@ -64,8 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (query) params.set('q', query);
     if (selectedParts.length) params.set('part', selectedParts.join(','));
     if (currentStatus !== 'all') params.set('status', currentStatus);
-    if (mode !== 'head') params.set('mode', mode);
-    if (view !== 'card') params.set('view', view);
+    if (mode !== defaultMode()) params.set('mode', mode);
+    if (view !== defaultView()) params.set('view', view);
+    if (sortDirection !== 'asc') params.set('order', sortDirection);
 
     var nextUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
     if (nextUrl !== window.location.pathname + window.location.search + window.location.hash) {
@@ -91,10 +107,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function syncControls() {
-    syncButtonGroup(modeBar, mode);
-    syncButtonGroup(stickyModeBar, mode);
-    syncButtonGroup(viewBar, view);
-    syncButtonGroup(stickyViewBar, view);
+    syncStateToggle(modeBar, modeStateInfo());
+    syncStateToggle(stickyModeBar, modeStateInfo());
+    syncStateToggle(viewBar, viewStateInfo());
+    syncStateToggle(stickyViewBar, viewStateInfo());
+    syncStateToggle(orderBar, orderStateInfo());
+    syncStateToggle(stickyOrderBar, orderStateInfo());
     syncButtonGroup(statusBar, currentStatus);
     syncButtonGroup(stickyStatusBar, currentStatus);
     syncPartButtonGroup(bar);
@@ -110,15 +128,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function hasActiveFilterState() {
-    return !!query || selectedParts.length > 0 || currentStatus !== 'all' || mode !== 'head' || view !== 'card';
+    return !!query || selectedParts.length > 0 || currentStatus !== 'all' || mode !== defaultMode() || view !== defaultView() || sortDirection !== 'asc';
   }
 
   function resetAllFilters() {
     query = '';
     selectedParts = [];
     currentStatus = 'all';
-    mode = 'head';
-    view = 'card';
+    mode = defaultMode();
+    view = defaultView();
+    sortDirection = 'asc';
     resetGroupState();
   }
 
@@ -142,8 +161,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (query) chips.push('<button type="button" class="roster-active-chip" data-reset="query">搜尋：' + escapeHtml(query) + '</button>');
     if (selectedParts.length) chips.push('<button type="button" class="roster-active-chip" data-reset="part">聲部：' + escapeHtml(currentPartsLabel()) + '</button>');
     if (currentStatus !== 'all') chips.push('<button type="button" class="roster-active-chip" data-reset="status">狀態：' + escapeHtml(currentStatusLabel()) + '</button>');
-    if (mode !== 'head') chips.push('<button type="button" class="roster-active-chip" data-reset="mode">分組：' + escapeHtml(currentModeLabel()) + '</button>');
-    if (view !== 'card') chips.push('<button type="button" class="roster-active-chip" data-reset="view">檢視：列表</button>');
+    if (mode !== defaultMode()) chips.push('<button type="button" class="roster-active-chip" data-reset="mode">分組：' + escapeHtml(currentModeLabel()) + '</button>');
+    if (sortDirection !== 'asc') chips.push('<button type="button" class="roster-active-chip" data-reset="order">順序：' + escapeHtml(currentOrderLabel()) + '</button>');
+    if (view !== defaultView()) chips.push('<button type="button" class="roster-active-chip" data-reset="view">檢視：' + escapeHtml(view === 'list' ? '列表' : '卡片') + '</button>');
     chips.push('<button type="button" class="roster-clear-filters" data-reset="all">清除全部</button>');
 
     activeFilters.innerHTML = chips.join('');
@@ -155,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (stickySummary) {
       stickySummary.textContent = [
         currentModeLabel(),
+        currentOrderLabel(),
         currentPartsLabel(),
         currentStatusLabel(),
         view === 'list' ? '列表' : '卡片'
@@ -176,6 +197,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function closeStickyPanel() {
     if (stickyPanel) stickyPanel.open = false;
+  }
+
+  function hideScrollMarker() {
+    if (!scrollMarker) return;
+    window.clearTimeout(scrollMarkerTimer);
+    scrollMarker.classList.remove('is-visible');
+    currentMarkerText = '';
+  }
+
+  function closeFilterPanel() {
+    if (filterPanel && !isMobileRoster) filterPanel.open = false;
   }
 
   function bindSearchInput(input) {
@@ -200,6 +232,44 @@ document.addEventListener('DOMContentLoaded', function () {
     container.appendChild(b);
   }
 
+  function addStateToggleButton(container, getInfo, onClick) {
+    if (!container) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'filter-btn state-toggle-btn on';
+    b.addEventListener('click', onClick);
+    container.appendChild(b);
+    syncStateToggle(container, getInfo());
+  }
+
+  function syncStateToggle(container, info) {
+    if (!container || !info) return;
+    var button = container.querySelector('.state-toggle-btn');
+    if (!button) return;
+    button.dataset.value = info.value;
+    button.title = '目前' + info.label + '，點擊切換為' + info.nextLabel;
+    button.setAttribute('aria-label', button.title);
+    button.innerHTML = '<span class="state-toggle-icon" aria-hidden="true">' + escapeHtml(info.icon) + '</span><span>' + escapeHtml(info.label) + '</span>';
+  }
+
+  function modeStateInfo() {
+    return mode === 'decade'
+      ? { value: 'decade', label: '入學年代', icon: '年', nextLabel: '字頭' }
+      : { value: 'head', label: '字頭', icon: '#', nextLabel: '入學年代' };
+  }
+
+  function orderStateInfo() {
+    return sortDirection === 'asc'
+      ? { value: 'asc', label: '順序', icon: '↑', nextLabel: '逆序' }
+      : { value: 'desc', label: '逆序', icon: '↓', nextLabel: '順序' };
+  }
+
+  function viewStateInfo() {
+    return view === 'card'
+      ? { value: 'card', label: '卡片', icon: '▦', nextLabel: '列表' }
+      : { value: 'list', label: '列表', icon: '☰', nextLabel: '卡片' };
+  }
+
   function groupStateId(groupInfo) {
     return mode + ':' + groupInfo.key;
   }
@@ -207,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function isGroupOpen(groupInfo, index) {
     var id = groupStateId(groupInfo);
     if (Object.prototype.hasOwnProperty.call(groupOpenState, id)) return groupOpenState[id];
-    return hasActiveFilterState() || index === 0;
+    return true;
   }
 
   function setAllGroups(open) {
@@ -226,10 +296,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function decadeGroup(p) {
     if (p.year == null) return { key: 999, label: '編號待補', sub: '資料整理中，歡迎校友提供' };
-    if (p.year >= 100) return { key: 10, label: '民國一〇〇年後', sub: '入學民國 100 年之後' };
     var dec = Math.floor(p.year / 10);
-    var names = { 4: '四〇', 5: '五〇', 6: '六〇', 7: '七〇', 8: '八〇', 9: '九〇' };
-    return { key: dec, label: '民國' + (names[dec] || dec + '〇') + '年代', sub: '入學民國 ' + dec + '0–' + dec + '9 年' };
+    return { key: dec, label: '民國' + decadeName(dec) + '年代', sub: '入學民國 ' + dec + '0–' + dec + '9 年' };
+  }
+
+  function decadeName(decade) {
+    return String(decade * 10).split('').map(function (digit) {
+      return digit === '0' ? '〇' : DIGITS[parseInt(digit, 10)];
+    }).join('');
+  }
+
+  function comparePeople(a, b) {
+    var ya = a.year == null ? 9999 : a.year;
+    var yb = b.year == null ? 9999 : b.year;
+    var na = a.num || '9999';
+    var nb = b.num || '9999';
+    if (ya !== yb) return ya - yb;
+    if (na !== nb) return na < nb ? -1 : 1;
+    return (a.name || '').localeCompare(b.name || '', 'zh-Hant');
   }
 
   function normalizedTerms(value) {
@@ -285,6 +369,10 @@ document.addEventListener('DOMContentLoaded', function () {
     return mode === 'head' ? '依字頭' : '依入學年代';
   }
 
+  function currentOrderLabel() {
+    return sortDirection === 'desc' ? '逆序' : '順序';
+  }
+
   function currentStatusLabel() {
     var statusInfo = STATUS_FILTERS.find(function (item) { return item.key === currentStatus; });
     return statusInfo ? statusInfo.label : '全部狀態';
@@ -294,9 +382,45 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!filterSummary) return;
     filterSummary.textContent = [
       currentModeLabel(),
+      currentOrderLabel(),
       currentPartsLabel(),
       currentStatusLabel()
     ].join('．');
+  }
+
+  function showScrollMarker(group) {
+    if (!scrollMarker || !group) return;
+    if (stickyPanel && stickyPanel.open) return;
+    var label = group.dataset.groupLabel || '';
+    var sub = group.dataset.groupSub || '';
+    var text = label + (sub ? '．' + sub : '');
+    if (!text || text === currentMarkerText) return;
+    currentMarkerText = text;
+    scrollMarker.textContent = text;
+    scrollMarker.classList.add('is-visible');
+    window.clearTimeout(scrollMarkerTimer);
+    scrollMarkerTimer = window.setTimeout(function () {
+      scrollMarker.classList.remove('is-visible');
+      currentMarkerText = '';
+    }, 1400);
+  }
+
+  function observeRosterGroups() {
+    if (groupObserver) groupObserver.disconnect();
+    if (!('IntersectionObserver' in window)) return;
+    var groups = root.querySelectorAll('.roster-group');
+    if (!groups.length) return;
+    groupObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) showScrollMarker(entry.target);
+      });
+    }, {
+      rootMargin: '-92px 0px -72% 0px',
+      threshold: 0
+    });
+    groups.forEach(function (group) {
+      groupObserver.observe(group);
+    });
   }
 
   function personMeta(p) {
@@ -347,10 +471,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function render() {
     var list = window.ALUMNI.filter(function (p) {
       return matchesParts(p) && matchesStatus(p) && matchesQuery(p);
-    }).sort(function (a, b) {
-      var ya = a.year == null ? 9999 : a.year, yb = b.year == null ? 9999 : b.year;
-      return ya - yb || ((a.num || '9999') < (b.num || '9999') ? -1 : 1);
-    });
+    }).sort(comparePeople);
+    if (sortDirection === 'desc') list.reverse();
 
     var groupFn = mode === 'head' ? headGroup : decadeGroup;
     var groups = [], map = {};
@@ -360,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function () {
       map[g.key].people.push(p);
     });
     groups.sort(function (a, b) { return a.info.key - b.info.key; });
+    if (sortDirection === 'desc') groups.reverse();
 
     var html = '';
     if (!list.length) html = '<p class="muted">沒有符合目前搜尋與篩選條件的校友，請調整關鍵字或篩選條件。</p>';
@@ -372,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function () {
     groups.forEach(function (g, index) {
       var groupId = groupStateId(g.info);
       var open = isGroupOpen(g.info, index);
-      html += '<details class="section roster-group" data-group-id="' + groupId + '"' + (open ? ' open' : '') + '>';
+      html += '<details class="section roster-group" data-group-id="' + groupId + '" data-group-label="' + escapeHtml(g.info.label) + '" data-group-sub="' + escapeHtml(g.info.sub) + '"' + (open ? ' open' : '') + '>';
       html += '<summary class="roster-group-summary">';
       html += '<h2><span class="group-title-main">' + g.info.label + '</span> <span class="group-sub">' + g.info.sub + '．' + g.people.length + ' 位</span></h2>';
       html += '<span class="roster-group-state" aria-hidden="true"></span>';
@@ -400,7 +523,11 @@ document.addEventListener('DOMContentLoaded', function () {
     root.querySelectorAll('.roster-card, .roster-row').forEach(function (el, i) {
       el.classList.add('reveal');
       el.style.setProperty('--d', Math.min((i % 6) * 0.06, 0.3) + 's');
-      requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('in'); }); });
+      if (i < 48) {
+        requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('in'); }); });
+      } else {
+        el.classList.add('in');
+      }
     });
     var count = document.getElementById('roster-count');
     if (count) {
@@ -416,19 +543,30 @@ document.addEventListener('DOMContentLoaded', function () {
     updateStickyTools(list.length);
     syncControls();
     updateStickyToolsVisibility();
+    observeRosterGroups();
   }
 
   /* 分組方式切換 */
   var modeBar = document.getElementById('roster-mode');
   var stickyModeBar = document.getElementById('roster-sticky-mode');
   [modeBar, stickyModeBar].forEach(function (container) {
-    [['head', '依字頭'], ['decade', '依入學年代']].forEach(function (m) {
-      addFilterButton(container, m[0], m[1], m[0] === mode, function () {
-        mode = m[0];
-        resetGroupState();
-        updateUrlState();
-        render();
-      });
+    addStateToggleButton(container, modeStateInfo, function () {
+      mode = mode === 'decade' ? 'head' : 'decade';
+      resetGroupState();
+      updateUrlState();
+      render();
+    });
+  });
+
+  /* 排列順序切換 */
+  var orderBar = document.getElementById('roster-order');
+  var stickyOrderBar = document.getElementById('roster-sticky-order');
+  [orderBar, stickyOrderBar].forEach(function (container) {
+    addStateToggleButton(container, orderStateInfo, function () {
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      resetGroupState();
+      updateUrlState();
+      render();
     });
   });
 
@@ -436,12 +574,10 @@ document.addEventListener('DOMContentLoaded', function () {
   var viewBar = document.getElementById('roster-view');
   var stickyViewBar = document.getElementById('roster-sticky-view');
   [viewBar, stickyViewBar].forEach(function (container) {
-    [['card', '卡片'], ['list', '列表']].forEach(function (m) {
-      addFilterButton(container, m[0], m[1], m[0] === view, function () {
-        view = m[0];
-        updateUrlState();
-        render();
-      });
+    addStateToggleButton(container, viewStateInfo, function () {
+      view = view === 'card' ? 'list' : 'card';
+      updateUrlState();
+      render();
     });
   });
 
@@ -493,8 +629,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (reset === 'query') query = '';
       if (reset === 'part') selectedParts = [];
       if (reset === 'status') currentStatus = 'all';
-      if (reset === 'mode') mode = 'head';
-      if (reset === 'view') view = 'card';
+      if (reset === 'mode') mode = defaultMode();
+      if (reset === 'order') sortDirection = 'asc';
+      if (reset === 'view') view = defaultView();
       if (reset === 'all') resetAllFilters();
       if (reset !== 'view') resetGroupState();
       updateUrlState();
@@ -507,6 +644,9 @@ document.addEventListener('DOMContentLoaded', function () {
         closeStickyPanel();
         return;
       }
+      if (event.target.closest('.roster-sticky-filter-panel summary')) {
+        hideScrollMarker();
+      }
       if (event.target.closest('[data-sticky-reset="all"]')) {
         resetAllFilters();
         updateUrlState();
@@ -514,10 +654,20 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+  if (stickyPanel) {
+    stickyPanel.addEventListener('toggle', function () {
+      if (stickyPanel.open) hideScrollMarker();
+    });
+  }
   document.addEventListener('click', function (event) {
     if (!stickyPanel || !stickyPanel.open) return;
     if (stickyTools && stickyTools.contains(event.target)) return;
     closeStickyPanel();
+  });
+  document.addEventListener('click', function (event) {
+    if (!filterPanel || !filterPanel.open || isMobileRoster) return;
+    if (filterPanel.contains(event.target)) return;
+    closeFilterPanel();
   });
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') closeStickyPanel();

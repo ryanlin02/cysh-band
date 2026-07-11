@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     list.innerHTML = latestItems(LIMIT).map(function (n) { return item(n, ''); }).join('') || '<p class="muted">目前沒有新消息。</p>';
     if (news.length > LIMIT) {
       list.insertAdjacentHTML('afterend',
-        '<p class="news-more"><a href="news/index.html">查看全部 ' + news.length + ' 則消息 →</a></p>');
+        '<p class="news-more"><a href="news/index.html">前往最新消息總覽（共 ' + news.length + ' 則）→</a></p>');
     }
   }
 
@@ -102,19 +102,50 @@ document.addEventListener('DOMContentLoaded', function () {
   var count = document.getElementById('news-result-count');
   var filterButtons = Array.prototype.slice.call(document.querySelectorAll('[data-news-filter]'));
   var tagLinks = Array.prototype.slice.call(document.querySelectorAll('[data-news-tag]'));
+  var clearButton = document.getElementById('news-clear-filter');
+  var emptyState = document.getElementById('news-empty-state');
   var activeCategory = 'all';
   var activeTag = '';
 
   function setActiveControls() {
     filterButtons.forEach(function (button) {
-      button.classList.toggle('active', button.getAttribute('data-news-filter') === activeCategory);
+      var isActive = button.getAttribute('data-news-filter') === activeCategory;
+      button.classList.toggle('active', isActive);
+      if (button.tagName === 'BUTTON') {
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      } else if (isActive) {
+        button.setAttribute('aria-current', 'true');
+      } else {
+        button.removeAttribute('aria-current');
+      }
     });
     tagLinks.forEach(function (link) {
-      link.classList.toggle('active', link.getAttribute('data-news-tag') === activeTag);
+      var isActive = link.getAttribute('data-news-tag') === activeTag;
+      link.classList.toggle('active', isActive);
+      if (isActive) {
+        link.setAttribute('aria-current', 'true');
+      } else {
+        link.removeAttribute('aria-current');
+      }
     });
+    if (clearButton) clearButton.hidden = activeCategory === 'all' && !activeTag;
   }
 
-  function applyFilters() {
+  function updateUrl() {
+    if (!window.history || !window.history.replaceState) return;
+    var url = new URL(window.location.href);
+    url.searchParams.delete('category');
+    url.searchParams.delete('tag');
+    if (activeTag) {
+      url.searchParams.set('tag', activeTag);
+    } else if (activeCategory !== 'all') {
+      url.searchParams.set('category', activeCategory);
+    }
+    window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+  }
+
+  function applyFilters(options) {
+    options = options || {};
     var visible = 0;
     items.forEach(function (entry) {
       var category = entry.getAttribute('data-category') || '';
@@ -129,7 +160,9 @@ document.addEventListener('DOMContentLoaded', function () {
       var label = activeTag ? ('#' + activeTag) : (activeCategory === 'all' ? '全部' : activeCategory);
       count.textContent = '目前顯示 ' + label + ' ' + visible + ' 則消息';
     }
+    if (emptyState) emptyState.hidden = visible > 0;
     setActiveControls();
+    if (options.updateUrl !== false) updateUrl();
   }
 
   filterButtons.forEach(function (button) {
@@ -150,11 +183,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  if (clearButton) {
+    clearButton.addEventListener('click', function () {
+      activeCategory = 'all';
+      activeTag = '';
+      applyFilters();
+    });
+  }
+
   var params = new URLSearchParams(window.location.search);
   if (params.get('category')) activeCategory = params.get('category');
   if (params.get('tag')) {
     activeTag = params.get('tag');
     activeCategory = 'all';
   }
-  applyFilters();
+  applyFilters({ updateUrl: false });
 });
