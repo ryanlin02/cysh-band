@@ -37,7 +37,7 @@ const pages = [
     url: 'https://cysh.band/numbers.html',
     extraScripts: [
       '<script src="data/number-lookup.js" defer></script>',
-      '<script src="data/alumni.js?v=20260709-3" defer></script>',
+      '<script src="data/alumni.js?v=20260711-1" defer></script>',
       '<script src="js/number-lookup.js" defer></script>'
     ].join('\n')
   },
