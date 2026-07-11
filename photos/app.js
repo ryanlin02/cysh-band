@@ -529,7 +529,7 @@ function renderPersonDetailByIndex(pi, person) {
     (avatar ? `<img class="sub-avatar" src="${esc(avatar)}" alt="${esc(person.name)}">` : "") +
     `<span>${esc(person.name)}${person.num ? `<span class="p-num">${person.num}</span>` : ""}</span>` +
     (profile ? `<a class="profile-jump" href="${esc(profile.url)}">閱讀人物介紹</a>` : "") +
-    `</div><div class="sub-meta">出現在 ${person.count} 張照片中（AI 初判後人工校對，仍可能有少數誤判）</div>`;
+    `</div><div class="sub-meta">出現在 ${person.count} 張照片中</div>`;
   const secs = [];
   for (const ai of DB.albumOrder) {
     const ph = DB.photosByAlbum[ai].filter((p) => p.p && p.p.includes(pi));
