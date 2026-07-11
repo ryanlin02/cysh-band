@@ -94,6 +94,7 @@ function loadData() {
   for (const file of ['data/alumni.js', 'data/news.js', 'data/number-lookup.js', 'data/concerts.js', 'data/people-profiles.js']) {
     require(path.join(root, file));
   }
+  require(path.join(root, 'photos', 'profile-links.js'));
 
   if (!Array.isArray(global.ALUMNI)) addError('data/alumni.js: window.ALUMNI must be an array.');
   if (!Array.isArray(global.NEWS)) addError('data/news.js: window.NEWS must be an array.');
@@ -101,6 +102,7 @@ function loadData() {
   if (!Array.isArray(global.CONCERTS)) addError('data/concerts.js: window.CONCERTS must be an array.');
   if (!Array.isArray(global.PEOPLE_PROFILES)) addError('data/people-profiles.js: window.PEOPLE_PROFILES must be an array.');
   if (!Array.isArray(global.PEOPLE_FEATURED_SECTIONS)) addError('data/people-profiles.js: window.PEOPLE_FEATURED_SECTIONS must be an array.');
+  if (!global.PEOPLE_PROFILE_LINKS || typeof global.PEOPLE_PROFILE_LINKS !== 'object') addError('photos/profile-links.js: window.PEOPLE_PROFILE_LINKS must be an object.');
 }
 
 function checkDataReferences() {
@@ -702,6 +704,9 @@ function checkPeopleProfilePages() {
     if (!/<script\s+type=["']application\/ld\+json["']>[\s\S]*"@type":\s*"Person"[\s\S]*<\/script>/i.test(text)) {
       addError(`${fileRel}: missing Person JSON-LD.`);
     }
+    if (num !== 'linshaofan' && !text.includes(`../photos/#/person-num/${num}`)) {
+      addError(`${fileRel}: missing gallery person-num link.`);
+    }
     if (!/<meta\s+property=["']og:image:width["']/i.test(text) || !/<meta\s+property=["']og:image:height["']/i.test(text)) {
       missingOgImageDimensions += 1;
     }
@@ -733,6 +738,48 @@ function checkPeopleProfilePages() {
   }
 
   info.push(`People profile pages checked: ${profileFiles.length}; blank hero photos: ${blankHeroPhotos}; missing OG image dimensions: ${missingOgImageDimensions}`);
+}
+
+function checkGalleryProfileLinks() {
+  const links = global.PEOPLE_PROFILE_LINKS || {};
+  const byNum = links.byNum || {};
+  const byId = links.byId || {};
+  const profiles = global.PEOPLE_PROFILES || [];
+  const expectedNums = new Set();
+  const expectedIds = new Set();
+
+  for (const profile of profiles) {
+    const key = profile.id || profile.num;
+    const record = profile.num ? byNum[profile.num] : byId[key];
+    const label = `${key || 'no-id'} ${profile.name || '(missing name)'}`;
+    if (profile.num) expectedNums.add(profile.num);
+    else if (key) expectedIds.add(key);
+    if (!record) {
+      addError(`photos/profile-links.js: missing profile link for ${label}. Run node scripts/generate-gallery-profile-links.js`);
+      continue;
+    }
+    const expectedUrl = `../${profile.output}`;
+    const expectedPhoto = `../${String(profile.photo || '').replace(/^\.\.\//, '')}`;
+    if (record.name !== profile.name) addError(`photos/profile-links.js: ${label} name mismatch: ${record.name} / ${profile.name}`);
+    if (record.url !== expectedUrl) addError(`photos/profile-links.js: ${label} url mismatch: ${record.url} / ${expectedUrl}`);
+    if (record.photo !== expectedPhoto) addError(`photos/profile-links.js: ${label} photo mismatch: ${record.photo} / ${expectedPhoto}`);
+    for (const field of ['url', 'photo']) {
+      const value = cleanLocalRef(record[field] || '');
+      if (!value || isExternal(value)) continue;
+      const target = path.normalize(path.join(root, 'photos', value));
+      if (!target.startsWith(root) || !fs.existsSync(target)) {
+        addError(`photos/profile-links.js: ${label} ${field} not found: ${record[field]}`);
+      }
+    }
+  }
+
+  for (const num of Object.keys(byNum)) {
+    if (!expectedNums.has(num)) addError(`photos/profile-links.js: stale byNum record: ${num}`);
+  }
+  for (const id of Object.keys(byId)) {
+    if (!expectedIds.has(id)) addError(`photos/profile-links.js: stale byId record: ${id}`);
+  }
+  info.push(`Gallery profile links checked: byNum ${Object.keys(byNum).length}; byId ${Object.keys(byId).length}`);
 }
 
 function checkPeopleNameLinks() {
@@ -786,5 +833,6 @@ checkGeneratedPeopleIndex();
 checkGeneratedConcertsIndex();
 checkPeopleIndexCards();
 checkPeopleProfilePages();
+checkGalleryProfileLinks();
 checkPeopleNameLinks();
 printReport();

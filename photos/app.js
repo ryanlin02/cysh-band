@@ -53,6 +53,19 @@ function albumYear(alb) {
 function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
+function profileLinkForPerson(person) {
+  const links = window.PEOPLE_PROFILE_LINKS || {};
+  if (!person) return null;
+  if (person.num && links.byNum && links.byNum[person.num]) return links.byNum[person.num];
+  if (person.id && links.byId && links.byId[person.id]) return links.byId[person.id];
+  return null;
+}
+function personAvatarUrl(person) {
+  const profile = profileLinkForPerson(person);
+  if (profile && profile.photo && !/\/blank\.webp$/i.test(profile.photo)) return profile.photo;
+  if (person && person.avatar) return CFG.dataBase + "/" + encPath(person.avatar);
+  return "";
+}
 
 /* ---------- 資料載入 ---------- */
 async function loadData() {
@@ -482,8 +495,9 @@ function renderPeople() {
     if (!p.count) continue;
     const card = document.createElement("div");
     card.className = "person-card";
+    const avatar = personAvatarUrl(p);
     card.innerHTML =
-      `<div class="face">${p.avatar ? `<img loading="lazy" src="${CFG.dataBase}/${encPath(p.avatar)}" alt="">` : ""}</div>` +
+      `<div class="face">${avatar ? `<img loading="lazy" src="${esc(avatar)}" alt="">` : ""}</div>` +
       `<div class="p-name">${esc(p.name)}${p.num ? `<span class="p-num">${p.num}</span>` : ""}</div><div class="p-count">${p.count} 張</div>`;
     card.onclick = () => { location.hash = "#/person/" + encodeURIComponent(p.id); };
     grid.appendChild(card);
@@ -495,11 +509,27 @@ function renderPersonDetail(personId) {
   const pi = PEOPLE.findIndex((p) => p.id === personId);
   if (pi < 0) { $("#content").innerHTML = `<div class="empty">找不到這位人物</div>`; return; }
   const person = PEOPLE[pi];
+  renderPersonDetailByIndex(pi, person);
+}
+function renderPersonDetailByNum(num) {
+  resetContent();
+  const pi = PEOPLE.findIndex((p) => p.num === num);
+  if (pi < 0) {
+    $("#content").innerHTML = `<div class="empty">目前影像館尚未建立編號 ${esc(num)} 的人物照片頁<br><small>影像館人物資料會隨照片整理持續更新。</small></div>`;
+    return;
+  }
+  renderPersonDetailByIndex(pi, PEOPLE[pi]);
+}
+function renderPersonDetailByIndex(pi, person) {
+  const profile = profileLinkForPerson(person);
+  const avatar = personAvatarUrl(person);
   $("#subHeader").classList.remove("hidden");
   $("#subHeader").innerHTML =
     `<div class="sub-title">` +
-    (person.avatar ? `<img class="sub-avatar" src="${CFG.dataBase}/${encPath(person.avatar)}">` : "") +
-    `${esc(person.name)}${person.num ? `<span class="p-num">${person.num}</span>` : ""}</div><div class="sub-meta">出現在 ${person.count} 張照片中（依人臉辨識結果，可能有誤判）</div>`;
+    (avatar ? `<img class="sub-avatar" src="${esc(avatar)}" alt="${esc(person.name)}">` : "") +
+    `<span>${esc(person.name)}${person.num ? `<span class="p-num">${person.num}</span>` : ""}</span>` +
+    (profile ? `<a class="profile-jump" href="${esc(profile.url)}">閱讀人物介紹</a>` : "") +
+    `</div><div class="sub-meta">出現在 ${person.count} 張照片中（AI 初判後人工校對，仍可能有少數誤判）</div>`;
   const secs = [];
   for (const ai of DB.albumOrder) {
     const ph = DB.photosByAlbum[ai].filter((p) => p.p && p.p.includes(pi));
@@ -808,8 +838,9 @@ function updatePanel(p) {
     html += `<h3>照片中的人物（AI 辨識，可能有誤）</h3><div>` +
       p.p.map((pi) => {
         const person = PEOPLE[pi];
-        const face = person.avatar
-          ? `<img class="pp-face" src="${CFG.dataBase}/${encPath(person.avatar)}" alt="">`
+        const avatar = personAvatarUrl(person);
+        const face = avatar
+          ? `<img class="pp-face" src="${esc(avatar)}" alt="">`
           : "";
         const numTag = person.num ? `<span class="pp-num">${person.num}</span>` : "";
         return `<span class="pp-chip" onclick="location.hash='#/person/${person.id}';document.getElementById('lbClose').click()">${face}${esc(person.name)}${numTag}</span>`;
@@ -965,7 +996,7 @@ function route() {
   $("#zoomBar").classList.add("hidden");
   $("#scrubber").classList.add("hidden");
   document.documentElement.classList.remove("no-scrollbar");
-  $("#backBtn").classList.toggle("hidden", !["album", "person"].includes(view));
+  $("#backBtn").classList.toggle("hidden", !["album", "person", "person-num"].includes(view));
   if (view === "photo" && parts[1]) {
     // 直接連結某張照片：版面預先含全部照片，直接找得到位置
     showTimeline();
@@ -983,6 +1014,7 @@ function route() {
     case "album": setNav("albums"); renderAlbumDetail(parts.slice(1).join("/")); break;
     case "people": setNav("people"); renderPeople(); break;
     case "person": setNav("people"); renderPersonDetail(parts[1]); break;
+    case "person-num": setNav("people"); renderPersonDetailByNum(parts[1]); break;
     case "search": setNav("search"); renderSearch(parts.slice(1).join("/")); break;
     default: setNav("timeline"); showTimeline(); break;
   }

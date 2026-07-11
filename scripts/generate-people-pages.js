@@ -110,6 +110,15 @@ ${links.map((link) => `      <tr><th>${escapeHtml(link.type)}</th><td><a href="$
     </table></div>`;
 }
 
+function renderGalleryLink(profile) {
+  if (!profile.num) return '';
+  const href = `../photos/#/person-num/${encodeURIComponent(profile.num)}`;
+  return `<section class="person-gallery-panel" aria-label="影像館人物照片">
+      <h3>影像館中的照片</h3>
+      <a class="btn ghost" href="${escapeHtml(href)}"><span>前往影像館</span><b>查看照片牆</b></a>
+    </section>`;
+}
+
 function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -190,6 +199,7 @@ function renderProfile(profile, options = {}) {
     : '';
   const previewSuffix = options.preview ? '．PREVIEW' : '';
   const relatedLinksHtml = renderRelatedLinks(profile.relatedLinks);
+  const galleryLinkHtml = renderGalleryLink(profile);
   const personNavClass = profile.peopleLink ? 'person-nav article-page-nav' : 'person-nav article-page-nav person-nav--single';
   const peopleBackLink = profile.peopleLink
     ? `      <a class="btn ghost article-page-nav-link overview" href="${escapeHtml(profile.peopleLink)}"><span>回到</span><b>人物誌總覽</b></a>\n`
@@ -210,7 +220,7 @@ function renderProfile(profile, options = {}) {
   <article class="section news-article person-article">
 ${previewNote}${indentHtml(body)}
 
-    ${renderRelatedConcerts(relatedConcerts)}${relatedLinksHtml ? `\n\n    ${relatedLinksHtml}` : ''}
+    ${renderRelatedConcerts(relatedConcerts)}${relatedLinksHtml ? `\n\n    ${relatedLinksHtml}` : ''}${galleryLinkHtml ? `\n\n    ${galleryLinkHtml}` : ''}
 
     <h3>資料來源</h3>
     <p class="sources">${profile.sourceHtml}</p>

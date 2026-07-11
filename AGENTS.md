@@ -205,11 +205,13 @@ node scripts/generate-concert-pages.js
 
 ```bash
 node scripts/generate-people-pages.js
+node scripts/generate-gallery-profile-links.js
 node scripts/generate-people-index.js
 node scripts/check-site.js
 ```
 
-6. 更新 `sitemap.xml` 與修改歷程。
+6. 若個人頁有校友編號，確認 `people/{id}.html` 底部能連到 `photos/#/person-num/{編號}`，影像館人物頁能透過 `photos/profile-links.js` 連回個人介紹頁。完整流程見 `人物頁與影像館串接維護流程.md`。
+7. 更新 `sitemap.xml` 與修改歷程。
 
 ### 9.3 新增最新消息
 

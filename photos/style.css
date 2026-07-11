@@ -212,6 +212,18 @@ body.scrubbing #floatDate { display: none; }
 .sub-title { font-family: var(--serif); font-size: 22px; font-weight: 900; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .sub-meta { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
 .sub-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-soft); }
+.profile-jump {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 36px; padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg-card);
+  color: var(--gold); font-family: var(--sans); font-size: 13px; font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.profile-jump:hover { border-color: var(--gold-soft); background: rgba(160,124,49,.09); transform: translateY(-1px); }
+@media (max-width: 480px) {
+  .profile-jump { width: 100%; }
+}
 
 /* ============ 搜尋 ============ */
 .search-wrap { padding: 14px 6px 4px; }

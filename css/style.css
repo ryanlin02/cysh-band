@@ -1470,9 +1470,50 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .person-article p { max-width: 42em; }
 .person-article .sources { font-size: .85rem; color: var(--ink-dim); }
 .person-article .sources a { word-break: break-all; }
+.person-gallery-panel {
+  margin: 32px 0 24px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  gap: 18px;
+  align-items: center;
+}
+.person-gallery-panel h3 { margin: 0; }
+.person-gallery-panel .btn.ghost {
+  min-height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.person-gallery-panel .btn.ghost span {
+  color: var(--ink-dim);
+  font-size: .82rem;
+  letter-spacing: .12em;
+}
+.person-gallery-panel .btn.ghost b {
+  color: var(--gold);
+}
+@media (max-width: 760px) {
+  .person-gallery-panel {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .person-gallery-panel .btn.ghost {
+    min-height: auto;
+  }
+}
 
 /* ---------- 人物頁尾導覽（回人物誌／看校友名錄） ---------- */
 .person-nav { margin-top: 48px; }
+.person-nav.article-page-nav .btn.ghost,
+.person-nav.article-page-nav .overview,
+.person-nav.article-page-nav .next {
+  align-items: center;
+  text-align: center;
+}
 .person-nav.person-nav--single {
   grid-template-columns: minmax(220px, 360px);
   justify-content: end;
