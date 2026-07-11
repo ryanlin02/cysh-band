@@ -238,74 +238,48 @@ html.js .hero .est { animation-delay: .44s; }
   display: grid;
   grid-template-columns: repeat(4, minmax(120px, 180px));
   justify-content: center;
-  gap: 12px;
-  padding: 42px 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  gap: 8px;
+  padding: 26px 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   background: var(--bg-soft);
 }
-.stat { text-align: center; min-width: 0; padding: 10px 24px; }
-.stat b { display: block; font-family: var(--latin); font-size: 2.6rem; color: var(--gold); font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
-.stat span { font-size: .85rem; color: var(--ink-dim); letter-spacing: .15em; }
+.stat { text-align: center; min-width: 0; padding: 4px 18px; }
+.stat b { display: block; font-family: var(--latin); font-size: 2.45rem; color: var(--gold); font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.stat span { font-size: .85rem; color: var(--ink-dim); letter-spacing: .1em; white-space: nowrap; }
 
-/* ---------- 當屆音樂會區塊（亮面卡片＋金色光澤） ---------- */
+/* ---------- 當屆音樂會區塊 ---------- */
 .concert-banner {
-  position: relative; overflow: hidden;
-  display: grid; grid-template-columns: 300px 1fr; gap: 44px; align-items: center;
-  background: linear-gradient(135deg, #ffffff, #f4efe3);
+  position: relative;
+  display: grid; grid-template-columns: minmax(160px, 220px) minmax(0, 440px); gap: 32px; align-items: center;
+  width: min(100%, 720px);
   color: var(--ink);
-  border: 1px solid var(--line); border-top: 3px solid var(--gold-soft);
-  border-radius: var(--radius-lg); padding: 44px; margin: 64px auto;
-  box-shadow: var(--shadow-md);
+  border-top: 2px solid var(--gold-soft); border-bottom: 1px solid var(--line);
+  padding: 24px 0; margin: 32px 0 24px;
 }
-/* 週期性金色光澤掃過 */
-.concert-banner::after, .featured::after {
-  content: ""; position: absolute; top: -20%; left: -80%; width: 45%; height: 140%;
-  background: linear-gradient(105deg, transparent, rgba(200,164,92,.16), transparent);
-  transform: skewX(-18deg); pointer-events: none;
-  animation: sheen 7s ease-in-out infinite;
-}
-@keyframes sheen { 0%, 55% { left: -80%; } 85%, 100% { left: 160%; } }
-@media (prefers-reduced-motion: reduce) { .concert-banner::after, .featured::after { animation: none; display: none; } }
-/* 海報與深色背景分離：金色細框＋呼吸光暈，襯托主視覺 */
 .concert-banner .poster-wrap { position: relative; }
-.concert-banner .poster-wrap::before {
-  content: ""; position: absolute; inset: -14%;
-  background: radial-gradient(ellipse at center, rgba(200,164,92,.28), transparent 65%);
-  filter: blur(6px); animation: halo 5s ease-in-out infinite alternate; pointer-events: none;
-}
-@keyframes halo { from { opacity: .45; transform: scale(.96); } to { opacity: 1; transform: scale(1.04); } }
-@media (prefers-reduced-motion: reduce) { .concert-banner .poster-wrap::before { animation: none; } }
 .concert-banner img {
-  position: relative; border-radius: var(--radius-sm);
-  border: 1px solid rgba(160,124,49,.45);
-  box-shadow: 0 0 0 5px rgba(200,164,92,.10), 0 14px 36px rgba(43,39,33,.28), 0 0 42px rgba(200,164,92,.18);
-  transition: transform var(--duration-slow) var(--ease-standard), box-shadow var(--duration-slow);
+  position: relative; border-radius: var(--radius-sm); border: 1px solid rgba(160,124,49,.45);
+  box-shadow: var(--shadow-sm);
 }
-.concert-banner:hover img {
-  transform: scale(1.03) rotate(-.6deg);
-  box-shadow: 0 0 0 5px rgba(200,164,92,.2), 0 18px 44px rgba(43,39,33,.32), 0 0 56px rgba(200,164,92,.3);
-}
-.concert-banner .tag { color: var(--gold); letter-spacing: .3em; font-size: .85rem; margin-bottom: 10px; }
-.concert-banner h2 { font-family: var(--serif); font-size: 2.1rem; font-weight: 900; letter-spacing: .12em; margin-bottom: 14px; color: var(--ink); }
-.concert-banner .info { color: var(--ink-dim); margin-bottom: 24px; }
+.concert-banner .tag { color: var(--gold); letter-spacing: .3em; font-size: .85rem; margin-bottom: 8px; }
+.concert-banner h2 { font-family: var(--serif); font-size: 2.1rem; font-weight: 900; letter-spacing: .12em; margin-bottom: 10px; color: var(--ink); }
+.concert-banner .info { color: var(--ink-dim); margin-bottom: 18px; }
 .concert-banner .info b { color: var(--ink); }
 .concert-banner .muted { color: var(--ink-dim); }
 
 /* 演出倒數徽章 */
 .countdown {
   display: inline-flex; align-items: center; gap: 10px;
-  padding: 8px 20px; margin-bottom: 18px; border-radius: var(--radius-pill);
+  padding: 8px 20px; margin-bottom: 14px; border-radius: var(--radius-pill);
   background: rgba(200,164,92,.14); border: 1px solid rgba(160,124,49,.35);
   color: var(--gold); font-weight: 700; letter-spacing: .12em; font-size: .95rem;
 }
 .countdown::before {
   content: ""; width: 8px; height: 8px; border-radius: 50%;
-  background: var(--gold); animation: beat 1.6s ease-in-out infinite;
+  background: var(--gold);
 }
-@keyframes beat { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: .55; } }
-@media (prefers-reduced-motion: reduce) { .countdown::before { animation: none; } }
 .countdown b { font-family: var(--latin); font-size: 1.35rem; line-height: 1; color: var(--gold); }
 @media (max-width: 720px) {
-  .concert-banner { grid-template-columns: 1fr; padding: 32px; }
+  .concert-banner { grid-template-columns: 1fr; width: auto; padding: 22px 0; margin: 28px 0 20px; }
   .concert-banner img { max-width: 260px; margin: 0 auto; }
   /* 窄螢幕：按鈕改為等寬堆疊，間距一致 */
   .concert-banner .btn, .featured .btn {
@@ -2592,6 +2566,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .concert-news-section {
   padding-top: 30px;
 }
+.home-news-section { padding-top: 24px; }
 .concert-news-list {
   max-width: 860px;
 }
@@ -3012,14 +2987,15 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .section { padding: 44px 0; }
   .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 34px 0;
-    padding: 42px 20px;
+    gap: 22px 0;
+    padding: 30px 20px;
   }
-  .stat { padding: 8px 10px; }
+  .stat { padding: 4px 10px; }
   .stat b { font-size: 2rem; }
   .stat span {
     display: block;
     letter-spacing: .08em;
+    white-space: normal;
   }
 }
 @media (max-width: 560px) {
@@ -3117,6 +3093,19 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .footer li {
   line-height: 1.75;
+}
+.social-links { display: flex; gap: 8px; margin-top: 12px; }
+.social-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border: 1px solid rgba(236,229,216,.22);
+  border-radius: var(--radius-pill); color: var(--gold-soft);
+  transition: color var(--duration-fast), background var(--duration-fast), border-color var(--duration-fast);
+}
+.social-link:hover { color: #e0c07a; background: rgba(200,164,92,.12); border-color: rgba(200,164,92,.55); }
+.social-link svg { width: 20px; height: 20px; fill: currentColor; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 .footer .copy { text-align: center; padding: 14px 18px; border-top: 1px solid rgba(236,229,216,.12); color: var(--dark-ink-dim); font-size: .8rem; letter-spacing: .1em; }
 @media (max-width: 860px) {

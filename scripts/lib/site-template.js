@@ -47,6 +47,8 @@ function createRenderer(root) {
     const shared = {
       assetPrefix: values.assetPrefix || '',
       navActive: values.navActive || '',
+      brandActive: values.navActive === 'index' ? ' active' : '',
+      brandCurrent: values.navActive === 'index' ? ' aria-current="page"' : '',
       extraHead: values.extraHead || '',
       extraScripts: values.extraScripts || ''
     };
@@ -63,7 +65,18 @@ function createRenderer(root) {
     });
   }
 
-  return { escapeHtml, renderPage };
+  function renderPartial(templateName, values = {}) {
+    const navActive = values.navActive || '';
+    return render(readTemplate(templateName), {
+      assetPrefix: values.assetPrefix || '',
+      navActive,
+      brandActive: navActive === 'index' ? ' active' : '',
+      brandCurrent: navActive === 'index' ? ' aria-current="page"' : '',
+      ...values
+    });
+  }
+
+  return { escapeHtml, renderPartial, renderPage };
 }
 
 module.exports = { createRenderer };

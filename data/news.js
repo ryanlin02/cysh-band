@@ -7,7 +7,7 @@
    重要欄位：
    id 唯一代碼、date 日期、time 發布時間、category 分類、tags 標籤、
    title 列表標題、summary 列表摘要、source 正文來源、output 正式頁、
-   thumb 縮圖路徑、pinned 是否置頂、priority 重要程度。
+   thumb 縮圖路徑、pinned 是否置頂、pinUntil 置頂到期日、priority 重要程度。
 */
 window.NEWS = [
   {
@@ -17,6 +17,7 @@ window.NEWS = [
     category: "行政公告",
     tags: ["巴威颱風", "停班停課", "團練通知", "為伍"],
     pinned: true,
+    pinUntil: "2026-07-12",
     priority: "urgent",
     title: "嘉義市 7/11 停止上班上課，請留意巴威颱風動態",
     summary: "嘉義市政府已發布巴威颱風停班停課通知，7/11（六）全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。",

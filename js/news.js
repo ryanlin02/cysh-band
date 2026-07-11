@@ -1,8 +1,8 @@
 /* 最新消息渲染與篩選（資料來源 data/news.js）
    - #news-pinned：重要公告（首頁）
-   - #news-home：最新 2 則（首頁）
-   - #news-list-pinned：重要公告（校友聯演頁）
-   - #news-list：最新 2 則（校友聯演頁）
+   - #news-home：最新 5 則一般消息（首頁）
+   - #news-list-pinned：重要公告（校友聯演頁，僅限關聯聯演文章）
+   - #news-list：最近 3 則關聯聯演消息（校友聯演頁）
    - #news-all：全部文章（news/index.html，靜態列表由產生器輸出，JS 只做篩選） */
 document.addEventListener('DOMContentLoaded', function () {
   if (!window.NEWS) return;
@@ -26,11 +26,26 @@ document.addEventListener('DOMContentLoaded', function () {
       url: n.output || n.url || '',
       thumb: n.thumb || '',
       pinned: Boolean(n.pinned),
+      pinUntil: n.pinUntil || '',
+      relatedConcert: n.relatedConcert || '',
       priority: n.priority || (n.pinned ? 'important' : 'normal')
     };
   }
 
-  var news = window.NEWS.map(normalize);
+  function todayInTaipei() {
+    return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Taipei' }).format(new Date());
+  }
+
+  function isActivePin(n) {
+    return n.pinned && Boolean(n.pinUntil) && n.pinUntil >= todayInTaipei();
+  }
+
+  var news = window.NEWS.map(normalize).map(function (n) {
+    var activePin = isActivePin(n);
+    if (n.pinned && !activePin && n.priority === 'urgent') n.priority = 'normal';
+    n.pinned = activePin;
+    return n;
+  });
 
   function tagHtml(tags) {
     return tags.slice(0, 4).map(function (tag) {
@@ -61,6 +76,12 @@ document.addEventListener('DOMContentLoaded', function () {
     return news.filter(function (n) { return !pinnedIds.has(n.id); }).slice(0, limit);
   }
 
+  function relatedConcertItems(limit) {
+    var related = news.filter(function (n) { return Boolean(n.relatedConcert); });
+    var pinnedIds = new Set(related.filter(function (n) { return n.pinned; }).map(function (n) { return n.id; }));
+    return related.filter(function (n) { return !pinnedIds.has(n.id); }).slice(0, limit);
+  }
+
   function renderPinned(container, base) {
     var pinned = news.filter(function (n) { return n.pinned; }).slice(0, 1);
     if (!pinned.length) {
@@ -75,18 +96,29 @@ document.addEventListener('DOMContentLoaded', function () {
   if (homePinned) renderPinned(homePinned, '');
 
   var home = document.getElementById('news-home');
-  if (home) home.innerHTML = latestItems(2).map(function (n) { return item(n, ''); }).join('');
+  if (home) home.innerHTML = latestItems(5).map(function (n) { return item(n, ''); }).join('');
 
   var listPinned = document.getElementById('news-list-pinned');
-  if (listPinned) renderPinned(listPinned, '');
+  if (listPinned) {
+    var concertPinned = news.filter(function (n) { return n.pinned && n.relatedConcert; }).slice(0, 1);
+    if (concertPinned.length) {
+      listPinned.hidden = false;
+      listPinned.innerHTML = concertPinned.map(function (n) { return item(n, ''); }).join('');
+    } else {
+      listPinned.hidden = true;
+    }
+  }
 
   var list = document.getElementById('news-list');
   if (list) {
-    var LIMIT = 2;
-    list.innerHTML = latestItems(LIMIT).map(function (n) { return item(n, ''); }).join('') || '<p class="muted">目前沒有新消息。</p>';
-    if (news.length > LIMIT) {
+    var LIMIT = 3;
+    var pinnedCount = news.filter(function (n) { return n.pinned && n.relatedConcert; }).length ? 1 : 0;
+    var visibleLimit = Math.max(0, LIMIT - pinnedCount);
+    var concertItems = relatedConcertItems(visibleLimit);
+    list.innerHTML = concertItems.map(function (n) { return item(n, ''); }).join('') || (pinnedCount ? '' : '<p class="muted">目前沒有校友聯演消息。</p>');
+    if (news.filter(function (n) { return n.relatedConcert; }).length > LIMIT) {
       list.insertAdjacentHTML('afterend',
-        '<p class="news-more"><a href="news/index.html">前往最新消息總覽（共 ' + news.length + ' 則）→</a></p>');
+        '<p class="news-more"><a href="news/index.html">查看更多最新消息 →</a></p>');
     }
   }
 
@@ -99,6 +131,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   var items = Array.prototype.slice.call(all.querySelectorAll('.news-item'));
+  items.forEach(function (entry) {
+    var itemData = news.find(function (n) { return n.id === entry.getAttribute('data-news-id'); });
+    if (!itemData || itemData.pinned) return;
+    entry.classList.remove('is-pinned', 'is-urgent');
+    var badge = entry.querySelector('.news-title-line em');
+    if (badge) badge.remove();
+  });
   var count = document.getElementById('news-result-count');
   var filterButtons = Array.prototype.slice.call(document.querySelectorAll('[data-news-filter]'));
   var tagLinks = Array.prototype.slice.call(document.querySelectorAll('[data-news-tag]'));

@@ -22,8 +22,8 @@ const pages = [
     id: 'history',
     source: 'content/pages/history.html',
     output: 'history.html',
-    title: '九十五年｜嘉義高中管樂隊歷史沿革',
-    description: '從 1931 年嘉義第一支學生吹奏樂隊，到台灣管樂之都的搖籃——嘉義高中管樂隊九十五年歷史沿革。',
+    title: '傳承｜嘉義高中管樂隊歷史沿革',
+    description: '從 1931 年嘉義第一支學生吹奏樂隊，到台灣管樂之都的搖籃——嘉義高中管樂隊跨世代延續至今的傳承故事。',
     navActive: 'history',
     url: 'https://cysh.band/history.html'
   },

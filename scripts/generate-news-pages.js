@@ -32,6 +32,7 @@ function normalizeArticle(item) {
     headlineHtml: item.headlineHtml || escapeHtml(title),
     category: item.category || '最新消息',
     tags: Array.isArray(item.tags) ? item.tags : [],
+    pinUntil: item.pinUntil || '',
     priority: item.priority || (item.pinned ? 'important' : 'normal'),
     time: item.time || '12:00',
     status: item.status || 'published'
@@ -71,7 +72,7 @@ function articleMeta(article) {
     `<a class="news-category-pill" href="${escapeHtml(categoryLink(article.category))}">${escapeHtml(article.category)}</a>`,
     `<time datetime="${escapeHtml(article.date)}">${escapeHtml(article.date)}</time>`
   ];
-  if (article.pinned) meta.push('<span class="news-priority-badge">重要</span>');
+  if (article.pinned && article.pinUntil) meta.push('<span class="news-priority-badge">重要</span>');
   meta.push(`<span class="article-tags">${tags}</span>`);
   return `<div class="article-meta">
     ${meta.join('\n    ')}
@@ -150,7 +151,7 @@ ${indentedBody}
     url: `https://cysh.band/${article.output}`,
     ogType: 'article',
     assetPrefix: '../',
-    navActive: 'concerts',
+    navActive: 'news',
     content
   });
   return autoLinkHtml(html, article.output, profiles);
@@ -175,12 +176,12 @@ function renderNewsItem(article, assetPrefix = '../') {
     ? `<img class="news-thumb" src="${escapeHtml(assetPrefix + article.thumb)}" alt="" loading="lazy">`
     : '<span class="news-arrow">→</span>';
   const classes = ['news-item'];
-  if (article.pinned) classes.push('is-pinned');
+  if (article.pinned && article.pinUntil) classes.push('is-pinned');
   if (article.priority === 'urgent') classes.push('is-urgent');
   return `<a class="${classes.join(' ')}" href="${escapeHtml(assetPrefix + article.output)}" data-category="${escapeHtml(article.category)}" data-tags="${escapeHtml(tags.join('|'))}" data-news-id="${escapeHtml(article.id)}">
       <span class="news-date"><span>${escapeHtml(article.category)}</span><time datetime="${escapeHtml(article.date)}">${escapeHtml(article.date)}</time></span>
       <span class="news-body">
-        <span class="news-title-line">${article.pinned ? '<em>重要</em>' : ''}<b>${escapeHtml(article.title)}</b></span>
+        <span class="news-title-line">${article.pinned && article.pinUntil ? '<em>重要</em>' : ''}<b>${escapeHtml(article.title)}</b></span>
         <span class="news-summary">${escapeHtml(article.summary)}</span>
         ${tagHtml ? `<span class="news-tags">${tagHtml}</span>` : ''}
       </span>
@@ -195,9 +196,7 @@ function renderFilterButton(label, count, attr, value, active = false) {
 function renderNewsIndex() {
   const categoryCounts = countBy(articles, (item) => item.category);
   const tagCounts = countBy(articles, (item) => item.tags);
-  const pinned = articles.filter((item) => item.pinned);
-  const regular = articles.filter((item) => !item.pinned);
-  const allItems = [...pinned, ...regular];
+  const allItems = articles;
 
   const filters = [
     renderFilterButton('全部', articles.length, 'data-news-filter', 'all', true),
@@ -252,9 +251,9 @@ function renderNewsIndex() {
         </div>
       </section>
       <section>
-        <h2>重要公告</h2>
+        <h2>焦點消息</h2>
         <div class="news-sidebar-featured">
-          ${(pinned.length ? pinned : articles.slice(0, 1)).map((article) => `<a href="../${escapeHtml(article.output)}"><span>${escapeHtml(article.date)}</span><b>${escapeHtml(article.title)}</b></a>`).join('\n          ')}
+          ${articles.slice(0, 1).map((article) => `<a href="../${escapeHtml(article.output)}"><span>${escapeHtml(article.date)}</span><b>${escapeHtml(article.title)}</b></a>`).join('\n          ')}
         </div>
       </section>
     </aside>
@@ -269,7 +268,7 @@ function renderNewsIndex() {
     url: 'https://cysh.band/news/index.html',
     ogType: 'website',
     assetPrefix: '../',
-    navActive: 'concerts',
+    navActive: 'news',
     extraScripts: '<script src="../data/news.js" defer></script>\n<script src="../js/news.js" defer></script>',
     content
   });

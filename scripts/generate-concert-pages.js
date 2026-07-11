@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const { autoLinkHtml } = require('./lib/people-auto-link');
 const { createAlumniRosterResolver } = require('./lib/alumni-roster');
+const { syncSharedChrome } = require('./sync-shared-chrome');
 
 global.window = global;
 require(path.join(__dirname, '..', 'data', 'alumni.js'));
@@ -815,4 +816,5 @@ for (const concert of concerts) {
   written += 1;
 }
 
-console.log(`generated concert pages: ${written}; skipped existing manual pages: ${skipped}; converted manual pages: ${manualConverted}; manual exceptions: ${exceptionSkipped}`);
+const chromeSynced = syncSharedChrome();
+console.log(`generated concert pages: ${written}; skipped existing manual pages: ${skipped}; converted manual pages: ${manualConverted}; manual exceptions: ${exceptionSkipped}; shared chrome synced: ${chromeSynced}`);

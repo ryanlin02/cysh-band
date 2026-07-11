@@ -440,21 +440,21 @@ function checkSharedChromeConsistency() {
   ));
 
   const navTargets = [
-    ['index.html', '首頁'],
-    ['about.html', '關於樂團'],
-    ['history.html', '九十五年'],
+    ['news/index.html', '最新消息'],
+    ['about.html', '關於'],
+    ['history.html', '傳承'],
     ['numbers.html', '編號'],
     ['people.html', '人物誌'],
-    ['roster.html', '校友名錄'],
+    ['roster.html', '名錄'],
     ['concerts.html', '校友聯演'],
     ['photos/', '影像館']
   ];
   const footerTargets = [
-    ['about.html', '關於樂團'],
-    ['history.html', '九十五年'],
-    ['numbers.html', '編號文化'],
+    ['about.html', '關於'],
+    ['history.html', '傳承'],
+    ['numbers.html', '編號'],
     ['people.html', '人物誌'],
-    ['roster.html', '校友名錄'],
+    ['roster.html', '名錄'],
     ['concerts.html', '校友聯演'],
     ['news/index.html', '最新消息'],
     ['support.html', '支持我們'],
@@ -467,6 +467,7 @@ function checkSharedChromeConsistency() {
     const prefix = expectedAssetPrefix(fileRel);
 
     if (!text.includes('<nav class="nav">')) addError(`${fileRel}: missing shared top navigation.`);
+    if (!text.includes(`href="${prefix}index.html"`)) addError(`${fileRel}: shared top navigation missing brand link -> ${prefix}index.html.`);
     for (const [target, label] of navTargets) {
       if (!text.includes(`href="${prefix}${target}"`) || !text.includes(`>${label}</a>`)) {
         addError(`${fileRel}: shared top navigation missing ${label} -> ${prefix}${target}.`);
@@ -479,6 +480,9 @@ function checkSharedChromeConsistency() {
     }
     if (!text.includes('<h4>網站導覽</h4>')) addError(`${fileRel}: shared footer missing 網站導覽 group.`);
     if (!text.includes('<h4>追蹤與支持</h4>')) addError(`${fileRel}: shared footer missing 追蹤與支持 group.`);
+    for (const socialUrl of ['https://www.facebook.com/cyshband/', 'https://www.instagram.com/cyshband_95th', 'https://www.youtube.com/channel/UCMwqOn_zvwqoa3snL3j_iWA']) {
+      if (!text.includes(`href="${socialUrl}"`)) addError(`${fileRel}: shared footer missing official social link ${socialUrl}.`);
+    }
     for (const [target, label] of footerTargets) {
       if (!text.includes(`href="${prefix}${target}"`) || !text.includes(`>${label}</a>`)) {
         addError(`${fileRel}: shared footer missing ${label} -> ${prefix}${target}.`);
@@ -551,6 +555,10 @@ function checkFontUrlEncoding() {
 
 function checkGeneratedNewsPages() {
   const { articles, renderArticle, renderNewsIndex, renderFeed } = require('./generate-news-pages');
+  const activePins = articles.filter((article) => article.pinned && article.pinUntil && article.pinUntil >= new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' }));
+  const missingPinUntil = articles.filter((article) => article.pinned && !article.pinUntil);
+  if (missingPinUntil.length) addError(`news data: pinned article(s) missing pinUntil: ${missingPinUntil.map((article) => article.id).join(', ')}.`);
+  if (activePins.length > 1) addError(`news data: at most one active pinned article is allowed, found ${activePins.map((article) => article.id).join(', ')}.`);
   for (const article of articles) {
     const outputPath = path.join(root, article.output);
     if (!fs.existsSync(outputPath)) {

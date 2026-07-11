@@ -177,7 +177,9 @@ node scripts/generate-concert-pages.js
 - 屆別介紹頁的指揮與獨奏者用 `.concert-people-list .person-byline` 文章列，不用人物卡片；若 `data/concerts.js` 的人物物件有 `concertBio`／`concertRole`，必須優先使用該場次版本。人物照片與姓名都要連到個人介紹頁；資料不足時才退回人物誌摘要或待補文字。
 - 手寫屆別頁轉為資料驅動前，必須比對原頁，不得刪除已整理的演出人員名冊、幕後行政團隊、職掌、贊助致謝、照片序列、資料來源或節目冊註記。`data/concerts.js` 可用 `performerGroups`、`adminRows`、`sponsorParagraphs`、`photos`、`sourceNote` 等欄位保留原始史料。
 - 除 `concerts/2019-35th.html` 第 35 屆《正八音》外，屆別介紹頁應由 `scripts/generate-concert-pages.js` 依 `data/concerts.js` 產生。2019 因雙場次、不同場地與演出人員差異保留手寫 HTML，產生器會跳過。
-- 導覽維持 8 項扁平架構：首頁、關於樂團、九十五年、編號、人物誌、校友名錄、校友聯演、影像館。新增第一層導覽前需重新評估架構。
+- 導覽維持 8 項扁平架構：最新消息、關於、傳承、編號、人物誌、名錄、校友聯演、影像館；網站名稱「嘉中管樂」另作首頁入口。新增第一層導覽前需重新評估架構。
+- 修改全站 nav/footer 時，同步更新 `templates/partials/` 後執行 `node scripts/sync-shared-chrome.js`；footer 社群圖示必須保留 `aria-label` 與 44px 點擊區。
+- 首頁消息顯示 1 則有效置頂＋5 則一般消息；置頂文章必填 `pinUntil`，同時最多 1 篇。校友聯演頁顯示最近 3 則 `relatedConcert` 文章。
 - 行動版需檢查 375px、768px、1080px。新增或修改互動元件時，確認漢堡選單、篩選面板、表格橫向捲動、lightbox 不破版。
 - 表格在手機版仍維持桌機欄位比例，靠 `.table-scroll` 橫向捲動；不要改成堆疊卡片。
 - 圖片以 WebP 為主。成員照片正方形 480x480；直式原圖以臉部偏上裁切，避免切頭。

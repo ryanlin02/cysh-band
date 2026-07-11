@@ -11,9 +11,10 @@
 
 ## 主要頁面
 - [關於樂團](https://cysh.band/about.html)：團隊組成與立案資料
-- [九十五年](https://cysh.band/history.html)：1931 年至今的歷史時間軸
+- [最新消息](https://cysh.band/news/index.html)：活動、公告與社群動態總覽
+- [傳承](https://cysh.band/history.html)：1931 年至今的歷史時間軸與跨世代故事
 - [編號](https://cysh.band/numbers.html)：編號文化完整說明
 - [人物誌](https://cysh.band/people.html)：傑出校友介紹
-- [校友名錄](https://cysh.band/roster.html)：依世代排列的校友名錄
+- [名錄](https://cysh.band/roster.html)：依世代排列的校友名錄
 - [校友聯演](https://cysh.band/concerts.html)：歷屆音樂會紀錄與最新消息
 - [影像館](https://cysh.band/gallery.html)：歷年影像

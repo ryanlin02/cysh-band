@@ -15,7 +15,7 @@
 |------|------|
 | index.html | 首頁（雙向敘事樞紐＋《為伍》購票＋最新消息） |
 | about.html | 關於樂團 |
-| history.html | 九十五年（歷史時間軸） |
+| history.html | 傳承（歷史時間軸） |
 | numbers.html | 編號文化 |
 | people.html | 人物誌（精選故事，由 `data/people-profiles.js` 產生卡片） |
 | roster.html | 校友名錄（`data/alumni.js` 驅動，搜尋＋卡片／列表檢視＋字頭／年代分組＋聲部／資料狀態篩選） |
@@ -52,11 +52,17 @@ node scripts/generate-news-pages.js
 新增消息時：
 1. 在 `content/news/` 新增 `YYYY-MM-DD-主題.html`，只放文章正文。
 2. 在 `data/news.js` 陣列「最前面」加一筆，填入 `id`、`date`、`time`、`category`、`tags`、`title`、`summary`、`source`、`output`、`thumb` 等欄位。
-3. 需要首頁優先顯示時加 `pinned: true`；一般消息維持 `pinned: false`。
+3. 需要首頁優先顯示時加 `pinned: true`，並填入到期日 `pinUntil: "YYYY-MM-DD"`；一般消息維持 `pinned: false`。
 4. 執行 `node scripts/generate-news-pages.js`，確認 `news/*.html`、`news/index.html` 與 `feed.xml` 已產生。
 
-首頁與校友聯演頁會優先顯示置頂重要公告，並另列最新 2 則一般消息。`news/index.html` 總覽頁由 `data/news.js` 產生完整靜態列表，並用分類與標籤篩選作為漸進增強。
+首頁會顯示 1 則仍在有效期內的置頂公告，再列最新 5 則一般消息；沒有有效置頂時直接顯示最新 5 則。校友聯演頁顯示最近 3 則具 `relatedConcert` 的消息，包含籌備與團練日常。`news/index.html` 總覽頁由 `data/news.js` 產生完整靜態列表，並用分類與標籤篩選作為漸進增強。
 `node scripts/check-site.js` 會檢查 `content/news/`、正式 `news/*.html`、`news/index.html` 與 `feed.xml` 是否同步；若忘記重跑產生腳本，檢查會提醒。
+
+若調整全站上方導覽或頁尾，另執行：
+
+```
+node scripts/sync-shared-chrome.js
+```
 
 ### 新增一屆聯演
 音樂會結束後，把 concerts.html「本屆演出」改寫為「歷屆紀錄」的一個 `concert-item`；目前已呈現的校友聯演屆別皆應有獨立資料頁，資料不足者以「資料待考」標示。缺頁可由 `node scripts/generate-concert-pages.js` 依 `data/concerts.js` 產生；若要把舊人工頁改為資料驅動頁，使用 `node scripts/generate-concert-pages.js --overwrite-manual`。第 35 屆《正八音》（`concerts/2019-35th.html`）因雙場次、不同場地與人員變動保留為手寫例外。生成頁會自動帶入可考海報／影像、指揮與獨奏者人物誌摘要、錄影清單與通用資料補充文字。
@@ -82,7 +88,7 @@ node scripts/check-site.js
 這會檢查 JS 語法、資料檔引用、HTML 本機連結、圖片 alt、SEO 基本欄位、sitemap / feed 對應、Google Fonts URL 標準化、news 產生結果同步，以及人物個人頁基本結構。
 
 ### 共用模板試作
-目前正式頁面仍是手寫 HTML；為了降低 nav、footer、head 重複維護成本，已先建立共用模板試作。產生預覽頁：
+目前正式頁面仍有手寫 HTML；為了降低 nav、footer、head 重複維護成本，已建立共用模板與 `scripts/sync-shared-chrome.js`，可將最新版 nav/footer 同步到尚未模板化的公開頁面。產生預覽頁：
 
 ```
 node scripts/generate-page-preview.js
