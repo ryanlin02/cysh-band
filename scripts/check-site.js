@@ -132,7 +132,7 @@ function checkDataReferences() {
     if (item.output && item.url && item.output !== item.url) addError(`data/news.js: "${label}" output/url mismatch: ${item.output} / ${item.url}`);
     if (item.source && !exists(item.source)) addError(`data/news.js: missing news source for "${label}": ${item.source}`);
     if (!item.url || !exists(item.url)) addError(`data/news.js: missing news page: ${item.url || '(empty url)'}`);
-    if (item.thumb && !exists(item.thumb)) addError(`data/news.js: missing news thumb for "${item.title}": ${item.thumb}`);
+    if (item.thumb && !/^https?:\/\//i.test(item.thumb) && !exists(item.thumb)) addError(`data/news.js: missing news thumb for "${item.title}": ${item.thumb}`);
   }
 
   const alumniByNum = new Map(alumni.filter((person) => person.num).map((person) => [person.num, person]));

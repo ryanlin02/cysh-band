@@ -11,6 +11,31 @@
 */
 window.NEWS = [
   {
+    id: "2026-07-12-rehearsal-coffee-and-returning-friends",
+    date: "2026-07-12",
+    time: "19:45",
+    category: "活動紀錄",
+    tags: ["團練", "為伍", "校友歸隊", "影像館"],
+    pinned: false,
+    priority: "normal",
+    title: "7/12 團練日：團練室裡有咖啡與回來的人",
+    summary: "《為伍》週末團練持續進行；丁肇賢（8501）帶領大家合奏，休息之間也有學長現沖咖啡，讓團練室多了一點熟悉的香氣。",
+    source: "content/news/2026-07-12-rehearsal-coffee-and-returning-friends.html",
+    output: "news/2026-07-12-rehearsal-coffee-and-returning-friends.html",
+    url: "news/2026-07-12-rehearsal-coffee-and-returning-friends.html",
+    thumb: "https://img.cysh.band/thumb/20260712_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4_%E6%8C%87%E6%8F%AE%E4%B8%81%E8%82%87%E8%B3%A2/RYN00174-f5bed3adc72d.webp",
+    ogImage: "https://img.cysh.band/large/20260712_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4_%E6%8C%87%E6%8F%AE%E4%B8%81%E8%82%87%E8%B3%A2/RYN00174-f5bed3adc72d.webp",
+    ogImageWidth: "2048",
+    ogImageHeight: "1365",
+    pageTitle: "7/12 團練日：團練室裡有咖啡與回來的人｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "7/12 團練日：團練室裡有咖啡與回來的人",
+    description: "第 41 屆校友聯演《為伍》7 月 12 日週末團練紀錄：丁肇賢（8501）帶領大家合奏，學長在排練空檔現沖咖啡，完整活動影像已收錄於影像館。",
+    ogDescription: "丁肇賢（8501）帶領《為伍》週末團練，團練室裡還有學長現沖的咖啡與陸續回來的人。",
+    headlineHtml: "7/12 團練日：<br>團練室裡有咖啡與回來的人",
+    relatedConcert: "2026-41st",
+    status: "published"
+  },
+  {
     id: "2026-07-11-rehearsal-resumes",
     date: "2026-07-11",
     time: "18:30",

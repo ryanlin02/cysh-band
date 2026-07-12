@@ -15,6 +15,14 @@ require(path.join(root, 'data', 'people-profiles.js'));
 
 const profiles = global.PEOPLE_PROFILES || [];
 
+function isExternalUrl(value) {
+  return /^https?:\/\//i.test(String(value || ''));
+}
+
+function assetUrl(value, assetPrefix = '') {
+  return isExternalUrl(value) ? value : assetPrefix + value;
+}
+
 function normalizeArticle(item) {
   const output = item.output || item.url;
   const title = item.title || item.ogTitle || '';
@@ -148,6 +156,9 @@ ${indentedBody}
     description: article.description,
     ogTitle: article.ogTitle,
     ogDescription: article.ogDescription,
+    ogImage: article.ogImage,
+    ogImageWidth: article.ogImageWidth,
+    ogImageHeight: article.ogImageHeight,
     url: `https://cysh.band/${article.output}`,
     ogType: 'article',
     assetPrefix: '../',
@@ -173,7 +184,7 @@ function renderNewsItem(article, assetPrefix = '../') {
   const tags = article.tags || [];
   const tagHtml = tags.slice(0, 4).map((tag) => `<span>#${escapeHtml(tag)}</span>`).join('');
   const tail = article.thumb
-    ? `<img class="news-thumb" src="${escapeHtml(assetPrefix + article.thumb)}" alt="" loading="lazy">`
+    ? `<img class="news-thumb" src="${escapeHtml(assetUrl(article.thumb, assetPrefix))}" alt="" loading="lazy">`
     : '<span class="news-arrow">→</span>';
   const classes = ['news-item'];
   if (article.pinned && article.pinUntil) classes.push('is-pinned');

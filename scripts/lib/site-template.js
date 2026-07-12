@@ -38,7 +38,9 @@ function createRenderer(root) {
       url: escapeHtml(values.url),
       canonicalUrl: escapeHtml(values.canonicalUrl || values.url),
       ogType: escapeHtml(values.ogType || 'website'),
-      ogImage: escapeHtml(values.ogImage || 'https://cysh.band/assets/img/og.jpg')
+      ogImage: escapeHtml(values.ogImage || 'https://cysh.band/assets/img/og.jpg'),
+      ogImageWidth: escapeHtml(values.ogImageWidth || '1200'),
+      ogImageHeight: escapeHtml(values.ogImageHeight || '630')
     };
     return render(readTemplate('partials/head.html'), safe);
   }
