@@ -548,6 +548,14 @@ function renderPersonDetailByIndex(pi, person) {
 let searchTimer = null;
 /* 搜尋建議索引：從 AI 標籤、活動名稱、人名統計詞頻（只建一次） */
 let SUGGEST = null;
+let POPULAR_SEARCHES = null;
+
+// 快速搜尋詞的篩選規則。這裡只影響搜尋框下方的詞，不影響使用者輸入後的搜尋結果。
+// 人名、活動名稱與過於泛用的詞不適合作為照片內容的快速入口，故不列入。
+const POPULAR_SEARCH_EXCLUDE = new Set([
+  "嘉義高中", "嘉中", "嘉義", "照片", "照片內容", "活動",
+]);
+
 function buildSuggest() {
   if (SUGGEST) return SUGGEST;
   const freq = new Map();
@@ -562,6 +570,29 @@ function buildSuggest() {
   SUGGEST = [...freq.entries()].sort((a, b) => b[1] - a[1]);
   return SUGGEST;
 }
+
+/*
+ * 快速搜尋：只以實際照片的 AI 關鍵字計算「有幾張照片含這個詞」。
+ * 不沿用 buildSuggest 的活動名稱／人名加權，避免熱門詞被非照片內容左右。
+ */
+function buildPopularSearches() {
+  if (POPULAR_SEARCHES) return POPULAR_SEARCHES;
+  const peopleNames = new Set(PEOPLE.map((p) => p.name.trim()));
+  const freq = new Map();
+  for (const photo of DB.photos) {
+    // 網站索引已經在每張照片內去除重複詞；再次用 Set 保護舊索引資料。
+    for (const term of new Set(photo.k || [])) {
+      const t = term.trim();
+      if (t.length < 2 || t.length > 6 || peopleNames.has(t) || POPULAR_SEARCH_EXCLUDE.has(t)) continue;
+      freq.set(t, (freq.get(t) || 0) + 1);
+    }
+  }
+  POPULAR_SEARCHES = [...freq.entries()].sort((a, b) =>
+    b[1] - a[1] || a[0].localeCompare(b[0], "zh-Hant")
+  );
+  return POPULAR_SEARCHES;
+}
+
 /* 即時搜尋建議：打字時列出最相關的詞（資料都在本機，零延遲） */
 function updateSuggest(q) {
   const box = $("#suggestBox");
@@ -587,10 +618,10 @@ function renderSearch(initialQ) {
     `<div id="suggestBox" class="hidden"></div>` +
     `<div class="search-hint">可搜尋：活動名稱、人名、AI 照片內容標註（目前已完成 ${annotated.toLocaleString()} / ${total.toLocaleString()} 張，持續增加中）</div>` +
     `<div class="chips" id="searchChips"></div></div>`;
-  // 熱門標籤：依實際出現次數自動產生（照片越多、標註越多會自動更新）
-  const chips = buildSuggest()
-    .filter(([t]) => t.length >= 2 && t.length <= 6)
-    .slice(0, 18)
+  // 快速搜尋：依實際含有該 AI 關鍵字的照片數自動產生。
+  // CSS 會在手機顯示前 20 個、較寬版面顯示前 50 個。
+  const chips = buildPopularSearches()
+    .slice(0, 50)
     .map(([t]) => t);
   const chipBox = $("#searchChips");
   for (const kw of chips) {

@@ -246,6 +246,11 @@ body.scrubbing #floatDate { display: none; }
   transition: all var(--fast) var(--ease);
 }
 .chip:hover { background: rgba(160,124,49,.1); border-color: var(--gold-soft); color: var(--gold); }
+/* 手機保留精簡的 20 個快速搜尋詞；平板／電腦可完整顯示前 50 個。 */
+.chip:nth-child(n+21) { display: none; }
+@media (min-width: 768px) {
+  .chip:nth-child(n+21) { display: inline-block; }
+}
 
 /* ============ 年份捲動條 ============
    平時只顯示小把手（不遮擋照片）；拖曳時出現年份氣泡。
