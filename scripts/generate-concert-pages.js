@@ -225,7 +225,7 @@ function listPeople(items) {
 }
 
 function ticketText(ticket) {
-  if (!ticket || ticket.type === 'unknown') return '票務資訊待考';
+  if (!ticket || ticket.type === 'unknown') return ticket && ticket.note ? escapeHtml(ticket.note) : '票務資訊待考';
   if (ticket.type === 'none') return ticket.note || '無';
   if (ticket.type === 'free') return ticket.note || '免票入場';
   if (ticket.type === 'free-ticket') return ticket.note || '免費索票入場';

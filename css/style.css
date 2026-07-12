@@ -3108,6 +3108,8 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 .footer .copy { text-align: center; padding: 14px 18px; border-top: 1px solid rgba(236,229,216,.12); color: var(--dark-ink-dim); font-size: .8rem; letter-spacing: .1em; }
+.footer .copy a { color: var(--dark-ink-dim); text-decoration: none; }
+.footer .copy a:hover, .footer .copy a:focus-visible { color: var(--gold-soft); text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 860px) {
   .footer-inner {
     grid-template-columns: 1fr;

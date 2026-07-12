@@ -21,6 +21,9 @@
 | roster.html | 校友名錄（`data/alumni.js` 驅動，搜尋＋卡片／列表檢視＋字頭／年代分組＋聲部／資料狀態篩選） |
 | concerts.html | 校友聯演（本屆演出＋最新消息文章索引＋歷屆紀錄典藏列表） |
 | gallery.html | 影像館（活動相簿制，點擊放大） |
+| contact.html | 聯絡與資料更正（官方聯絡入口） |
+| rights.html | 使用與著作權（素材來源與轉載原則） |
+| 網站聯絡與帳號維護指引.md | 組織 Gmail、來信個資與未來網域信箱的交接指引 |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
 | 最新消息發布完整教學.md | 給非程式背景維護者的最新消息發布完整工作手冊 |

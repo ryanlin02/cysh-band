@@ -73,7 +73,7 @@ window.CONCERTS = [
       { title: "瑪利歐銀河交響組曲", status: "planning" },
       { title: "City Pop 改編組曲", status: "planning" }
     ],
-    ticket: { type: "ticketed", price: "待正式公告", channels: ["OPENTIX"], note: "售票資訊以正式公告為準" },
+    ticket: { type: "unknown", price: "", channels: [], note: "售票資訊以正式公告為準" },
     poster: "assets/img/poster_weiwu_2026.webp",
     page: "concerts/2026-41st.html",
     gallery: ["gallery/2026-weiwu.html"],

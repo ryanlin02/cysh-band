@@ -528,11 +528,11 @@ function checkStructuredData() {
   });
   for (const event of events) {
     const label = event.name || '(unnamed event)';
-    for (const field of ['name', 'startDate', 'endDate', 'eventStatus', 'eventAttendanceMode', 'location', 'image', 'description', 'offers', 'organizer', 'performer']) {
+    for (const field of ['name', 'startDate', 'endDate', 'eventStatus', 'eventAttendanceMode', 'location', 'image', 'description', 'organizer', 'performer']) {
       if (!event[field]) addError(`index.html: MusicEvent "${label}" missing JSON-LD field ${field}.`);
     }
-    if (event.offers && (!event.offers['@type'] || !event.offers.url || !event.offers.priceCurrency || !event.offers.availability)) {
-      addError(`index.html: MusicEvent "${label}" offers should include @type, url, priceCurrency, and availability.`);
+    if (event.offers && (!event.offers['@type'] || !event.offers.url || !event.offers.priceCurrency || event.offers.price === undefined)) {
+      addError(`index.html: MusicEvent "${label}" offers should include @type, a direct ticket URL, priceCurrency, and price.`);
     }
   }
   info.push(`JSON-LD checked: ${jsonLd.length} blocks; events: ${events.length}`);

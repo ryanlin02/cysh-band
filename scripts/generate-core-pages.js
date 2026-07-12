@@ -51,6 +51,24 @@ const pages = [
     ogDescription: '每一次排練、搬運、行政與演出，都是讓嘉中管樂跨世代傳統延續下去的一部分。',
     navActive: 'about',
     url: 'https://cysh.band/support.html'
+  },
+  {
+    id: 'contact',
+    source: 'content/pages/contact.html',
+    output: 'contact.html',
+    title: '聯絡與資料更正｜嘉義高中管樂隊暨校友管樂團',
+    description: '嘉義高中管樂隊暨校友管樂團網站的內容勘誤、資料補充、授權與使用疑義聯絡方式。',
+    navActive: 'about',
+    url: 'https://cysh.band/contact.html'
+  },
+  {
+    id: 'rights',
+    source: 'content/pages/rights.html',
+    output: 'rights.html',
+    title: '使用與著作權｜嘉義高中管樂隊暨校友管樂團',
+    description: '嘉義高中管樂隊暨校友管樂團網站內容、歷史素材與照片的使用及著作權說明。',
+    navActive: 'about',
+    url: 'https://cysh.band/rights.html'
   }
 ];
 
