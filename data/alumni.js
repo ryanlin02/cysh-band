@@ -402,6 +402,7 @@ window.ALUMNI = [
   { num: "8141", name: "王駿傑", year: 81, part: "法國號", tags: ["法國號"], role: "", desc: "民國 81 年入學，法國號聲部校友。", photo: "8141", link: "" },
   { num: "8151", name: "翁文祥", year: 81, part: "小號", tags: ["小號"], role: "", desc: "民國 81 年入學，小號聲部校友。", photo: "blank", link: "" },
   { num: "8161", name: "黃昱龍", year: 81, part: "長號", tags: ["長號"], role: "", desc: "民國 81 年入學，長號聲部校友。", photo: "blank", link: "" },
+  { num: "8162", name: "曾裕圓", year: 81, part: "長號", tags: ["長號"], role: "", desc: "民國 81 年入學，長號聲部校友。", photo: "8162", link: "" },
   { num: "8171", name: "張傑銘", year: 81, part: "上低音號", tags: ["上低音號"], role: "", desc: "民國 81 年入學，上低音號聲部校友。", photo: "blank", link: "" },
   { num: "8181", name: "羅淵德", year: 81, part: "低音號", tags: ["低音號"], role: "", desc: "民國 81 年入學，低音號聲部校友。", photo: "blank", link: "" },
   { num: "8191", name: "葉文元", year: 81, part: "打擊", tags: ["打擊"], role: "", desc: "民國 81 年入學，打擊聲部校友。", photo: "blank", link: "" },
