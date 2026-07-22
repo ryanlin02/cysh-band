@@ -234,6 +234,7 @@ function ticketText(ticket) {
   if (ticket.price) parts.push(`票價 ${escapeHtml(ticket.price)} 元`);
   if (ticket.channels && ticket.channels.length) parts.push(`通路：${ticket.channels.map(escapeHtml).join('、')}`);
   if (ticket.note) parts.push(escapeHtml(ticket.note));
+  if (ticket.url) parts.push(`<a href="${escapeHtml(ticket.url)}" target="_blank" rel="noopener">前往 OPENTIX 購票</a>`);
   return parts.length ? parts.join('；') : '售票資訊待補';
 }
 

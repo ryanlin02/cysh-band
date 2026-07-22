@@ -73,7 +73,13 @@ window.CONCERTS = [
       { title: "瑪利歐銀河交響組曲", status: "planning" },
       { title: "City Pop 改編組曲", status: "planning" }
     ],
-    ticket: { type: "unknown", price: "", channels: [], note: "售票資訊以正式公告為準" },
+    ticket: {
+      type: "ticketed",
+      price: "",
+      channels: ["OPENTIX 兩廳院文化生活"],
+      url: "https://www.opentix.life/event/2072601690890530816",
+      note: "OPENTIX 購票連結已上架；票價與票券規定請以售票頁正式公告為準"
+    },
     poster: "assets/img/poster_weiwu_2026.webp",
     page: "concerts/2026-41st.html",
     gallery: ["gallery/2026-weiwu.html"],
@@ -82,11 +88,12 @@ window.CONCERTS = [
       "news/2026-06-27-first-rehearsal.html",
       "news/2026-06-30-summer-bbq.html",
       "news/2026-07-02-weiwu-announce.html",
-      "news/2026-07-04-rehearsal-coffee.html"
+      "news/2026-07-04-rehearsal-coffee.html",
+      "news/2026-07-18-weiwu-opentix-ticketing.html"
     ],
-    sources: ["concerts.html", "data/news.js", "news/2026-07-02-weiwu-announce.html"],
+    sources: ["concerts.html", "data/news.js", "news/2026-07-02-weiwu-announce.html", "OPENTIX 售票頁（2026-07-18）"],
     status: "planning",
-    notes: "不可寫成首度音樂廳或首度售票；曲目與演出人員仍屬籌備中。"
+    notes: "OPENTIX 購票連結已於 2026-07-18 上架；不可寫成首度音樂廳或首度售票。曲目與演出人員仍屬籌備中。"
   },
   {
     id: "2025-40th",

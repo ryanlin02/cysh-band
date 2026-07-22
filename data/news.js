@@ -11,6 +11,33 @@
 */
 window.NEWS = [
   {
+    id: "2026-07-18-weiwu-opentix-ticketing",
+    date: "2026-07-18",
+    time: "12:00",
+    category: "演出公告",
+    tags: ["為伍", "校友聯演", "OPENTIX", "購票資訊"],
+    pinned: true,
+    pinUntil: "2026-08-08",
+    priority: "important",
+    title: "《為伍》OPENTIX 購票連結正式上架！8/8 文化局音樂廳見",
+    summary: "第 41 屆校友暨在校生聯合音樂會《為伍》OPENTIX 購票連結正式上架，8 月 8 日邀你到嘉義市政府文化局音樂廳，和不同世代的嘉中管樂人一起聽見相聚的聲音。",
+    source: "content/news/2026-07-18-weiwu-opentix-ticketing.html",
+    output: "news/2026-07-18-weiwu-opentix-ticketing.html",
+    url: "news/2026-07-18-weiwu-opentix-ticketing.html",
+    thumb: "assets/img/poster_weiwu_2026_thumb.webp",
+    ogImage: "assets/img/poster_weiwu_2026.webp",
+    ogImageWidth: "1200",
+    ogImageHeight: "1700",
+    pageTitle: "《為伍》OPENTIX 購票連結正式上架｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "《為伍》OPENTIX 購票連結正式上架！",
+    description: "第 41 屆嘉義高中校友暨在校生聯合音樂會《為伍》OPENTIX 購票連結已於 2026 年 7 月 18 日正式上架。",
+    ogDescription: "《為伍》8 月 8 日嘉義市政府文化局音樂廳演出；OPENTIX 購票連結正式上架。",
+    headlineHtml: "《為伍》OPENTIX 購票連結<br>正式上架！",
+    relatedConcert: "2026-41st",
+    status: "published",
+    sourceNotes: "OPENTIX 正式售票頁。"
+  },
+  {
     id: "2026-07-12-rehearsal-coffee-and-returning-friends",
     date: "2026-07-12",
     time: "19:45",
