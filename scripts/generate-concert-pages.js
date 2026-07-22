@@ -664,8 +664,8 @@ ${generatedMarker}
       <li><a href="../history.html">九十五年</a></li>
       <li><a href="../numbers.html">編號</a></li>
       <li><a href="../people.html">人物誌</a></li>
-      <li><a href="../roster.html">校友名錄</a></li>
       <li><a href="../concerts.html" class="active">校友聯演</a></li>
+      <li><a href="../roster.html">校友名錄</a></li>
       <li><a href="../photos/">影像館</a></li>
     </ul>
   </div>
