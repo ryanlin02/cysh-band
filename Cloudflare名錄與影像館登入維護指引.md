@@ -6,6 +6,19 @@
 
 ---
 
+## 目前已完成的設定（2026-07-23）
+
+- 登入方式：`One-time PIN`（Email 一次性驗證碼）。
+- 共用政策：`社員 Email 白名單`，第一版已加入 25 個不重複 Email。
+- 登入期限：政策與兩個應用程式皆為 `1 week`。
+- 名錄應用程式：`嘉中管樂社員區－名錄`，保護 `cysh.band/roster.html`。
+- 影像館應用程式：`嘉中管樂社員區－影像館`，保護 `cysh.band/photos/*`。
+- 登入頁：使用官網名稱、官網標誌、暖白色 `#faf8f3` 背景與中文提示。
+
+Cloudflare 免費方案只能自訂名稱、標誌、文字與背景色，登入頁的外層框架與瀏覽器頁面標題仍可能出現 Cloudflare Access 名稱，無法完全改成自行製作的 HTML 頁面。這不影響 Email 白名單與一次性驗證碼的權限判斷。
+
+已從未登入狀態確認兩個受保護網址都會轉到登入頁，且實際顯示 Email 輸入框；首頁、最新消息與編號頁仍可直接開啟。最後的「收到驗證信、輸入驗證碼並進入兩區」測試需要由白名單成員使用自己的信箱完成。
+
 ## 1. 先記住三件事
 
 1. 官網大部分內容仍公開，只有「名錄」與「影像館」需要 Email 驗證。
@@ -61,8 +74,8 @@ cysh.band/photos/*
 Cloudflare 後台路徑：
 
 ```text
-Zero Trust → Access controls → Applications
-→ 嘉中管樂社員區 → Policies → 社員 Email 白名單
+Zero Trust → Access controls → Policies
+→ 社員 Email 白名單
 ```
 
 操作方式：
@@ -71,7 +84,8 @@ Zero Trust → Access controls → Applications
 2. 在 `Include` 的 `Emails` 清單新增完整 Email，例如 `name@example.com`。
 3. 不要使用 `Emails ending in @gmail.com`；那會讓所有 Gmail 使用者都有機會登入。
 4. 儲存。
-5. 用無痕視窗開啟 `https://cysh.band/roster.html`，以新 Email 測試一次。
+5. 因為兩個 Access 應用程式共用這份政策，只要改一次，名錄與影像館就會一起更新。
+6. 用無痕視窗開啟 `https://cysh.band/roster.html`，以新 Email 測試一次。
 
 ## 5. 移除一位可登入社員
 
@@ -134,6 +148,8 @@ https://cysh.band/cdn-cgi/access/logout
 5. 手機 375px、平板 768px、桌機 1080px：登入頁與網站導覽可正常操作。
 6. `https://cysh.band/cdn-cgi/access/logout`：登出後重新進入社員區會再次要求驗證。
 
+2026-07-23 初次上線時已完成：受保護網址轉址、Email 輸入頁、兩個應用程式共用政策、公開頁面 HTTP 200 與公開範圍檢查。仍待任一白名單成員完成一次實際收信與驗證碼登入測試。
+
 ## 10. 與全站維護模式一起使用
 
 全站維護模式使用另一個 `cysh-band-maintenance` Worker，相關操作見 `Cloudflare網站維護頁啟用與復原指引.md`。
@@ -148,7 +164,7 @@ https://cysh.band/cdn-cgi/access/logout
 若登入設定造成公開頁面也被擋住：
 
 1. 先進 Cloudflare Zero Trust 的 Applications。
-2. 找到「嘉中管樂社員區」。
+2. 找到「嘉中管樂社員區－名錄」與「嘉中管樂社員區－影像館」。
 3. 檢查 Public hostname 是否誤設為 `cysh.band/*`。
 4. 只保留 `roster.html` 與 `photos/*`；若短時間內無法修正，暫時停用這個 application。
 5. 不要刪除 GitHub Pages、R2、圖片或 `cysh-band-maintenance` Worker。
@@ -167,4 +183,3 @@ https://cysh.band/cdn-cgi/access/logout
 - Cloudflare One-time PIN：<https://developers.cloudflare.com/cloudflare-one/integrations/identity-providers/one-time-pin/>
 - Cloudflare Access policies：<https://developers.cloudflare.com/cloudflare-one/access-controls/policies/>
 - Cloudflare Access login page：<https://developers.cloudflare.com/cloudflare-one/reusable-components/custom-pages/access-login-page/>
-
