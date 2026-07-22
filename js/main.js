@@ -1,6 +1,28 @@
 /* 嘉義高中管樂隊官方網站 — 互動效果 */
 document.documentElement.classList.add('js');
 
+/* ---------- 社員區視覺狀態 ----------
+   Cloudflare Access 才是真正的存取控制；這裡只記住本瀏覽器最近成功開啟
+   名錄／影像館的時間，讓導覽文字在七天內恢復一般顏色。 */
+(function rememberMemberSession() {
+  var key = 'cyshMemberAccessUntil';
+  var sevenDays = 7 * 24 * 60 * 60 * 1000;
+  var protectedPath = location.pathname === '/roster.html'
+    || location.pathname === '/roster'
+    || location.pathname.indexOf('/photos') === 0;
+  try {
+    if (protectedPath) localStorage.setItem(key, String(Date.now() + sevenDays));
+    var activeUntil = Number(localStorage.getItem(key) || 0);
+    if (activeUntil > Date.now()) {
+      document.documentElement.classList.add('member-session-active');
+    } else {
+      localStorage.removeItem(key);
+    }
+  } catch (error) {
+    /* 隱私模式或停用儲存時不影響頁面與 Cloudflare Access 驗證。 */
+  }
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

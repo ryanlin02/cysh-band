@@ -473,6 +473,13 @@ function checkSharedChromeConsistency() {
         addError(`${fileRel}: shared top navigation missing ${label} -> ${prefix}${target}.`);
       }
     }
+    for (const target of ['roster.html', 'photos/']) {
+      const escapedTarget = `${prefix}${target}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const memberLink = new RegExp(`<a\\b[^>]*href=["']${escapedTarget}["'][^>]*\\bdata-member-only\\b`, 'i');
+      if (!memberLink.test(text)) {
+        addError(`${fileRel}: shared top navigation missing member-only marker -> ${prefix}${target}.`);
+      }
+    }
 
     if (!text.includes('<footer class="footer">')) addError(`${fileRel}: missing shared footer.`);
     if (text.includes('第 41 屆聯合音樂會《為伍》</h4>')) {
@@ -495,6 +502,13 @@ function checkSharedChromeConsistency() {
 
 function checkSitemapAndFeed() {
   const sitemapUrls = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  const protectedUrls = new Set([
+    'https://cysh.band/roster.html',
+    'https://cysh.band/photos/'
+  ]);
+  for (const url of protectedUrls) {
+    if (sitemapUrls.includes(url)) addError(`sitemap.xml: protected member page must not be listed: ${url}`);
+  }
   for (const url of sitemapUrls) {
     const local = webUrlToLocal(url);
     if (!exists(local)) addError(`sitemap.xml: local file not found for ${url} -> ${local}`);
@@ -507,6 +521,28 @@ function checkSitemapAndFeed() {
   }
 
   info.push(`sitemap urls checked: ${sitemapUrls.length}; feed links checked: ${feedLinks.length}`);
+}
+
+function checkMemberAccessPrivacy() {
+  const roster = read('roster.html');
+  const photos = read('photos/index.html');
+  const robots = read('robots.txt');
+  const llms = read('llms.txt');
+
+  for (const [file, html] of [['roster.html', roster], ['photos/index.html', photos]]) {
+    if (!/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex[^"']*nofollow[^"']*noarchive/i.test(html)) {
+      addError(`${file}: protected member page must declare noindex, nofollow, noarchive.`);
+    }
+  }
+  if (!robots.includes('Disallow: /roster.html')) addError('robots.txt: missing protected roster disallow rule.');
+  if (!robots.includes('Disallow: /photos/')) addError('robots.txt: missing protected photos disallow rule.');
+  if (/https:\/\/cysh\.band\/(?:roster\.html|photos\/)/.test(llms)) {
+    addError('llms.txt: protected member pages must not be advertised.');
+  }
+  if (!read('templates/partials/nav.html').includes('data-member-only')) {
+    addError('templates/partials/nav.html: member-only navigation markers are missing.');
+  }
+  info.push('Member access privacy markers checked: roster, photos, robots, sitemap, llms, nav');
 }
 
 function checkStructuredData() {
@@ -832,6 +868,7 @@ checkHtmlReferences();
 checkPublicHtmlQuality();
 checkSharedChromeConsistency();
 checkSitemapAndFeed();
+checkMemberAccessPrivacy();
 checkStructuredData();
 checkFontUrlEncoding();
 checkGeneratedCorePages();

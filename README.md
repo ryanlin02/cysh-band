@@ -7,6 +7,7 @@
 > 根目錄 Markdown 文件的角色分工、權威順序與 AI 協作讀取路徑，見 **`文件總覽與AI協作流程.md`**。
 > 給非程式背景維護者使用的最新消息發布教學，見 **`最新消息發布完整教學.md`**。
 > 校友名錄、編號查詢、人物頁與內部名冊之間的資料分工，見 **`校友資料管理與驗證流程.md`**。
+> 名錄與影像館的登入、Email 白名單與故障復原，見 **`Cloudflare名錄與影像館登入維護指引.md`**。
 > 人物個人頁的模板化方向、標準區塊與後續檢查規劃，見 **`人物頁模板化規格與檢查清單.md`**。
 
 ## 網站結構
@@ -18,12 +19,14 @@
 | history.html | 傳承（歷史時間軸） |
 | numbers.html | 編號文化 |
 | people.html | 人物誌（精選故事，由 `data/people-profiles.js` 產生卡片） |
-| roster.html | 校友名錄（`data/alumni.js` 驅動，搜尋＋卡片／列表檢視＋字頭／年代分組＋聲部／資料狀態篩選） |
+| roster.html | 校友名錄（`data/alumni.js` 驅動；由 Cloudflare Access Email 白名單保護） |
 | concerts.html | 校友聯演（本屆演出＋最新消息文章索引＋歷屆紀錄典藏列表） |
-| gallery.html | 影像館（活動相簿制，點擊放大） |
+| photos/ | 完整影像館（R2 照片資料；由 Cloudflare Access Email 白名單保護） |
+| gallery/ | 公開新聞／演出使用的精選相簿，維持公開 |
 | contact.html | 聯絡與資料更正（官方聯絡入口） |
 | rights.html | 使用與著作權（素材來源與轉載原則） |
 | 網站聯絡與帳號維護指引.md | 組織 Gmail、來信個資與未來網域信箱的交接指引 |
+| Cloudflare名錄與影像館登入維護指引.md | 登入、Email 白名單、測試、登出與復原教學 |
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
 | 最新消息發布完整教學.md | 給非程式背景維護者的最新消息發布完整工作手冊 |
@@ -40,6 +43,13 @@
 | assets/img/members/ | 成員大頭照（正方形 WebP） |
 
 ## 日常維護
+
+### 名錄與影像館登入白名單
+
+- 自己的 Excel 可保留姓名、編號與 Email，方便辨認與整理。
+- Cloudflare 白名單只加入 Email；姓名、編號與原始 Excel 絕對不進公開 repo。
+- 新增／移除 Email、測試登入與緊急復原，依 `Cloudflare名錄與影像館登入維護指引.md` 操作。
+- 發布新聞或演出照片的流程不變；新增到 `photos/` 的完整影像館內容會自動套用登入保護。
 
 ### 新增校友（最常用）
 1. 照片裁成正方形 WebP（480×480、品質 80），檔名用編號（如 `8501.webp`），放入 `assets/img/members/`。直式原圖以「臉部」為中心裁切（臉約在方形偏上 40%），不要單純置中，以免切到頭。沒照片先用 `blank`

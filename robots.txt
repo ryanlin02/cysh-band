@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /news/_template.html
+Disallow: /roster.html
+Disallow: /photos/
 
 Sitemap: https://cysh.band/sitemap.xml

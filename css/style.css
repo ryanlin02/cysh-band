@@ -133,6 +133,15 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .nav-links a:hover { color: var(--ink); }
 .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
 .nav-links a.active { color: var(--gold); }
+/* 名錄與影像館由 Cloudflare Access 保護。未曾在本機完成登入時以較淡、
+   但仍符合一般文字對比的顏色提示；真正存取權限不依賴這個視覺狀態。 */
+html:not(.member-session-active) .nav-links a[data-member-only]:not(.active) {
+  color: #776f5f;
+}
+html:not(.member-session-active) .nav-links a[data-member-only]:not(.active):hover,
+html:not(.member-session-active) .nav-links a[data-member-only]:not(.active):focus-visible {
+  color: var(--ink);
+}
 
 /* ---------- 頁首區 ---------- */
 .page-head {
