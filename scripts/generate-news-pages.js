@@ -135,6 +135,8 @@ function articlePageNav(article) {
 function renderArticle(article) {
   const body = fs.readFileSync(path.join(root, article.source), 'utf8').trim();
   const indentedBody = body.split('\n').map((line) => (line ? `    ${line}` : line)).join('\n');
+  const related = relatedArticles(article);
+  const pageNav = articlePageNav(article);
   const content = `<header class="page-head">
   <p class="kicker">NEWS．${escapeHtml(article.date)}</p>
   <h1>${article.headlineHtml}</h1>
@@ -145,9 +147,7 @@ function renderArticle(article) {
   <article class="section news-article">
 ${indentedBody}
 
-    ${relatedArticles(article)}
-
-    ${articlePageNav(article)}
+${related ? `    ${related}\n\n` : ''}    ${pageNav}
   </article>
 </main>`;
 
