@@ -87,6 +87,7 @@ window.CONCERTS = [
     page: "concerts/2026-41st.html",
     gallery: ["gallery/2026-weiwu.html"],
     news: [
+      "news/2026-07-23-sausage-grill-gathering.html",
       "news/2026-06-12-rehearsal-schedule.html",
       "news/2026-06-27-first-rehearsal.html",
       "news/2026-06-30-summer-bbq.html",
