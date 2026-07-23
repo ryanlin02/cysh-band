@@ -52,11 +52,11 @@ window.CONCERTS = [
     year: 2026,
     rocYear: 115,
     title: "為伍",
-    subtitle: "",
+    subtitle: "Keep Company",
     date: "2026-08-08",
     time: "14:30",
     venue: "嘉義市政府文化局音樂廳",
-    venueNote: "睽違六年重返文化局音樂廳",
+    venueNote: "嘉義市東區忠孝路 275 號；睽違六年重返文化局音樂廳",
     hostHead: "五字頭",
     conductors: [
       { name: "簡晟軒", num: "8861", role: "樂團指導" },
@@ -66,19 +66,22 @@ window.CONCERTS = [
       { name: "黃鈺芠", num: "1051", instrument: "小號", work: "Philip Sparke: Manhattan" }
     ],
     program: [
-      { title: "Seagate Overture", status: "planning" },
-      { title: "The Seventh Night of July", status: "planning" },
-      { title: "Flashing Winds", status: "planning" },
-      { title: "Ye Banks and Braes O' Bonnie Doon", composer: "Percy Grainger", status: "planning" },
-      { title: "瑪利歐銀河交響組曲", status: "planning" },
-      { title: "City Pop 改編組曲", status: "planning" }
+      { section: "上半場", title: "Flashing Winds", composer: "Jan Van der Roost", status: "confirmed" },
+      { section: "上半場", title: "Ye Banks and Braes o' Bonnie Doon", composer: "Percy A. Grainger", status: "confirmed" },
+      { section: "上半場", title: "The Seventh Night of July", foreignTitle: "たなばた", composer: "酒井格", status: "confirmed" },
+      { section: "上半場", title: "Manhattan", composer: "Philip A. Sparke", note: "小號獨奏：黃鈺芠", status: "confirmed" },
+      { section: "下半場", title: "Novena + Seagate Overture", composer: "James Swearingen", status: "confirmed" },
+      { section: "下半場", title: "The Days Of Wine And Roses", composer: "Henry Mancini", arranger: "岩井直溥", status: "confirmed" },
+      { section: "下半場", title: "Heal The World", composer: "Michael Jackson", arranger: "Ron Sebregts", status: "confirmed" },
+      { section: "下半場", title: "Japanese Graffiti XXII City Pop Medley", arranger: "金山徹", note: "〈SPARKLE〉、〈プラスティック・ラヴ〉、〈君は天然色〉、〈フライディ・チャイナタウン〉、〈真夜中のドア〜stay with me〉", status: "confirmed" },
+      { section: "下半場", title: "Symphonic Suite of Galaxy (from Video Game Super Mario Galaxy)", composer: "橫田真人、近藤浩治", arranger: "尚水堂", status: "confirmed" }
     ],
     ticket: {
       type: "ticketed",
-      price: "",
+      price: "200",
       channels: ["OPENTIX 兩廳院文化生活"],
       url: "https://www.opentix.life/event/2072601690890530816",
-      note: "OPENTIX 購票連結已上架；票價與票券規定請以售票頁正式公告為準"
+      note: "憑票入場，自由入座"
     },
     poster: "assets/img/poster_weiwu_2026.webp",
     page: "concerts/2026-41st.html",
@@ -89,11 +92,18 @@ window.CONCERTS = [
       "news/2026-06-30-summer-bbq.html",
       "news/2026-07-02-weiwu-announce.html",
       "news/2026-07-04-rehearsal-coffee.html",
-      "news/2026-07-18-weiwu-opentix-ticketing.html"
+      "news/2026-07-18-weiwu-opentix-ticketing.html",
+      "news/2026-07-18-rehearsal-sound-coming-together.html",
+      "news/2026-07-19-rehearsal-stage-in-sight.html"
     ],
     sources: ["concerts.html", "data/news.js", "news/2026-07-02-weiwu-announce.html", "OPENTIX 售票頁（2026-07-18）"],
-    status: "planning",
-    notes: "OPENTIX 購票連結已於 2026-07-18 上架；不可寫成首度音樂廳或首度售票。曲目與演出人員仍屬籌備中。"
+    status: "confirmed",
+    intro: [
+      "嘉義高中校友管樂團由各屆校友組成，秉持傳承、創新與熱情的理念，透過跨世代的音樂連結持續在舞台上相聚。",
+      "本次節目以《Manhattan》小號協奏曲為重頭戲，由校友黃鈺芠獨奏；另橫跨經典管樂、電玩遊戲改編、電影音樂、City Pop 與流行改編，展現管樂團多元的聲音面貌。"
+    ],
+    programNote: "演出曲目依 OPENTIX 正式售票頁整理；主辦單位保留演出曲目異動之權利。",
+    notes: "OPENTIX 購票連結已於 2026-07-18 上架；票價 200 元，憑票入場、自由入座。"
   },
   {
     id: "2025-40th",
