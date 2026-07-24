@@ -16,6 +16,7 @@ window.CONCERT_PROGRAM_DATA = {
     subtitle: "團長",
     number: "0000",
     photo: "../../assets/img/members/blank.webp",
+    officialLink: "../../people/0000.html",
     content: ["第一段內容。", "第二段內容。"]
   },
   program: {
@@ -38,10 +39,7 @@ window.CONCERT_PROGRAM_DATA = {
       role: "指揮",
       photo: "../../assets/img/members/blank.webp",
       officialLink: "../../people/0000.html",
-      bio: {
-        career: "學經歷與專業背景。",
-        concert: "與本次演出的關聯及詳細介紹。"
-      }
+      bio: "僅供本場音樂會節目冊使用的完整人物介紹文章，內容可整合必要學經歷、專業特色、與本次演出的關聯及詮釋重點。"
     }],
     soloist: [],
     ensembles: []

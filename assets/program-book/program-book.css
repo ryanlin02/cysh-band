@@ -695,22 +695,34 @@ img {
 }
 
 .person-header-role {
+  min-width: 0;
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--accent-gold);
   margin-top: 1px;
 }
 
+.person-header-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 2px;
+}
+
 .inline-ext-link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
   gap: 3px;
+  min-height: 44px;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--accent-gold);
-  padding: 2px 8px;
+  padding: 8px 10px;
   background: var(--accent-gold-light);
-  border-radius: 4px;
+  border-radius: 999px;
   border: 1px solid var(--accent-gold-border);
   transition: all var(--transition-fast);
   white-space: nowrap;
@@ -724,21 +736,6 @@ img {
 /* 全寬文章區域 */
 .person-full-bio {
   width: 100%;
-}
-
-.bio-section + .bio-section {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color);
-}
-
-.bio-label {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--accent-gold);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
 }
 
 /* --- 4. 演出人員名冊區塊 --- */

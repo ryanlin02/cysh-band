@@ -263,7 +263,10 @@ function renderHeroAndOverview() {
             <h2 class="person-title-name">${presidentMessage.title}</h2>
             <span class="pure-number-tag">${presidentMessage.number}</span>
           </div>
-          <div class="person-header-role">${presidentMessage.author} ｜ ${presidentMessage.subtitle}</div>
+          <div class="person-header-meta">
+            <div class="person-header-role">${presidentMessage.author} ｜ ${presidentMessage.subtitle}</div>
+            ${renderPersonProfileLink(presidentMessage.officialLink, presidentMessage.author)}
+          </div>
         </div>
       </div>
 
@@ -361,21 +364,21 @@ function renderProgramNotes() {
   });
 }
 
-function renderPersonBio(bio) {
-  if (Array.isArray(bio)) {
-    return bio.map(paragraph => `<p class="p-text">${paragraph}</p>`).join('');
-  }
-  if (!bio) return '';
+function renderPersonProfileLink(url, name = '') {
+  if (!url) return '';
   return `
-    <div class="bio-section">
-      <span class="bio-label">學經歷</span>
-      <p class="p-text">${bio.career || ''}</p>
-    </div>
-    <div class="bio-section">
-      <span class="bio-label">本次演出</span>
-      <p class="p-text">${bio.concert || ''}</p>
-    </div>
+    <a href="${url}" target="_blank" rel="noopener" class="inline-ext-link" aria-label="查看${name}的人物誌">
+      <span>人物誌</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+    </a>
   `;
+}
+
+function renderPersonBio(bio) {
+  if (!bio) return '';
+  if (typeof bio === 'string') return `<p class="p-text">${bio}</p>`;
+  if (Array.isArray(bio)) return `<p class="p-text">${bio.join('')}</p>`;
+  return `<p class="p-text">${[bio.career, bio.concert].filter(Boolean).join('')}</p>`;
 }
 
 /* ==========================================================================
@@ -411,12 +414,9 @@ function renderTeamAndLeadership() {
               <h3 class="person-title-name">${c.name}</h3>
               <span class="pure-number-tag">${c.number}</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2px;">
+            <div class="person-header-meta">
               <span class="person-header-role">${c.role}</span>
-              <a href="${c.officialLink}" target="_blank" rel="noopener" class="inline-ext-link">
-                <span>官網人物誌</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
+              ${renderPersonProfileLink(c.officialLink, c.name)}
             </div>
           </div>
         </div>
@@ -444,12 +444,9 @@ function renderTeamAndLeadership() {
               <h3 class="person-title-name">${s.name}</h3>
               <span class="pure-number-tag">${s.number}</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2px;">
+            <div class="person-header-meta">
               <span class="person-header-role">${s.role}</span>
-              <a href="${s.officialLink}" target="_blank" rel="noopener" class="inline-ext-link">
-                <span>官網人物誌</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-              </a>
+              ${renderPersonProfileLink(s.officialLink, s.name)}
             </div>
           </div>
         </div>
