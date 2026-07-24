@@ -24,6 +24,8 @@ window.CONCERT_PROGRAM_DATA = {
   // --- 2. 團長的話 (盧宓承 團長，編號 7111) ---
   presidentMessage: {
     title: "團長的話",
+    name: "盧宓承",
+    role: "團長",
     author: "團長 盧宓承",
     number: "7111",
     photo: "https://cysh.band/assets/img/members/7111.webp",

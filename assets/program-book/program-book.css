@@ -639,22 +639,24 @@ img {
   border-top: 1px solid var(--border-color);
 }
 
-/* --- 3. 人物與團長卡片完美頂部 Header 排版 (徹底解決擠壓與留白問題) --- */
+/* --- 3. 人物與團長卡片 --- */
+.person-card {
+  padding: 20px;
+}
+
 .person-card-header {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
+  align-items: flex-start;
+  gap: 13px;
+  margin-bottom: 14px;
 }
 
 .person-avatar-mini {
-  width: 54px;
-  height: 54px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid var(--accent-gold-border);
+  border: 1px solid var(--accent-gold-border);
   flex-shrink: 0;
 }
 
@@ -671,43 +673,76 @@ img {
 
 .person-header-top {
   display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 7px;
+}
+
+.person-name-line {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+}
+
+.president-name-row {
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+}
+
+.president-name-row .profile-link {
+  margin-top: -9px;
+  margin-bottom: -9px;
 }
 
 .person-title-name {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: 1.34rem;
   font-weight: 700;
   color: var(--text-primary);
+  line-height: 1.25;
 }
 
-.pure-number-tag {
+.person-number-inline {
   font-family: var(--font-number);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.person-card-kicker {
+  margin-bottom: 2px;
+  color: var(--accent-gold);
+  font-size: 0.68rem;
   font-weight: 700;
-  background: var(--badge-bg);
-  color: var(--badge-text);
-  padding: 1px 8px;
-  border-radius: 10px;
-  border: 1px solid var(--accent-gold-border);
+  letter-spacing: 0.12em;
+}
+
+.president-card .person-title-name {
+  font-size: 1.52rem;
 }
 
 .person-header-role {
   min-width: 0;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--accent-gold);
-  margin-top: 1px;
+  line-height: 1.45;
+}
+
+.meta-separator {
+  margin: 0 0.4em;
+  color: var(--accent-gold-border);
 }
 
 .person-header-meta {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 8px;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .inline-ext-link {
@@ -731,6 +766,24 @@ img {
 .inline-ext-link:hover {
   background: var(--accent-gold);
   color: #FFF;
+}
+
+.profile-link {
+  min-height: 44px;
+  margin: -9px -2px -9px 0;
+  padding: 9px 2px 9px 10px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+}
+
+.profile-link:hover {
+  color: var(--accent-gold-hover);
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* 全寬文章區域 */
@@ -937,6 +990,12 @@ img {
     color: var(--accent-gold);
   }
 
+  .profile-link:hover {
+    background: transparent;
+    border-color: transparent;
+    color: var(--accent-gold-hover);
+  }
+
   .card:hover {
     box-shadow: var(--shadow-md);
   }
@@ -961,6 +1020,23 @@ img {
 
   .card {
     padding: 16px;
+  }
+
+  .person-card {
+    padding: 17px 16px;
+  }
+
+  .person-avatar-mini {
+    width: 56px;
+    height: 56px;
+  }
+
+  .person-title-name {
+    font-size: 1.28rem;
+  }
+
+  .president-card .person-title-name {
+    font-size: 1.44rem;
   }
 
   .nav-item {

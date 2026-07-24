@@ -12,6 +12,8 @@ window.CONCERT_PROGRAM_DATA = {
   },
   presidentMessage: {
     title: "團長的話",
+    name: "姓名",
+    role: "團長",
     author: "姓名",
     subtitle: "團長",
     number: "0000",

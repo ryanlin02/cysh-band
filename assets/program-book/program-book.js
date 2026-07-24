@@ -252,20 +252,23 @@ function renderHeroAndOverview() {
       </div>
     </div>
 
-    <!-- 團長的話 (盧宓承 團長 7111 - 頂部 Header + 100% 全寬內文，告別擠壓) -->
-    <div class="card">
+    <!-- 團長的話 -->
+    <div class="card person-card president-card">
       <div class="person-card-header">
         <div class="person-avatar-mini">
           <img src="${presidentMessage.photo}" alt="${presidentMessage.author}" loading="lazy">
         </div>
         <div class="person-header-info">
-          <div class="person-header-top">
-            <h2 class="person-title-name">${presidentMessage.title}</h2>
-            <span class="pure-number-tag">${presidentMessage.number}</span>
+          <div class="person-card-kicker">${presidentMessage.title}</div>
+          <div class="person-header-top president-name-row">
+            <div class="person-name-line">
+              <h2 class="person-title-name">${presidentMessage.name || presidentMessage.author}</h2>
+              <span class="person-number-inline">${presidentMessage.number}</span>
+            </div>
+            ${renderPersonProfileLink(presidentMessage.officialLink, presidentMessage.name || presidentMessage.author)}
           </div>
           <div class="person-header-meta">
-            <div class="person-header-role">${presidentMessage.author} ｜ ${presidentMessage.subtitle}</div>
-            ${renderPersonProfileLink(presidentMessage.officialLink, presidentMessage.author)}
+            <div class="person-header-role">${presidentMessage.role || '團長'}<span class="meta-separator">｜</span>${presidentMessage.subtitle}</div>
           </div>
         </div>
       </div>
@@ -367,7 +370,7 @@ function renderProgramNotes() {
 function renderPersonProfileLink(url, name = '') {
   if (!url) return '';
   return `
-    <a href="${url}" target="_blank" rel="noopener" class="inline-ext-link" aria-label="查看${name}的人物誌">
+    <a href="${url}" target="_blank" rel="noopener" class="inline-ext-link profile-link" aria-label="查看${name}的人物誌">
       <span>人物誌</span>
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
     </a>
@@ -404,7 +407,7 @@ function renderTeamAndLeadership() {
     </div>
 
     ${conductors.map(c => `
-      <div class="card">
+      <div class="card person-card">
         <div class="person-card-header">
           <div class="person-avatar-mini">
             <img src="${c.photo}" alt="${c.name}" loading="lazy">
@@ -412,7 +415,7 @@ function renderTeamAndLeadership() {
           <div class="person-header-info">
             <div class="person-header-top">
               <h3 class="person-title-name">${c.name}</h3>
-              <span class="pure-number-tag">${c.number}</span>
+              <span class="person-number-inline">${c.number}</span>
             </div>
             <div class="person-header-meta">
               <span class="person-header-role">${c.role}</span>
@@ -434,7 +437,7 @@ function renderTeamAndLeadership() {
     </div>
 
     ${soloist.map(s => `
-      <div class="card">
+      <div class="card person-card">
         <div class="person-card-header">
           <div class="person-avatar-mini">
             <img src="${s.photo}" alt="${s.name}" loading="lazy">
@@ -442,7 +445,7 @@ function renderTeamAndLeadership() {
           <div class="person-header-info">
             <div class="person-header-top">
               <h3 class="person-title-name">${s.name}</h3>
-              <span class="pure-number-tag">${s.number}</span>
+              <span class="person-number-inline">${s.number}</span>
             </div>
             <div class="person-header-meta">
               <span class="person-header-role">${s.role}</span>
