@@ -551,8 +551,12 @@ function promoImagesSection(concert) {
 
 function programBookSection(concert) {
   const scans = concert.programBook || concert.programScans || concert.booklet || [];
-  if (!scans.length) return '<p class="muted">目前尚未整理到可公開呈現的完整節目冊掃描圖檔。</p>';
-  return `<p class="muted">節目冊與企劃書影像以縮圖列保存；可左右滑動瀏覽，點開圖片後可用左右鍵切換頁面。</p>
+  const online = concert.onlineProgramBook;
+  const onlineHtml = online && online.url
+    ? `<p><a class="btn" href="../${escapeHtml(online.url)}">${escapeHtml(online.label || '開啟線上節目冊')}</a></p>${online.note ? `\n    <p class="muted">${escapeHtml(online.note)}</p>` : ''}`
+    : '';
+  if (!scans.length) return onlineHtml || '<p class="muted">目前尚未整理到可公開呈現的完整節目冊掃描圖檔。</p>';
+  return `${onlineHtml ? `${onlineHtml}\n    ` : ''}<p class="muted">節目冊與企劃書影像以縮圖列保存；可左右滑動瀏覽，點開圖片後可用左右鍵切換頁面。</p>
     <div class="program-book-strip" aria-label="節目冊頁面縮圖">
       ${scans.map((scan, index) => {
     const item = typeof scan === 'string' ? { src: scan, caption: `節目冊第 ${index + 1} 頁` } : scan;

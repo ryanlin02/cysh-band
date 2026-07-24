@@ -415,8 +415,11 @@ function checkPublicHtmlQuality() {
     }
     if (anchorDepth !== 0) addError(`${fileRel}: unbalanced <a> tags.`);
 
+    const isStandalonePage = /<html\b[^>]*\bdata-page-shell=["']standalone["']/i.test(text);
     const activeNav = [...text.matchAll(/<a\b[^>]*class=["'][^"']*\bactive\b[^"']*["'][^>]*>/g)];
-    if (activeNav.length !== 1) addError(`${fileRel}: expected exactly 1 active nav link, found ${activeNav.length}.`);
+    if (!isStandalonePage && activeNav.length !== 1) {
+      addError(`${fileRel}: expected exactly 1 active nav link, found ${activeNav.length}.`);
+    }
   }
 
   info.push(`Public HTML quality checked: ${publicHtml.length} files`);
@@ -465,6 +468,7 @@ function checkSharedChromeConsistency() {
     const fileRel = rel(file);
     const text = fs.readFileSync(file, 'utf8');
     const prefix = expectedAssetPrefix(fileRel);
+    if (/<html\b[^>]*\bdata-page-shell=["']standalone["']/i.test(text)) continue;
 
     if (!text.includes('<nav class="nav">')) addError(`${fileRel}: missing shared top navigation.`);
     if (!text.includes(`href="${prefix}index.html"`)) addError(`${fileRel}: shared top navigation missing brand link -> ${prefix}index.html.`);

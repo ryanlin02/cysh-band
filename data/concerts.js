@@ -85,6 +85,11 @@ window.CONCERTS = [
     },
     poster: "assets/img/poster_weiwu_2026.webp",
     page: "concerts/2026-41st.html",
+    onlineProgramBook: {
+      url: "concerts/2026-41st-program/",
+      label: "開啟第 41 屆《為伍》線上節目冊（第一版）",
+      note: "目前為第一版，內容仍在持續校對中。"
+    },
     gallery: ["gallery/2026-weiwu.html"],
     news: [
       "news/2026-07-23-sausage-grill-gathering.html",
