@@ -1,11 +1,17 @@
 /**
- * 第 41 屆嘉義高中校友暨在校生聯合音樂會《為伍》線上節目冊 - 主邏輯腳本
+ * 嘉中管樂線上節目冊共用介面。
+ * 各屆資料由頁面自己的 data/*.js 寫入 window.CONCERT_PROGRAM_DATA。
  */
 
-import { concertData } from '../data/concert-41st.js';
+const concertData = window.CONCERT_PROGRAM_DATA;
 
 document.addEventListener('DOMContentLoaded', () => {
+  if (!concertData) {
+    throw new Error('Missing window.CONCERT_PROGRAM_DATA.');
+  }
+  initProgramBookMetadata();
   initThemeControl();
+  initShareControl();
   initNavigation();
   renderHeroAndOverview();
   renderProgramNotes();
@@ -14,22 +20,105 @@ document.addEventListener('DOMContentLoaded', () => {
   renderThanksAndHeritage();
 });
 
+function initProgramBookMetadata() {
+  const { info } = concertData;
+  const title = document.getElementById('program-book-title');
+  const shareBtn = document.getElementById('share-btn');
+  if (title) title.textContent = info.headerTitle || `${info.concertNo}｜《${info.title}》`;
+  if (shareBtn) {
+    shareBtn.setAttribute('aria-label', `分享${info.concertNo}《${info.title}》線上節目冊`);
+  }
+}
+
 /* ==========================================================================
    1. 暗光音樂廳主題模式 (Dark Hall Mode) 控制
    ========================================================================== */
 function initThemeControl() {
   const themeBtn = document.getElementById('theme-toggle-btn');
+  let savedDarkMode = false;
 
-  if (localStorage.getItem('cysh_dark_mode') === 'true') {
+  try {
+    savedDarkMode = localStorage.getItem('cysh_dark_mode') === 'true';
+  } catch (error) {
+    savedDarkMode = false;
+  }
+
+  if (savedDarkMode) {
     document.body.classList.add('dark-mode');
     themeBtn?.classList.add('active');
   }
+  themeBtn?.setAttribute('aria-pressed', String(savedDarkMode));
 
   themeBtn?.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
     themeBtn.classList.toggle('active', isDark);
-    localStorage.setItem('cysh_dark_mode', isDark);
+    themeBtn.setAttribute('aria-pressed', String(isDark));
+    try {
+      localStorage.setItem('cysh_dark_mode', String(isDark));
+    } catch (error) {
+      /* 無法使用本機儲存時，夜間模式仍可在本次瀏覽中正常切換。 */
+    }
+  });
+}
+
+function showShareToast(message) {
+  const toast = document.getElementById('share-toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.hidden = false;
+  window.clearTimeout(showShareToast.timer);
+  showShareToast.timer = window.setTimeout(() => {
+    toast.hidden = true;
+  }, 2600);
+}
+
+async function copyPageUrl(url) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(url);
+    return;
+  }
+
+  const input = document.createElement('textarea');
+  input.value = url;
+  input.setAttribute('readonly', '');
+  input.style.position = 'fixed';
+  input.style.opacity = '0';
+  document.body.appendChild(input);
+  input.select();
+  const copied = document.execCommand('copy');
+  input.remove();
+  if (!copied) throw new Error('Copy command failed.');
+}
+
+function initShareControl() {
+  const shareBtn = document.getElementById('share-btn');
+  if (!shareBtn) return;
+
+  shareBtn.addEventListener('click', async () => {
+    const shareUrl = window.location.href;
+    const shareData = {
+      title: document.title,
+      text: `${concertData.info.concertNo}《${concertData.info.title}》線上節目冊`,
+      url: shareUrl
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+      await copyPageUrl(shareUrl);
+      showShareToast('此裝置未提供分享選單，已複製網頁連結');
+    } catch (error) {
+      if (error && error.name === 'AbortError') return;
+      try {
+        await copyPageUrl(shareUrl);
+        showShareToast('已複製網頁連結');
+      } catch (copyError) {
+        showShareToast('無法開啟分享功能，請複製瀏覽器網址');
+      }
+    }
   });
 }
 
@@ -40,24 +129,92 @@ function initNavigation() {
   const navItems = document.querySelectorAll('.nav-item');
   const pageSections = document.querySelectorAll('.page-section');
 
-  navItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const targetId = item.getAttribute('data-target');
+  const activateSection = (targetId, updateUrl = true) => {
+    const matchedItem = Array.from(navItems).find(item => item.getAttribute('data-target') === targetId);
+    if (!matchedItem) return;
 
-      navItems.forEach(n => n.classList.remove('active'));
-      item.classList.add('active');
-
-      pageSections.forEach(sec => {
-        if (sec.id === targetId) {
-          sec.classList.add('active');
-        } else {
-          sec.classList.remove('active');
-        }
-      });
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    navItems.forEach(item => {
+      const isActive = item === matchedItem;
+      item.classList.toggle('active', isActive);
+      if (isActive) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
     });
+
+    pageSections.forEach(section => {
+      section.classList.toggle('active', section.id === targetId);
+    });
+
+    if (updateUrl) history.replaceState(null, '', `#${targetId}`);
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  };
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => activateSection(item.getAttribute('data-target')));
   });
+
+  const initialTarget = window.location.hash.slice(1);
+  activateSection(document.getElementById(initialTarget) ? initialTarget : 'sec-home', false);
+}
+
+function normalizeTitles(track) {
+  if (Array.isArray(track.titles) && track.titles.length) return track.titles;
+  return [
+    track.titleZh ? { lang: 'zh-Hant', text: track.titleZh } : null,
+    track.title ? { lang: 'en', text: track.title } : null
+  ].filter(Boolean);
+}
+
+function creditText(value) {
+  if (!value) return '';
+  return Array.isArray(value) ? value.join('／') : value;
+}
+
+function renderTrackTitles(track, compact = false) {
+  return normalizeTitles(track).map((title, index) => `
+    <div class="${compact ? 'program-overview-title' : 'track-title'} ${index === 0 ? 'primary' : 'secondary'}" lang="${title.lang || ''}">${title.text}</div>
+  `).join('');
+}
+
+function renderTrackCredits(track, compact = false) {
+  const rows = [
+    track.composer ? ['作曲', creditText(track.composer)] : null,
+    track.arranger ? ['編曲', creditText(track.arranger)] : null
+  ].filter(Boolean);
+  const className = compact ? 'program-overview-credits' : 'track-credit-list';
+  return `<div class="${className}">${rows.map(([label, value]) => `<span><b>${label}</b>${value}</span>`).join('')}</div>`;
+}
+
+function renderProgramOverview(program) {
+  const halves = [
+    ['上半場', 'Part I', program.firstHalf],
+    ['下半場', 'Part II', program.secondHalf]
+  ];
+
+  return `
+    <div class="card program-overview-card">
+      <div class="program-overview-heading">
+        <h3>演出曲目</h3>
+        <span>PROGRAM</span>
+      </div>
+      ${halves.map(([label, english, tracks]) => `
+        <section class="program-overview-half" aria-label="${label}">
+          <h4>${label}<span>${english}</span></h4>
+          <ol class="program-overview-list">
+            ${tracks.map(track => `
+              <li>
+                <span class="program-overview-number">${String(track.no).padStart(2, '0')}</span>
+                <div>
+                  ${renderTrackTitles(track, true)}
+                  ${renderTrackCredits(track, true)}
+                </div>
+              </li>
+            `).join('')}
+          </ol>
+        </section>
+      `).join('')}
+    </div>
+  `;
 }
 
 /* ==========================================================================
@@ -67,7 +224,7 @@ function renderHeroAndOverview() {
   const container = document.getElementById('sec-home');
   if (!container) return;
 
-  const { info, presidentMessage } = concertData;
+  const { info, presidentMessage, program } = concertData;
 
   container.innerHTML = `
     <!-- 海報大圖 -->
@@ -115,10 +272,12 @@ function renderHeroAndOverview() {
       </div>
     </div>
 
-    <!-- 觀演禮儀提醒 -->
-    <div class="card" style="background: var(--bg-secondary);">
-      <h3 style="font-family: var(--font-serif); font-size: 1.05rem; margin-bottom: 8px;">觀演禮儀提醒</h3>
-      <ul style="font-size: 0.88rem; color: var(--text-secondary); padding-left: 18px; line-height: 1.65;">
+    ${renderProgramOverview(program)}
+
+    <!-- 觀演小提醒 -->
+    <div class="card etiquette-card">
+      <h3>觀演小提醒</h3>
+      <ul>
         <li>演出前請將行動電話轉為靜音或關機。</li>
         <li>演出進行中請勿拍照、錄音、錄影。</li>
         <li>憑票入場，自由入座，請配合現場工作人員指引。</li>
@@ -140,15 +299,15 @@ function renderProgramNotes() {
     <div class="section-header">
       <span class="section-kicker">Repertoire & Notes</span>
       <h2 class="section-title">曲目解說</h2>
-      <p class="section-subtitle">點擊曲目卡片可展開詳細樂曲導賞</p>
+      <p class="section-subtitle">曲目資訊與樂曲導賞完整呈現，可直接向下閱讀</p>
     </div>
 
-    <div class="tab-switcher">
-      <button class="tab-btn active" id="tab-btn-1">上半場 (Part I)</button>
-      <button class="tab-btn" id="tab-btn-2">下半場 (Part II)</button>
+    <div class="tab-switcher" role="tablist" aria-label="選擇上半場或下半場曲目">
+      <button class="tab-btn active" id="tab-btn-1" type="button" role="tab" aria-selected="true">上半場 (Part I)</button>
+      <button class="tab-btn" id="tab-btn-2" type="button" role="tab" aria-selected="false">下半場 (Part II)</button>
     </div>
 
-    <div id="program-list-container"></div>
+    <div id="program-list-container" aria-live="polite"></div>
   `;
 
   const tab1 = document.getElementById('tab-btn-1');
@@ -166,12 +325,13 @@ function renderProgramNotes() {
           <div class="track-header">
             <div class="track-no">${String(track.no).padStart(2, '0')}</div>
             <div class="track-info">
-              <div class="track-title-zh">${track.titleZh}</div>
-              <div class="track-title-en">${track.title}</div>
-              <div class="track-composer">${track.composer} ${track.arranger ? ` / arr. ${track.arranger}` : ''}</div>
-              ${track.soloist ? `<div style="margin-top: 6px; font-size: 0.8rem; font-weight: 700; color: var(--accent-gold);">🌟 獨奏：${track.soloist}</div>` : ''}
+              ${renderTrackTitles(track)}
+              ${renderTrackCredits(track)}
+              <div class="track-meta-row">
+                ${track.soloist ? `<span><b>獨奏</b>${track.soloist}</span>` : ''}
+                ${track.duration ? `<span><b>演奏時間</b>${track.duration}</span>` : ''}
+              </div>
             </div>
-            <svg class="track-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </div>
 
           <div class="track-detail-content">
@@ -180,12 +340,6 @@ function renderProgramNotes() {
         </div>
       `;
     }).join('');
-
-    document.querySelectorAll('.track-card').forEach(card => {
-      card.addEventListener('click', () => {
-        card.classList.toggle('open');
-      });
-    });
   };
 
   renderList(firstHalf);
@@ -193,14 +347,35 @@ function renderProgramNotes() {
   tab1.addEventListener('click', () => {
     tab1.classList.add('active');
     tab2.classList.remove('active');
+    tab1.setAttribute('aria-selected', 'true');
+    tab2.setAttribute('aria-selected', 'false');
     renderList(firstHalf);
   });
 
   tab2.addEventListener('click', () => {
     tab2.classList.add('active');
     tab1.classList.remove('active');
+    tab2.setAttribute('aria-selected', 'true');
+    tab1.setAttribute('aria-selected', 'false');
     renderList(secondHalf);
   });
+}
+
+function renderPersonBio(bio) {
+  if (Array.isArray(bio)) {
+    return bio.map(paragraph => `<p class="p-text">${paragraph}</p>`).join('');
+  }
+  if (!bio) return '';
+  return `
+    <div class="bio-section">
+      <span class="bio-label">學經歷</span>
+      <p class="p-text">${bio.career || ''}</p>
+    </div>
+    <div class="bio-section">
+      <span class="bio-label">本次演出</span>
+      <p class="p-text">${bio.concert || ''}</p>
+    </div>
+  `;
 }
 
 /* ==========================================================================
@@ -247,7 +422,7 @@ function renderTeamAndLeadership() {
         </div>
 
         <div class="person-full-bio">
-          ${c.bio.map(p => `<p class="p-text">${p}</p>`).join('')}
+          ${renderPersonBio(c.bio)}
         </div>
       </div>
     `).join('')}
@@ -280,7 +455,7 @@ function renderTeamAndLeadership() {
         </div>
 
         <div class="person-full-bio">
-          ${s.bio.map(p => `<p class="p-text">${p}</p>`).join('')}
+          ${renderPersonBio(s.bio)}
         </div>
       </div>
     `).join('')}
@@ -395,22 +570,25 @@ function renderThanksAndHeritage() {
     </div>
 
     <!-- 官方頻道與社群導流 -->
-    <div class="card" style="background: var(--bg-secondary);">
-      <h3 class="card-title-serif" style="border-bottom: none; margin-bottom: 6px;">追蹤嘉中管樂官方頻道</h3>
-      <p class="p-text" style="font-size: 0.85rem; margin-bottom: 14px;">歡迎前往官方網站與社群媒體觀看更多歷史檔案與影音</p>
+    <div class="card channel-card">
+      <h3 class="card-title-serif channel-heading">追蹤嘉中管樂官方頻道</h3>
+      <p class="p-text channel-intro">歡迎前往官方網站與社群媒體觀看更多歷史檔案與影音</p>
       
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <a href="https://cysh.band" target="_blank" rel="noopener" class="btn-primary" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); justify-content: space-between;">
-          <span>嘉中管樂官方網站 (cysh.band)</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      <div class="channel-list">
+        <a href="https://cysh.band" class="channel-link">
+          <svg class="channel-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.4 2.5 3.7 5.5 3.7 9S14.4 18.5 12 21c-2.4-2.5-3.7-5.5-3.7-9S9.6 5.5 12 3Z"></path></svg>
+          <span>嘉中管樂官方網站 <small>cysh.band</small></span>
+          <svg class="channel-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
         </a>
-        <a href="https://www.facebook.com/cyshband/" target="_blank" rel="noopener" class="btn-primary" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); justify-content: space-between;">
+        <a href="https://www.facebook.com/cyshband/" target="_blank" rel="noopener" class="channel-link">
+          <svg class="channel-icon brand-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V3.9c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2V10H7.6v3h2.8v8h3.2Z"></path></svg>
           <span>Facebook 粉絲專頁</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <svg class="channel-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
         </a>
-        <a href="https://www.instagram.com/cyshband_95th" target="_blank" rel="noopener" class="btn-primary" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); justify-content: space-between;">
-          <span>Instagram (@cyshband_95th)</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <a href="https://www.instagram.com/cyshband_95th" target="_blank" rel="noopener" class="channel-link">
+          <svg class="channel-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><path d="M17.6 6.4h.01"></path></svg>
+          <span>Instagram <small>@cyshband_95th</small></span>
+          <svg class="channel-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
         </a>
       </div>
     </div>

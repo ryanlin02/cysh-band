@@ -21,6 +21,8 @@
 | people.html | 人物誌（精選故事，由 `data/people-profiles.js` 產生卡片） |
 | roster.html | 校友名錄（`data/alumni.js` 驅動；由 Cloudflare Access Email 白名單保護） |
 | concerts.html | 校友聯演（本屆演出＋最新消息文章索引＋歷屆紀錄典藏列表） |
+| concerts/*-program/ | 各屆獨立線上節目冊入口與當屆資料（行動裝置優先） |
+| assets/program-book/ | 所有線上節目冊共用的版型與互動程式 |
 | photos/ | 完整影像館（R2 照片資料；由 Cloudflare Access Email 白名單保護） |
 | gallery/ | 公開新聞／演出使用的精選相簿，維持公開 |
 | contact.html | 聯絡與資料更正（官方聯絡入口） |
@@ -37,7 +39,7 @@
 | data/number-lookup.js | 編號查詢小遊戲資料檔（非完整公開名錄） |
 | 校友資料管理與驗證流程.md | 公開名錄、查號資料、個人頁與內部 Excel 名冊的管理流程 |
 | 人物頁模板化規格與檢查清單.md | 人物個人頁模板化、資料來源、相關聯演與健康檢查規劃 |
-| templates/ | 共用模板試作（head、導覽列、頁尾與基礎版型；暫不直接替換正式頁面） |
+| templates/ | 共用模板試作；`concert-program-book/` 是新增各屆線上節目冊的正式起點 |
 | _generated/ | 腳本產生的本地預覽／比對檔，不列入 sitemap |
 | js/、css/ | 互動腳本與全站樣式 |
 | assets/img/members/ | 成員大頭照（正方形 WebP） |
@@ -87,6 +89,8 @@ node scripts/generate-concerts-index.js
 ```
 
 `node scripts/check-site.js` 會檢查總覽列表是否同步；若修改 `data/concerts.js` 後忘記重跑，檢查會提醒。
+
+若該屆另有行動裝置版線上節目冊，請從 `templates/concert-program-book/` 建立 `concerts/{year}-{nth}-program/`。每屆只維護入口頁與自己的 `data/*.js`；版型、分享、夜間模式與底部導覽統一由 `assets/program-book/` 提供。再於 `data/concerts.js` 對應屆別加入 `onlineProgramBook`，讓演出介紹頁顯示入口。詳細步驟見範本目錄內的 `README.md`。
 
 ### 新增頁面時同步更新 SEO
 新增任何公開頁面（如 news 文章、屆別頁）後，在 `sitemap.xml` 加一行對應的 `<url>`（複製既有行修改網址與日期即可）

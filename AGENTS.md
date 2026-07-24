@@ -112,6 +112,15 @@ node scripts/generate-concert-pages.js
 
 注意：部分屆別頁是人工整理頁，部分可由產生器更新。`scripts/generate-concert-pages.js` 的原則是既有人工頁不覆寫，只有缺頁或已標記為產生器輸出的頁面會更新。修改聯演資料後請檢查 `concerts.html`、獨立頁、人物頁「相關校友聯演」是否同步。
 
+線上節目冊採另一層「獨立資料、共用介面」架構：
+
+- 正式入口與資料：`concerts/{year}-{nth}-program/index.html`、同目錄 `data/*.js`
+- 共用介面：`assets/program-book/program-book.css`、`assets/program-book/program-book.js`
+- 新增範本：`templates/concert-program-book/`
+- 演出介紹頁入口：`data/concerts.js` 的 `onlineProgramBook`
+
+線上節目冊可以使用 `data-page-shell="standalone"`，不套用一般官網八項導覽與 footer，但必須同時標記 `data-page-type="concert-program-book"`，保留左上首頁出口、分享／夜間模式、五項底部導覽、可縮放 viewport 與 `window.CONCERT_PROGRAM_DATA`。不要為單一屆複製共用 CSS／JS；新增或修改後由 `scripts/check-site.js` 的線上節目冊 contract 檢查。
+
 ### 5.5 校友名錄
 
 - 資料來源：`data/alumni.js`

@@ -2,13 +2,14 @@
  * 第 41 屆嘉義高中校友暨在校生聯合音樂會《為伍》線上節目冊 - 資料設定檔
  */
 
-export const concertData = {
+window.CONCERT_PROGRAM_DATA = {
   // --- 1. 基本資訊 ---
   info: {
     title: "為伍",
     titleEnglish: "Keep Company",
     concertNo: "第 41 屆嘉義高中校友暨在校生聯合音樂會",
     pageTypeTitle: "線上節目冊",
+    headerTitle: "第41屆｜《為伍》",
     date: "2026.08.08",
     dayOfWeek: "星期六",
     time: "14:30",
@@ -43,10 +44,10 @@ export const concertData = {
         number: "8861",
         role: "樂團指導 / 指揮",
         photo: "https://cysh.band/assets/img/members/8861.webp",
-        bio: [
-          "從嘉中管樂隊第一次拿起長號，到指揮東京佼成管樂團錄製臺灣作品——簡晟軒在演奏、指揮與教育之間扎根嘉義。",
-          "作為本次《為伍》聯合音樂會的樂團指導，簡晟軒帶領不同世代的校友與在校生，將經典管樂大作、精緻小號協奏與流行動漫主題曲融入整場節目，展現樂團極具張力與感染力的音樂面貌。"
-        ],
+        bio: {
+          career: "簡晟軒於 1999 年進入嘉義高中後開始學習長號，後就讀國立高雄師範大學音樂學系，2009 年赴德國萊比錫音樂暨戲劇學院進修，並於 2012 年取得長號演奏文憑；留學期間曾入選亞洲青年管弦樂團。返臺後，他再完成高師大音樂系研究所指揮組碩士學位，持續以長號演奏者、樂團指揮與管樂教師身分活躍於南臺灣，也長期回到嘉義投入學校與地方樂團。",
+          concert: "本次《為伍》由簡晟軒擔任樂團指導與指揮。他熟悉嘉中管樂社與校友團的傳承脈絡，也理解不同世代團員在演奏經驗、排練時間與聲音習慣上的差異；排練中，他需要把經典管樂作品、小號協奏曲、流行與遊戲音樂改編整合成清楚而連貫的舞台敘事，讓每個聲部在保有特色的同時，共同建立屬於本屆聯演的聲音。"
+        },
         officialLink: "https://cysh.band/people/8861.html"
       },
       {
@@ -55,10 +56,10 @@ export const concertData = {
         number: "8501",
         role: "樂團指導 / 指揮",
         photo: "https://cysh.band/assets/img/members/8501.webp",
-        bio: [
-          "從嘉中低音號手到管樂與管弦樂團指揮——丁肇賢長年返團帶領校友與在校生，是近年校友聯演幕後最重要的推手之一。",
-          "丁肇賢擁有極為豐富的樂團合奏指導經驗，細膩精準的排練風格陪伴每一屆暑期團練的點點滴滴，把世代間的聲響慢慢靠攏，點亮舞台上的高光時刻。"
-        ],
+        bio: {
+          career: "丁肇賢為嘉義高中管樂隊校友，民國 85 年入學、當屆社長，主修低音號。其後畢業於國立臺灣師範大學音樂系研究所指揮組，師事廖嘉弘教授，並曾參與美國辛辛那提音樂學院 Rodney Winther 教授的指揮研習；多年來持續指導大學與中學管樂團，也擔任管弦樂團指揮，同時保有低音號演奏者的合奏視角。",
+          concert: "丁肇賢長期參與嘉中校友暨在校生聯合音樂會，熟悉校友團在短期集訓中整合不同年齡、職業與演奏經驗的特殊需求。本次《為伍》中，他以樂團指導與指揮身分協助團員整理呼吸、音準、和聲平衡與樂句方向，讓低音基礎、內聲部連接與主旋律彼此支撐；這份細膩而務實的排練工作，也是不同世代能在同一座舞台上形成共同聲音的重要基礎。"
+        },
         officialLink: "https://cysh.band/people/8501.html"
       }
     ],
@@ -69,10 +70,10 @@ export const concertData = {
         number: "1051",
         role: "小號獨奏 / Sparke: Manhattan",
         photo: "https://cysh.band/assets/img/members/1051.webp",
-        bio: [
-          "從嘉義校園管樂體系走向嘉中校友團——黃鈺芠展現了極具穿透力與歌唱感的亮麗小號音色。",
-          "本次音樂會重頭戲，黃鈺芠特別擔綱演出 Philip Sparke 寫給小號與管樂團的名作《Manhattan》。全曲呈現紐約曼哈頓的爵士律動與天際線的光影變化，技術性與音樂性兼備。"
-        ],
+        bio: {
+          career: "黃鈺芠自嘉義地區的校園管樂教育一路成長，曾參與世賢國小音樂活動、北興國中管樂班演出，進入嘉義高中後持續投入管樂社與小號演奏。高中階段，她曾以 Arban《Fantasie Brillante for Trumpet and Piano》參加學生音樂比賽，之後加入校友與在校生共同演出的聯演傳承；依本人校友資料登錄，目前就讀臺北市立大學音樂系。",
+          concert: "本次《為伍》，黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏。作品以兩個風格鮮明的樂章描繪曼哈頓：前段帶有夜晚爵士俱樂部般的藍調色彩，後段轉向週日城市與中央公園的明快律動。獨奏者必須在歌唱性的長線條、靈活節奏與高強度技巧之間快速轉換，也要與管樂團保持敏銳的呼吸與音色對話；對本屆聯演而言，這次協奏同時象徵年輕校友把持續累積的新聲音帶回共同舞台。"
+        },
         officialLink: "https://cysh.band/people/1051.html"
       }
     ],
@@ -105,9 +106,11 @@ export const concertData = {
     firstHalf: [
       {
         no: 1,
-        title: "Flashing Winds",
-        titleZh: "閃耀之風",
-        composer: "Jan Van der Roost (揚·范德羅斯特)",
+        titles: [
+          { lang: "zh-Hant", text: "閃耀之風" },
+          { lang: "en", text: "Flashing Winds" }
+        ],
+        composer: ["Jan Van der Roost", "揚·范德羅斯特"],
         arranger: "",
         duration: "約 4 分 30 秒",
         note: [
@@ -117,9 +120,11 @@ export const concertData = {
       },
       {
         no: 2,
-        title: "Ye Banks and Braes o' Bonnie Doon",
-        titleZh: "美麗邦尼鄧的河岸與丘陵",
-        composer: "Percy A. Grainger (珀西·格蘭傑)",
+        titles: [
+          { lang: "zh-Hant", text: "美麗邦尼鄧的河岸與丘陵" },
+          { lang: "en", text: "Ye Banks and Braes o' Bonnie Doon" }
+        ],
+        composer: ["Percy A. Grainger", "珀西·格蘭傑"],
         arranger: "",
         duration: "約 3 分 00 秒",
         note: [
@@ -129,9 +134,12 @@ export const concertData = {
       },
       {
         no: 3,
-        title: "The Seventh Night of July (たなばた)",
-        titleZh: "七夕",
-        composer: "酒井格 (Itaru Sakai)",
+        titles: [
+          { lang: "zh-Hant", text: "七夕" },
+          { lang: "ja", text: "たなばた" },
+          { lang: "en", text: "The Seventh Night of July" }
+        ],
+        composer: ["酒井格", "Itaru Sakai"],
         arranger: "",
         duration: "約 6 分 00 秒",
         note: [
@@ -141,9 +149,11 @@ export const concertData = {
       },
       {
         no: 4,
-        title: "Manhattan (Concerto for Trumpet)",
-        titleZh: "曼哈頓 (小號協奏曲)",
-        composer: "Philip Sparke (菲利浦·史巴克)",
+        titles: [
+          { lang: "zh-Hant", text: "曼哈頓（小號協奏曲）" },
+          { lang: "en", text: "Manhattan (Concerto for Trumpet)" }
+        ],
+        composer: ["Philip Sparke", "菲利浦·史巴克"],
         soloist: "黃鈺芠 (1051)",
         soloInstrument: "小號 Solo Trumpet",
         duration: "約 10 分 00 秒",
@@ -156,9 +166,11 @@ export const concertData = {
     secondHalf: [
       {
         no: 5,
-        title: "Novena + Seagate Overture",
-        titleZh: "諾維娜與海門序曲組曲",
-        composer: "James Swearingen (詹姆斯·斯威靈根)",
+        titles: [
+          { lang: "zh-Hant", text: "諾維娜與海門序曲組曲" },
+          { lang: "en", text: "Novena + Seagate Overture" }
+        ],
+        composer: ["James Swearingen", "詹姆斯·斯威靈根"],
         arranger: "",
         duration: "約 7 分 30 秒",
         note: [
@@ -168,10 +180,12 @@ export const concertData = {
       },
       {
         no: 6,
-        title: "The Days Of Wine And Roses",
-        titleZh: "美酒與玫瑰的日子",
+        titles: [
+          { lang: "zh-Hant", text: "美酒與玫瑰的日子" },
+          { lang: "en", text: "The Days of Wine and Roses" }
+        ],
         composer: "Henry Mancini",
-        arranger: "岩井直溥 (Naohiro Iwai)",
+        arranger: ["岩井直溥", "Naohiro Iwai"],
         duration: "約 4 分 00 秒",
         note: [
           "本曲原為亨利·曼西尼（Henry Mancini）於 1962 年榮獲奧斯卡最佳原創歌曲獎的同名電影主題曲，由日本吹奏樂教父岩井直溥親自改編（收錄於經典《New Sounds in Brass》系列）。",
@@ -180,8 +194,10 @@ export const concertData = {
       },
       {
         no: 7,
-        title: "Heal The World",
-        titleZh: "拯救世界",
+        titles: [
+          { lang: "zh-Hant", text: "拯救世界" },
+          { lang: "en", text: "Heal the World" }
+        ],
         composer: "Michael Jackson",
         arranger: "Ron Sebregts",
         duration: "約 5 分 00 秒",
@@ -192,10 +208,12 @@ export const concertData = {
       },
       {
         no: 8,
-        title: "Japanese Graffiti XXII City Pop Medley",
-        titleZh: "日本流行塗鴉 XXII：City Pop 組曲",
+        titles: [
+          { lang: "zh-Hant", text: "日本流行塗鴉 XXII：City Pop 組曲" },
+          { lang: "en", text: "Japanese Graffiti XXII: City Pop Medley" }
+        ],
         composer: "Various Artists",
-        arranger: "金山徹 (Tohru Kanayama)",
+        arranger: ["金山徹", "Tohru Kanayama"],
         duration: "約 7 分 00 秒",
         note: [
           "收錄日本 1980 年代掀起全球熱潮的「City Pop」五首黃金歲月代表作，由金山徹精心編曲：",
@@ -204,9 +222,11 @@ export const concertData = {
       },
       {
         no: 9,
-        title: "Symphonic Suite of Galaxy (Super Mario Galaxy)",
-        titleZh: "星雲交響組曲（選自《超級瑪利歐銀河》）",
-        composer: "橫田真人、近藤浩治",
+        titles: [
+          { lang: "zh-Hant", text: "星雲交響組曲（選自《超級瑪利歐銀河》）" },
+          { lang: "en", text: "Symphonic Suite of Galaxy (Super Mario Galaxy)" }
+        ],
+        composer: ["橫田真人", "近藤浩治"],
         arranger: "尚水堂",
         duration: "約 8 分 30 秒",
         note: [

@@ -259,6 +259,24 @@ function checkDataReferences() {
     for (const field of ['page', 'poster']) {
       if (concert[field] && !exists(concert[field])) addError(`data/concerts.js: ${label} ${field} not found: ${concert[field]}`);
     }
+    if (concert.onlineProgramBook) {
+      const book = concert.onlineProgramBook;
+      if (!book || typeof book !== 'object') {
+        addError(`data/concerts.js: ${label} onlineProgramBook must be an object.`);
+      } else {
+        if (!book.label) addError(`data/concerts.js: ${label} onlineProgramBook missing label.`);
+        if (!book.url) {
+          addError(`data/concerts.js: ${label} onlineProgramBook missing url.`);
+        } else if (isExternal(book.url)) {
+          addError(`data/concerts.js: ${label} onlineProgramBook must use a local site path: ${book.url}`);
+        } else {
+          const programBookEntry = cleanLocalRef(book.url).replace(/\/?$/, '/index.html');
+          if (!exists(programBookEntry)) {
+            addError(`data/concerts.js: ${label} onlineProgramBook entry not found: ${programBookEntry}`);
+          }
+        }
+      }
+    }
     for (const field of ['gallery', 'news']) {
       for (const item of concert[field] || []) {
         if (!exists(item)) addError(`data/concerts.js: ${label} ${field} not found: ${item}`);
@@ -502,6 +520,60 @@ function checkSharedChromeConsistency() {
   }
 
   info.push(`Shared nav/footer consistency checked: ${publicHtml.length} files`);
+}
+
+function checkConcertProgramBooks() {
+  const programBookPages = walk(path.join(root, 'concerts'), (file) => (
+    file.endsWith('.html')
+    && !file.includes(`${path.sep}templates${path.sep}`)
+  )).filter((file) => /<html\b[^>]*\bdata-page-type=["']concert-program-book["']/i.test(fs.readFileSync(file, 'utf8')));
+
+  for (const file of programBookPages) {
+    const fileRel = rel(file);
+    const text = fs.readFileSync(file, 'utf8');
+    const entryDir = path.dirname(file);
+
+    if (!/<html\b[^>]*\bdata-page-shell=["']standalone["']/i.test(text)) {
+      addError(`${fileRel}: concert program book must use data-page-shell="standalone".`);
+    }
+    if (!text.includes('assets/program-book/program-book.css')) {
+      addError(`${fileRel}: missing shared program-book stylesheet.`);
+    }
+    if (!text.includes('assets/program-book/program-book.js')) {
+      addError(`${fileRel}: missing shared program-book runtime.`);
+    }
+    if (!/<script\b[^>]*src=["']data\/[^"']+\.js(?:\?[^"']*)?["'][^>]*\bdefer\b/i.test(text)) {
+      addError(`${fileRel}: missing deferred per-concert data script under data/.`);
+    }
+    if (!/\bid=["']home-btn["']/i.test(text)) addError(`${fileRel}: missing home icon button.`);
+    if (!/\bid=["']share-btn["']/i.test(text)) addError(`${fileRel}: missing share button.`);
+    if (!/\bid=["']theme-toggle-btn["']/i.test(text)) addError(`${fileRel}: missing theme button.`);
+    if (!/\bid=["']program-book-title["']/i.test(text)) addError(`${fileRel}: missing centered program-book title.`);
+    if (!/\bid=["']program-content["']/i.test(text)) addError(`${fileRel}: missing main program content target.`);
+    if (!/<nav\b[^>]*class=["'][^"']*\bbottom-nav\b/i.test(text)) addError(`${fileRel}: missing bottom program navigation.`);
+    const navItems = [...text.matchAll(/<button\b[^>]*class=["'][^"']*\bnav-item\b[^"']*["'][^>]*>/gi)];
+    if (navItems.length !== 5) addError(`${fileRel}: expected exactly 5 bottom navigation items, found ${navItems.length}.`);
+    if (!/<button\b[^>]*class=["'][^"']*\bnav-item\b[^"']*["'][^>]*>[\s\S]*?<span>節目冊<\/span>/i.test(text)) {
+      addError(`${fileRel}: first program navigation label must be 節目冊.`);
+    }
+    const viewport = (text.match(/<meta\s+name=["']viewport["']\s+content=["']([^"']+)["']/i) || [])[1] || '';
+    if (/user-scalable\s*=\s*no|maximum-scale\s*=\s*1(?:\.0)?/i.test(viewport)) {
+      addError(`${fileRel}: viewport must not disable user zoom.`);
+    }
+
+    const localDataScripts = [...text.matchAll(/<script\b[^>]*src=["'](data\/[^"']+\.js)(?:\?[^"']*)?["']/gi)];
+    for (const match of localDataScripts) {
+      const dataFile = path.join(entryDir, match[1]);
+      if (!fs.existsSync(dataFile)) continue;
+      const dataText = fs.readFileSync(dataFile, 'utf8');
+      if (!/window\.CONCERT_PROGRAM_DATA\s*=/.test(dataText)) {
+        addError(`${rel(dataFile)}: must assign window.CONCERT_PROGRAM_DATA for file:// compatibility.`);
+      }
+    }
+  }
+
+  if (!programBookPages.length) addWarning('No concert program-book pages found.');
+  info.push(`Concert program-book contract checked: ${programBookPages.length} pages`);
 }
 
 function checkSitemapAndFeed() {
@@ -871,6 +943,7 @@ checkDataReferences();
 checkHtmlReferences();
 checkPublicHtmlQuality();
 checkSharedChromeConsistency();
+checkConcertProgramBooks();
 checkSitemapAndFeed();
 checkMemberAccessPrivacy();
 checkStructuredData();
