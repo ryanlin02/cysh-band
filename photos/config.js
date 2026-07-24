@@ -15,4 +15,8 @@ window.SITE_CONFIG = {
 
   // 圖檔副檔名（R2 上為 WebP）
   imageExt: ".webp",
+
+  // 版本化搜尋與瀏覽 runtime。程式檔放在同網域，資料檔由
+  // bootstrap 指向 Cloudflare R2，讓 Web Worker 維持同源。
+  runtimeBase: "./runtime",
 };

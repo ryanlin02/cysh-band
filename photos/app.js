@@ -1,6 +1,6 @@
 /* ============================================================
    嘉義高中管樂隊 影像館 — 主程式
-   純前端靜態網站：讀取 data/site-index.json 與 data/people.json
+   純前端靜態網站：讀取版本化 public gallery runtime
 
    時間軸採「預先計算版面＋虛擬化渲染」架構（同 Google Photos）：
    載入時先用數學算出全部照片的位置（不建立畫面元素），
@@ -18,6 +18,10 @@ let currentList = [];   // 目前檢視全部照片的順序（給燈箱前後�
 let zoomMode = "album"; // album | month | year
 let currentView = "";
 let scrollPositions = {}; // 各檢視的捲動位置記憶
+let GALLERY_RUNTIME = null;
+let RUNTIME_BOOTSTRAP = null;
+let RUNTIME_CORE = null;
+let SEARCH_META = null;
 
 /* ---------- 工具 ---------- */
 function encPath(rel) {
@@ -28,7 +32,7 @@ function thumbUrl(p) {
   if (p.thumb) return CFG.imageBase + "/" + encPath(p.thumb.replace(/^images\//, "").replace(/\.jpg$/i, IMG_EXT));
   const alb = DB.albums[p.a];
   const stem = p.f.replace(/\.[^.]+$/, "");
-  return CFG.imageBase + "/thumb/" + encPath(alb.folder + "/" + stem + "-" + p.i + IMG_EXT);
+  return CFG.imageBase + "/thumb/" + encPath(alb.folder + "/" + stem + "-" + p.cid.slice(0, 12) + IMG_EXT);
 }
 function largeUrl(p) {
   if (p.large) return CFG.imageBase + "/" + encPath(p.large.replace(/^images\//, "").replace(/\.jpg$/i, IMG_EXT));
@@ -69,12 +73,71 @@ function personAvatarUrl(person) {
 
 /* ---------- 資料載入 ---------- */
 async function loadData() {
-  const [idx, ppl] = await Promise.all([
-    fetch(CFG.dataBase + "/site-index.json").then((r) => r.json()),
-    fetch(CFG.dataBase + "/people.json").then((r) => r.json()),
-  ]);
-  DB = idx;
-  PEOPLE = ppl;
+  const runtimeBase = new URL(
+    String(CFG.runtimeBase || "").replace(/\/?$/, "/"),
+    document.baseURI
+  );
+  const bootstrapResponse = await fetch(new URL("bootstrap.json", runtimeBase));
+  if (!bootstrapResponse.ok) {
+    throw new Error(`Runtime載入失敗（${bootstrapResponse.status}）`);
+  }
+  RUNTIME_BOOTSTRAP = await bootstrapResponse.json();
+  if (RUNTIME_BOOTSTRAP.audience !== "public") {
+    throw new Error("影像館只能載入public runtime");
+  }
+  const loaderUrl = new URL(
+    RUNTIME_BOOTSTRAP.files.runtimeLoader.path,
+    runtimeBase
+  );
+  const { GalleryRuntime } = await import(loaderUrl.href);
+  GALLERY_RUNTIME = new GalleryRuntime(runtimeBase.href);
+  GALLERY_RUNTIME.bootstrapPromise = Promise.resolve(RUNTIME_BOOTSTRAP);
+  RUNTIME_CORE = await GALLERY_RUNTIME.loadCore();
+
+  const albums = RUNTIME_CORE.albums.map((row) => ({
+    id: row[0],
+    title: row[1],
+    folder: row[2],
+    count: row[3],
+    date: row[4],
+    sortDate: row[5],
+    precision: row[6],
+    confidence: row[7],
+    review: Boolean(row[8]),
+  }));
+  PEOPLE = RUNTIME_CORE.people.map((row) => ({
+    id: row[0],
+    name: row[1],
+    num: row[2],
+    entryYearRoc: row[3],
+    entryYearAd: row[4],
+    aliases: row[5] || [],
+    identityStatus: row[6],
+    avatar: "",
+    count: 0,
+  }));
+  const photos = RUNTIME_CORE.photos.map((row) => ({
+    i: row[0],
+    cid: row[1],
+    a: row[2],
+    f: row[3],
+    w: row[4],
+    h: row[5],
+    p: row[6] || [],
+    thumb: row[7]?.[0] || "",
+    large: row[7]?.[1] || "",
+    _detailState: "idle",
+  }));
+  for (const photo of photos) {
+    for (const personIndex of photo.p) {
+      if (PEOPLE[personIndex]) PEOPLE[personIndex].count += 1;
+    }
+  }
+  DB = {
+    albums,
+    photos,
+    aiCount: RUNTIME_BOOTSTRAP.counts.annotatedPhotos || 0,
+  };
   DB.albumOrder = DB.albums
     .map((a, i) => i)
     .sort((x, y) => (DB.albums[y].sortDate || "").localeCompare(DB.albums[x].sortDate || ""));
@@ -83,8 +146,33 @@ async function loadData() {
   for (const p of DB.photos) {
     DB.photosByAlbum[p.a].push(p);
     DB.photoById[p.i] = p;
+    DB.photoById[p.cid.slice(0, 12)] ||= p;
   }
-  DB.aiCount = DB.photos.filter((p) => p.c || p.k).length;
+}
+
+async function ensurePhotoDetails(photo) {
+  if (photo._detailState === "ready") return photo;
+  if (photo._detailPromise) return photo._detailPromise;
+  photo._detailState = "loading";
+  photo._detailPromise = GALLERY_RUNTIME.loadDetails(photo.cid)
+    .then((content) => {
+      const primary = content?.primary || {};
+      const supplements = content?.supplements || [];
+      photo.c = primary.caption || "";
+      photo.k = primary.tags || [];
+      photo.s = primary.scene || "";
+      photo.c2s = supplements.flatMap((item) => item.safeCaptions || []);
+      photo.k2 = supplements.flatMap((item) => item.safeKeywords || []);
+      photo.s2 = supplements.flatMap((item) => item.safeContext || []);
+      photo._detailState = "ready";
+      return photo;
+    })
+    .catch((error) => {
+      photo._detailState = "error";
+      photo._detailPromise = null;
+      throw error;
+    });
+  return photo._detailPromise;
 }
 
 /* ============================================================
@@ -123,6 +211,7 @@ function vClear() {
 }
 function resetContent() {
   vClear();
+  SEARCH_META = null;
   const c = $("#content");
   c.innerHTML = "";
   currentList = [];
@@ -188,14 +277,35 @@ function vRowEl(row) {
       const ph = document.createElement("div");
       ph.className = "ph";
       ph.dataset.idx = item.gi;
+      ph.tabIndex = 0;
+      ph.setAttribute("role", "button");
       if (row.justify) ph.style.flex = `${item.r} 1 0%`;
       else { ph.style.width = (row.h * item.r).toFixed(2) + "px"; ph.style.flex = "0 0 auto"; }
       const img = document.createElement("img");
       img.decoding = "async";
       img.src = thumbUrl(item.p);
-      img.alt = "";
+      const meta = SEARCH_META?.get(item.p);
+      const album = DB.albums[item.p.a];
+      const reason = meta?.reasons?.[0];
+      const accessibleLabel = reason
+        ? `${album.title || "未命名相簿"}，命中${reason.label}：${reason.matched}`
+        : `${album.title || "未命名相簿"}照片`;
+      img.alt = accessibleLabel;
+      ph.setAttribute("aria-label", accessibleLabel);
       img.onload = () => img.classList.add("ok");
       ph.appendChild(img);
+      if (reason) {
+        const badge = document.createElement("span");
+        badge.className = "match-reason";
+        badge.textContent = reason.label;
+        ph.appendChild(badge);
+      }
+      if (meta?.dateRelation === "mismatched") {
+        const warning = document.createElement("span");
+        warning.className = "match-date-warning";
+        warning.textContent = "年份不一致";
+        ph.appendChild(warning);
+      }
       el.appendChild(ph);
     }
   }
@@ -486,7 +596,7 @@ function renderPeople() {
   resetContent();
   const c = $("#content");
   if (!PEOPLE.length) {
-    c.innerHTML = `<div class="empty"><div class="big">👤</div>目前還沒有可顯示的人物</div>`;
+    c.innerHTML = `<div class="empty"><svg class="empty-icon ico-svg" aria-hidden="true"><use href="#i-person"/></svg><h2>目前還沒有可顯示的人物</h2></div>`;
     return;
   }
   const grid = document.createElement("div");
@@ -508,8 +618,7 @@ function renderPersonDetail(personId) {
   resetContent();
   const pi = PEOPLE.findIndex((p) => p.id === personId);
   if (pi < 0) { $("#content").innerHTML = `<div class="empty">找不到這位人物</div>`; return; }
-  const person = PEOPLE[pi];
-  renderPersonDetailByIndex(pi, person);
+  renderPersonDetailByIndex(pi, PEOPLE[pi]);
 }
 function renderPersonDetailByNum(num) {
   resetContent();
@@ -529,7 +638,7 @@ function renderPersonDetailByIndex(pi, person) {
     (avatar ? `<img class="sub-avatar" src="${esc(avatar)}" alt="${esc(person.name)}">` : "") +
     `<span>${esc(person.name)}${person.num ? `<span class="p-num">${person.num}</span>` : ""}</span>` +
     (profile ? `<a class="profile-jump" href="${esc(profile.url)}">閱讀人物介紹</a>` : "") +
-    `</div><div class="sub-meta">出現在 ${person.count} 張照片中</div>`;
+    `</div><div class="sub-meta">出現在 ${person.count} 張已確認公開關聯的照片中</div>`;
   const secs = [];
   for (const ai of DB.albumOrder) {
     const ph = DB.photosByAlbum[ai].filter((p) => p.p && p.p.includes(pi));
@@ -544,7 +653,7 @@ function renderPersonDetailByIndex(pi, person) {
   vBuild(secs);
 }
 
-/* ---------- 檢視：搜尋 ---------- */
+/* ---------- 舊搜尋實作（保留作本機回復參考；路由不再呼叫） ---------- */
 let searchTimer = null;
 /* 搜尋建議索引：從 AI 標籤、活動名稱、人名統計詞頻（只建一次） */
 let SUGGEST = null;
@@ -695,9 +804,29 @@ function expandTerm(t) {
 }
 function photoText(p) {
   if (p._txt === undefined) {
-    p._txt = ((p.c || "") + " " + (p.k || []).join(" ") + " " + (p.s || "")).toLowerCase();
+    p._txt = (
+      primaryPhotoText(p) + " " + supplementalPhotoText(p)
+    ).trim();
   }
   return p._txt;
+}
+function primaryPhotoText(p) {
+  if (p._txtPrimary === undefined) {
+    p._txtPrimary = (
+      (p.c || "") + " " + (p.k || []).join(" ") + " " + (p.s || "")
+    ).toLowerCase();
+  }
+  return p._txtPrimary;
+}
+function supplementalPhotoText(p) {
+  if (p._txtSupplemental === undefined) {
+    p._txtSupplemental = (
+      (p.c2s || []).join(" ") + " " +
+      (p.k2 || []).join(" ") + " " +
+      (p.s2 || []).join(" ")
+    ).toLowerCase();
+  }
+  return p._txtSupplemental;
 }
 function albumText(ai) {
   const a = DB.albums[ai];
@@ -711,13 +840,34 @@ function runQuery(termGroups) {
     if (termGroups.some((g) => g.some((t) => n.includes(t)))) matchedPeople.add(i);
   });
   const groupHit = (txt, g) => g.some((t) => txt.includes(t));
-  return DB.photos.filter((p) => {
-    return termGroups.every((g) =>
-      groupHit(albumText(p.a), g) ||
-      (p.p && p.p.some((pi) => matchedPeople.has(pi) && groupHit(PEOPLE[pi].name.toLowerCase(), g))) ||
-      groupHit(photoText(p), g)
-    );
-  });
+  const scored = [];
+  for (const p of DB.photos) {
+    let score = 0;
+    let matched = true;
+    for (const g of termGroups) {
+      if (groupHit(albumText(p.a), g)) {
+        score += 4;
+      } else if (
+        p.p && p.p.some((pi) =>
+          matchedPeople.has(pi) && groupHit(PEOPLE[pi].name.toLowerCase(), g)
+        )
+      ) {
+        score += 4;
+      } else if (groupHit(primaryPhotoText(p), g)) {
+        score += 2;
+      } else if (groupHit(supplementalPhotoText(p), g)) {
+        // 階段2.5補充標註可增加召回，但排序低於既有標註與明確資料。
+        score += 1;
+      } else {
+        matched = false;
+        break;
+      }
+    }
+    if (matched) scored.push([score, p]);
+  }
+  return scored
+    .sort((a, b) => b[0] - a[0])
+    .map(([, p]) => p);
 }
 function doSearch(q) {
   q = (q || "").trim();
@@ -779,6 +929,449 @@ function doSearch(q) {
   vBuild(secs);
 }
 
+/* ---------- 階段7C：正式runtime搜尋介面 ---------- */
+let formalSearchRuntimePromise = null;
+let formalSearchWorker = null;
+let formalPopular = [];
+let formalRequestId = 0;
+let formalSearchToken = 0;
+let formalSuggestToken = 0;
+let formalLastQuery = "";
+let formalFilters = {};
+const formalPending = new Map();
+
+function formalWorkerRequest(type, payload = {}) {
+  return new Promise((resolve, reject) => {
+    const requestId = `search-${++formalRequestId}`;
+    formalPending.set(requestId, { resolve, reject });
+    formalSearchWorker.postMessage({ type, requestId, ...payload });
+  });
+}
+
+function formalStartSearchRuntime() {
+  if (!formalSearchRuntimePromise) {
+    formalSearchRuntimePromise = Promise.all([
+      GALLERY_RUNTIME.startSearchWorker(),
+      GALLERY_RUNTIME.loadPopular(),
+    ]).then(([worker, popularPayload]) => {
+      formalSearchWorker = worker;
+      formalPopular = popularPayload.popular || [];
+      worker.addEventListener("message", (event) => {
+        const requestId = event.data?.requestId;
+        if (!requestId || !formalPending.has(requestId)) return;
+        const pending = formalPending.get(requestId);
+        formalPending.delete(requestId);
+        if (event.data.type === "error") {
+          pending.reject(new Error(event.data.message));
+        } else {
+          pending.resolve(event.data);
+        }
+      });
+      return { worker, popular: formalPopular };
+    }).catch((error) => {
+      formalSearchRuntimePromise = null;
+      formalSearchWorker = null;
+      throw error;
+    });
+  }
+  return formalSearchRuntimePromise;
+}
+
+function formalSetStatus(kind, message) {
+  const state = $("#searchState");
+  if (!state) return;
+  state.className = `search-state ${kind || "idle"}`;
+  state.innerHTML = message || "";
+  state.classList.toggle("hidden", !message);
+}
+
+function formalRenderPopular() {
+  const box = $("#searchChips");
+  if (!box) return;
+  box.innerHTML = "";
+  for (const [term, count] of formalPopular.slice(0, 50)) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "chip";
+    button.textContent = term;
+    button.title = `${count.toLocaleString()} 張照片`;
+    button.onclick = () => {
+      const input = $("#searchInput");
+      input.value = term;
+      formalDoSearch(term);
+    };
+    box.appendChild(button);
+  }
+  $("#popularSearches")?.classList.toggle("hidden", !formalPopular.length);
+}
+
+async function formalUpdateSuggest(rawQuery) {
+  const box = $("#suggestBox");
+  if (!box) return;
+  const query = rawQuery.trim();
+  const token = ++formalSuggestToken;
+  if (!query) {
+    box.classList.add("hidden");
+    box.innerHTML = "";
+    return;
+  }
+  try {
+    await formalStartSearchRuntime();
+    const response = await formalWorkerRequest("suggest", { query });
+    if (token !== formalSuggestToken || !$("#suggestBox")) return;
+    const suggestions = response.results || [];
+    if (!suggestions.length) {
+      box.classList.add("hidden");
+      box.innerHTML = "";
+      return;
+    }
+    box.innerHTML = suggestions.map(([term, count]) =>
+      `<button type="button" class="sug" role="option" data-t="${esc(term)}">` +
+      `<svg class="ico-svg" aria-hidden="true"><use href="#i-search"/></svg>` +
+      `<span>${esc(term)}</span><span class="sug-n">${count.toLocaleString()} 張</span></button>`
+    ).join("");
+    box.classList.remove("hidden");
+  } catch (_error) {
+    box.classList.add("hidden");
+  }
+}
+
+function formalFilterActive() {
+  return Object.values(formalFilters).some((value) =>
+    value !== "" && value !== false && value !== null && value !== undefined
+  );
+}
+
+function formalFacetLabel(type, value) {
+  if (type === "albumIndex") {
+    const album = DB.albums[Number(value)];
+    return album
+      ? `${album.title || "未命名相簿"} · ${albumDateLabel(album)}`
+      : "未命名相簿";
+  }
+  if (type === "personIndex") {
+    const person = PEOPLE[Number(value)];
+    return person ? `${person.name}${person.num ? ` ${person.num}` : ""}` : String(value);
+  }
+  return String(value);
+}
+
+function formalCreateSelect(container, label, filterKey, rows) {
+  if (!rows?.length) return;
+  const wrap = document.createElement("label");
+  wrap.className = "filter-field";
+  const text = document.createElement("span");
+  text.textContent = label;
+  const select = document.createElement("select");
+  select.dataset.filter = filterKey;
+  select.setAttribute("aria-label", label);
+  const all = document.createElement("option");
+  all.value = "";
+  all.textContent = `全部${label}`;
+  select.appendChild(all);
+  for (const [value, count] of rows) {
+    const option = document.createElement("option");
+    option.value = String(value);
+    option.textContent = `${formalFacetLabel(filterKey, value)}（${count.toLocaleString()}）`;
+    option.selected = String(formalFilters[filterKey] ?? "") === String(value);
+    select.appendChild(option);
+  }
+  wrap.append(text, select);
+  container.appendChild(wrap);
+}
+
+function formalRenderFilters(facets) {
+  const fieldset = $("#searchFilters");
+  const fields = $("#filterFields");
+  if (!fieldset || !fields) return;
+  fields.innerHTML = "";
+  formalCreateSelect(fields, "年份", "year", facets.years);
+  formalCreateSelect(fields, "相簿", "albumIndex", facets.albums);
+  formalCreateSelect(fields, "人物", "personIndex", facets.people);
+  formalCreateSelect(fields, "場景", "scene", facets.scenes);
+  formalCreateSelect(fields, "活動", "activity", facets.activities);
+  formalCreateSelect(fields, "樂器", "instrument", facets.instruments);
+  if (facets.ocr > 0) {
+    const wrap = document.createElement("label");
+    wrap.className = "filter-check";
+    wrap.innerHTML =
+      `<input type="checkbox" data-filter="hasOcr"${formalFilters.hasOcr ? " checked" : ""}>` +
+      `<span>含可搜尋文字（${facets.ocr.toLocaleString()}）</span>`;
+    fields.appendChild(wrap);
+  }
+  const hasFields = fields.children.length > 0;
+  fieldset.classList.toggle("hidden", !hasFields);
+  if (hasFields) {
+    fieldset.open = formalFilterActive()
+      || window.matchMedia("(min-width: 768px)").matches;
+    const activeCount = Object.values(formalFilters).filter(
+      (value) => value !== "" && value !== false && value !== null && value !== undefined
+    ).length;
+    const count = $("#activeFilterCount");
+    if (count) {
+      count.textContent = activeCount ? `已套用 ${activeCount} 項` : "選用";
+      count.classList.toggle("active", activeCount > 0);
+    }
+  }
+  $("#clearFilters").classList.toggle("hidden", !formalFilterActive());
+  fields.querySelectorAll("[data-filter]").forEach((control) => {
+    control.addEventListener("change", () => {
+      const key = control.dataset.filter;
+      formalFilters[key] = control.type === "checkbox"
+        ? control.checked
+        : control.value;
+      formalDoSearch($("#searchInput").value, { fromFilter: true });
+    });
+  });
+}
+
+function formalEmptyMarkup(query, filtered) {
+  const popular = formalPopular.slice(0, 4).map(([term]) =>
+    `<button type="button" class="chip empty-suggestion" data-query="${esc(term)}">${esc(term)}</button>`
+  ).join("");
+  return `<div class="empty search-empty">` +
+    `<svg class="empty-icon ico-svg" aria-hidden="true"><use href="#i-search"/></svg>` +
+    `<h2>${filtered ? "目前篩選條件沒有結果" : `找不到「${esc(query)}」相關照片`}</h2>` +
+    `<p>${filtered ? "可以先清除一項篩選條件，再逐步縮小範圍。" : "請嘗試較短的關鍵字、人物編號，或使用下方建議。"}</p>` +
+    (filtered
+      ? `<button type="button" class="secondary-btn" id="emptyClearFilters">清除所有篩選</button>`
+      : `<div class="chips empty-chips">${popular}</div>`) +
+    `</div>`;
+}
+
+function formalRenderResults(query, response) {
+  const content = $("#content");
+  const filtered = response.unfilteredTotal > 0 && response.total === 0;
+  formalRenderFilters(response.facets);
+  if (!response.total) {
+    SEARCH_META = null;
+    currentList = [];
+    content.innerHTML = formalEmptyMarkup(query, filtered);
+    $("#emptyClearFilters")?.addEventListener("click", () => {
+      formalFilters = {};
+      formalDoSearch(query, { fromFilter: true });
+    });
+    content.querySelectorAll(".empty-suggestion").forEach((button) => {
+      button.addEventListener("click", () => {
+        $("#searchInput").value = button.dataset.query;
+        formalDoSearch(button.dataset.query);
+      });
+    });
+    formalSetStatus("", "");
+    return;
+  }
+
+  const photos = [];
+  SEARCH_META = new Map();
+  for (const result of response.results) {
+    const photo = DB.photos[result.photoIndex];
+    if (!photo) continue;
+    photos.push(photo);
+    SEARCH_META.set(photo, result);
+  }
+  const mismatchCount = response.results.filter(
+    (result) => result.dateRelation === "mismatched"
+  ).length;
+  const summary = [
+    response.mode === "fuzzy"
+      ? `<span class="search-mode fuzzy">近似結果</span>`
+      : `<span class="search-mode exact">精確結果</span>`,
+    `<strong>${response.total.toLocaleString()}</strong> 張照片`,
+    response.total !== response.unfilteredTotal
+      ? `（篩選前 ${response.unfilteredTotal.toLocaleString()} 張）`
+      : "",
+    mismatchCount
+      ? `<span class="date-caution">${mismatchCount.toLocaleString()} 張年份不一致但仍保留</span>`
+      : "",
+  ].filter(Boolean).join(" ");
+  vBuild([{
+    chip: "",
+    year: null,
+    headerHtml: `<span class="search-result-summary">${summary}</span>`,
+    photos,
+  }]);
+  formalSetStatus("", "");
+}
+
+async function formalDoSearch(rawQuery, { fromFilter = false } = {}) {
+  const query = String(rawQuery || "").trim();
+  const content = $("#content");
+  vClear();
+  content.innerHTML = "";
+  currentList = [];
+  SEARCH_META = null;
+  $("#suggestBox")?.classList.add("hidden");
+  if (!query) {
+    formalLastQuery = "";
+    formalFilters = {};
+    $("#searchFilters")?.classList.add("hidden");
+    formalSetStatus("", "");
+    history.replaceState(null, "", "#/search");
+    return;
+  }
+  if (!fromFilter && query !== formalLastQuery) formalFilters = {};
+  formalLastQuery = query;
+  history.replaceState(null, "", "#/search/" + encodeURIComponent(query));
+  const token = ++formalSearchToken;
+  let loadingShown = false;
+  const loadingTimer = setTimeout(() => {
+    loadingShown = true;
+    formalSetStatus(
+      "loading",
+      `<span class="mini-spin" aria-hidden="true"></span><span>正在準備搜尋資料與排序結果…</span>`
+    );
+  }, 300);
+  try {
+    await formalStartSearchRuntime();
+    formalRenderPopular();
+    const response = await formalWorkerRequest("query", {
+      query,
+      filters: formalFilters,
+    });
+    if (token !== formalSearchToken || !$("#searchInput")) return;
+    clearTimeout(loadingTimer);
+    formalRenderResults(query, response);
+  } catch (error) {
+    clearTimeout(loadingTimer);
+    if (token !== formalSearchToken) return;
+    formalSetStatus(
+      "error",
+      `<svg class="ico-svg" aria-hidden="true"><use href="#i-info"/></svg>` +
+      `<span>搜尋資料載入失敗。請檢查網路後再試一次。</span>` +
+      `<button type="button" class="secondary-btn" id="retrySearch">重試</button>`
+    );
+    $("#retrySearch")?.addEventListener("click", () => formalDoSearch(query, { fromFilter: true }));
+    if (!loadingShown) content.innerHTML = "";
+  }
+}
+
+function renderFormalSearch(initialQ) {
+  resetContent();
+  $("#subHeader").classList.remove("hidden");
+  $("#subHeader").innerHTML =
+    `<div class="search-wrap">` +
+    `<form id="searchForm" role="search">` +
+    `<label class="search-label" for="searchInput">搜尋影像館</label>` +
+    `<div class="search-box"><svg class="ico-svg" aria-hidden="true"><use href="#i-search"/></svg>` +
+    `<input id="searchInput" type="search" autocomplete="off" inputmode="search" enterkeyhint="search" ` +
+    `aria-autocomplete="list" aria-controls="suggestBox" placeholder="活動、人物、編號、樂器或照片內容" value="${esc(initialQ || "")}">` +
+    `<button type="button" id="clearSearch" class="search-clear icon-btn" aria-label="清除搜尋">` +
+    `<svg class="ico-svg"><use href="#i-close"/></svg></button></div>` +
+    `<div id="suggestBox" class="hidden" role="listbox" aria-label="搜尋建議"></div>` +
+    `</form>` +
+    `<div id="searchState" class="search-state hidden" aria-live="polite"></div>` +
+    `<p class="search-hint">可輸入多個條件，例如「團練 長笛」。人物搭配年份時，年份只協助排序，不會直接排除可能歸檔錯誤的照片。</p>` +
+    `<details id="searchFilters" class="search-filters hidden"><summary>縮小搜尋範圍 <span id="activeFilterCount">選用</span></summary>` +
+    `<div id="filterFields" class="filter-fields"></div>` +
+    `<button type="button" id="clearFilters" class="text-btn hidden">清除所有篩選</button></details>` +
+    `<section id="popularSearches" class="popular-searches hidden" aria-labelledby="popularTitle">` +
+    `<h2 id="popularTitle">熱門搜尋</h2><div class="chips" id="searchChips"></div></section>` +
+    `</div>`;
+
+  const input = $("#searchInput");
+  const form = $("#searchForm");
+  let composing = false;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (composing) return;
+    clearTimeout(searchTimer);
+    formalDoSearch(input.value);
+    input.blur();
+  });
+  input.addEventListener("compositionstart", () => { composing = true; });
+  input.addEventListener("compositionend", () => {
+    composing = false;
+    formalUpdateSuggest(input.value);
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => formalDoSearch(input.value), 300);
+  });
+  input.addEventListener("input", () => {
+    if (composing) return;
+    formalUpdateSuggest(input.value);
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => formalDoSearch(input.value), 300);
+  });
+  input.addEventListener("keydown", (event) => {
+    if (event.isComposing || event.keyCode === 229) return;
+    const options = [...document.querySelectorAll("#suggestBox .sug")];
+    if (event.key === "ArrowDown" && options.length) {
+      event.preventDefault();
+      options[0].focus();
+    } else if (event.key === "Escape") {
+      $("#suggestBox").classList.add("hidden");
+    }
+  });
+  $("#suggestBox").addEventListener("click", (event) => {
+    const option = event.target.closest(".sug");
+    if (!option) return;
+    input.value = option.dataset.t;
+    $("#suggestBox").classList.add("hidden");
+    formalDoSearch(option.dataset.t);
+  });
+  $("#suggestBox").addEventListener("keydown", (event) => {
+    const options = [...document.querySelectorAll("#suggestBox .sug")];
+    const index = options.indexOf(document.activeElement);
+    if ((event.key === "Enter" || event.key === " ") && index >= 0) {
+      event.preventDefault();
+      const option = options[index];
+      input.value = option.dataset.t;
+      $("#suggestBox").classList.add("hidden");
+      formalDoSearch(option.dataset.t);
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      options[(index + 1) % options.length]?.focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (index <= 0) input.focus();
+      else options[index - 1].focus();
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      $("#suggestBox").classList.add("hidden");
+      input.focus();
+    }
+  });
+  $("#clearSearch").addEventListener("click", () => {
+    input.value = "";
+    formalDoSearch("");
+    input.focus();
+  });
+  $("#clearFilters").addEventListener("click", () => {
+    formalFilters = {};
+    formalDoSearch(input.value, { fromFilter: true });
+  });
+  input.addEventListener("blur", () =>
+    setTimeout(() => $("#suggestBox")?.classList.add("hidden"), 180)
+  );
+
+  if (!initialQ) input.focus();
+  const initialLoadingTimer = setTimeout(() => {
+    formalSetStatus(
+      "loading",
+      `<span class="mini-spin" aria-hidden="true"></span><span>正在載入熱門搜尋…</span>`
+    );
+  }, 300);
+  formalStartSearchRuntime().then(() => {
+    if (!$("#searchInput")) return;
+    clearTimeout(initialLoadingTimer);
+    formalRenderPopular();
+    formalSetStatus("", "");
+    if (initialQ) formalDoSearch(initialQ);
+  }).catch(() => {
+    if (!$("#searchInput")) return;
+    clearTimeout(initialLoadingTimer);
+    formalSetStatus(
+      "error",
+      `<svg class="ico-svg" aria-hidden="true"><use href="#i-info"/></svg>` +
+      `<span>搜尋資料載入失敗。</span>` +
+      `<button type="button" class="secondary-btn" id="retrySearch">重試</button>`
+    );
+    $("#retrySearch")?.addEventListener("click", () => {
+      formalSearchRuntimePromise = null;
+      renderFormalSearch(initialQ);
+    });
+  });
+}
+
 /* ---------- 燈箱 ---------- */
 let lbIndex = -1;
 let lbScale = 1, lbTx = 0, lbTy = 0;
@@ -814,7 +1407,7 @@ function openLightbox(idx) {
   $("#lbDownload").setAttribute("download", p.f);
   $("#lightbox").classList.remove("hidden");
   document.body.style.overflow = "hidden";
-  updatePanel(p);
+  void updatePanel(p);
   for (const off of [1, -1]) {
     const q = currentList[idx + off];
     if (q) { const im = new Image(); im.src = largeUrl(q); }
@@ -860,19 +1453,34 @@ function toggleSlideshow() {
     else stopSlideshow();
   }, 3500);
 }
-function updatePanel(p) {
+async function updatePanel(p) {
+  const panel = $("#lbPanel");
+  if (p._detailState !== "ready") {
+    panel.innerHTML =
+      `<button class="panel-close" aria-label="關閉資訊欄" onclick="document.getElementById('lbPanel').classList.add('hidden')"><svg class="ico-svg"><use href="#i-close"/></svg></button>` +
+      `<div class="panel-loading"><span class="mini-spin" aria-hidden="true"></span>正在載入照片資訊…</div>`;
+    try {
+      await ensurePhotoDetails(p);
+    } catch (_error) {
+      if (currentList[lbIndex] !== p) return;
+      panel.innerHTML =
+        `<button class="panel-close" aria-label="關閉資訊欄" onclick="document.getElementById('lbPanel').classList.add('hidden')"><svg class="ico-svg"><use href="#i-close"/></svg></button>` +
+        `<div class="panel-error" role="alert">照片資訊載入失敗。<button type="button" class="panel-retry">重試</button></div>`;
+      panel.querySelector(".panel-retry")?.addEventListener("click", () => updatePanel(p));
+      return;
+    }
+    if (currentList[lbIndex] !== p) return;
+  }
   const alb = DB.albums[p.a];
   let html = `<button class="panel-close" aria-label="關閉資訊欄" onclick="document.getElementById('lbPanel').classList.add('hidden')"><svg class="ico-svg"><use href="#i-close"/></svg></button>`;
   if (p.c) html += `<div class="cap">${esc(p.c)}</div>`;
   html += `<h3>日期／活動</h3><div>${esc(albumDateLabel(alb))} · <a class="alb-link" href="#/album/${encodeURIComponent(alb.id)}" onclick="document.getElementById('lbClose').click()">${esc(alb.title)}</a></div>`;
   if (p.p && p.p.length) {
-    html += `<h3>照片中的人物（AI 辨識，可能有誤）</h3><div>` +
+    html += `<h3>已確認人物</h3><div>` +
       p.p.map((pi) => {
         const person = PEOPLE[pi];
         const avatar = personAvatarUrl(person);
-        const face = avatar
-          ? `<img class="pp-face" src="${esc(avatar)}" alt="">`
-          : "";
+        const face = avatar ? `<img class="pp-face" src="${esc(avatar)}" alt="">` : "";
         const numTag = person.num ? `<span class="pp-num">${person.num}</span>` : "";
         return `<span class="pp-chip" onclick="location.hash='#/person/${person.id}';document.getElementById('lbClose').click()">${face}${esc(person.name)}${numTag}</span>`;
       }).join("") + `</div>`;
@@ -882,7 +1490,7 @@ function updatePanel(p) {
       p.k.slice(0, 12).map((t) => `<span class="tag-chip" onclick="location.hash='#/search/${encodeURIComponent(t)}';document.getElementById('lbClose').click()">${esc(t)}</span>`).join("") + `</div>`;
   }
   html += `<h3>檔案</h3><div style="color:#9ca3af;font-size:12px">${esc(alb.folder)}/${esc(p.f)}</div>`;
-  $("#lbPanel").innerHTML = html;
+  panel.innerHTML = html;
 }
 function resetZoom() {
   lbScale = 1; lbTx = 0; lbTy = 0;
@@ -1046,7 +1654,7 @@ function route() {
     case "people": setNav("people"); renderPeople(); break;
     case "person": setNav("people"); renderPersonDetail(parts[1]); break;
     case "person-num": setNav("people"); renderPersonDetailByNum(parts[1]); break;
-    case "search": setNav("search"); renderSearch(parts.slice(1).join("/")); break;
+    case "search": setNav("search"); renderFormalSearch(parts.slice(1).join("/")); break;
     default: setNav("timeline"); showTimeline(); break;
   }
   const back = scrollPositions[view + (parts[1] || "")];
@@ -1073,6 +1681,12 @@ function initEvents() {
   $("#content").addEventListener("click", (e) => {
     const ph = e.target.closest(".ph");
     if (ph) openLightbox(+ph.dataset.idx);
+  });
+  $("#content").addEventListener("keydown", (e) => {
+    const ph = e.target.closest(".ph");
+    if (!ph || !["Enter", " "].includes(e.key)) return;
+    e.preventDefault();
+    openLightbox(+ph.dataset.idx);
   });
   // 捲動：更新虛擬列 + 浮動日期 + 把手位置（rAF 節流）
   let ticking = false;
@@ -1101,8 +1715,10 @@ function initEvents() {
   try {
     await loadData();
   } catch (err) {
-    $("#content").innerHTML = `<div class="empty"><div class="big">⚠️</div>資料載入失敗：${esc(err.message)}<br>
-      <small>請稍後重新整理；若持續發生請回報管理者</small></div>`;
+    $("#content").innerHTML =
+      `<div class="empty" role="alert"><svg class="empty-icon ico-svg" aria-hidden="true"><use href="#i-info"/></svg>` +
+      `<h2>影像館資料載入失敗</h2><p>${esc(err.message)}</p>` +
+      `<button type="button" class="secondary-btn" onclick="location.reload()">重新載入</button></div>`;
     $("#loading").classList.add("hidden");
     return;
   }

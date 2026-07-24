@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20260724-stage8">
 <script>
   try {
     localStorage.setItem('cyshMemberAccessUntil', String(Date.now() + 7 * 24 * 60 * 60 * 1000));
@@ -32,6 +32,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#content">跳到主要內容</a>
 
 <!-- 頂部列（電腦版含分頁；手機版只有標題與搜尋鈕） -->
 <header id="topbar">
@@ -61,8 +62,8 @@
 <div id="subHeader" class="hidden"></div>
 
 <!-- 主要內容（時間軸為虛擬化渲染：只掛載視窗附近的照片列） -->
-<main id="content"></main>
-<div id="loading"><div class="spin"></div>照片載入中…</div>
+<main id="content" tabindex="-1"></main>
+<div id="loading" aria-live="polite"><div class="spin"></div>照片載入中…</div>
 
 <!-- 年份快速捲動條：平時只顯示小把手，拖曳時顯示年份氣泡；捲動時日期籤顯示在把手旁 -->
 <div id="scrubber" class="hidden">
@@ -123,8 +124,8 @@
   <div id="lbToast" class="hidden">已複製連結</div>
 </div>
 
-<script src="config.js"></script>
-<script src="profile-links.js"></script>
-<script src="app.js"></script>
+<script src="config.js?v=20260724-stage8"></script>
+<script src="profile-links.js?v=20260724-stage8"></script>
+<script src="app.js?v=20260724-stage8"></script>
 </body>
 </html>
