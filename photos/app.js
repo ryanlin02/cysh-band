@@ -13,7 +13,7 @@ const CFG = window.SITE_CONFIG;
 const $ = (sel) => document.querySelector(sel);
 
 let DB = null;          // { albums, photos }
-let PEOPLE = [];        // 公開人物
+let PEOPLE = [];        // 原影像館已發布的人物
 let currentList = [];   // 目前檢視全部照片的順序（給燈箱前後切換用）
 let zoomMode = "album"; // album | month | year
 let currentView = "";
@@ -113,7 +113,7 @@ async function loadData() {
     entryYearAd: row[4],
     aliases: row[5] || [],
     identityStatus: row[6],
-    avatar: "",
+    avatar: row[7] || "",
     count: 0,
   }));
   const photos = RUNTIME_CORE.photos.map((row) => ({
@@ -294,12 +294,6 @@ function vRowEl(row) {
       ph.setAttribute("aria-label", accessibleLabel);
       img.onload = () => img.classList.add("ok");
       ph.appendChild(img);
-      if (reason) {
-        const badge = document.createElement("span");
-        badge.className = "match-reason";
-        badge.textContent = reason.label;
-        ph.appendChild(badge);
-      }
       if (meta?.dateRelation === "mismatched") {
         const warning = document.createElement("span");
         warning.className = "match-date-warning";
@@ -985,7 +979,7 @@ function formalSetStatus(kind, message) {
   state.classList.toggle("hidden", !message);
 }
 
-function formalRenderPopular() {
+function formalRenderSuggested() {
   const box = $("#searchChips");
   if (!box) return;
   box.innerHTML = "";
@@ -1002,7 +996,11 @@ function formalRenderPopular() {
     };
     box.appendChild(button);
   }
-  $("#popularSearches")?.classList.toggle("hidden", !formalPopular.length);
+  const hasQuery = Boolean($("#searchInput")?.value.trim());
+  $("#suggestedSearches")?.classList.toggle(
+    "hidden",
+    !formalPopular.length || hasQuery
+  );
 }
 
 async function formalUpdateSuggest(rawQuery) {
@@ -1201,6 +1199,7 @@ async function formalDoSearch(rawQuery, { fromFilter = false } = {}) {
   currentList = [];
   SEARCH_META = null;
   $("#suggestBox")?.classList.add("hidden");
+  formalRenderSuggested();
   if (!query) {
     formalLastQuery = "";
     formalFilters = {};
@@ -1223,7 +1222,7 @@ async function formalDoSearch(rawQuery, { fromFilter = false } = {}) {
   }, 300);
   try {
     await formalStartSearchRuntime();
-    formalRenderPopular();
+    formalRenderSuggested();
     const response = await formalWorkerRequest("query", {
       query,
       filters: formalFilters,
@@ -1264,8 +1263,8 @@ function renderFormalSearch(initialQ) {
     `<details id="searchFilters" class="search-filters hidden"><summary>縮小搜尋範圍 <span id="activeFilterCount">選用</span></summary>` +
     `<div id="filterFields" class="filter-fields"></div>` +
     `<button type="button" id="clearFilters" class="text-btn hidden">清除所有篩選</button></details>` +
-    `<section id="popularSearches" class="popular-searches hidden" aria-labelledby="popularTitle">` +
-    `<h2 id="popularTitle">熱門搜尋</h2><div class="chips" id="searchChips"></div></section>` +
+    `<section id="suggestedSearches" class="popular-searches hidden" aria-labelledby="suggestedTitle">` +
+    `<h2 id="suggestedTitle">建議搜尋</h2><div class="chips" id="searchChips"></div></section>` +
     `</div>`;
 
   const input = $("#searchInput");
@@ -1281,12 +1280,14 @@ function renderFormalSearch(initialQ) {
   input.addEventListener("compositionstart", () => { composing = true; });
   input.addEventListener("compositionend", () => {
     composing = false;
+    formalRenderSuggested();
     formalUpdateSuggest(input.value);
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => formalDoSearch(input.value), 300);
   });
   input.addEventListener("input", () => {
     if (composing) return;
+    formalRenderSuggested();
     formalUpdateSuggest(input.value);
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => formalDoSearch(input.value), 300);
@@ -1347,13 +1348,13 @@ function renderFormalSearch(initialQ) {
   const initialLoadingTimer = setTimeout(() => {
     formalSetStatus(
       "loading",
-      `<span class="mini-spin" aria-hidden="true"></span><span>正在載入熱門搜尋…</span>`
+      `<span class="mini-spin" aria-hidden="true"></span><span>正在載入建議搜尋…</span>`
     );
   }, 300);
   formalStartSearchRuntime().then(() => {
     if (!$("#searchInput")) return;
     clearTimeout(initialLoadingTimer);
-    formalRenderPopular();
+    formalRenderSuggested();
     formalSetStatus("", "");
     if (initialQ) formalDoSearch(initialQ);
   }).catch(() => {
