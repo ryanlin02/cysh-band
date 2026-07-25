@@ -469,7 +469,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var html = '<' + tag + ' class="roster-row' + (hasProfileLink ? ' linked' : '') + '" id="' + anchorId + '"' + (hasProfileLink ? ' href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →"' : '') + '>';
     html += '<img class="roster-row-avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
     html += '<span class="roster-row-content">';
-    html += '<span class="roster-row-heading"><b>' + p.name + '</b><span class="roster-row-num">' + (p.num || '—') + '</span></span>';
+    html += '<span class="roster-row-heading"><b>' + p.name + '</b>';
+    if (p.num) html += '<span class="roster-row-num">' + p.num + '</span>';
+    html += '</span>';
     html += '<span class="roster-row-meta">' + personMeta(p) + '</span>';
     if (detail) html += '<small class="roster-row-detail">' + detail + '</small>';
     html += '</span>';
