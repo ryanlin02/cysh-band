@@ -11,6 +11,32 @@
 */
 window.NEWS = [
   {
+    id: "2026-07-24-southern-wind-saxophone-quartet",
+    date: "2026-07-24",
+    time: "12:00",
+    category: "嘉義管樂演出分享",
+    tags: ["嘉義管樂", "薩克斯風四重奏", "古典薩克斯風", "嘉中校友", "演出分享"],
+    pinned: false,
+    priority: "normal",
+    title: "嘉義管樂演出分享｜《透南風》南風薩克斯風四重奏創團音樂會",
+    summary: "南風薩克斯風四重奏《透南風》8/2 於嘉義南門教會免費演出；團員鄭鈞元（8431）、許哲誠（0431）皆與嘉中管樂有深厚連結，邀請大家一起聆聽從家鄉吹起的薩克斯風室內樂。",
+    source: "content/news/2026-07-24-southern-wind-saxophone-quartet.html",
+    output: "news/2026-07-24-southern-wind-saxophone-quartet.html",
+    url: "news/2026-07-24-southern-wind-saxophone-quartet.html",
+    thumb: "assets/img/news/2026-07-24-southern-wind-saxophone-quartet-poster-thumb.webp",
+    ogImage: "assets/img/news/2026-07-24-southern-wind-saxophone-quartet-poster.webp",
+    ogImageWidth: "1200",
+    ogImageHeight: "1698",
+    pageTitle: "嘉義管樂演出分享｜《透南風》南風薩克斯風四重奏創團音樂會｜嘉義高中管樂隊",
+    ogTitle: "《透南風》南風薩克斯風四重奏創團音樂會｜嘉義管樂演出分享",
+    description: "南風薩克斯風四重奏《透南風》創團音樂會，2026 年 8 月 2 日於嘉義南門教會免費演出；鄭鈞元、陳泓宇、翁孟筠、許哲誠帶來古典、改編、日本流行與臺灣作品。",
+    ogDescription: "8 月 2 日嘉義南門教會免費入場，聆聽南風薩克斯風四重奏把海外學習經驗與臺灣土地的聲音帶回嘉義。",
+    headlineHtml: "嘉義管樂演出分享｜<br>《透南風》南風薩克斯風四重奏創團音樂會",
+    relatedPeople: ["8431", "0431"],
+    status: "published",
+    sourceNotes: "南風薩克斯風四重奏公開活動文字與正式海報；嘉中連結另依既有校友名錄及人物誌資料。"
+  },
+  {
     id: "2026-07-23-sausage-grill-gathering",
     date: "2026-07-23",
     time: "08:30",
