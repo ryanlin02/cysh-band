@@ -25,7 +25,8 @@
 <link rel="stylesheet" href="style.css?v=20260724-search-fix">
 <script>
   try {
-    localStorage.setItem('cyshMemberAccessUntil', String(Date.now() + 7 * 24 * 60 * 60 * 1000));
+    localStorage.removeItem('cyshMemberAccessUntil');
+    localStorage.setItem('cyshPhotoAccessUntil', String(Date.now() + 7 * 24 * 60 * 60 * 1000));
   } catch (error) {
     /* 停用本機儲存不影響 Cloudflare Access 驗證與影像館本身。 */
   }

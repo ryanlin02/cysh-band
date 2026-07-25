@@ -1,16 +1,16 @@
 /* 嘉義高中管樂隊官方網站 — 互動效果 */
 document.documentElement.classList.add('js');
 
-/* ---------- 社員區視覺狀態 ----------
+/* ---------- 影像館登入視覺狀態 ----------
    Cloudflare Access 才是真正的存取控制；這裡只記住本瀏覽器最近成功開啟
-   名錄／影像館的時間，讓導覽文字在七天內恢復一般顏色。 */
-(function rememberMemberSession() {
-  var key = 'cyshMemberAccessUntil';
+   影像館的時間，讓導覽文字在七天內恢復一般顏色。 */
+(function rememberPhotoAccessSession() {
+  var key = 'cyshPhotoAccessUntil';
+  var legacyKey = 'cyshMemberAccessUntil';
   var sevenDays = 7 * 24 * 60 * 60 * 1000;
-  var protectedPath = location.pathname === '/roster.html'
-    || location.pathname === '/roster'
-    || location.pathname.indexOf('/photos') === 0;
+  var protectedPath = location.pathname.indexOf('/photos') === 0;
   try {
+    localStorage.removeItem(legacyKey);
     if (protectedPath) localStorage.setItem(key, String(Date.now() + sevenDays));
     var activeUntil = Number(localStorage.getItem(key) || 0);
     if (activeUntil > Date.now()) {

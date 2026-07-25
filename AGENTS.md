@@ -137,13 +137,14 @@ node scripts/generate-concert-pages.js
 
 `data/number-lookup.js` 是編號小遊戲資料，不等於已驗證公開名錄。不要自動把它整批併入 `data/alumni.js`。若用它補聲部或姓名，需先產生候選、人工確認，再分批寫入。
 
-### 5.7 社員區登入與 Email 白名單
+### 5.7 影像館登入與 Email 白名單
 
-- Cloudflare Access 只保護 `cysh.band/roster.html` 與 `cysh.band/photos/*`。
-- 首頁、新聞、演出、編號、人物誌、公開精選相簿與 `img.cysh.band` 不得被擴大保護。
+- Cloudflare Access 只保護 `cysh.band/photos/*`；`cysh.band/roster.html` 名錄維持可直接開啟。
+- 首頁、新聞、演出、編號、人物誌、名錄、公開精選相簿與 `img.cysh.band` 不得被擴大保護。
 - 白名單可由 repo 外 Excel 整理，但送入 Cloudflare 的資料只能有 Email；姓名、編號、Excel 原檔及匯出清單不得進 repo。
 - 不得使用「所有 Gmail」、「所有有效 Email」或整個 `cysh.band/*` 的寬鬆規則。
-- 修改後依 `Cloudflare名錄與影像館登入維護指引.md` 測試白名單、非白名單、七天登入、登出與公開頁面。
+- 名錄保留 `noindex, nofollow, noarchive`，不列入 sitemap／llms；`robots.txt` 不阻擋名錄，讓搜尋引擎可讀取 `noindex`。
+- 修改後依 `Cloudflare名錄與影像館登入維護指引.md` 測試名錄公開存取、影像館白名單、非白名單、七天登入、登出與其他公開頁面。
 
 ## 6. 固定內容規則與禁忌
 

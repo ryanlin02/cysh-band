@@ -495,12 +495,17 @@ function checkSharedChromeConsistency() {
         addError(`${fileRel}: shared top navigation missing ${label} -> ${prefix}${target}.`);
       }
     }
-    for (const target of ['roster.html', 'photos/']) {
+    for (const target of ['photos/']) {
       const escapedTarget = `${prefix}${target}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const memberLink = new RegExp(`<a\\b[^>]*href=["']${escapedTarget}["'][^>]*\\bdata-member-only\\b`, 'i');
       if (!memberLink.test(text)) {
         addError(`${fileRel}: shared top navigation missing member-only marker -> ${prefix}${target}.`);
       }
+    }
+    const rosterTarget = `${prefix}roster.html`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const rosterMemberLink = new RegExp(`<a\\b[^>]*href=["']${rosterTarget}["'][^>]*\\bdata-member-only\\b`, 'i');
+    if (rosterMemberLink.test(text)) {
+      addError(`${fileRel}: public roster navigation must not use a member-only marker -> ${prefix}roster.html.`);
     }
 
     if (!text.includes('<footer class="footer">')) addError(`${fileRel}: missing shared footer.`);
@@ -578,12 +583,12 @@ function checkConcertProgramBooks() {
 
 function checkSitemapAndFeed() {
   const sitemapUrls = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  const protectedUrls = new Set([
+  const omittedFromSitemapUrls = new Set([
     'https://cysh.band/roster.html',
     'https://cysh.band/photos/'
   ]);
-  for (const url of protectedUrls) {
-    if (sitemapUrls.includes(url)) addError(`sitemap.xml: protected member page must not be listed: ${url}`);
+  for (const url of omittedFromSitemapUrls) {
+    if (sitemapUrls.includes(url)) addError(`sitemap.xml: privacy-sensitive page must not be listed: ${url}`);
   }
   for (const url of sitemapUrls) {
     const local = webUrlToLocal(url);
@@ -607,18 +612,24 @@ function checkMemberAccessPrivacy() {
 
   for (const [file, html] of [['roster.html', roster], ['photos/index.html', photos]]) {
     if (!/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex[^"']*nofollow[^"']*noarchive/i.test(html)) {
-      addError(`${file}: protected member page must declare noindex, nofollow, noarchive.`);
+      addError(`${file}: privacy-sensitive page must declare noindex, nofollow, noarchive.`);
     }
   }
-  if (!robots.includes('Disallow: /roster.html')) addError('robots.txt: missing protected roster disallow rule.');
+  if (robots.includes('Disallow: /roster.html')) {
+    addError('robots.txt: public roster must remain crawlable so search engines can read its noindex directive.');
+  }
   if (!robots.includes('Disallow: /photos/')) addError('robots.txt: missing protected photos disallow rule.');
   if (/https:\/\/cysh\.band\/(?:roster\.html|photos\/)/.test(llms)) {
-    addError('llms.txt: protected member pages must not be advertised.');
+    addError('llms.txt: roster and protected photo archive must not be advertised.');
   }
-  if (!read('templates/partials/nav.html').includes('data-member-only')) {
-    addError('templates/partials/nav.html: member-only navigation markers are missing.');
+  const navTemplate = read('templates/partials/nav.html');
+  if (!/<a\b[^>]*href=["'][^"']*photos\/["'][^>]*\bdata-member-only\b/i.test(navTemplate)) {
+    addError('templates/partials/nav.html: protected photo archive marker is missing.');
   }
-  info.push('Member access privacy markers checked: roster, photos, robots, sitemap, llms, nav');
+  if (/<a\b[^>]*href=["'][^"']*roster\.html["'][^>]*\bdata-member-only\b/i.test(navTemplate)) {
+    addError('templates/partials/nav.html: public roster must not use a member-only marker.');
+  }
+  info.push('Access privacy markers checked: public noindex roster, protected photos, robots, sitemap, llms, nav');
 }
 
 function checkStructuredData() {

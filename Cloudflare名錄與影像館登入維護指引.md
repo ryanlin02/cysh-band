@@ -1,48 +1,48 @@
-# Cloudflare 名錄與影像館登入維護指引
+# Cloudflare 影像館登入與名錄公開維護指引
 
 建立時間：2026-07-23（Asia/Taipei）  
 適用網站：`https://cysh.band/`  
-適用範圍：校友名錄 `roster.html`、影像館 `photos/`
+目前架構更新：2026-07-25（Asia/Taipei）
+適用範圍：公開校友名錄 `roster.html`、受保護影像館 `photos/`
 
 ---
 
-## 目前已完成的設定（2026-07-23）
+## 目前已完成的設定（2026-07-25）
 
 - 登入方式：`One-time PIN`（Email 一次性驗證碼）。
-- 共用政策：`社員 Email 白名單`，目前已加入 189 個不重複 Email（2026-07-23 更新；其中 6 筆資料各列有兩個可用 Email）。
-- 登入期限：政策與兩個應用程式皆為 `1 week`。
-- 名錄應用程式：`嘉中管樂社員區－名錄`，保護 `cysh.band/roster.html`。
+- 白名單政策：`社員 Email 白名單`，目前供影像館應用程式使用；實際 Email 數量以 Cloudflare 政策現況為準。
+- 登入期限：政策與影像館應用程式皆為 `1 week`。
+- 名錄：`cysh.band/roster.html` 維持公開，不使用 Cloudflare Access 驗證。
 - 影像館應用程式：`嘉中管樂社員區－影像館`，保護 `cysh.band/photos/*`。
 - 登入頁：使用官網名稱、官網標誌、暖白色 `#faf8f3` 背景與中文提示。
 
 Cloudflare 免費方案只能自訂名稱、標誌、文字與背景色，登入頁的外層框架與瀏覽器頁面標題仍可能出現 Cloudflare Access 名稱，無法完全改成自行製作的 HTML 頁面。這不影響 Email 白名單與一次性驗證碼的權限判斷。
 
-已從未登入狀態確認兩個受保護網址都會轉到登入頁，且實際顯示 Email 輸入框；首頁、最新消息與編號頁仍可直接開啟。最後的「收到驗證信、輸入驗證碼並進入兩區」測試需要由白名單成員使用自己的信箱完成。
+名錄應在未登入狀態直接回傳網站內容；影像館則會轉到登入頁並顯示 Email 輸入框。首頁、最新消息、編號、人物誌、校友聯演與名錄皆可直接開啟。最後的「收到驗證信、輸入驗證碼並進入影像館」測試需要由白名單成員使用自己的信箱完成。
 
 ## 1. 先記住三件事
 
-1. 官網大部分內容仍公開，只有「名錄」與「影像館」需要 Email 驗證。
+1. 官網與名錄皆公開，只有「影像館」需要 Email 驗證。
 2. 自己整理的 Excel 可以保留姓名、編號與 Email；送到 Cloudflare 白名單的資料只能有 Email。
 3. Excel 原檔、純 Email 暫存檔、驗證紀錄都不可放進這個公開 GitHub repo。
 
-這個機制使用 Cloudflare Access 的一次性驗證碼。社員點選名錄或影像館後輸入 Email；只有白名單內的 Email 會收到驗證碼。驗證碼為單次使用，約 10 分鐘失效。登入狀態設定為 7 天，期間在名錄與影像館之間跳轉不必重複驗證。
+影像館使用 Cloudflare Access 的一次性驗證碼。社員點選影像館後輸入 Email；只有白名單內的 Email 會收到驗證碼。驗證碼為單次使用，約 10 分鐘失效。登入狀態設定為 7 天，期間再次開啟影像館不必重複驗證。
 
 登入畫面會使用「嘉義高中管樂隊暨校友管樂團」、官網標誌、暖白背景與中文說明。驗證信由 Cloudflare 的驗證服務寄送，不另設寄信程式；信件用途與連結必須能辨識為 `cysh.band`。
 
 ## 2. 實際保護範圍
 
-Cloudflare Access 應只設定以下兩個路徑：
+Cloudflare Access 應只設定以下路徑：
 
 ```text
-cysh.band/roster.html
 cysh.band/photos/*
 ```
 
-不要設定成 `cysh.band/*`，否則首頁、最新消息、編號、人物誌、校友聯演與其他公開內容也會被要求登入。
+不要重新加入 `cysh.band/roster.html`，也不要設定成 `cysh.band/*`，否則名錄或其他公開內容會被要求登入。
 
 以下內容維持公開：
 
-- 首頁、最新消息、關於、傳承、編號、人物誌、校友聯演。
+- 首頁、最新消息、關於、傳承、編號、人物誌、校友聯演與名錄。
 - 新聞與演出文章內使用的照片。
 - `gallery/` 下既有的公開精選相簿。
 - `img.cysh.band` 的 R2 圖片網址。
@@ -84,8 +84,8 @@ Zero Trust → Access controls → Policies
 2. 在 `Include` 的 `Emails` 清單新增完整 Email，例如 `name@example.com`。
 3. 不要使用 `Emails ending in @gmail.com`；那會讓所有 Gmail 使用者都有機會登入。
 4. 儲存。
-5. 因為兩個 Access 應用程式共用這份政策，只要改一次，名錄與影像館就會一起更新。
-6. 用無痕視窗開啟 `https://cysh.band/roster.html`，以新 Email 測試一次。
+5. 這份政策目前只控制影像館，不影響名錄。
+6. 用無痕視窗開啟 `https://cysh.band/photos/`，以新 Email 測試一次。
 
 ## 5. 移除一位可登入社員
 
@@ -99,7 +99,7 @@ Zero Trust → Access controls → Policies
 
 登入：
 
-1. 點「名錄」或「影像館」。
+1. 點「影像館」。
 2. 輸入白名單 Email。
 3. 到信箱尋找 Cloudflare 寄出的驗證信，確認內容指向 `cysh.band`。
 4. 在 10 分鐘內輸入一次性驗證碼。
@@ -111,7 +111,7 @@ Zero Trust → Access controls → Policies
 https://cysh.band/cdn-cgi/access/logout
 ```
 
-若只是關閉分頁，7 天內再次開啟仍可能保持登入，這是正常狀況。
+若只是關閉分頁，7 天內再次開啟影像館仍可能保持登入，這是正常狀況。名錄不需要登入或登出。
 
 ## 7. 日後新增文章與照片
 
@@ -125,38 +125,39 @@ https://cysh.band/cdn-cgi/access/logout
 
 ### 更新名錄
 
-維持更新 `data/alumni.js` 與 `roster.html` 的既有流程。只要頁面仍是 `roster.html`，就會自動套用同一個登入保護。
+維持更新 `data/alumni.js` 與 `roster.html` 的既有流程。名錄是公開頁面，更新後不需碰 Cloudflare Access；仍須確認內容只包含可公開資料，不得加入 Email、電話、地址或內部備註。
 
 ## 8. SEO 與一般搜尋引擎
 
-網站端已做三層提示：
+網站端依不同入口採以下處理：
 
-- `sitemap.xml` 不列出名錄與 `photos/` 影像館。
-- `robots.txt` 要求搜尋引擎不要抓取這兩個路徑。
-- 兩個頁面都有 `noindex, nofollow, noarchive`。
+- `sitemap.xml` 與 `llms.txt` 不列出名錄與 `photos/` 影像館。
+- 名錄保留 `noindex, nofollow, noarchive`，但不在 `robots.txt` 阻擋，讓搜尋引擎能讀到 `noindex`。
+- `photos/` 影像館保留 `noindex, nofollow, noarchive`，並由 `robots.txt` 阻擋抓取。
 
-這些是搜尋引擎規則，不是密碼；真正阻擋一般瀏覽者的是 Cloudflare Access。
+這些是搜尋引擎規則，不是密碼。名錄知道網址即可直接閱讀；真正阻擋一般瀏覽者進入影像館的是 Cloudflare Access。
 
 ## 9. 每次更新後的檢查
 
 至少測試：
 
-1. 一個白名單 Email：能收到信、驗證成功、看到名錄與影像館。
-2. 一個不在白名單的 Email：畫面可以顯示已寄出提示，但實際不應收到可登入驗證碼。
-3. 驗證後從名錄切到影像館：不需再輸入驗證碼。
-4. 首頁、最新消息、編號、人物誌與校友聯演：未登入也能正常開啟。
-5. 手機 375px、平板 768px、桌機 1080px：登入頁與網站導覽可正常操作。
-6. `https://cysh.band/cdn-cgi/access/logout`：登出後重新進入社員區會再次要求驗證。
+1. 未登入開啟名錄：直接顯示內容，不出現登入頁。
+2. 一個白名單 Email：能收到信、驗證成功、看到影像館。
+3. 一個不在白名單的 Email：畫面可以顯示已寄出提示，但實際不應收到可登入驗證碼。
+4. 未登入時只有「影像館」文字較淡；開啟公開名錄不應讓影像館變成已登入顏色。
+5. 首頁、最新消息、編號、人物誌、校友聯演與名錄：未登入也能正常開啟。
+6. 手機 375px、平板 768px、桌機 1080px：登入頁與網站導覽可正常操作。
+7. `https://cysh.band/cdn-cgi/access/logout`：登出後重新進入影像館會再次要求驗證。
 
-2026-07-23 初次上線時已完成：受保護網址轉址、Email 輸入頁、兩個應用程式共用政策、公開頁面 HTTP 200 與公開範圍檢查。仍待任一白名單成員完成一次實際收信與驗證碼登入測試。
+2026-07-23 初次上線時曾同時保護名錄與影像館；2026-07-25 起改為名錄公開、影像館保留驗證。每次調整後都應以未登入請求確認名錄回傳 HTTP 200、影像館回傳 HTTP 302 並導向 Cloudflare Access。
 
 ## 10. 與全站維護模式一起使用
 
 全站維護模式使用另一個 `cysh-band-maintenance` Worker，相關操作見 `Cloudflare網站維護頁啟用與復原指引.md`。
 
-- 不要刪除名錄／影像館 Access 設定來啟用維護頁。
+- 不要刪除影像館 Access 設定來啟用維護頁。
 - 維護模式啟用後，仍要測試首頁、`roster.html`、`photos/` 三個網址。
-- 如果受保護網址先出現登入畫面而不是維護頁，暫時停用「嘉中管樂社員區」Access application；恢復網站後再重新啟用。
+- 如果影像館先出現登入畫面而不是維護頁，暫時停用「嘉中管樂社員區－影像館」Access application；恢復網站後再重新啟用。
 - 不要把 `img.cysh.band/*` 加進維護 Worker 或 Access 保護路徑。
 
 ## 11. 緊急復原
@@ -164,9 +165,9 @@ https://cysh.band/cdn-cgi/access/logout
 若登入設定造成公開頁面也被擋住：
 
 1. 先進 Cloudflare Zero Trust 的 Applications。
-2. 找到「嘉中管樂社員區－名錄」與「嘉中管樂社員區－影像館」。
-3. 檢查 Public hostname 是否誤設為 `cysh.band/*`。
-4. 只保留 `roster.html` 與 `photos/*`；若短時間內無法修正，暫時停用這個 application。
+2. 找到「嘉中管樂社員區－影像館」。
+3. 檢查 Public hostname 是否誤設為 `cysh.band/*` 或 `roster.html`。
+4. 只保留 `photos/*`；若短時間內無法修正，暫時停用這個 application。
 5. 不要刪除 GitHub Pages、R2、圖片或 `cysh-band-maintenance` Worker。
 6. 確認公開首頁恢復後，再逐一路徑重新測試。
 
@@ -176,6 +177,7 @@ https://cysh.band/cdn-cgi/access/logout
 - 不把完整 Email 清單寫進 HTML、JavaScript、Markdown 或 Cloudflare Worker 原始碼。
 - 不用「所有 Gmail」或「所有有效 Email」作為允許規則。
 - 不把 Access application 範圍設為整個 `cysh.band/*`。
+- 不把 `roster.html` 重新加入影像館應用程式或共用 Bypass 規則。
 - 不因為刪除社員 Email 就刪除名錄人物資料；登入資格與公開史料是兩套不同資料。
 
 ## 13. 官方參考文件
