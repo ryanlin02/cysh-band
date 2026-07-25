@@ -430,6 +430,14 @@ document.addEventListener('DOMContentLoaded', function () {
     return parts.join('．');
   }
 
+  function personListDetail(p) {
+    if (p.role) return p.role;
+    if (!p.desc) return '';
+    var desc = p.desc.trim();
+    var genericRosterDescription = /^民國\s*\d+\s*年入學\s*[，,、．・]\s*.+?聲部校友[。.]?$/;
+    return genericRosterDescription.test(desc) ? '' : desc;
+  }
+
   function personAnchorId(p) {
     return 'p-' + (p.num || p.id || p.photo);
   }
@@ -456,19 +464,21 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderRow(p) {
     var anchorId = personAnchorId(p);
     var hasProfileLink = hasProfile(p);
+    var detail = personListDetail(p);
     var tag = hasProfileLink ? 'a' : 'div';
     var html = '<' + tag + ' class="roster-row' + (hasProfileLink ? ' linked' : '') + '" id="' + anchorId + '"' + (hasProfileLink ? ' href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →"' : '') + '>';
     html += '<img class="roster-row-avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
-    html += '<span class="roster-row-num">' + (p.num || '—') + '</span>';
-    html += '<span class="roster-row-main"><b>' + p.name + '</b>';
-    if (p.role || p.desc) html += '<small>' + (p.role || p.desc) + '</small>';
-    html += '</span>';
+    html += '<span class="roster-row-content">';
+    html += '<span class="roster-row-heading"><b>' + p.name + '</b><span class="roster-row-num">' + (p.num || '—') + '</span></span>';
     html += '<span class="roster-row-meta">' + personMeta(p) + '</span>';
+    if (detail) html += '<small class="roster-row-detail">' + detail + '</small>';
+    html += '</span>';
     html += '</' + tag + '>';
     return html;
   }
 
   function render() {
+    root.dataset.view = view;
     var list = window.ALUMNI.filter(function (p) {
       return matchesParts(p) && matchesStatus(p) && matchesQuery(p);
     }).sort(comparePeople);
@@ -495,7 +505,7 @@ document.addEventListener('DOMContentLoaded', function () {
     groups.forEach(function (g, index) {
       var groupId = groupStateId(g.info);
       var open = isGroupOpen(g.info, index);
-      html += '<details class="section roster-group" data-group-id="' + groupId + '" data-group-label="' + escapeHtml(g.info.label) + '" data-group-sub="' + escapeHtml(g.info.sub) + '"' + (open ? ' open' : '') + '>';
+      html += '<details class="section roster-group' + (view === 'list' ? ' roster-group-list' : '') + '" data-group-id="' + groupId + '" data-group-label="' + escapeHtml(g.info.label) + '" data-group-sub="' + escapeHtml(g.info.sub) + '"' + (open ? ' open' : '') + '>';
       html += '<summary class="roster-group-summary">';
       html += '<h2><span class="group-title-main">' + g.info.label + '</span> <span class="group-sub">' + g.info.sub + '．' + g.people.length + ' 位</span></h2>';
       html += '<span class="roster-group-state" aria-hidden="true"></span>';
