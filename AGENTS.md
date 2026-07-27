@@ -35,7 +35,7 @@
 
 | 類型 | 優先修改 | 產物／指令 |
 |---|---|---|
-| 最新消息 | `content/news/`、`data/news.js`、`scripts/generate-news-pages.js` | `news/*.html`、`news/index.html`、`feed.xml` |
+| 最新消息 | `content/news/`、`data/news.js`、`scripts/generate-news-pages.js` | `news/*.html`、`news/index.html`、`feed.xml`、`sitemap.xml` 的消息區段 |
 | 人物頁 | `content/people/`、`data/people-profiles.js`、`data/alumni.js` | `node scripts/generate-people-pages.js` |
 | 人物誌首頁 | `data/people-profiles.js` 的 `PEOPLE_FEATURED_SECTIONS` | `node scripts/generate-people-index.js` |
 | 主內容頁 | `content/pages/`、對應模板／產生器 | 根目錄正式 HTML |
@@ -49,7 +49,7 @@
 - `concerts/2019-35th.html` 因雙場次差異保留手寫；其他屆別頁原則上由 `scripts/generate-concert-pages.js` 依 `data/concerts.js` 產生。
 - 線上節目冊可用 `data-page-shell="standalone"`，但必須同時標記 `data-page-type="concert-program-book"`，並保留首頁出口、分享／夜間模式、五項底部導覽、可縮放 viewport 與 `window.CONCERT_PROGRAM_DATA`。
 - 不為單一屆節目冊複製共用 CSS／JS。
-- 新增公開頁通常要同步 `sitemap.xml`、canonical、OG、Twitter meta；最新消息另同步 `feed.xml`。
+- 新增公開頁通常要同步 `sitemap.xml`、canonical、OG、Twitter meta；最新消息的 sitemap 區段與 `feed.xml` 由消息產生器同步。
 
 ## 4. 任務型必讀
 

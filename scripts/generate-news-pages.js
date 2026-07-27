@@ -43,6 +43,7 @@ function normalizeArticle(item) {
     pinUntil: item.pinUntil || '',
     priority: item.priority || (item.pinned ? 'important' : 'normal'),
     time: item.time || '12:00',
+    modifiedDate: item.modifiedDate || item.date,
     status: item.status || 'published'
   };
 }
@@ -331,6 +332,60 @@ ${items}
 `;
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function laterDate(left, right) {
+  if (!left) return right || '';
+  if (!right) return left;
+  return left >= right ? left : right;
+}
+
+function bumpSitemapLastmod(xml, url, date) {
+  if (!date) return xml;
+  const pattern = new RegExp(`(<url><loc>${escapeRegExp(url)}</loc><lastmod>)(\\d{4}-\\d{2}-\\d{2})(</lastmod>)`);
+  return xml.replace(pattern, (_, before, current, after) => `${before}${laterDate(current, date)}${after}`);
+}
+
+function renderSitemap(sitemapXml) {
+  const original = String(sitemapXml || '');
+  const hadTrailingNewline = original.endsWith('\n');
+  const lines = original.trimEnd().split('\n');
+  const newsEntryPattern = /<url><loc>(https:\/\/cysh\.band\/news\/(?:index\.html|[^<]+\.html))<\/loc>.*<\/url>/;
+  const existingPriorities = new Map();
+
+  for (const line of lines) {
+    const match = line.match(newsEntryPattern);
+    if (!match) continue;
+    const priority = (line.match(/<priority>([^<]+)<\/priority>/) || [])[1];
+    if (priority) existingPriorities.set(match[1], priority);
+  }
+
+  const keptLines = lines.filter((line) => !newsEntryPattern.test(line));
+  const closingIndex = keptLines.findIndex((line) => line.trim() === '</urlset>');
+  if (closingIndex < 0) throw new Error('sitemap.xml: missing closing </urlset>.');
+
+  const latestNewsDate = articles.reduce((latest, article) => laterDate(latest, article.modifiedDate), '');
+  const newsIndexUrl = 'https://cysh.band/news/index.html';
+  const generatedNewsEntries = [
+    `  <url><loc>${newsIndexUrl}</loc><lastmod>${latestNewsDate}</lastmod><priority>${existingPriorities.get(newsIndexUrl) || '0.7'}</priority></url>`,
+    ...articles.map((article) => {
+      const url = `https://cysh.band/${article.output}`;
+      return `  <url><loc>${url}</loc><lastmod>${article.modifiedDate}</lastmod><priority>${existingPriorities.get(url) || '0.7'}</priority></url>`;
+    })
+  ];
+
+  keptLines.splice(closingIndex, 0, ...generatedNewsEntries);
+  let output = keptLines.join('\n');
+  output = bumpSitemapLastmod(output, 'https://cysh.band/', latestNewsDate);
+  const latestConcertNewsDate = articles
+    .filter((article) => article.relatedConcert)
+    .reduce((latest, article) => laterDate(latest, article.modifiedDate), '');
+  output = bumpSitemapLastmod(output, 'https://cysh.band/concerts.html', latestConcertNewsDate);
+  return output + (hadTrailingNewline ? '\n' : '');
+}
+
 function generateNewsPages() {
   for (const article of articles) {
     const outputPath = path.join(root, article.output);
@@ -341,6 +396,9 @@ function generateNewsPages() {
   console.log('news/index.html');
   fs.writeFileSync(path.join(root, 'feed.xml'), renderFeed());
   console.log('feed.xml');
+  const sitemapPath = path.join(root, 'sitemap.xml');
+  fs.writeFileSync(sitemapPath, renderSitemap(fs.readFileSync(sitemapPath, 'utf8')));
+  console.log('sitemap.xml');
 }
 
 if (require.main === module) {
@@ -352,6 +410,7 @@ module.exports = {
   renderArticle,
   renderNewsIndex,
   renderFeed,
+  renderSitemap,
   generateNewsPages,
   renderNewsItem
 };

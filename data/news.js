@@ -2,10 +2,11 @@
    發布新消息的步驟：
    1. 在 content/news/ 新增正文來源檔，只放文章正文 HTML。
    2. 在下方陣列「最前面」加一筆（新的在前，依日期與時間排序）。
-   3. 執行 node scripts/generate-news-pages.js 產生文章、總覽與 RSS。
+   3. 執行 node scripts/generate-news-pages.js 產生文章、總覽、RSS 與 sitemap 消息區段。
 
    重要欄位：
-   id 唯一代碼、date 日期、time 發布時間、category 分類、tags 標籤、
+   id 唯一代碼、date 首次發布日、modifiedDate 重大更新日（未填時等同 date）、
+   time 發布時間、category 分類、tags 標籤、
    title 列表標題、summary 列表摘要、source 正文來源、output 正式頁、
    thumb 縮圖路徑、pinned 是否置頂、pinUntil 置頂到期日、priority 重要程度。
 */
@@ -407,6 +408,7 @@ window.NEWS = [
   {
     id: "2026-06-30-summer-bbq",
     date: "2026-06-30",
+    modifiedDate: "2026-07-03",
     time: "20:00",
     category: "活動紀錄",
     tags: ["在校生", "暑假", "為伍", "團練"],
@@ -428,6 +430,7 @@ window.NEWS = [
   {
     id: "2026-06-27-first-rehearsal",
     date: "2026-06-27",
+    modifiedDate: "2026-07-03",
     time: "18:00",
     category: "活動紀錄",
     tags: ["第一次團練", "為伍", "校友歸隊", "火雞肉飯"],
@@ -449,6 +452,7 @@ window.NEWS = [
   {
     id: "2026-06-12-rehearsal-schedule",
     date: "2026-06-12",
+    modifiedDate: "2026-07-03",
     time: "16:42",
     category: "團練通知",
     tags: ["團練時程", "為伍", "校友歸隊", "校友聯演"],
@@ -470,6 +474,7 @@ window.NEWS = [
   {
     id: "2019-05-26-tsai-yung-chu-officer",
     date: "2019-05-26",
+    modifiedDate: "2026-07-11",
     time: "12:00",
     category: "歷史補檔",
     tags: ["社團幹部", "譜務", "長笛", "蔡詠竹", "飛越肆國"],

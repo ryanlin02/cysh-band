@@ -677,11 +677,16 @@ function checkFontUrlEncoding() {
 }
 
 function checkGeneratedNewsPages() {
-  const { articles, renderArticle, renderNewsIndex, renderFeed } = require('./generate-news-pages');
+  const { articles, renderArticle, renderNewsIndex, renderFeed, renderSitemap } = require('./generate-news-pages');
   const activePins = articles.filter((article) => article.pinned && article.pinUntil && article.pinUntil >= new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' }));
   const missingPinUntil = articles.filter((article) => article.pinned && !article.pinUntil);
+  const invalidModifiedDates = articles.filter((article) => (
+    !/^\d{4}-\d{2}-\d{2}$/.test(article.modifiedDate)
+    || article.modifiedDate < article.date
+  ));
   if (missingPinUntil.length) addError(`news data: pinned article(s) missing pinUntil: ${missingPinUntil.map((article) => article.id).join(', ')}.`);
   if (activePins.length > 1) addError(`news data: at most one active pinned article is allowed, found ${activePins.map((article) => article.id).join(', ')}.`);
+  if (invalidModifiedDates.length) addError(`news data: modifiedDate must be YYYY-MM-DD and not earlier than date: ${invalidModifiedDates.map((article) => article.id).join(', ')}.`);
   for (const article of articles) {
     const outputPath = path.join(root, article.output);
     if (!fs.existsSync(outputPath)) {
@@ -704,7 +709,12 @@ function checkGeneratedNewsPages() {
   if (actualFeed !== expectedFeed) {
     addError('feed.xml: generated RSS is out of sync. Run node scripts/generate-news-pages.js');
   }
-  info.push(`Generated news pages checked: ${articles.length}`);
+  const actualSitemap = read('sitemap.xml');
+  const expectedSitemap = renderSitemap(actualSitemap);
+  if (actualSitemap !== expectedSitemap) {
+    addError('sitemap.xml: generated news entries are out of sync. Run node scripts/generate-news-pages.js');
+  }
+  info.push(`Generated news pages, RSS, and sitemap checked: ${articles.length}`);
 }
 
 function checkGeneratedCorePages() {

@@ -69,10 +69,10 @@ node scripts/generate-news-pages.js
 1. 在 `content/news/` 新增 `YYYY-MM-DD-主題.html`，只放文章正文。
 2. 在 `data/news.js` 陣列「最前面」加一筆，填入 `id`、`date`、`time`、`category`、`tags`、`title`、`summary`、`source`、`output`、`thumb` 等欄位。
 3. 需要首頁優先顯示時加 `pinned: true`，並填入到期日 `pinUntil: "YYYY-MM-DD"`；一般消息維持 `pinned: false`。
-4. 執行 `node scripts/generate-news-pages.js`，確認 `news/*.html`、`news/index.html` 與 `feed.xml` 已產生。
+4. 執行 `node scripts/generate-news-pages.js`，確認 `news/*.html`、`news/index.html`、`feed.xml` 與 `sitemap.xml` 的最新消息區段已同步。
 
 首頁會顯示 1 則仍在有效期內的置頂公告，再列最新 5 則一般消息；沒有有效置頂時直接顯示最新 5 則。校友聯演頁顯示最近 3 則具 `relatedConcert` 的消息，包含籌備與團練日常。`news/index.html` 總覽頁由 `data/news.js` 產生完整靜態列表，並用分類與標籤篩選作為漸進增強。
-`node scripts/check-site.js` 會檢查 `content/news/`、正式 `news/*.html`、`news/index.html` 與 `feed.xml` 是否同步；若忘記重跑產生腳本，檢查會提醒。
+`node scripts/check-site.js` 會檢查 `content/news/`、正式 `news/*.html`、`news/index.html`、`feed.xml` 與 sitemap 最新消息網址是否同步；若忘記重跑產生腳本，檢查會提醒。
 
 若調整全站上方導覽或頁尾，另執行：
 
@@ -94,7 +94,7 @@ node scripts/generate-concerts-index.js
 若該屆另有行動裝置版線上節目冊，請從 `templates/concert-program-book/` 建立 `concerts/{year}-{nth}-program/`。每屆只維護入口頁與自己的 `data/*.js`；版型、分享、夜間模式與底部導覽統一由 `assets/program-book/` 提供。再於 `data/concerts.js` 對應屆別加入 `onlineProgramBook`，讓演出介紹頁顯示入口。詳細步驟見範本目錄內的 `README.md`。
 
 ### 新增頁面時同步更新 SEO
-新增任何公開頁面（如 news 文章、屆別頁）後，在 `sitemap.xml` 加一行對應的 `<url>`（複製既有行修改網址與日期即可）
+最新消息文章由 `node scripts/generate-news-pages.js` 自動加入 `sitemap.xml`，不需手動加網址。新增其他公開頁面（例如屆別頁、人物頁）仍須依對應流程更新 sitemap、canonical 與分享 metadata。
 
 ### 更新前健康檢查
 修改網站後、commit 前，建議執行：

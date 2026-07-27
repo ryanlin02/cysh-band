@@ -60,7 +60,7 @@
 
 | 任務 | 優先修改 | 產物／驗證 |
 |---|---|---|
-| 最新消息 | `content/news/`、`data/news.js`、`scripts/generate-news-pages.js` | `news/*.html`、`news/index.html`、`feed.xml` |
+| 最新消息 | `content/news/`、`data/news.js`、`scripts/generate-news-pages.js` | `news/*.html`、`news/index.html`、`feed.xml`、`sitemap.xml` 的消息區段 |
 | 人物頁 | `content/people/`、`data/people-profiles.js`、`data/alumni.js` | `people/*.html` |
 | 人物誌首頁 | `data/people-profiles.js` 的 `PEOPLE_FEATURED_SECTIONS` | `people.html` |
 | 主內容頁 | `content/pages/`、共用模板與產生器 | 根目錄正式 HTML |
