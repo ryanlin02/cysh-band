@@ -11,6 +11,31 @@
 */
 window.NEWS = [
   {
+    id: "2026-07-24-taoxi-parent-child-arts-festival",
+    date: "2026-07-24",
+    time: "18:00",
+    category: "嘉義管樂演出分享",
+    tags: ["嘉義管樂", "桃喜親子藝術節", "親子活動", "嘉中校友", "演出分享"],
+    pinned: false,
+    priority: "normal",
+    title: "嘉義管樂演出分享｜2026 桃喜親子藝術節：三個週末，跟著音樂玩嘉義",
+    summary: "7/25 至 8/9，擊樂、長笛、青少年音樂展演與銅管活動連續三個週末在嘉義接力登場；部分演出成員也是嘉中管樂校友，邀請大小朋友一起聽音樂、玩藝術。",
+    source: "content/news/2026-07-24-taoxi-parent-child-arts-festival.html",
+    output: "news/2026-07-24-taoxi-parent-child-arts-festival.html",
+    url: "news/2026-07-24-taoxi-parent-child-arts-festival.html",
+    thumb: "assets/img/news/2026-07-24-taoxi-parent-child-arts-festival-poster-thumb.webp",
+    ogImage: "https://cysh.band/assets/img/news/2026-07-24-taoxi-parent-child-arts-festival-poster.webp",
+    ogImageWidth: "1200",
+    ogImageHeight: "1702",
+    pageTitle: "嘉義管樂演出分享｜2026 桃喜親子藝術節｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "2026 桃喜親子藝術節：三個週末，跟著音樂玩嘉義",
+    description: "2026 桃喜親子藝術節 7 月 25 日至 8 月 9 日在嘉義連續三個週末登場，帶來擊樂、長笛、青少年音樂展演、銅管五重奏與親子藝術體驗。",
+    ogDescription: "三個週末、五段系列活動，從擊樂與長笛一路玩到銅管音樂賓果；一起走進嘉義，感受親子藝術節的夏日音樂能量。",
+    headlineHtml: "嘉義管樂演出分享｜<br>2026 桃喜親子藝術節",
+    status: "published",
+    sourceNotes: "嘉義市政府文化局正式海報及公開活動頁；使用者確認部分演出成員為嘉義高中管樂社校友。"
+  },
+  {
     id: "2026-07-24-southern-wind-saxophone-quartet",
     date: "2026-07-24",
     time: "12:00",
