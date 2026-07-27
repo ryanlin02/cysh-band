@@ -300,25 +300,29 @@ function renderProgramNotes() {
   if (!container) return;
 
   const { firstHalf, secondHalf } = concertData.program;
+  const renderHalfSwitcher = (position) => `
+    <div class="tab-switcher${position === 'bottom' ? ' tab-switcher-bottom' : ''}" role="tablist" aria-label="選擇上半場或下半場曲目（${position === 'bottom' ? '頁尾' : '頁首'}）">
+      <button class="tab-btn active" id="program-tab-${position}-first" type="button" role="tab" aria-selected="true" aria-controls="program-list-container" data-program-half="first" data-program-position="${position}">上半場 (Part I)</button>
+      <button class="tab-btn" id="program-tab-${position}-second" type="button" role="tab" aria-selected="false" aria-controls="program-list-container" data-program-half="second" data-program-position="${position}">下半場 (Part II)</button>
+    </div>
+  `;
 
   container.innerHTML = `
     <div class="section-header">
       <span class="section-kicker">Repertoire & Notes</span>
       <h2 class="section-title">曲目解說</h2>
-      <p class="section-subtitle">曲目資訊與樂曲導賞完整呈現，可直接向下閱讀</p>
+      <p class="section-subtitle">演出曲目資訊與導賞</p>
     </div>
 
-    <div class="tab-switcher" role="tablist" aria-label="選擇上半場或下半場曲目">
-      <button class="tab-btn active" id="tab-btn-1" type="button" role="tab" aria-selected="true">上半場 (Part I)</button>
-      <button class="tab-btn" id="tab-btn-2" type="button" role="tab" aria-selected="false">下半場 (Part II)</button>
-    </div>
+    ${renderHalfSwitcher('top')}
 
     <div id="program-list-container" aria-live="polite"></div>
+
+    ${renderHalfSwitcher('bottom')}
   `;
 
-  const tab1 = document.getElementById('tab-btn-1');
-  const tab2 = document.getElementById('tab-btn-2');
   const listContainer = document.getElementById('program-list-container');
+  const tabButtons = [...container.querySelectorAll('[data-program-half]')];
 
   const renderList = (tracks) => {
     listContainer.innerHTML = tracks.map(track => {
@@ -348,23 +352,45 @@ function renderProgramNotes() {
     }).join('');
   };
 
-  renderList(firstHalf);
+  const activateHalf = (half, scrollToList = false) => {
+    tabButtons.forEach(button => {
+      const isActive = button.dataset.programHalf === half;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-selected', String(isActive));
+      button.tabIndex = isActive ? 0 : -1;
+    });
+    renderList(half === 'second' ? secondHalf : firstHalf);
 
-  tab1.addEventListener('click', () => {
-    tab1.classList.add('active');
-    tab2.classList.remove('active');
-    tab1.setAttribute('aria-selected', 'true');
-    tab2.setAttribute('aria-selected', 'false');
-    renderList(firstHalf);
+    if (scrollToList) {
+      requestAnimationFrame(() => listContainer.scrollIntoView({ block: 'start' }));
+    }
+  };
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      activateHalf(
+        button.dataset.programHalf,
+        button.dataset.programPosition === 'bottom'
+      );
+    });
+
+    button.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+
+      const switcherButtons = [...button.closest('.tab-switcher').querySelectorAll('[data-program-half]')];
+      const nextButton = ['ArrowRight', 'End'].includes(event.key)
+        ? switcherButtons[switcherButtons.length - 1]
+        : switcherButtons[0];
+      nextButton.focus();
+      activateHalf(
+        nextButton.dataset.programHalf,
+        nextButton.dataset.programPosition === 'bottom'
+      );
+    });
   });
 
-  tab2.addEventListener('click', () => {
-    tab2.classList.add('active');
-    tab1.classList.remove('active');
-    tab2.setAttribute('aria-selected', 'true');
-    tab1.setAttribute('aria-selected', 'false');
-    renderList(secondHalf);
-  });
+  activateHalf('first');
 }
 
 function renderPersonProfileLink(url, name = '') {
@@ -588,6 +614,11 @@ function renderThanksAndHeritage() {
         <a href="https://www.instagram.com/cyshband_95th" target="_blank" rel="noopener" class="channel-link">
           <svg class="channel-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><path d="M17.6 6.4h.01"></path></svg>
           <span>Instagram <small>@cyshband_95th</small></span>
+          <svg class="channel-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+        </a>
+        <a href="https://www.youtube.com/@cyshband" target="_blank" rel="noopener" class="channel-link">
+          <svg class="channel-icon brand-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"></path></svg>
+          <span>YouTube 頻道 <small>@cyshband</small></span>
           <svg class="channel-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
         </a>
       </div>

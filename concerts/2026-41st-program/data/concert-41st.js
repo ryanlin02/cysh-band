@@ -238,10 +238,10 @@ window.CONCERT_PROGRAM_DATA = {
       sectionZh: "長笛 / 短笛",
       members: [
         { name: "翁啟榮", number: "7581" },
-        { name: "陳立威", number: "9512" },
-        { name: "林庭宇", number: "10103" },
-        { name: "張嘉哲", number: "10521" },
-        { name: "許柏翔", number: "11005" }
+        { name: "翁啟榮", number: "9512" },
+        { name: "翁啟榮", number: "0103" },
+        { name: "翁啟榮", number: "0521" },
+        { name: "翁啟榮", number: "1005" }
       ]
     },
     {
@@ -249,10 +249,10 @@ window.CONCERT_PROGRAM_DATA = {
       sectionZh: "雙簧管 / 英國管",
       members: [
         { name: "蔡秉修", number: "9811" },
-        { name: "劉彥均", number: "10416" },
-        { name: "郭宥廷", number: "11108" },
-        { name: "陳冠宇", number: "11204" },
-        { name: "黃聖傑", number: "11310" }
+        { name: "劉彥均", number: "0416" },
+        { name: "郭宥廷", number: "1108" },
+        { name: "陳冠宇", number: "1204" },
+        { name: "黃聖傑", number: "1310" }
       ]
     },
     {
@@ -262,8 +262,8 @@ window.CONCERT_PROGRAM_DATA = {
         { name: "李國豪", number: "8204" },
         { name: "賴冠宏", number: "9115" },
         { name: "吳宗翰", number: "9722" },
-        { name: "曾敬哲", number: "10014" },
-        { name: "鄭宇軒", number: "10309" }
+        { name: "曾敬哲", number: "0014" },
+        { name: "鄭宇軒", number: "0309" }
       ]
     },
     {
@@ -273,8 +273,8 @@ window.CONCERT_PROGRAM_DATA = {
         { name: "周建宏", number: "8609" },
         { name: "黃冠文", number: "9317" },
         { name: "柯博文", number: "9904" },
-        { name: "蕭崇安", number: "10211" },
-        { name: "蔡昀達", number: "10719" }
+        { name: "蕭崇安", number: "0211" },
+        { name: "蔡昀達", number: "0719" }
       ]
     },
     {
@@ -283,9 +283,9 @@ window.CONCERT_PROGRAM_DATA = {
       members: [
         { name: "張志豪", number: "8710" },
         { name: "方品智", number: "9406" },
-        { name: "楊晨昇", number: "10118" },
-        { name: "羅子翔", number: "10625" },
-        { name: "簡聖祐", number: "11112" }
+        { name: "楊晨昇", number: "0118" },
+        { name: "羅子翔", number: "0625" },
+        { name: "簡聖祐", number: "1112" }
       ]
     },
     {
@@ -295,8 +295,8 @@ window.CONCERT_PROGRAM_DATA = {
         { name: "黃鈺芠", number: "1051" },
         { name: "陳智遠", number: "8914" },
         { name: "劉家銘", number: "9603" },
-        { name: "洪偉哲", number: "10129" },
-        { name: "詹益翔", number: "10807" }
+        { name: "洪偉哲", number: "0129" },
+        { name: "詹益翔", number: "0807" }
       ]
     },
     {
@@ -304,10 +304,10 @@ window.CONCERT_PROGRAM_DATA = {
       sectionZh: "長號",
       members: [
         { name: "簡晟軒", number: "8861" },
-        { name: "林聖傑", number: "9218" },
-        { name: "徐嘉佑", number: "10007" },
-        { name: "戴子揚", number: "10531" },
-        { name: "莊宗穎", number: "11019" }
+        { name: "簡晟軒", number: "8861" },
+        { name: "簡晟軒", number: "8861" },
+        { name: "簡晟軒", number: "8861" },
+        { name: "簡晟軒", number: "8861" },
       ]
     },
     {
@@ -316,9 +316,9 @@ window.CONCERT_PROGRAM_DATA = {
       members: [
         { name: "丁肇賢", number: "8501" },
         { name: "蘇承毅", number: "9422" },
-        { name: "魏廷諺", number: "10315" },
-        { name: "潘柏辰", number: "10904" },
-        { name: "鍾易達", number: "11311" }
+        { name: "魏廷諺", number: "0315" },
+        { name: "潘柏辰", number: "0904" },
+        { name: "鍾易達", number: "1311" }
       ]
     },
     {
@@ -327,9 +327,9 @@ window.CONCERT_PROGRAM_DATA = {
       members: [
         { name: "廖健宏", number: "9008" },
         { name: "江庭緯", number: "9829" },
-        { name: "彭修齊", number: "10402" },
-        { name: "粘博盛", number: "10714" },
-        { name: "梁哲瑋", number: "11133" }
+        { name: "彭修齊", number: "0402" },
+        { name: "粘博盛", number: "0714" },
+        { name: "梁哲瑋", number: "1133" }
       ]
     }
   ],
@@ -338,7 +338,8 @@ window.CONCERT_PROGRAM_DATA = {
   organization: {
     staffTitle: "籌備與工作人員名冊",
     staffGroups: [
-      { role: "團長", names: ["盧宓承"] },
+      { role: "嘉義高中校友管樂團 團長", names: ["盧宓承"] },
+      { role: "嘉義高中管樂社 社長", names: ["蔡承真"] },
       { role: "主辦字頭", names: ["五字頭"] },
       { role: "總召集人", names: ["王則量"] },
       { role: "執行企劃", names: ["翁啟榮", "丁肇賢"] },
