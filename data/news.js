@@ -24,7 +24,7 @@ window.NEWS = [
     output: "news/2026-07-24-taoxi-parent-child-arts-festival.html",
     url: "news/2026-07-24-taoxi-parent-child-arts-festival.html",
     thumb: "assets/img/news/2026-07-24-taoxi-parent-child-arts-festival-poster-thumb.webp",
-    ogImage: "https://cysh.band/assets/img/news/2026-07-24-taoxi-parent-child-arts-festival-poster.webp",
+    ogImage: "https://cysh.band/assets/img/news/2026-07-24-taoxi-parent-child-arts-festival-poster.webp?v=20260724-taoxi",
     ogImageWidth: "1200",
     ogImageHeight: "1702",
     pageTitle: "嘉義管樂演出分享｜2026 桃喜親子藝術節｜最新消息｜嘉義高中管樂隊",
