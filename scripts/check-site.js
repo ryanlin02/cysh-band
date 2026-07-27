@@ -458,11 +458,11 @@ function checkAboutPageImages() {
 
   const text = fs.readFileSync(file, 'utf8');
   const expectedImages = [
-    'assets/img/about/about-ensemble-1280.webp',
-    'assets/img/about/about-student-rehearsal-1072.webp',
-    'assets/img/about/about-alumni-band-1280.webp',
-    'assets/img/about/about-brass-section-1064.webp',
-    'assets/img/about/about-support-rehearsal-1280.webp'
+    { src: 'assets/img/about/about-ensemble-1280.webp', width: 1280, height: 640 },
+    { src: 'assets/img/about/about-student-rehearsal-1072.webp', width: 1072, height: 536 },
+    { src: 'assets/img/about/about-alumni-band-1280.webp', width: 1280, height: 640 },
+    { src: 'assets/img/about/about-brass-section-1064.webp', width: 1064, height: 532 },
+    { src: 'assets/img/about/about-support-rehearsal-1280.webp', width: 1280, height: 640 }
   ];
   const imageTags = [...text.matchAll(/<figure\b[^>]*class=["'][^"']*\babout-photo\b[^"']*["'][^>]*>[\s\S]*?<img\b([^>]+)>[\s\S]*?<\/figure>/gi)]
     .map((match) => `<img ${match[1]}>`);
@@ -473,29 +473,36 @@ function checkAboutPageImages() {
 
   imageTags.forEach((tag, index) => {
     const label = `about.html editorial image ${index + 1}`;
-    const expectedSrc = expectedImages[index];
-    if (expectedSrc && !tag.includes(`src="${expectedSrc}"`)) {
-      addError(`${label}: representative source mismatch; expected ${expectedSrc}.`);
+    const expected = expectedImages[index];
+    if (expected && !tag.includes(`src="${expected.src}"`)) {
+      addError(`${label}: representative source mismatch; expected ${expected.src}.`);
     }
     if (!/\balt=["'][^"']+["']/i.test(tag)) addError(`${label}: missing descriptive alt text.`);
-    if (!/\bwidth=["']\d+["']/i.test(tag) || !/\bheight=["']\d+["']/i.test(tag)) {
-      addError(`${label}: missing intrinsic width or height.`);
+    if (expected && (!tag.includes(`width="${expected.width}"`) || !tag.includes(`height="${expected.height}"`))) {
+      addError(`${label}: intrinsic dimensions must match the centered 2:1 crop (${expected.width}x${expected.height}).`);
     }
-    if (!/\bsrcset=["'][^"']+\b640w\b[^"']+["']/i.test(tag) || !/\bsizes=["'][^"']+["']/i.test(tag)) {
-      addError(`${label}: missing responsive srcset or sizes.`);
+    if (!/\bsrcset=["'][^"']+\b640w\b[^"']+\b800w\b[^"']+["']/i.test(tag) || !/\bsizes=["'][^"']+640px[^"']*["']/i.test(tag)) {
+      addError(`${label}: missing 640px/800px responsive sources or 640px display cap.`);
     }
     if (!/\bdecoding=["']async["']/i.test(tag)) addError(`${label}: decoding should be async.`);
-    if (index === 0) {
-      if (!/\bloading=["']eager["']/i.test(tag) || !/\bfetchpriority=["']high["']/i.test(tag)) {
-        addError(`${label}: lead image should be eager with high fetch priority.`);
-      }
-    } else if (!/\bloading=["']lazy["']/i.test(tag)) {
-      addError(`${label}: below-the-fold image should be lazy loaded.`);
+    if (!/\bloading=["']lazy["']/i.test(tag)) {
+      addError(`${label}: supplementary image should be lazy loaded.`);
     }
   });
 
   if (!/<meta\s+property=["']og:image["']\s+content=["']https:\/\/cysh\.band\/assets\/img\/about\/about-ensemble-1280\.webp["']/i.test(text)) {
     addError('about.html: og:image should use the visible lead image.');
+  }
+  if (!/<meta\s+property=["']og:image:height["']\s+content=["']640["']/i.test(text)) {
+    addError('about.html: og:image dimensions should match the 1280x640 cropped image.');
+  }
+  if (!/css\/style\.css\?v=20260728-about-photo-r2/i.test(text)) {
+    addError('about.html: stylesheet cache version must protect the corrected image dimensions.');
+  }
+  const css = fs.readFileSync(path.join(root, 'css', 'style.css'), 'utf8');
+  if (!/\.about-photo\s*\{[\s\S]*?max-width:\s*40rem/i.test(css)
+      || !/\.about-photo img\s*\{[\s\S]*?aspect-ratio:\s*2\s*\/\s*1[\s\S]*?object-fit:\s*cover/i.test(css)) {
+    addError('css/style.css: about photos must use a 40rem maximum width and centered 2:1 crop.');
   }
   info.push(`About page editorial images checked: ${imageTags.length}`);
 }

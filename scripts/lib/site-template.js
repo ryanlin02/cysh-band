@@ -40,7 +40,8 @@ function createRenderer(root) {
       ogType: escapeHtml(values.ogType || 'website'),
       ogImage: escapeHtml(values.ogImage || 'https://cysh.band/assets/img/og.jpg'),
       ogImageWidth: escapeHtml(values.ogImageWidth || '1200'),
-      ogImageHeight: escapeHtml(values.ogImageHeight || '630')
+      ogImageHeight: escapeHtml(values.ogImageHeight || '630'),
+      styleVersion: escapeHtml(values.styleVersion || '')
     };
     return render(readTemplate('partials/head.html'), safe);
   }

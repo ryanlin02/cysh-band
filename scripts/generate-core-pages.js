@@ -19,7 +19,8 @@ const pages = [
     url: 'https://cysh.band/about.html',
     ogImage: 'https://cysh.band/assets/img/about/about-ensemble-1280.webp',
     ogImageWidth: '1280',
-    ogImageHeight: '960',
+    ogImageHeight: '640',
+    styleVersion: '?v=20260728-about-photo-r2',
     extraHead: [
       '<meta name="robots" content="max-image-preview:large">',
       '<meta property="og:image:alt" content="嘉義高中校園中，在校生與校友組成的管樂團共同演奏">',
@@ -93,6 +94,7 @@ function renderCorePage(page) {
     ogImage: page.ogImage,
     ogImageWidth: page.ogImageWidth,
     ogImageHeight: page.ogImageHeight,
+    styleVersion: page.styleVersion,
     url: page.url,
     assetPrefix: '',
     navActive: page.navActive,
