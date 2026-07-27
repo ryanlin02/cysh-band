@@ -32,9 +32,9 @@
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
 | 最新消息發布完整教學.md | 給非程式背景維護者的最新消息發布完整工作手冊 |
-| content/people/ | 人物個人頁正文來源檔（32 個人物頁皆已模板化） |
+| content/people/ | 人物個人頁正文來源檔（目前 37 個人物頁皆已模板化） |
 | data/alumni.js | 校友名錄資料檔 |
-| data/people-profiles.js | 已模板化人物個人頁 metadata（32 個人物頁皆已納入） |
+| data/people-profiles.js | 已模板化人物個人頁 metadata（目前 37 個人物頁皆已納入） |
 | data/news.js | 最新消息資料檔 |
 | data/number-lookup.js | 編號查詢小遊戲資料檔（非完整公開名錄） |
 | 校友資料管理與驗證流程.md | 公開名錄、查號資料、個人頁與內部 Excel 名冊的管理流程 |
@@ -114,9 +114,9 @@ node scripts/generate-page-preview.js
 
 輸出檔案是 `_generated/page-template-preview.html`。它只供本地檢查模板方向，不會修改首頁、關於、人物誌、校友聯演等正式頁面。
 
-已套用到正式頁面的第一批是目前全部 5 篇最新消息文章；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。
+目前全部 16 篇最新消息文章皆已套用；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。數量會持續變動，精確現況以檢查結果為準。
 
-人物頁模板化已涵蓋目前全部 32 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
+人物頁模板化已涵蓋目前全部 37 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
 
 ```
 node scripts/generate-people-pages.js
@@ -168,7 +168,7 @@ cwebp -q 82 -resize 1600 0 原圖.jpg -o 輸出.webp
 - [x] OPENTIX 實際購票連結（首頁、校友聯演頁、購票公告與第 41 屆資料頁）
 - [ ] 《為伍》正式曲目公告後更新
 - [ ] 演出照片（影像館《為伍》相簿）
-- [ ] 其餘屆別的聯演紀錄（concerts.html 目前已有 1、6、14、18、21–41 屆；缺 2–5、7–13、15–17、19–20 屆。6、14、22、25、27、32 屆已補入部分紀錄，仍待正式節目冊補齊細節）
+- [ ] `data/concerts.js` 目前已有 40 筆歷年資料，但多個屆別仍標示為 `partial`、`inferred` 或待補欄位；後續依各筆 `status`、`notes` 與來源逐屆補齊，不再沿用早期缺頁清單
 - [ ] 歷屆聯演獨立資料頁已先補齊至目前公開呈現屆別；總覽列表與獨立頁目前皆以 `data/concerts.js` 為主要資料來源。下一階段可把人工頁與自動頁逐步統一欄位、補入更完整節目冊與團員名單。1990、1998、2016、2022、2024 已補入校友提供之海報或主視覺影像。
 - [ ] 社群協作文件已補入 2005、2008–2024 多屆錄影清單；2025《四方之音》錄影仍待王則量資料補充
 - [ ] 第 21 屆（2005《神話》）、第 26 屆（2010《Music à la Carte》）的確切場地、指揮、曲目待考證（見 `concerts/2005-21st.html`、`concerts/2010-26th.html`）
