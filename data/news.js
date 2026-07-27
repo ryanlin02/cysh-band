@@ -11,6 +11,32 @@
 */
 window.NEWS = [
   {
+    id: "2026-07-26-rehearsal-same-row-same-sound",
+    date: "2026-07-26",
+    time: "22:00",
+    category: "活動紀錄",
+    tags: ["團練", "為伍", "校友歸隊", "在校生", "影像館"],
+    pinned: false,
+    priority: "normal",
+    title: "7/26 團練日：坐進同一排，就又是熟悉的嘉中管樂",
+    summary: "《為伍》演出倒數不到兩週，校友與在校生再次坐進同一間團練室；一起看譜、一起呼吸，也在合奏與笑聲之間把默契接回來。下週團練也要記得回來！",
+    source: "content/news/2026-07-26-rehearsal-same-row-same-sound.html",
+    output: "news/2026-07-26-rehearsal-same-row-same-sound.html",
+    url: "news/2026-07-26-rehearsal-same-row-same-sound.html",
+    thumb: "https://img.cysh.band/thumb/20260726_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/190027-a9911f3ed275.webp",
+    ogImage: "https://img.cysh.band/large/20260726_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/190027-a9911f3ed275.webp",
+    ogImageWidth: "1108",
+    ogImageHeight: "1477",
+    pageTitle: "7/26 團練日：坐進同一排，就又是熟悉的嘉中管樂｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "7/26 團練日：坐進同一排，就又是熟悉的嘉中管樂",
+    description: "第 41 屆《為伍》演出前，嘉中管樂校友與在校生再次並肩團練，在合奏與交流中接回默契；無論是否上台，都歡迎下週再回來。",
+    ogDescription: "不同世代重新坐進同一排，樂聲與笑聲一起回到嘉中社辦。無論今年是否上台，下週團練也要記得回來！",
+    headlineHtml: "7/26 團練日：<br>坐進同一排，就又是熟悉的嘉中管樂",
+    relatedConcert: "2026-41st",
+    status: "published",
+    sourceNotes: "2026-07-26 社辦團練影像館相簿與使用者確認之活動背景。"
+  },
+  {
     id: "2026-07-25-rehearsal-coffee-and-homecoming",
     date: "2026-07-25",
     time: "22:30",

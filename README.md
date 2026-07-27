@@ -114,7 +114,7 @@ node scripts/generate-page-preview.js
 
 輸出檔案是 `_generated/page-template-preview.html`。它只供本地檢查模板方向，不會修改首頁、關於、人物誌、校友聯演等正式頁面。
 
-目前全部 18 篇最新消息文章皆已套用；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。數量會持續變動，精確現況以檢查結果為準。
+目前全部 19 篇最新消息文章皆已套用；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。數量會持續變動，精確現況以檢查結果為準。
 
 人物頁模板化已涵蓋目前全部 37 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
 
