@@ -16,7 +16,18 @@ const pages = [
     title: '關於樂團｜嘉義高中管樂隊暨校友管樂團',
     description: '嘉義高中管樂隊暨校友管樂團，由在校生管樂社與歷屆畢業校友組成的校友管樂團共同構成，血脈相連、人才相通。',
     navActive: 'about',
-    url: 'https://cysh.band/about.html'
+    url: 'https://cysh.band/about.html',
+    ogImage: 'https://cysh.band/assets/img/about/about-ensemble-1280.webp',
+    ogImageWidth: '1280',
+    ogImageHeight: '960',
+    extraHead: [
+      '<meta name="robots" content="max-image-preview:large">',
+      '<meta property="og:image:alt" content="嘉義高中校園中，在校生與校友組成的管樂團共同演奏">',
+      '<meta name="twitter:title" content="關於樂團｜嘉義高中管樂隊暨校友管樂團">',
+      '<meta name="twitter:description" content="一支樂隊，兩個世代：認識嘉義高中管樂社與嘉義高中校友管樂團。">',
+      '<meta name="twitter:image" content="https://cysh.band/assets/img/about/about-ensemble-1280.webp">',
+      '<meta name="twitter:image:alt" content="嘉義高中校園中，在校生與校友組成的管樂團共同演奏">'
+    ].join('\n')
   },
   {
     id: 'history',
@@ -79,6 +90,9 @@ function renderCorePage(page) {
     description: page.description,
     ogTitle: page.ogTitle || page.title,
     ogDescription: page.ogDescription || page.description,
+    ogImage: page.ogImage,
+    ogImageWidth: page.ogImageWidth,
+    ogImageHeight: page.ogImageHeight,
     url: page.url,
     assetPrefix: '',
     navActive: page.navActive,

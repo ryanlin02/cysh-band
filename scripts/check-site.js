@@ -449,6 +449,57 @@ function checkPublicHtmlQuality() {
   info.push(`Public HTML quality checked: ${publicHtml.length} files`);
 }
 
+function checkAboutPageImages() {
+  const file = path.join(root, 'about.html');
+  if (!fs.existsSync(file)) {
+    addError('about.html: missing generated page.');
+    return;
+  }
+
+  const text = fs.readFileSync(file, 'utf8');
+  const expectedImages = [
+    'assets/img/about/about-ensemble-1280.webp',
+    'assets/img/about/about-student-rehearsal-1072.webp',
+    'assets/img/about/about-alumni-band-1280.webp',
+    'assets/img/about/about-brass-section-1064.webp',
+    'assets/img/about/about-support-rehearsal-1280.webp'
+  ];
+  const imageTags = [...text.matchAll(/<figure\b[^>]*class=["'][^"']*\babout-photo\b[^"']*["'][^>]*>[\s\S]*?<img\b([^>]+)>[\s\S]*?<\/figure>/gi)]
+    .map((match) => `<img ${match[1]}>`);
+
+  if (imageTags.length !== expectedImages.length) {
+    addError(`about.html: expected ${expectedImages.length} editorial images, found ${imageTags.length}.`);
+  }
+
+  imageTags.forEach((tag, index) => {
+    const label = `about.html editorial image ${index + 1}`;
+    const expectedSrc = expectedImages[index];
+    if (expectedSrc && !tag.includes(`src="${expectedSrc}"`)) {
+      addError(`${label}: representative source mismatch; expected ${expectedSrc}.`);
+    }
+    if (!/\balt=["'][^"']+["']/i.test(tag)) addError(`${label}: missing descriptive alt text.`);
+    if (!/\bwidth=["']\d+["']/i.test(tag) || !/\bheight=["']\d+["']/i.test(tag)) {
+      addError(`${label}: missing intrinsic width or height.`);
+    }
+    if (!/\bsrcset=["'][^"']+\b640w\b[^"']+["']/i.test(tag) || !/\bsizes=["'][^"']+["']/i.test(tag)) {
+      addError(`${label}: missing responsive srcset or sizes.`);
+    }
+    if (!/\bdecoding=["']async["']/i.test(tag)) addError(`${label}: decoding should be async.`);
+    if (index === 0) {
+      if (!/\bloading=["']eager["']/i.test(tag) || !/\bfetchpriority=["']high["']/i.test(tag)) {
+        addError(`${label}: lead image should be eager with high fetch priority.`);
+      }
+    } else if (!/\bloading=["']lazy["']/i.test(tag)) {
+      addError(`${label}: below-the-fold image should be lazy loaded.`);
+    }
+  });
+
+  if (!/<meta\s+property=["']og:image["']\s+content=["']https:\/\/cysh\.band\/assets\/img\/about\/about-ensemble-1280\.webp["']/i.test(text)) {
+    addError('about.html: og:image should use the visible lead image.');
+  }
+  info.push(`About page editorial images checked: ${imageTags.length}`);
+}
+
 function expectedAssetPrefix(fileRel) {
   const dir = path.dirname(fileRel);
   if (dir === '.') return '';
@@ -1035,6 +1086,7 @@ loadData();
 checkDataReferences();
 checkHtmlReferences();
 checkPublicHtmlQuality();
+checkAboutPageImages();
 checkSharedChromeConsistency();
 checkConcertProgramBooks();
 checkSitemapAndFeed();

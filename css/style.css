@@ -209,6 +209,27 @@ html:not(.member-session-active) .nav-links a[data-member-only]:not(.active):foc
 .section p { margin-bottom: 16px; max-width: 46em; }
 .muted { color: var(--ink-dim); font-size: .92rem; }
 
+/* ---------- 關於樂團：編輯式段落照片 ---------- */
+.about-photo {
+  max-width: 46em;
+  margin: 0 0 30px;
+}
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.about-photo figcaption {
+  margin-top: 10px;
+  color: var(--ink-dim);
+  font-size: .88rem;
+  line-height: 1.7;
+}
+
 /* ---------- 首頁 Hero ---------- */
 .hero {
   position: relative; overflow: hidden;
