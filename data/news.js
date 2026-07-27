@@ -11,6 +11,32 @@
 */
 window.NEWS = [
   {
+    id: "2026-07-25-rehearsal-coffee-and-homecoming",
+    date: "2026-07-25",
+    time: "22:30",
+    category: "活動紀錄",
+    tags: ["團練", "為伍", "校友歸隊", "在校生", "影像館"],
+    pinned: false,
+    priority: "normal",
+    title: "7/25 團練日：咖啡香裡，校友和在校生又坐回一起",
+    summary: "《為伍》演出前，校友陸續回到嘉中社辦與在校生合奏；有人帶著樂器、有人只是回來看看，譜架旁還多了一桌咖啡香。無論是否上台，隨時都歡迎回來。",
+    source: "content/news/2026-07-25-rehearsal-coffee-and-homecoming.html",
+    output: "news/2026-07-25-rehearsal-coffee-and-homecoming.html",
+    url: "news/2026-07-25-rehearsal-coffee-and-homecoming.html",
+    thumb: "https://img.cysh.band/thumb/20260725_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/111566-8b641fff9c7c.webp",
+    ogImage: "https://img.cysh.band/large/20260725_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/111566-8b641fff9c7c.webp",
+    ogImageWidth: "1706",
+    ogImageHeight: "960",
+    pageTitle: "7/25 團練日：咖啡香裡，校友和在校生又坐回一起｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "7/25 團練日：咖啡香裡，校友和在校生又坐回一起",
+    description: "第 41 屆《為伍》演出前，嘉中管樂校友回到社辦與在校生一起團練；無論是否上台，隨時都歡迎回來看看、聊聊，再坐回熟悉的夥伴身旁。",
+    ogDescription: "樂器聲、笑聲和咖啡香又在嘉中社辦相遇。無論今年是否上台，每一位校友都歡迎隨時回來。",
+    headlineHtml: "7/25 團練日：<br>咖啡香裡，又坐回一起",
+    relatedConcert: "2026-41st",
+    status: "published",
+    sourceNotes: "2026-07-25 社辦團練影像館相簿與使用者確認之活動背景。"
+  },
+  {
     id: "2026-07-24-taoxi-parent-child-arts-festival",
     date: "2026-07-24",
     time: "18:00",
