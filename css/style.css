@@ -2646,13 +2646,26 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .news-more {
   margin-top: 16px;
 }
+.news-dek {
+  max-width: 48em;
+  margin: 20px auto 0;
+  color: var(--ink-dim);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
 .news-article p { max-width: 42em; }
 .news-article figure { margin: 28px 0; max-width: 560px; }
+.news-article .news-lead-image {
+  max-width: 720px;
+  margin: 0 auto 40px;
+}
 .news-article figure img {
-  width: 100%; border-radius: var(--radius-md); border: 1px solid var(--line);
+  display: block; width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--line);
   box-shadow: var(--shadow-sm); cursor: zoom-in;
 }
 .news-article figcaption { margin-top: 10px; font-size: .88rem; color: var(--ink-dim); }
+.news-content > :first-child { margin-top: 0; }
+.news-content h2 { margin-top: 42px; }
 .article-meta {
   display: flex;
   flex-wrap: wrap;
@@ -2671,7 +2684,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .article-meta .news-category-pill,
 .article-meta .news-priority-badge,
 .article-meta .article-tags a,
-.article-meta time {
+.article-meta .article-date {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2684,14 +2697,16 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   line-height: 1;
   letter-spacing: .03em;
 }
-.article-meta time {
+.article-meta .article-date {
+  gap: 6px;
+  color: var(--ink-dim);
+  background: rgba(160,124,49,.08);
+}
+.article-meta .article-date time {
   font-family: var(--latin);
   color: var(--gold);
-  font-size: .88rem;
   font-variant-numeric: tabular-nums;
-  letter-spacing: .08em;
-  padding-inline: 4px 8px;
-  background: transparent;
+  letter-spacing: .06em;
 }
 .article-meta .news-priority-badge {
   background: rgba(160,124,49,.13);
@@ -2708,10 +2723,17 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .article-meta .news-category-pill,
   .article-meta .news-priority-badge,
   .article-meta .article-tags a,
-  .article-meta time {
+  .article-meta .article-date {
     min-height: 28px;
     padding: 4px 10px;
     font-size: .76rem;
+  }
+  .news-dek {
+    margin-top: 16px;
+    font-size: 1rem;
+  }
+  .news-article .news-lead-image {
+    margin-bottom: 32px;
   }
 }
 .related-news {
@@ -2719,7 +2741,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   padding-top: 22px;
   border-top: 1px solid var(--line);
 }
-.related-news h3 {
+.related-news h2 {
   margin-top: 0;
 }
 .related-news-list {

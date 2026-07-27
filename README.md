@@ -67,12 +67,12 @@ node scripts/generate-news-pages.js
 
 新增消息時：
 1. 在 `content/news/` 新增 `YYYY-MM-DD-主題.html`，只放文章正文。
-2. 在 `data/news.js` 陣列「最前面」加一筆，填入 `id`、`date`、`time`、`category`、`tags`、`title`、`summary`、`source`、`output`、`thumb` 等欄位。
+2. 在 `data/news.js` 陣列「最前面」加一筆，填入 `id`、`date`、`time`、`category`、`tags`、`title`、`summary`、`source`、`output`、`thumb`、`ogImage` 與代表圖尺寸等欄位。
 3. 需要首頁優先顯示時加 `pinned: true`，並填入到期日 `pinUntil: "YYYY-MM-DD"`；一般消息維持 `pinned: false`。
 4. 執行 `node scripts/generate-news-pages.js`，確認 `news/*.html`、`news/index.html`、`feed.xml` 與 `sitemap.xml` 的最新消息區段已同步。
 
 首頁會顯示 1 則仍在有效期內的置頂公告，再列最新 5 則一般消息；沒有有效置頂時直接顯示最新 5 則。校友聯演頁顯示最近 3 則具 `relatedConcert` 的消息，包含籌備與團練日常。`news/index.html` 總覽頁由 `data/news.js` 產生完整靜態列表，並用分類與標籤篩選作為漸進增強。
-`node scripts/check-site.js` 會檢查 `content/news/`、正式 `news/*.html`、`news/index.html`、`feed.xml` 與 sitemap 最新消息網址是否同步；若忘記重跑產生腳本，檢查會提醒。
+單篇文章由產生器統一加入摘要導讀、發布／最後更新日期、代表圖、`NewsArticle` JSON-LD 與圖片載入屬性。`node scripts/check-site.js` 會檢查 `content/news/`、正式 `news/*.html`、`news/index.html`、`feed.xml`、結構化資料、代表圖與 sitemap 最新消息網址是否同步；若忘記重跑產生腳本，檢查會提醒。
 
 若調整全站上方導覽或頁尾，另執行：
 

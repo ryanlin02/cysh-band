@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
     base = base || '';
     var classes = 'news-item' + (n.pinned ? ' is-pinned' : '') + (n.priority === 'urgent' ? ' is-urgent' : '');
     var tail = n.thumb
-      ? '<img class="news-thumb" src="' + escapeHtml(base + n.thumb) + '" alt="" loading="lazy">'
+      ? '<img class="news-thumb" src="' + escapeHtml(base + n.thumb) + '" alt="" width="104" height="78" loading="lazy" decoding="async">'
       : '<span class="news-arrow">→</span>';
     var tags = tagHtml(n.tags);
     return '<a class="' + classes + '" href="' + escapeHtml(base + n.url) + '" data-category="' + escapeHtml(n.category) + '" data-tags="' + escapeHtml(n.tags.join('|')) + '" data-news-id="' + escapeHtml(n.id) + '">' +

@@ -128,11 +128,17 @@ function checkDataReferences() {
     for (const field of ['id', 'date', 'title', 'summary', 'source', 'output', 'category']) {
       if (!item[field]) addError(`data/news.js: "${label}" missing ${field}.`);
     }
+    for (const field of ['ogImage', 'ogImageWidth', 'ogImageHeight']) {
+      if (!item[field]) addError(`data/news.js: "${label}" missing representative image field ${field}.`);
+    }
     if (!Array.isArray(item.tags) || !item.tags.length) addError(`data/news.js: "${label}" tags must be a non-empty array.`);
     if (item.output && item.url && item.output !== item.url) addError(`data/news.js: "${label}" output/url mismatch: ${item.output} / ${item.url}`);
     if (item.source && !exists(item.source)) addError(`data/news.js: missing news source for "${label}": ${item.source}`);
     if (!item.url || !exists(item.url)) addError(`data/news.js: missing news page: ${item.url || '(empty url)'}`);
     if (item.thumb && !/^https?:\/\//i.test(item.thumb) && !exists(item.thumb)) addError(`data/news.js: missing news thumb for "${item.title}": ${item.thumb}`);
+    if (item.ogImage && !/^https?:\/\//i.test(item.ogImage) && !exists(item.ogImage.split('?')[0])) {
+      addError(`data/news.js: missing representative image for "${item.title}": ${item.ogImage}`);
+    }
   }
 
   const alumniByNum = new Map(alumni.filter((person) => person.num).map((person) => [person.num, person]));
@@ -684,9 +690,11 @@ function checkGeneratedNewsPages() {
     !/^\d{4}-\d{2}-\d{2}$/.test(article.modifiedDate)
     || article.modifiedDate < article.date
   ));
+  const invalidModifiedTimes = articles.filter((article) => !/^\d{2}:\d{2}$/.test(article.modifiedTime));
   if (missingPinUntil.length) addError(`news data: pinned article(s) missing pinUntil: ${missingPinUntil.map((article) => article.id).join(', ')}.`);
   if (activePins.length > 1) addError(`news data: at most one active pinned article is allowed, found ${activePins.map((article) => article.id).join(', ')}.`);
   if (invalidModifiedDates.length) addError(`news data: modifiedDate must be YYYY-MM-DD and not earlier than date: ${invalidModifiedDates.map((article) => article.id).join(', ')}.`);
+  if (invalidModifiedTimes.length) addError(`news data: modifiedTime must be HH:MM: ${invalidModifiedTimes.map((article) => article.id).join(', ')}.`);
   for (const article of articles) {
     const outputPath = path.join(root, article.output);
     if (!fs.existsSync(outputPath)) {
@@ -697,6 +705,70 @@ function checkGeneratedNewsPages() {
     const actual = fs.readFileSync(outputPath, 'utf8');
     if (actual !== expected) {
       addError(`${article.output}: generated HTML is out of sync. Run node scripts/generate-news-pages.js`);
+    }
+
+    const schemaBlocks = [...actual.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];
+    const newsSchemas = [];
+    for (const match of schemaBlocks) {
+      try {
+        const parsed = JSON.parse(match[1]);
+        if (parsed && parsed['@type'] === 'NewsArticle') newsSchemas.push(parsed);
+      } catch (error) {
+        addError(`${article.output}: invalid JSON-LD: ${error.message}`);
+      }
+    }
+    if (newsSchemas.length !== 1) {
+      addError(`${article.output}: expected exactly one NewsArticle JSON-LD block, found ${newsSchemas.length}.`);
+    } else {
+      const schema = newsSchemas[0];
+      for (const field of ['headline', 'description', 'image', 'datePublished', 'dateModified', 'author', 'publisher', 'mainEntityOfPage']) {
+        if (!schema[field]) addError(`${article.output}: NewsArticle missing ${field}.`);
+      }
+      if (!Array.isArray(schema.image) || schema.image[0] !== article.ogImage) {
+        addError(`${article.output}: NewsArticle image must match the representative og:image.`);
+      }
+      if (schema.datePublished !== `${article.date}T${article.time}:00+08:00`) {
+        addError(`${article.output}: NewsArticle datePublished is out of sync.`);
+      }
+      if (schema.dateModified !== `${article.modifiedDate}T${article.modifiedTime}:00+08:00`) {
+        addError(`${article.output}: NewsArticle dateModified is out of sync.`);
+      }
+    }
+
+    const ogImage = (actual.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i) || [])[1] || '';
+    if (!/^https:\/\/[^/]+\//.test(ogImage)) addError(`${article.output}: og:image must be an absolute HTTPS URL.`);
+    const visibleSummary = (actual.match(/<p class="news-dek">([\s\S]*?)<\/p>/i) || [])[1] || '';
+    if (plainTextFromHtml(visibleSummary) !== article.summary) {
+      addError(`${article.output}: visible article summary is missing or out of sync.`);
+    }
+    if (!new RegExp(`最後更新[\\s\\S]*?<time datetime=["']${article.modifiedDate}["']`).test(actual)) {
+      addError(`${article.output}: visible last-updated date is missing or out of sync.`);
+    }
+
+    const leadFigure = (actual.match(/<figure\b[^>]*class=["'][^"']*\bnews-lead-image\b[^"']*["'][^>]*>[\s\S]*?<\/figure>/i) || [])[0] || '';
+    const leadImage = (leadFigure.match(/<img\b[^>]*>/i) || [])[0] || '';
+    if (!leadImage) addError(`${article.output}: representative lead image is missing.`);
+    if (!/\salt=["'][^"']+["']/i.test(leadImage)) addError(`${article.output}: representative image needs meaningful alt text.`);
+    if (!/\swidth=["']\d+["']/i.test(leadImage) || !/\sheight=["']\d+["']/i.test(leadImage)) {
+      addError(`${article.output}: representative image needs width and height.`);
+    }
+    if (!/\sloading=["']eager["']/i.test(leadImage) || !/\sfetchpriority=["']high["']/i.test(leadImage) || !/\sdecoding=["']async["']/i.test(leadImage)) {
+      addError(`${article.output}: representative image loading priority is incomplete.`);
+    }
+    if (Number(article.ogImageWidth) > 480 && (!/\ssrcset=["'][^"']+["']/i.test(leadImage) || !/\ssizes=["'][^"']+["']/i.test(leadImage))) {
+      addError(`${article.output}: representative image needs responsive srcset and sizes.`);
+    }
+
+    const articleBody = (actual.match(/<article\b[^>]*class=["'][^"']*\bnews-article\b[^"']*["'][^>]*>([\s\S]*?)<\/article>/i) || [])[1] || '';
+    const bodyWithoutLead = articleBody.replace(leadFigure, '');
+    const bodyImages = [...bodyWithoutLead.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+    for (const [imageIndex, image] of bodyImages.entries()) {
+      if (!/\swidth=["']\d+["']/i.test(image) || !/\sheight=["']\d+["']/i.test(image)) {
+        addError(`${article.output}: body image ${imageIndex + 1} needs width and height.`);
+      }
+      if (!/\sloading=["']lazy["']/i.test(image) || !/\sdecoding=["']async["']/i.test(image)) {
+        addError(`${article.output}: body image ${imageIndex + 1} must lazy-load and decode asynchronously.`);
+      }
     }
   }
   const expectedIndex = renderNewsIndex();

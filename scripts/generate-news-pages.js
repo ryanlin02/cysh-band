@@ -23,6 +23,22 @@ function assetUrl(value, assetPrefix = '') {
   return isExternalUrl(value) ? value : assetPrefix + value;
 }
 
+function canonicalAssetUrl(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (isExternalUrl(raw)) return raw;
+  return `https://cysh.band/${raw.replace(/^(\.\.\/)+/, '').replace(/^\/+/, '')}`;
+}
+
+function displayAssetUrl(value, assetPrefix = '../') {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (raw.startsWith('https://cysh.band/')) {
+    return assetPrefix + raw.slice('https://cysh.band/'.length);
+  }
+  return assetUrl(raw, assetPrefix);
+}
+
 function normalizeArticle(item) {
   const output = item.output || item.url;
   const title = item.title || item.ogTitle || '';
@@ -44,6 +60,12 @@ function normalizeArticle(item) {
     priority: item.priority || (item.pinned ? 'important' : 'normal'),
     time: item.time || '12:00',
     modifiedDate: item.modifiedDate || item.date,
+    modifiedTime: item.modifiedTime || item.time || '12:00',
+    ogImage: canonicalAssetUrl(item.ogImage || item.thumb || 'assets/img/og.jpg'),
+    ogImageWidth: String(item.ogImageWidth || '1200'),
+    ogImageHeight: String(item.ogImageHeight || '630'),
+    imageAlt: item.imageAlt || title,
+    imageCaption: item.imageCaption || '',
     status: item.status || 'published'
   };
 }
@@ -79,13 +101,150 @@ function articleMeta(article) {
   const tags = article.tags.map((tag) => `<a href="${escapeHtml(tagLink(tag))}">#${escapeHtml(tag)}</a>`).join('');
   const meta = [
     `<a class="news-category-pill" href="${escapeHtml(categoryLink(article.category))}">${escapeHtml(article.category)}</a>`,
-    `<time datetime="${escapeHtml(article.date)}">${escapeHtml(article.date)}</time>`
+    `<span class="article-date"><span>發布</span><time datetime="${escapeHtml(article.date)}">${escapeHtml(article.date)}</time></span>`,
+    `<span class="article-date"><span>最後更新</span><time datetime="${escapeHtml(article.modifiedDate)}">${escapeHtml(article.modifiedDate)}</time></span>`
   ];
   if (article.pinned && article.pinUntil) meta.push('<span class="news-priority-badge">重要</span>');
   meta.push(`<span class="article-tags">${tags}</span>`);
   return `<div class="article-meta">
     ${meta.join('\n    ')}
   </div>`;
+}
+
+function setImgAttribute(tag, name, value) {
+  const pattern = new RegExp(`\\s${name}=(?:"[^"]*"|'[^']*'|[^\\s>]+)`, 'i');
+  const cleaned = tag.replace(pattern, '');
+  const selfClosing = /\/>$/.test(cleaned);
+  return cleaned.replace(/\s*\/?>$/, ` ${name}="${escapeHtml(value)}"${selfClosing ? ' />' : '>'}`);
+}
+
+function optimizeImageTag(tag, { lead = false, width = '', height = '' } = {}) {
+  let output = tag;
+  output = setImgAttribute(output, 'loading', lead ? 'eager' : 'lazy');
+  output = setImgAttribute(output, 'decoding', 'async');
+  if (lead) output = setImgAttribute(output, 'fetchpriority', 'high');
+  if (width && !/\swidth=/i.test(output)) output = setImgAttribute(output, 'width', width);
+  if (height && !/\sheight=/i.test(output)) output = setImgAttribute(output, 'height', height);
+  return output;
+}
+
+function addRepresentativeSourceSet(tag, article) {
+  if (!article.thumb || Number(article.ogImageWidth) <= 480) return tag;
+  let output = setImgAttribute(
+    tag,
+    'srcset',
+    `${displayAssetUrl(article.thumb)} 480w, ${displayAssetUrl(article.ogImage)} ${article.ogImageWidth}w`
+  );
+  output = setImgAttribute(output, 'sizes', '(max-width: 760px) calc(100vw - 40px), 720px');
+  return output;
+}
+
+function addFigureClass(figure, className) {
+  return figure.replace(/<figure\b([^>]*)>/i, (tag, attrs) => {
+    const classMatch = attrs.match(/\sclass=(["'])(.*?)\1/i);
+    if (!classMatch) return `<figure class="${className}"${attrs}>`;
+    const classes = new Set(classMatch[2].split(/\s+/).filter(Boolean));
+    classes.add(className);
+    return tag.replace(classMatch[0], ` class="${[...classes].join(' ')}"`);
+  });
+}
+
+function prepareArticleBody(article, sourceBody) {
+  let body = String(sourceBody || '').trim();
+  const figureMatch = body.match(/<figure\b[\s\S]*?<\/figure>/i);
+  let leadFigure = '';
+  let imageAlt = article.imageAlt;
+
+  if (figureMatch && /<img\b/i.test(figureMatch[0])) {
+    const sourceImage = (figureMatch[0].match(/<img\b[^>]*>/i) || [])[0] || '';
+    imageAlt = (sourceImage.match(/\salt=(["'])(.*?)\1/i) || [])[2] || imageAlt;
+    leadFigure = addFigureClass(figureMatch[0], 'news-lead-image')
+      .replace(/<img\b[^>]*>/i, (tag) => {
+        let image = setImgAttribute(tag, 'src', displayAssetUrl(article.ogImage));
+        image = optimizeImageTag(image, {
+          lead: true,
+          width: article.ogImageWidth,
+          height: article.ogImageHeight
+        });
+        return addRepresentativeSourceSet(image, article);
+      });
+    body = `${body.slice(0, figureMatch.index)}${body.slice(figureMatch.index + figureMatch[0].length)}`.trim();
+  } else {
+    const caption = article.imageCaption
+      ? `\n  <figcaption>${escapeHtml(article.imageCaption)}</figcaption>`
+      : '';
+    const generatedImage = addRepresentativeSourceSet(
+      `<img src="${escapeHtml(displayAssetUrl(article.ogImage))}" alt="${escapeHtml(article.imageAlt)}" width="${escapeHtml(article.ogImageWidth)}" height="${escapeHtml(article.ogImageHeight)}" loading="eager" decoding="async" fetchpriority="high">`,
+      article
+    );
+    leadFigure = `<figure class="news-lead-image">
+  ${generatedImage}${caption}
+</figure>`;
+  }
+
+  body = body.replace(/<img\b[^>]*>/gi, (tag) => optimizeImageTag(tag));
+  return { leadFigure, body, imageAlt };
+}
+
+function articleDateTime(date, time) {
+  return `${date}T${time}:00+08:00`;
+}
+
+function renderArticleStructuredData(article) {
+  const url = `https://cysh.band/${article.output}`;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: textFromHtml(article.ogTitle || article.title),
+    description: article.description,
+    image: [article.ogImage],
+    datePublished: articleDateTime(article.date, article.time),
+    dateModified: articleDateTime(article.modifiedDate, article.modifiedTime),
+    author: {
+      '@type': 'Organization',
+      name: '嘉義高中管樂隊暨校友管樂團',
+      url: 'https://cysh.band/about.html'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: '嘉義高中管樂隊暨校友管樂團',
+      url: 'https://cysh.band/',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://cysh.band/assets/img/icon-192.png',
+        width: 192,
+        height: 192
+      }
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url
+    },
+    articleSection: article.category,
+    keywords: article.tags,
+    inLanguage: 'zh-Hant-TW',
+    isAccessibleForFree: true
+  };
+  return JSON.stringify(schema, null, 2).replace(/</g, '\\u003c');
+}
+
+function renderArticleExtraHead(article) {
+  const published = articleDateTime(article.date, article.time);
+  const modified = articleDateTime(article.modifiedDate, article.modifiedTime);
+  const tags = article.tags.map((tag) => `<meta property="article:tag" content="${escapeHtml(tag)}">`).join('\n');
+  return `<meta name="robots" content="max-image-preview:large">
+<meta property="og:image:alt" content="${escapeHtml(article.imageAlt)}">
+<meta name="twitter:title" content="${escapeHtml(article.ogTitle)}">
+<meta name="twitter:description" content="${escapeHtml(article.ogDescription)}">
+<meta name="twitter:image" content="${escapeHtml(article.ogImage)}">
+<meta name="twitter:image:alt" content="${escapeHtml(article.imageAlt)}">
+<meta property="article:published_time" content="${escapeHtml(published)}">
+<meta property="article:modified_time" content="${escapeHtml(modified)}">
+<meta property="article:section" content="${escapeHtml(article.category)}">
+${tags}
+<script type="application/ld+json">
+${renderArticleStructuredData(article)}
+</script>`;
 }
 
 function relatedArticles(article) {
@@ -104,7 +263,7 @@ function relatedArticles(article) {
 
   if (!related.length) return '';
   return `<section class="related-news" aria-label="相關消息">
-      <h3>相關消息</h3>
+      <h2>相關消息</h2>
       <div class="related-news-list">
         ${scoredNewsLinks(related)}
       </div>
@@ -134,19 +293,26 @@ function articlePageNav(article) {
 }
 
 function renderArticle(article) {
-  const body = fs.readFileSync(path.join(root, article.source), 'utf8').trim();
-  const indentedBody = body.split('\n').map((line) => (line ? `    ${line}` : line)).join('\n');
+  const sourceBody = fs.readFileSync(path.join(root, article.source), 'utf8');
+  const prepared = prepareArticleBody(article, sourceBody);
+  const pageArticle = { ...article, imageAlt: prepared.imageAlt || article.imageAlt };
+  const indentedBody = prepared.body.split('\n').map((line) => (line ? `      ${line}` : line)).join('\n');
   const related = relatedArticles(article);
   const pageNav = articlePageNav(article);
   const content = `<header class="page-head">
-  <p class="kicker">NEWS．${escapeHtml(article.date)}</p>
+  <p class="kicker">NEWS</p>
   <h1>${article.headlineHtml}</h1>
+  <p class="news-dek">${escapeHtml(article.summary)}</p>
   ${articleMeta(article)}
 </header>
 
 <main class="wrap">
   <article class="section news-article">
+    ${prepared.leadFigure}
+
+    <div class="news-content">
 ${indentedBody}
+    </div>
 
 ${related ? `    ${related}\n\n` : ''}    ${pageNav}
   </article>
@@ -162,6 +328,7 @@ ${related ? `    ${related}\n\n` : ''}    ${pageNav}
     ogImageHeight: article.ogImageHeight,
     url: `https://cysh.band/${article.output}`,
     ogType: 'article',
+    extraHead: renderArticleExtraHead(pageArticle),
     assetPrefix: '../',
     navActive: 'news',
     content
@@ -185,7 +352,7 @@ function renderNewsItem(article, assetPrefix = '../') {
   const tags = article.tags || [];
   const tagHtml = tags.slice(0, 4).map((tag) => `<span>#${escapeHtml(tag)}</span>`).join('');
   const tail = article.thumb
-    ? `<img class="news-thumb" src="${escapeHtml(assetUrl(article.thumb, assetPrefix))}" alt="" loading="lazy">`
+    ? `<img class="news-thumb" src="${escapeHtml(assetUrl(article.thumb, assetPrefix))}" alt="" width="104" height="78" loading="lazy" decoding="async">`
     : '<span class="news-arrow">→</span>';
   const classes = ['news-item'];
   if (article.pinned && article.pinUntil) classes.push('is-pinned');

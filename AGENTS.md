@@ -50,6 +50,7 @@
 - 線上節目冊可用 `data-page-shell="standalone"`，但必須同時標記 `data-page-type="concert-program-book"`，並保留首頁出口、分享／夜間模式、五項底部導覽、可縮放 viewport 與 `window.CONCERT_PROGRAM_DATA`。
 - 不為單一屆節目冊複製共用 CSS／JS。
 - 新增公開頁通常要同步 `sitemap.xml`、canonical、OG、Twitter meta；最新消息的 sitemap 區段與 `feed.xml` 由消息產生器同步。
+- 最新消息必須由產生器輸出可見發布／最後更新日期、單一 `NewsArticle` JSON-LD，以及與 Open Graph、Twitter、頁面首圖一致的代表圖；代表圖與正文圖的尺寸、載入優先度由 `check-site.js` 檢查。
 
 ## 4. 任務型必讀
 
