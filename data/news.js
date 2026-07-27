@@ -11,6 +11,31 @@
 */
 window.NEWS = [
   {
+    id: "2026-07-27-chiayi-song-youth-wind-concert",
+    date: "2026-07-27",
+    time: "23:30",
+    category: "嘉義管樂演出分享",
+    tags: ["嘉義管樂", "嘉頌青年管樂團", "臺灣音樂", "青年管樂", "演出分享"],
+    pinned: false,
+    priority: "normal",
+    title: "嘉義管樂演出分享｜《管樂•Taiwan•金曲》：把臺灣記憶吹進音樂廳",
+    summary: "嘉頌青年管樂團 8/30 登上文化局音樂廳，從臺灣在地創作、管樂經典一路演到跨世代金曲；票價 300 元，7/27 止購票另有早鳥 8 折。",
+    source: "content/news/2026-07-27-chiayi-song-youth-wind-concert.html",
+    output: "news/2026-07-27-chiayi-song-youth-wind-concert.html",
+    url: "news/2026-07-27-chiayi-song-youth-wind-concert.html",
+    thumb: "assets/img/news/2026-07-27-chiayi-song-youth-wind-concert-poster-thumb.webp",
+    ogImage: "https://cysh.band/assets/img/news/2026-07-27-chiayi-song-youth-wind-concert-poster.webp?v=20260727-chiayi-song",
+    ogImageWidth: "1200",
+    ogImageHeight: "1690",
+    pageTitle: "嘉義管樂演出分享｜《管樂•Taiwan•金曲》2026 嘉頌青年管樂團年度音樂會｜嘉義高中管樂隊",
+    ogTitle: "《管樂•Taiwan•金曲》：把臺灣記憶吹進音樂廳",
+    description: "2026 嘉頌青年管樂團年度音樂會《管樂•Taiwan•金曲》8 月 30 日於嘉義市政府文化局音樂廳演出，帶來臺灣創作、管樂經典與流行金曲改編。",
+    ogDescription: "從諸羅城、廟會節慶到跨世代金曲，8 月 30 日一起走進文化局音樂廳，感受嘉義青年管樂的熱血與溫度。",
+    headlineHtml: "嘉義管樂演出分享｜<br>《管樂•Taiwan•金曲》",
+    status: "published",
+    sourceNotes: "嘉義市政府文化局活動頁、正式海報與年代售票公開節目資訊。"
+  },
+  {
     id: "2026-07-26-rehearsal-same-row-same-sound",
     date: "2026-07-26",
     time: "22:00",
