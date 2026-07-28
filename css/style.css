@@ -2684,7 +2684,8 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   margin: 0 auto 40px;
 }
 .news-article figure img {
-  display: block; width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--line);
+  display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: auto; object-fit: contain;
+  border-radius: var(--radius-md); border: 1px solid var(--line);
   box-shadow: var(--shadow-sm); cursor: zoom-in;
 }
 .news-article figcaption { margin-top: 10px; font-size: .88rem; color: var(--ink-dim); }

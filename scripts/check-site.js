@@ -741,7 +741,18 @@ function checkFontUrlEncoding() {
 }
 
 function checkGeneratedNewsPages() {
-  const { articles, renderArticle, renderNewsIndex, renderFeed, renderSitemap } = require('./generate-news-pages');
+  const {
+    articles,
+    renderArticle,
+    renderNewsIndex,
+    renderFeed,
+    renderSitemap,
+    NEWS_STYLE_VERSION
+  } = require('./generate-news-pages');
+  const css = read('css/style.css');
+  if (!/\.news-article figure img\s*\{[\s\S]*?max-width:\s*100%[\s\S]*?height:\s*auto[\s\S]*?aspect-ratio:\s*auto[\s\S]*?object-fit:\s*contain/i.test(css)) {
+    addError('css/style.css: news article images must preserve their intrinsic aspect ratio.');
+  }
   const activePins = articles.filter((article) => article.pinned && article.pinUntil && article.pinUntil >= new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' }));
   const missingPinUntil = articles.filter((article) => article.pinned && !article.pinUntil);
   const invalidModifiedDates = articles.filter((article) => (
@@ -763,6 +774,9 @@ function checkGeneratedNewsPages() {
     const actual = fs.readFileSync(outputPath, 'utf8');
     if (actual !== expected) {
       addError(`${article.output}: generated HTML is out of sync. Run node scripts/generate-news-pages.js`);
+    }
+    if (!actual.includes(`href="../css/style.css${NEWS_STYLE_VERSION}"`)) {
+      addError(`${article.output}: stylesheet cache version is missing or stale.`);
     }
 
     const schemaBlocks = [...actual.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];
@@ -810,6 +824,13 @@ function checkGeneratedNewsPages() {
     if (!/\swidth=["']\d+["']/i.test(leadImage) || !/\sheight=["']\d+["']/i.test(leadImage)) {
       addError(`${article.output}: representative image needs width and height.`);
     }
+    if (!new RegExp(`\\swidth=["']${article.ogImageWidth}["']`, 'i').test(leadImage)
+        || !new RegExp(`\\sheight=["']${article.ogImageHeight}["']`, 'i').test(leadImage)) {
+      addError(`${article.output}: representative image dimensions must match data/news.js.`);
+    }
+    if (!/\sstyle=["'][^"']*\bheight\s*:\s*auto\b[^"']*["']/i.test(leadImage)) {
+      addError(`${article.output}: representative image needs an inline height:auto distortion safeguard.`);
+    }
     if (!/\sloading=["']eager["']/i.test(leadImage) || !/\sfetchpriority=["']high["']/i.test(leadImage) || !/\sdecoding=["']async["']/i.test(leadImage)) {
       addError(`${article.output}: representative image loading priority is incomplete.`);
     }
@@ -827,12 +848,18 @@ function checkGeneratedNewsPages() {
       if (!/\sloading=["']lazy["']/i.test(image) || !/\sdecoding=["']async["']/i.test(image)) {
         addError(`${article.output}: body image ${imageIndex + 1} must lazy-load and decode asynchronously.`);
       }
+      if (!/\sstyle=["'][^"']*\bheight\s*:\s*auto\b[^"']*["']/i.test(image)) {
+        addError(`${article.output}: body image ${imageIndex + 1} needs an inline height:auto distortion safeguard.`);
+      }
     }
   }
   const expectedIndex = renderNewsIndex();
   const actualIndex = read('news/index.html');
   if (actualIndex !== expectedIndex) {
     addError('news/index.html: generated HTML is out of sync. Run node scripts/generate-news-pages.js');
+  }
+  if (!actualIndex.includes(`href="../css/style.css${NEWS_STYLE_VERSION}"`)) {
+    addError('news/index.html: stylesheet cache version is missing or stale.');
   }
   const expectedFeed = renderFeed();
   const actualFeed = read('feed.xml');

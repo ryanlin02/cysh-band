@@ -3,11 +3,17 @@
    GitHub Pages 仍使用輸出的靜態 HTML；此腳本只在本地維護時執行。 */
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { createRenderer } = require('./lib/site-template');
 const { autoLinkHtml } = require('./lib/people-auto-link');
 
 const root = path.join(__dirname, '..');
 const { escapeHtml, renderPage } = createRenderer(root);
+const NEWS_STYLE_VERSION = `?v=${crypto
+  .createHash('sha256')
+  .update(fs.readFileSync(path.join(root, 'css', 'style.css')))
+  .digest('hex')
+  .slice(0, 12)}`;
 
 global.window = global;
 require(path.join(root, 'data', 'news.js'));
@@ -118,13 +124,25 @@ function setImgAttribute(tag, name, value) {
   return cleaned.replace(/\s*\/?>$/, ` ${name}="${escapeHtml(value)}"${selfClosing ? ' />' : '>'}`);
 }
 
+function setInlineStyleProperty(tag, name, value) {
+  const styleMatch = tag.match(/\sstyle=(["'])(.*?)\1/i);
+  const declarations = (styleMatch ? styleMatch[2] : '')
+    .split(';')
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .filter((item) => !new RegExp(`^${name}\\s*:`, 'i').test(item));
+  declarations.push(`${name}: ${value}`);
+  return setImgAttribute(tag, 'style', `${declarations.join('; ')};`);
+}
+
 function optimizeImageTag(tag, { lead = false, width = '', height = '' } = {}) {
   let output = tag;
   output = setImgAttribute(output, 'loading', lead ? 'eager' : 'lazy');
   output = setImgAttribute(output, 'decoding', 'async');
+  output = setInlineStyleProperty(output, 'height', 'auto');
   if (lead) output = setImgAttribute(output, 'fetchpriority', 'high');
-  if (width && !/\swidth=/i.test(output)) output = setImgAttribute(output, 'width', width);
-  if (height && !/\sheight=/i.test(output)) output = setImgAttribute(output, 'height', height);
+  if (width) output = setImgAttribute(output, 'width', width);
+  if (height) output = setImgAttribute(output, 'height', height);
   return output;
 }
 
@@ -173,10 +191,14 @@ function prepareArticleBody(article, sourceBody) {
     const caption = article.imageCaption
       ? `\n  <figcaption>${escapeHtml(article.imageCaption)}</figcaption>`
       : '';
-    const generatedImage = addRepresentativeSourceSet(
-      `<img src="${escapeHtml(displayAssetUrl(article.ogImage))}" alt="${escapeHtml(article.imageAlt)}" width="${escapeHtml(article.ogImageWidth)}" height="${escapeHtml(article.ogImageHeight)}" loading="eager" decoding="async" fetchpriority="high">`,
-      article
-    );
+    const generatedImage = addRepresentativeSourceSet(optimizeImageTag(
+      `<img src="${escapeHtml(displayAssetUrl(article.ogImage))}" alt="${escapeHtml(article.imageAlt)}">`,
+      {
+        lead: true,
+        width: article.ogImageWidth,
+        height: article.ogImageHeight
+      }
+    ), article);
     leadFigure = `<figure class="news-lead-image">
   ${generatedImage}${caption}
 </figure>`;
@@ -329,6 +351,7 @@ ${related ? `    ${related}\n\n` : ''}    ${pageNav}
     url: `https://cysh.band/${article.output}`,
     ogType: 'article',
     extraHead: renderArticleExtraHead(pageArticle),
+    styleVersion: NEWS_STYLE_VERSION,
     assetPrefix: '../',
     navActive: 'news',
     content
@@ -446,6 +469,7 @@ function renderNewsIndex() {
     ogDescription: '音樂會公告、團練紀錄、幹部交接與各項活動動態。',
     url: 'https://cysh.band/news/index.html',
     ogType: 'website',
+    styleVersion: NEWS_STYLE_VERSION,
     assetPrefix: '../',
     navActive: 'news',
     extraScripts: '<script src="../data/news.js" defer></script>\n<script src="../js/news.js" defer></script>',
@@ -579,5 +603,6 @@ module.exports = {
   renderFeed,
   renderSitemap,
   generateNewsPages,
-  renderNewsItem
+  renderNewsItem,
+  NEWS_STYLE_VERSION
 };
