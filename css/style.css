@@ -2672,7 +2672,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 }
 .news-dek {
   max-width: 48em;
-  margin: 20px auto 0;
+  margin: 20px 0 0;
   color: var(--ink-dim);
   font-size: 1.05rem;
   line-height: 1.8;
@@ -2681,7 +2681,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .news-article figure { margin: 28px 0; max-width: 560px; }
 .news-article .news-lead-image {
   max-width: 720px;
-  margin: 0 auto 40px;
+  margin: 0 0 40px;
 }
 .news-article figure img {
   display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: auto; object-fit: contain;
