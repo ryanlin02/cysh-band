@@ -29,6 +29,25 @@ function assetPrefix(fileRel) {
   return '../'.repeat(depth);
 }
 
+function syncPwaInstallMeta(html, fileRel) {
+  if (
+    fileRel === 'news/_template.html'
+    || !html.includes('</head>')
+    || html.includes('data-page-shell="standalone"')
+  ) return html;
+
+  const pwaInstallMeta = renderPartial('partials/pwa-install.html', {
+    assetPrefix: assetPrefix(fileRel)
+  }).trim();
+  const markerPattern = /<!-- CYSH PWA install metadata: start -->[\s\S]*?<!-- CYSH PWA install metadata: end -->/;
+  if (markerPattern.test(html)) return html.replace(markerPattern, pwaInstallMeta);
+
+  return html.replace(
+    /<link rel="apple-touch-icon" href="[^"]+">\n<meta name="theme-color" content="#faf8f3">/,
+    pwaInstallMeta
+  );
+}
+
 function activeFromExisting(html) {
   const anchors = html.match(/<a\b[^>]*>/g) || [];
   for (const anchor of anchors) {
@@ -70,17 +89,24 @@ function syncSharedChrome() {
   let written = 0;
   for (const file of walk(root)) {
     const fileRel = relative(file);
-    if (fileRel === 'gallery.html' || fileRel === 'news/_template.html') continue;
+    if (fileRel === 'news/_template.html') continue;
     const html = fs.readFileSync(file, 'utf8');
-    if (!html.includes('<nav class="nav">') || !html.includes('<footer class="footer">')) continue;
+    const withPwaInstallMeta = syncPwaInstallMeta(html, fileRel);
+    if (!withPwaInstallMeta.includes('<nav class="nav">') || !withPwaInstallMeta.includes('<footer class="footer">')) {
+      if (withPwaInstallMeta !== html) {
+        fs.writeFileSync(file, withPwaInstallMeta);
+        written += 1;
+      }
+      continue;
+    }
     const nav = renderPartial('partials/nav.html', {
       assetPrefix: assetPrefix(fileRel),
-      navActive: activeFor(fileRel, html)
+      navActive: activeFor(fileRel, withPwaInstallMeta)
     }).trimEnd();
     const footer = renderPartial('partials/footer.html', {
       assetPrefix: assetPrefix(fileRel)
     }).trimEnd();
-    const next = html
+    const next = withPwaInstallMeta
       .replace(/<nav class="nav">[\s\S]*?<\/nav>\n*/, `${nav}\n\n\n`)
       .replace(/<footer class="footer">[\s\S]*?<\/footer>\n*/, `${footer}\n\n\n`);
     if (next !== html) {

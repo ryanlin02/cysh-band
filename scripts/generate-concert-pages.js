@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const { autoLinkHtml } = require('./lib/people-auto-link');
 const { createAlumniRosterResolver } = require('./lib/alumni-roster');
+const { createRenderer } = require('./lib/site-template');
 const { syncSharedChrome } = require('./sync-shared-chrome');
 
 global.window = global;
@@ -16,6 +17,7 @@ require(path.join(__dirname, '..', 'data', 'people-profiles.js'));
 require(path.join(__dirname, '..', 'data', 'news.js'));
 
 const root = path.join(__dirname, '..');
+const { renderPartial } = createRenderer(root);
 const alumni = global.ALUMNI || [];
 const concerts = global.CONCERTS || [];
 const peopleProfiles = global.PEOPLE_PROFILES || [];
@@ -641,8 +643,7 @@ ${generatedMarker}
 <meta name="description" content="${escapeHtml(desc)}">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="../assets/img/icon-192.png">
-<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
-<meta name="theme-color" content="#faf8f3">
+${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
 <link rel="alternate" type="application/rss+xml" title="嘉中管樂最新消息 RSS" href="https://cysh.band/feed.xml">
 <link rel="canonical" href="${escapeHtml(canonical)}">
 <meta property="og:type" content="website">
