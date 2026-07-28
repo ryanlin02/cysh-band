@@ -16,7 +16,11 @@ window.SITE_CONFIG = {
   // 圖檔副檔名（R2 上為 WebP）
   imageExt: ".webp",
 
-  // 版本化搜尋與瀏覽 runtime。程式檔放在同網域，資料檔由
-  // bootstrap 指向 Cloudflare R2，讓 Web Worker 維持同源。
+  // 人物頭像快取版本。修復或大量更新頭像後遞增，避免沿用舊的404快取。
+  avatarVersion: "20260728.1",
+
+  // 穩定 bootstrap 放在 R2；每次完整更新會先上傳新版本資料，
+  // 最後才切換此檔。程式檔仍由同網域提供，讓 Web Worker 維持同源。
+  runtimeBootstrap: "https://img.cysh.band/runtime/bootstrap.json",
   runtimeBase: "./runtime",
 };

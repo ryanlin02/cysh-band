@@ -67,7 +67,12 @@ function profileLinkForPerson(person) {
 function personAvatarUrl(person) {
   const profile = profileLinkForPerson(person);
   if (profile && profile.photo && !/\/blank\.webp$/i.test(profile.photo)) return profile.photo;
-  if (person && person.avatar) return CFG.dataBase + "/" + encPath(person.avatar);
+  if (person && person.avatar) {
+    const version = CFG.avatarVersion
+      ? `?v=${encodeURIComponent(CFG.avatarVersion)}`
+      : "";
+    return CFG.dataBase + "/" + encPath(person.avatar) + version;
+  }
   return "";
 }
 
@@ -77,7 +82,10 @@ async function loadData() {
     String(CFG.runtimeBase || "").replace(/\/?$/, "/"),
     document.baseURI
   );
-  const bootstrapResponse = await fetch(new URL("bootstrap.json", runtimeBase));
+  const bootstrapUrl = CFG.runtimeBootstrap
+    ? new URL(CFG.runtimeBootstrap, document.baseURI)
+    : new URL("bootstrap.json", runtimeBase);
+  const bootstrapResponse = await fetch(bootstrapUrl, { cache: "no-store" });
   if (!bootstrapResponse.ok) {
     throw new Error(`Runtime載入失敗（${bootstrapResponse.status}）`);
   }
@@ -90,7 +98,7 @@ async function loadData() {
     runtimeBase
   );
   const { GalleryRuntime } = await import(loaderUrl.href);
-  GALLERY_RUNTIME = new GalleryRuntime(runtimeBase.href);
+  GALLERY_RUNTIME = new GalleryRuntime(new URL(".", bootstrapUrl).href);
   GALLERY_RUNTIME.bootstrapPromise = Promise.resolve(RUNTIME_BOOTSTRAP);
   RUNTIME_CORE = await GALLERY_RUNTIME.loadCore();
 
