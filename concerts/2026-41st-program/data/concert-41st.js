@@ -237,55 +237,55 @@ window.CONCERT_PROGRAM_DATA = {
       section: "Flute & Piccolo",
       sectionZh: "長笛 / 短笛",
       members: [
-        { name: "翁啟榮", number: "7581" },
-        { name: "翁啟榮", number: "9512" },
-        { name: "翁啟榮", number: "0103" },
-        { name: "翁啟榮", number: "0521" },
-        { name: "翁啟榮", number: "1005" }
+        { name: "何權烈", number: "7112" },
+        { name: "何權烈", number: "7112" },
+        { name: "何權烈", number: "7112" },
+        { name: "何權烈", number: "7112" },
+        { name: "何權烈", number: "7112" }
       ]
     },
     {
       section: "Oboe & English Horn",
       sectionZh: "雙簧管 / 英國管",
       members: [
-        { name: "蔡秉修", number: "9811" },
-        { name: "劉彥均", number: "0416" },
-        { name: "郭宥廷", number: "1108" },
-        { name: "陳冠宇", number: "1204" },
-        { name: "黃聖傑", number: "1310" }
+        { name: "劉炫廷", number: "9921" },
+        { name: "劉炫廷", number: "9921" },
+        { name: "劉炫廷", number: "9921" },
+        { name: "劉炫廷", number: "9921" },
+        { name: "劉炫廷", number: "9921" }
       ]
     },
     {
       section: "Clarinet",
       sectionZh: "單簧管",
       members: [
-        { name: "李國豪", number: "8204" },
-        { name: "賴冠宏", number: "9115" },
-        { name: "吳宗翰", number: "9722" },
-        { name: "曾敬哲", number: "0014" },
-        { name: "鄭宇軒", number: "0309" }
+        { name: "蔡承真", number: "1301" },
+        { name: "蔡承真", number: "1301" },
+        { name: "蔡承真", number: "1301" },
+        { name: "蔡承真", number: "1301" },
+        { name: "蔡承真", number: "1301" }
       ]
     },
     {
       section: "Saxophone",
       sectionZh: "薩克斯風",
       members: [
-        { name: "周建宏", number: "8609" },
-        { name: "黃冠文", number: "9317" },
-        { name: "柯博文", number: "9904" },
-        { name: "蕭崇安", number: "0211" },
-        { name: "蔡昀達", number: "0719" }
+        { name: "鄭鈞元", number: "8431" },
+        { name: "鄭鈞元", number: "8431" },
+        { name: "鄭鈞元", number: "8431" },
+        { name: "鄭鈞元", number: "8431" },
+        { name: "鄭鈞元", number: "8431" }
       ]
     },
     {
       section: "French Horn",
       sectionZh: "法國號",
       members: [
-        { name: "張志豪", number: "8710" },
-        { name: "方品智", number: "9406" },
-        { name: "楊晨昇", number: "0118" },
-        { name: "羅子翔", number: "0625" },
-        { name: "簡聖祐", number: "1112" }
+        { name: "魏仕杰", number: "8841" },
+        { name: "魏仕杰", number: "8841" },
+        { name: "魏仕杰", number: "8841" },
+        { name: "魏仕杰", number: "8841" },
+        { name: "魏仕杰", number: "8841" }
       ]
     },
     {
@@ -293,10 +293,10 @@ window.CONCERT_PROGRAM_DATA = {
       sectionZh: "小號",
       members: [
         { name: "黃鈺芠", number: "1051" },
-        { name: "陳智遠", number: "8914" },
-        { name: "劉家銘", number: "9603" },
-        { name: "洪偉哲", number: "0129" },
-        { name: "詹益翔", number: "0807" }
+        { name: "吳東謙", number: "9551" },
+        { name: "吳東謙", number: "9551" },
+        { name: "吳東謙", number: "9551" },
+        { name: "吳東謙", number: "9551" }
       ]
     },
     {
@@ -314,22 +314,22 @@ window.CONCERT_PROGRAM_DATA = {
       section: "Euphonium & Tuba",
       sectionZh: "上低音號 / 低音號",
       members: [
-        { name: "丁肇賢", number: "8501" },
-        { name: "蘇承毅", number: "9422" },
-        { name: "魏廷諺", number: "0315" },
-        { name: "潘柏辰", number: "0904" },
-        { name: "鍾易達", number: "1311" }
+        { name: "翁啟榮", number: "7581" },
+        { name: "翁啟榮", number: "7581" },
+        { name: "翁啟榮", number: "7581" },
+        { name: "翁啟榮", number: "7581" },
+        { name: "翁啟榮", number: "7581" }
       ]
     },
     {
       section: "Percussion",
       sectionZh: "打擊樂",
       members: [
-        { name: "廖健宏", number: "9008" },
-        { name: "江庭緯", number: "9829" },
-        { name: "彭修齊", number: "0402" },
-        { name: "粘博盛", number: "0714" },
-        { name: "梁哲瑋", number: "1133" }
+        { name: "陳志鳴", number: "7502" },
+        { name: "陳志鳴", number: "7502" },
+        { name: "陳志鳴", number: "7502" },
+        { name: "陳志鳴", number: "7502" },
+        { name: "陳志鳴", number: "7502" }
       ]
     }
   ],
