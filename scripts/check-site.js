@@ -611,6 +611,9 @@ function checkConcertProgramBooks() {
     if (!text.includes('assets/program-book/program-book.js')) {
       addError(`${fileRel}: missing shared program-book runtime.`);
     }
+    if (!text.includes('G-PEWFLMMJNZ')) {
+      addError(`${fileRel}: missing GA4 measurement tag.`);
+    }
     if (!/<script\b[^>]*src=["']data\/[^"']+\.js(?:\?[^"']*)?["'][^>]*\bdefer\b/i.test(text)) {
       addError(`${fileRel}: missing deferred per-concert data script under data/.`);
     }
@@ -643,6 +646,40 @@ function checkConcertProgramBooks() {
 
   if (!programBookPages.length) addWarning('No concert program-book pages found.');
   info.push(`Concert program-book contract checked: ${programBookPages.length} pages`);
+}
+
+function checkAnalyticsTracking() {
+  const analyticsId = 'G-PEWFLMMJNZ';
+  const concertPages = walk(path.join(root, 'concerts'), (file) => (
+    file.endsWith('.html')
+    && !file.includes(`${path.sep}templates${path.sep}`)
+    && !/<html\b[^>]*\bdata-page-type=["']concert-program-book["']/i.test(fs.readFileSync(file, 'utf8'))
+  ));
+
+  for (const file of concertPages) {
+    const fileRel = rel(file);
+    if (!fs.readFileSync(file, 'utf8').includes(analyticsId)) {
+      addError(`${fileRel}: concert detail page is missing GA4 measurement tag.`);
+    }
+  }
+
+  const template = read('templates/concert-program-book/index.html');
+  if (!template.includes(analyticsId)) {
+    addError('templates/concert-program-book/index.html: missing GA4 measurement tag for future program books.');
+  }
+
+  const htmlFiles = walk(root, (file) => file.endsWith('.html'));
+  for (const file of htmlFiles) {
+    const fileRel = rel(file);
+    const links = fs.readFileSync(file, 'utf8').match(/<a\b[^>]*\bhref=["']https:\/\/www\.opentix\.life\/[^"']+["'][^>]*>/gi) || [];
+    for (const link of links) {
+      if (!/\bdata-ga-event=["']ticket_click["']/i.test(link)) {
+        addError(`${fileRel}: OPENTIX purchase link must use data-ga-event="ticket_click".`);
+      }
+    }
+  }
+
+  info.push(`Analytics tracking checked: ${concertPages.length} concert detail pages; OPENTIX links are marked for ticket_click.`);
 }
 
 function checkSitemapAndFeed() {
@@ -1123,6 +1160,7 @@ checkPublicHtmlQuality();
 checkAboutPageImages();
 checkSharedChromeConsistency();
 checkConcertProgramBooks();
+checkAnalyticsTracking();
 checkSitemapAndFeed();
 checkMemberAccessPrivacy();
 checkStructuredData();

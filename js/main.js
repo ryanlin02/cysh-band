@@ -62,6 +62,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  /* ---------- GA4 購票點擊 ----------
+     只記錄明確標記的正式購票連結；不蒐集姓名、Email 或其他個人資料。 */
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('a[data-ga-event="ticket_click"]');
+    if (!link || typeof window.gtag !== 'function') return;
+    var destinationHost = '';
+    try {
+      destinationHost = new URL(link.href).hostname;
+    } catch (error) {
+      destinationHost = 'unknown';
+    }
+    window.gtag('event', 'ticket_click', {
+      concert_id: link.getAttribute('data-ga-concert-id') || 'unknown',
+      placement: link.getAttribute('data-ga-placement') || 'unknown',
+      destination_host: destinationHost
+    });
+  });
+
   /* ---------- Lightbox（影像館／節目冊） ---------- */
   var galleryImgs = document.querySelectorAll('.gallery-grid figure img:not(.album-cover), .program-book-strip figure img, .news-article figure img, .page-head .ph-poster img');
   if (galleryImgs.length) {

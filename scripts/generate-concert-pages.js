@@ -226,7 +226,7 @@ function listPeople(items) {
   return items.map(itemText).join('、');
 }
 
-function ticketText(ticket) {
+function ticketText(ticket, concert) {
   if (!ticket || ticket.type === 'unknown') return ticket && ticket.note ? escapeHtml(ticket.note) : '票務資訊待考';
   if (ticket.type === 'none') return ticket.note || '無';
   if (ticket.type === 'free') return ticket.note || '免票入場';
@@ -236,7 +236,7 @@ function ticketText(ticket) {
   if (ticket.price) parts.push(`票價 ${escapeHtml(ticket.price)} 元`);
   if (ticket.channels && ticket.channels.length) parts.push(`通路：${ticket.channels.map(escapeHtml).join('、')}`);
   if (ticket.note) parts.push(escapeHtml(ticket.note));
-  if (ticket.url) parts.push(`<a href="${escapeHtml(ticket.url)}" target="_blank" rel="noopener">前往 OPENTIX 購票</a>`);
+  if (ticket.url) parts.push(`<a href="${escapeHtml(ticket.url)}" target="_blank" rel="noopener" data-ga-event="ticket_click" data-ga-concert-id="${escapeHtml(concert.id)}" data-ga-placement="concert_detail">前往 OPENTIX 購票</a>`);
   return parts.length ? parts.join('；') : '售票資訊待補';
 }
 
@@ -288,7 +288,7 @@ function concertInfoTable(concert, statusText) {
     ['指揮', listPeople(concert.conductors)],
     ['獨奏／協奏', listPeople(concert.soloists)],
     ['籌辦字頭', escapeHtml(concert.hostHead || '待考')],
-    ['票務', ticketText(concert.ticket)],
+    ['票務', ticketText(concert.ticket, concert)],
     ['資料狀態', escapeHtml(statusText)]
   ];
   if (concert.sessions && concert.sessions.length) {
@@ -639,6 +639,14 @@ function render(concert) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ${generatedMarker}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PEWFLMMJNZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PEWFLMMJNZ');
+</script>
 <title>${escapeHtml(plainTitle)}</title>
 <meta name="description" content="${escapeHtml(desc)}">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
