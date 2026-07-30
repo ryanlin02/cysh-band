@@ -1,0 +1,23 @@
+# 僅供 Netlify 測試分支使用；正式 GitHub Pages 不讀取此檔。
+[build]
+  publish = "."
+
+# 完整影像館仍由正式網域的 Cloudflare Access 保護，不能在公開的
+# netlify.app 測試網址直接提供相同前端。
+[[redirects]]
+  from = "/photos"
+  to = "https://cysh.band/photos/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/photos/*"
+  to = "https://cysh.band/photos/:splat"
+  status = 302
+  force = true
+
+# 測試站不應進入搜尋結果；原始 canonical 仍保持正式網域。
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
