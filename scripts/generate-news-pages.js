@@ -373,11 +373,11 @@ function countBy(items, selector) {
 
 function renderNewsItem(article, assetPrefix = '../') {
   const tags = article.tags || [];
-  const tagHtml = tags.slice(0, 4).map((tag) => `<span>#${escapeHtml(tag)}</span>`).join('');
   const tail = article.thumb
     ? `<img class="news-thumb" src="${escapeHtml(assetUrl(article.thumb, assetPrefix))}" alt="" width="104" height="78" loading="lazy" decoding="async">`
-    : '<span class="news-arrow">→</span>';
+    : '';
   const classes = ['news-item'];
+  if (!article.thumb) classes.push('no-thumb');
   if (article.pinned && article.pinUntil) classes.push('is-pinned');
   if (article.priority === 'urgent') classes.push('is-urgent');
   return `<a class="${classes.join(' ')}" href="${escapeHtml(assetPrefix + article.output)}" data-category="${escapeHtml(article.category)}" data-tags="${escapeHtml(tags.join('|'))}" data-news-id="${escapeHtml(article.id)}">
@@ -385,7 +385,6 @@ function renderNewsItem(article, assetPrefix = '../') {
       <span class="news-body">
         <span class="news-title-line">${article.pinned && article.pinUntil ? '<em>重要</em>' : ''}<b>${escapeHtml(article.title)}</b></span>
         <span class="news-summary">${escapeHtml(article.summary)}</span>
-        ${tagHtml ? `<span class="news-tags">${tagHtml}</span>` : ''}
       </span>
       ${tail}
     </a>`;
@@ -405,31 +404,36 @@ function renderNewsIndex() {
     ...categoryCounts.map(([category, count]) => renderFilterButton(category, count, 'data-news-filter', category))
   ].join('\n          ');
 
-  const hotTags = tagCounts.slice(0, 12).map(([tag, count]) => (
+  const curatedTopics = Array.isArray(global.NEWS_INDEX_TOPICS) ? global.NEWS_INDEX_TOPICS : [];
+  const curatedTopicCounts = curatedTopics
+    .map((tag) => [tag, tagCounts.find(([candidate]) => candidate === tag)?.[1] || 0])
+    .filter(([, count]) => count > 0)
+    .slice(0, 5);
+  const topicCounts = curatedTopicCounts.length ? curatedTopicCounts : tagCounts.slice(0, 5);
+  const hotTags = topicCounts.map(([tag, count]) => (
     `<a href="?tag=${encodeURIComponent(tag)}" data-news-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}<span>${count}</span></a>`
   )).join('\n          ');
+  const featuredArticle = articles.find((article) => article.featured);
 
-  const categoryLinks = categoryCounts.map(([category, count]) => (
-    `<a href="?category=${encodeURIComponent(category)}" data-news-filter="${escapeHtml(category)}">${escapeHtml(category)}<span>${count}</span></a>`
-  )).join('\n          ');
-
-  const content = `<header class="page-head">
+  const content = `<header class="page-head news-index-head">
   <p class="kicker">NEWS</p>
   <h1>最新消息總覽</h1>
-  <p class="lede">音樂會公告、團練紀錄、幹部交接與各項活動動態，依時間由新到舊排列。分類與標籤可直接篩選，也能保留在網址中分享。</p>
+  <p class="lede">音樂會公告、團練紀錄與各項活動動態，依時間由新到舊排列。</p>
 </header>
 
 <main class="wrap">
   <section class="section news-index-layout">
     <div class="news-index-main">
       <div class="news-filter-panel">
-        <p class="news-filter-label">分類</p>
-        <div class="news-filter-bar" aria-label="最新消息分類篩選">
-          ${filters}
-        </div>
         <div class="news-filter-status">
           <p class="news-result-count" id="news-result-count" aria-live="polite">目前顯示全部 ${articles.length} 則消息</p>
-          <button class="news-clear-filter" id="news-clear-filter" type="button" hidden>清除篩選</button>
+          <div class="news-filter-actions">
+            <button class="news-filter-toggle" id="news-filter-toggle" type="button" aria-controls="news-filter-options" aria-expanded="false">篩選消息<span id="news-filter-active-label">全部</span></button>
+            <button class="news-clear-filter" id="news-clear-filter" type="button" hidden>清除篩選</button>
+          </div>
+        </div>
+        <div class="news-filter-bar" id="news-filter-options" aria-label="最新消息分類篩選">
+          ${filters}
         </div>
       </div>
       <div class="news-list news-index-list" id="news-all" data-base="../" data-static="true">
@@ -439,25 +443,19 @@ function renderNewsIndex() {
       <p class="news-more news-index-links"><a href="../concerts.html">← 回校友聯演</a><a href="../feed.xml">RSS 訂閱 →</a></p>
     </div>
     <aside class="news-sidebar" aria-label="最新消息輔助導覽">
-      <section>
-        <h2>熱門標籤</h2>
-        <p class="news-sidebar-note">同一主題會跨越不同分類，例如《為伍》可包含演出公告、團練通知與活動紀錄。</p>
+      <details class="news-explore">
+        <summary>探索主題<span aria-hidden="true"></span></summary>
+        <p class="news-sidebar-note">同一主題可跨越不同分類；選擇主題後仍可用網址分享結果。</p>
         <div class="news-tag-cloud">
           ${hotTags}
         </div>
-      </section>
-      <section>
-        <h2>分類統計</h2>
-        <div class="news-category-list">
-          ${categoryLinks}
-        </div>
-      </section>
-      <section>
+      </details>${featuredArticle ? `
+      <section class="news-sidebar-featured-section">
         <h2>焦點消息</h2>
         <div class="news-sidebar-featured">
-          ${articles.slice(0, 1).map((article) => `<a href="../${escapeHtml(article.output)}"><span>${escapeHtml(article.date)}</span><b>${escapeHtml(article.title)}</b></a>`).join('\n          ')}
+          <a href="../${escapeHtml(featuredArticle.output)}"><span>${escapeHtml(featuredArticle.date)}</span><b>${escapeHtml(featuredArticle.title)}</b></a>
         </div>
-      </section>
+      </section>` : ''}
     </aside>
   </section>
 </main>`;

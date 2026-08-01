@@ -8,7 +8,9 @@
    id 唯一代碼、date 首次發布日、modifiedDate 重大更新日（未填時等同 date）、
    time 發布時間、category 分類、tags 標籤、
    title 列表標題、summary 列表摘要、source 正文來源、output 正式頁、
-   thumb 縮圖路徑、pinned 是否置頂、pinUntil 置頂到期日、priority 重要程度。
+   thumb 縮圖路徑（列表統一以滿版裁切呈現）、
+   pinned 是否置頂、pinUntil 置頂到期日、priority 重要程度、
+   featured（總覽焦點消息，僅在人工明確指定時填 true）。
    ogImage／尺寸是文章代表圖；沒有正文首圖時另填 imageAlt 與 imageCaption。
 */
 window.NEWS = [
@@ -565,3 +567,6 @@ window.NEWS = [
     status: "published"
   }
 ];
+
+// 總覽頁只呈現可長期辨識的主題；新增短期活動標籤時，不會自動塞進探索區。
+window.NEWS_INDEX_TOPICS = ["為伍", "校友歸隊", "團練", "影像館", "嘉義管樂"];

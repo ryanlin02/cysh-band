@@ -47,7 +47,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=15f60bae0524">
+<link rel="stylesheet" href="../css/style.css?v=010df2e9b632">
 <script src="../js/main.js" defer></script>
 <script src="../data/news.js" defer></script>
 <script src="../js/news.js" defer></script>
@@ -73,18 +73,24 @@
 </nav>
 
 
-<header class="page-head">
+<header class="page-head news-index-head">
   <p class="kicker">NEWS</p>
   <h1>最新消息總覽</h1>
-  <p class="lede">音樂會公告、團練紀錄、幹部交接與各項活動動態，依時間由新到舊排列。分類與標籤可直接篩選，也能保留在網址中分享。</p>
+  <p class="lede">音樂會公告、團練紀錄與各項活動動態，依時間由新到舊排列。</p>
 </header>
 
 <main class="wrap">
   <section class="section news-index-layout">
     <div class="news-index-main">
       <div class="news-filter-panel">
-        <p class="news-filter-label">分類</p>
-        <div class="news-filter-bar" aria-label="最新消息分類篩選">
+        <div class="news-filter-status">
+          <p class="news-result-count" id="news-result-count" aria-live="polite">目前顯示全部 21 則消息</p>
+          <div class="news-filter-actions">
+            <button class="news-filter-toggle" id="news-filter-toggle" type="button" aria-controls="news-filter-options" aria-expanded="false">篩選消息<span id="news-filter-active-label">全部</span></button>
+            <button class="news-clear-filter" id="news-clear-filter" type="button" hidden>清除篩選</button>
+          </div>
+        </div>
+        <div class="news-filter-bar" id="news-filter-options" aria-label="最新消息分類篩選">
           <button class="news-filter active" type="button" data-news-filter="all" aria-pressed="true">全部<span>21</span></button>
           <button class="news-filter" type="button" data-news-filter="活動紀錄" aria-pressed="false">活動紀錄<span>8</span></button>
           <button class="news-filter" type="button" data-news-filter="嘉義管樂演出分享" aria-pressed="false">嘉義管樂演出分享<span>4</span></button>
@@ -94,10 +100,6 @@
           <button class="news-filter" type="button" data-news-filter="行政公告" aria-pressed="false">行政公告<span>1</span></button>
           <button class="news-filter" type="button" data-news-filter="活動公告" aria-pressed="false">活動公告<span>1</span></button>
         </div>
-        <div class="news-filter-status">
-          <p class="news-result-count" id="news-result-count" aria-live="polite">目前顯示全部 21 則消息</p>
-          <button class="news-clear-filter" id="news-clear-filter" type="button" hidden>清除篩選</button>
-        </div>
       </div>
       <div class="news-list news-index-list" id="news-all" data-base="../" data-static="true">
         <a class="news-item" href="../news/2026-08-01-wu-song-ze-old-photos.html" data-category="歷史補檔" data-tags="校友投稿|影像館|法國號|銅管五重奏|綠色小屋" data-news-id="2026-08-01-wu-song-ze-old-photos">
@@ -105,7 +107,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>校友吳松澤（8241）分享老照片：回到 1994–1999 年的嘉中管樂</b></span>
         <span class="news-summary">法國號聲部、82 級銅管五重奏與綠色小屋拆除前的回訪——吳松澤（8241）分享五張老照片，留下 1994 至 1999 年嘉中管樂人的演奏與隊部記憶。</span>
-        <span class="news-tags"><span>#校友投稿</span><span>#影像館</span><span>#法國號</span><span>#銅管五重奏</span></span>
       </span>
       <img class="news-thumb" src="https://img.cysh.band/thumb/19940821_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%87%BA%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84/19940821%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%87%BA%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84-Sung-Tse-Wu1994%E5%B9%B48%E6%9C%8821%E6%97%A5%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%A5%8F%E6%9C%83%E7%9A%84%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84%E6%88%90%E5%93%A1%E5%90%88%E7%85%A7(%E5%B7%A6%E8%B5%B7%E7%8E%8B%E9%A7%BF%E5%82%91%E3%80%81%E5%90%B3%E9%87%91%E6%B2%B3%E3%80%81%E9%BB%83%E4%BA%AD%E9%9B%B2%E3%80%81%E5%90%B3%E6%9D%BE%E6%BE%A4%E3%80%81%E5%BB%96%E5%BF%97%E5%AE%8F%E3%80%81%E8%94%A1%E6%96%87%E7%AB%8B)-b1aba03febc6.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -114,7 +115,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>嘉義管樂演出分享｜《管樂•Taiwan•金曲》：把臺灣記憶吹進音樂廳</b></span>
         <span class="news-summary">嘉頌青年管樂團 8/30 登上文化局音樂廳，從臺灣在地創作、管樂經典一路演到跨世代金曲；票價 300 元，購票優惠與剩餘席次請以年代售票最新資訊為準。</span>
-        <span class="news-tags"><span>#嘉義管樂</span><span>#嘉頌青年管樂團</span><span>#臺灣音樂</span><span>#青年管樂</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-27-chiayi-song-youth-wind-concert-poster-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -123,7 +123,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>7/26 團練日：坐進同一排，就又是熟悉的嘉中管樂</b></span>
         <span class="news-summary">《為伍》演出倒數不到兩週，校友與在校生再次坐進同一間團練室；一起看譜、一起呼吸，也在合奏與笑聲之間把默契接回來。下週團練也要記得回來！</span>
-        <span class="news-tags"><span>#團練</span><span>#為伍</span><span>#校友歸隊</span><span>#在校生</span></span>
       </span>
       <img class="news-thumb" src="https://img.cysh.band/thumb/20260726_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/190027-a9911f3ed275.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -132,7 +131,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>7/25 團練日：咖啡香裡，校友和在校生又坐回一起</b></span>
         <span class="news-summary">《為伍》演出前，校友陸續回到嘉中社辦與在校生合奏；有人帶著樂器、有人只是回來看看，譜架旁還多了一桌咖啡香。無論是否上台，隨時都歡迎回來。</span>
-        <span class="news-tags"><span>#團練</span><span>#為伍</span><span>#校友歸隊</span><span>#在校生</span></span>
       </span>
       <img class="news-thumb" src="https://img.cysh.band/thumb/20260725_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/111566-8b641fff9c7c.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -141,7 +139,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>嘉義管樂演出分享｜2026 桃喜親子藝術節：三個週末，跟著音樂玩嘉義</b></span>
         <span class="news-summary">7/25 至 8/9，擊樂、長笛、青少年音樂展演與銅管活動連續三個週末在嘉義接力登場；部分演出成員也是嘉中管樂校友，邀請大小朋友一起聽音樂、玩藝術。</span>
-        <span class="news-tags"><span>#嘉義管樂</span><span>#桃喜親子藝術節</span><span>#親子活動</span><span>#嘉中校友</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-24-taoxi-parent-child-arts-festival-poster-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -150,7 +147,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>嘉義管樂演出分享｜《透南風》南風薩克斯風四重奏創團音樂會</b></span>
         <span class="news-summary">南風薩克斯風四重奏《透南風》8/2 於嘉義南門教會免費演出；團員鄭鈞元（8431）、許哲誠（0431）皆與嘉中管樂有深厚連結，邀請大家一起聆聽從家鄉吹起的薩克斯風室內樂。</span>
-        <span class="news-tags"><span>#嘉義管樂</span><span>#薩克斯風四重奏</span><span>#古典薩克斯風</span><span>#嘉中校友</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-24-southern-wind-saxophone-quartet-poster-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -159,7 +155,6 @@
       <span class="news-body">
         <span class="news-title-line"><em>重要</em><b>8/1 莫名其妙烤香腸大會：吃完香腸，就一起上台吧！</b></span>
         <span class="news-summary">校友聯演前最重要的傳統活動回來了！8/1（六）下午三點開始備料，所有校友與在校生都歡迎回來；香腸、蒜頭與久違的夥伴，正在嘉中等你。</span>
-        <span class="news-tags"><span>#烤香腸</span><span>#為伍</span><span>#校友歸隊</span><span>#社辦日常</span></span>
       </span>
       <img class="news-thumb" src="https://img.cysh.band/thumb/20190830_%E5%9C%98%E7%B7%B4/IMG_20190830_232936_386-c2e0aefbffb8.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -168,7 +163,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>7/19 團練日：當社辦的聲音，開始望向舞台</b></span>
         <span class="news-summary">《為伍》購票資訊正式上線後的週日團練，指揮台前、低音聲部與一張張譜架都更靠近完整樂團的樣子；8/8 的舞台，正在被每一次合奏慢慢點亮。</span>
-        <span class="news-tags"><span>#團練</span><span>#為伍</span><span>#校友歸隊</span><span>#影像館</span></span>
       </span>
       <img class="news-thumb" src="https://img.cysh.band/thumb/20260719_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/110384_0-4182a4312b6e.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -177,7 +171,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>7/18 團練日：譜架一張張展開，聲音慢慢靠攏</b></span>
         <span class="news-summary">週六傍晚的嘉中社辦，樂器與譜架陸續就位，法國號學弟也加入合奏；不同世代一起把《為伍》的聲音往更完整的方向推進。</span>
-        <span class="news-tags"><span>#團練</span><span>#為伍</span><span>#校友歸隊</span><span>#影像館</span></span>
       </span>
       <img class="news-thumb" src="https://img.cysh.band/thumb/20260718_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4/110290-e9db9467e2fa.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -186,7 +179,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>《為伍》OPENTIX 購票連結正式上架！8/8 文化局音樂廳見</b></span>
         <span class="news-summary">第 41 屆校友暨在校生聯合音樂會《為伍》OPENTIX 購票連結正式上架，8 月 8 日邀你到嘉義市政府文化局音樂廳，和不同世代的嘉中管樂人一起聽見相聚的聲音。</span>
-        <span class="news-tags"><span>#為伍</span><span>#校友聯演</span><span>#OPENTIX</span><span>#購票資訊</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/poster_weiwu_2026_thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -195,7 +187,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>嘉義管樂演出分享｜《響十天堂》銅管重奏音樂會</b></span>
         <span class="news-summary">嘉義高中與高雄新興高中音樂班攜手舉辦銅管重奏音樂會，7/25 高雄、8/1 嘉義各有一場；參與同學中也有嘉中管樂社社員，邀請喜歡銅管音樂的朋友一起支持。</span>
-        <span class="news-tags"><span>#嘉義管樂</span><span>#銅管重奏</span><span>#音樂班</span><span>#演出分享</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-13-brass-ensemble-poster-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -204,7 +195,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>7/12 團練日：團練室裡有咖啡與回來的人</b></span>
         <span class="news-summary">《為伍》週末團練持續進行；丁肇賢（8501）帶領大家合奏，休息之間也有學長現沖咖啡，讓團練室多了一點熟悉的香氣。</span>
-        <span class="news-tags"><span>#團練</span><span>#為伍</span><span>#校友歸隊</span><span>#影像館</span></span>
       </span>
       <img class="news-thumb" src="https://img.cysh.band/thumb/20260712_%E7%A4%BE%E8%BE%A6%E5%9C%98%E7%B7%B4_%E6%8C%87%E6%8F%AE%E4%B8%81%E8%82%87%E8%B3%A2/RYN00174-f5bed3adc72d.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -213,7 +203,6 @@
       <span class="news-body">
         <span class="news-title-line"><em>重要</em><b>7/12 團練恢復，明天記得帶譜回來</b></span>
         <span class="news-summary">嘉義市 7/12 正常上班上課，《為伍》團練恢復進行；請團員明天記得帶譜，沒有演出的校友也歡迎回來看看。</span>
-        <span class="news-tags"><span>#巴威颱風</span><span>#團練通知</span><span>#為伍</span><span>#校友歸隊</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-11-rehearsal-resumes-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -222,7 +211,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>嘉義市 7/11 停止上班上課，請留意巴威颱風動態</b></span>
         <span class="news-summary">嘉義市政府已發布巴威颱風停班停課通知，7/11（六）全面停止上班上課；請團員與家長注意安全，7/12 團練將依後續天候另行通知。</span>
-        <span class="news-tags"><span>#巴威颱風</span><span>#停班停課</span><span>#團練通知</span><span>#為伍</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-10-chiayi-city-closure-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -231,7 +219,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>因巴威颱風影響，7/11 團練取消</b></span>
         <span class="news-summary">受巴威颱風影響，7/11（六）團練取消；7/12（日）是否照常團練將依天候另行通知，後續團練時間表同步公告。</span>
-        <span class="news-tags"><span>#巴威颱風</span><span>#團練通知</span><span>#為伍</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-10-typhoon-bavi-cwa-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -240,7 +227,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>7/4 團練日：火雞肉飯、團練室與一壺咖啡</b></span>
         <span class="news-summary">《為伍》第二個週末團練日，翁啟榮學長從簡單火雞肉飯回到嘉中團練室，也煮起咖啡和大家一起喝。</span>
-        <span class="news-tags"><span>#團練</span><span>#為伍</span><span>#校友歸隊</span><span>#嘉義日常</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-07-04-turkeyrice-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -249,7 +235,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>第 41 屆聯合音樂會《為伍》8/8 文化局音樂廳登場</b></span>
         <span class="news-summary">睽違六年重返嘉義市政府文化局音樂廳，透過 OPENTIX 公開售票，售票資訊將於近期公布。</span>
-        <span class="news-tags"><span>#為伍</span><span>#校友聯演</span><span>#文化局音樂廳</span><span>#OPENTIX</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/poster_weiwu_2026_thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -258,7 +243,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>期末考結束，肉趴開烤！在校生迎接《為伍》的暑假</b></span>
         <span class="news-summary">指導老師簡晟軒帶著在校生舉辦期末烤肉聚會，暑假密集團練即將展開。</span>
-        <span class="news-tags"><span>#在校生</span><span>#暑假</span><span>#為伍</span><span>#團練</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-06-30-bbq-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -267,7 +251,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>《為伍》第一次團練啟動！警伯依然是第一個到的人</b></span>
         <span class="news-summary">第 41 屆校友聯演第一次團練展開，翁啟榮學長一如往常第一個到場開門，團練後再回味一碗嘉中人的火雞肉飯。</span>
-        <span class="news-tags"><span>#第一次團練</span><span>#為伍</span><span>#校友歸隊</span><span>#火雞肉飯</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2026-06-27-rehearsal-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -276,7 +259,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>校友歸隊召集令：《為伍》團練時程公布</b></span>
         <span class="news-summary">6/27 起每週六日下午團練、8/4–7 平日晚間衝刺，8/8 文化局音樂廳登台，歡迎校友歸隊、親友探班。</span>
-        <span class="news-tags"><span>#團練時程</span><span>#為伍</span><span>#校友歸隊</span><span>#校友聯演</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/poster_weiwu_2026_thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -285,7 +267,6 @@
       <span class="news-body">
         <span class="news-title-line"><b>社團幹部介紹：譜務蔡詠竹</b></span>
         <span class="news-summary">2019 年嘉中管樂社成果發表會前的幹部介紹，記錄譜務蔡詠竹的長笛學習歷程、譜務工作與成發前的準備心情。</span>
-        <span class="news-tags"><span>#社團幹部</span><span>#譜務</span><span>#長笛</span><span>#蔡詠竹</span></span>
       </span>
       <img class="news-thumb" src="../assets/img/news/2019-05-26-tsai-yung-chu-officer-thumb.webp" alt="" width="104" height="78" loading="lazy" decoding="async">
     </a>
@@ -294,42 +275,17 @@
       <p class="news-more news-index-links"><a href="../concerts.html">← 回校友聯演</a><a href="../feed.xml">RSS 訂閱 →</a></p>
     </div>
     <aside class="news-sidebar" aria-label="最新消息輔助導覽">
-      <section>
-        <h2>熱門標籤</h2>
-        <p class="news-sidebar-note">同一主題會跨越不同分類，例如《為伍》可包含演出公告、團練通知與活動紀錄。</p>
+      <details class="news-explore">
+        <summary>探索主題<span aria-hidden="true"></span></summary>
+        <p class="news-sidebar-note">同一主題可跨越不同分類；選擇主題後仍可用網址分享結果。</p>
         <div class="news-tag-cloud">
           <a href="?tag=%E7%82%BA%E4%BC%8D" data-news-tag="為伍">#為伍<span>15</span></a>
           <a href="?tag=%E6%A0%A1%E5%8F%8B%E6%AD%B8%E9%9A%8A" data-news-tag="校友歸隊">#校友歸隊<span>10</span></a>
           <a href="?tag=%E5%9C%98%E7%B7%B4" data-news-tag="團練">#團練<span>7</span></a>
           <a href="?tag=%E5%BD%B1%E5%83%8F%E9%A4%A8" data-news-tag="影像館">#影像館<span>6</span></a>
           <a href="?tag=%E5%98%89%E7%BE%A9%E7%AE%A1%E6%A8%82" data-news-tag="嘉義管樂">#嘉義管樂<span>4</span></a>
-          <a href="?tag=%E6%BC%94%E5%87%BA%E5%88%86%E4%BA%AB" data-news-tag="演出分享">#演出分享<span>4</span></a>
-          <a href="?tag=%E5%B7%B4%E5%A8%81%E9%A2%B1%E9%A2%A8" data-news-tag="巴威颱風">#巴威颱風<span>3</span></a>
-          <a href="?tag=%E5%9C%A8%E6%A0%A1%E7%94%9F" data-news-tag="在校生">#在校生<span>3</span></a>
-          <a href="?tag=%E6%A0%A1%E5%8F%8B%E8%81%AF%E6%BC%94" data-news-tag="校友聯演">#校友聯演<span>3</span></a>
-          <a href="?tag=%E5%9C%98%E7%B7%B4%E9%80%9A%E7%9F%A5" data-news-tag="團練通知">#團練通知<span>3</span></a>
-          <a href="?tag=%E5%98%89%E4%B8%AD%E6%A0%A1%E5%8F%8B" data-news-tag="嘉中校友">#嘉中校友<span>2</span></a>
-          <a href="?tag=OPENTIX" data-news-tag="OPENTIX">#OPENTIX<span>2</span></a>
         </div>
-      </section>
-      <section>
-        <h2>分類統計</h2>
-        <div class="news-category-list">
-          <a href="?category=%E6%B4%BB%E5%8B%95%E7%B4%80%E9%8C%84" data-news-filter="活動紀錄">活動紀錄<span>8</span></a>
-          <a href="?category=%E5%98%89%E7%BE%A9%E7%AE%A1%E6%A8%82%E6%BC%94%E5%87%BA%E5%88%86%E4%BA%AB" data-news-filter="嘉義管樂演出分享">嘉義管樂演出分享<span>4</span></a>
-          <a href="?category=%E5%9C%98%E7%B7%B4%E9%80%9A%E7%9F%A5" data-news-filter="團練通知">團練通知<span>3</span></a>
-          <a href="?category=%E6%BC%94%E5%87%BA%E5%85%AC%E5%91%8A" data-news-filter="演出公告">演出公告<span>2</span></a>
-          <a href="?category=%E6%AD%B7%E5%8F%B2%E8%A3%9C%E6%AA%94" data-news-filter="歷史補檔">歷史補檔<span>2</span></a>
-          <a href="?category=%E8%A1%8C%E6%94%BF%E5%85%AC%E5%91%8A" data-news-filter="行政公告">行政公告<span>1</span></a>
-          <a href="?category=%E6%B4%BB%E5%8B%95%E5%85%AC%E5%91%8A" data-news-filter="活動公告">活動公告<span>1</span></a>
-        </div>
-      </section>
-      <section>
-        <h2>焦點消息</h2>
-        <div class="news-sidebar-featured">
-          <a href="../news/2026-08-01-wu-song-ze-old-photos.html"><span>2026-08-01</span><b>校友吳松澤（8241）分享老照片：回到 1994–1999 年的嘉中管樂</b></a>
-        </div>
-      </section>
+      </details>
     </aside>
   </section>
 </main>

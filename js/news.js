@@ -1,6 +1,6 @@
 /* 最新消息渲染與篩選（資料來源 data/news.js）
    - #news-pinned：重要公告（首頁）
-   - #news-home：最新 5 則一般消息（首頁）
+   - #news-home：最新 3 則一般消息（首頁）
    - #news-list-pinned：重要公告（校友聯演頁，僅限關聯聯演文章）
    - #news-list：最近 3 則關聯聯演消息（校友聯演頁）
    - #news-all：全部文章（news/index.html，靜態列表由產生器輸出，JS 只做篩選） */
@@ -47,25 +47,17 @@ document.addEventListener('DOMContentLoaded', function () {
     return n;
   });
 
-  function tagHtml(tags) {
-    return tags.slice(0, 4).map(function (tag) {
-      return '<span>#' + escapeHtml(tag) + '</span>';
-    }).join('');
-  }
-
-  function item(n, base) {
+  function item(n, base, variant) {
     base = base || '';
-    var classes = 'news-item' + (n.pinned ? ' is-pinned' : '') + (n.priority === 'urgent' ? ' is-urgent' : '');
+    var classes = 'news-item' + (variant ? ' news-item--' + variant : '') + (n.pinned ? ' is-pinned' : '') + (n.priority === 'urgent' ? ' is-urgent' : '') + (!n.thumb ? ' no-thumb' : '');
     var tail = n.thumb
       ? '<img class="news-thumb" src="' + escapeHtml(base + n.thumb) + '" alt="" width="104" height="78" loading="lazy" decoding="async">'
-      : '<span class="news-arrow">→</span>';
-    var tags = tagHtml(n.tags);
+      : '';
     return '<a class="' + classes + '" href="' + escapeHtml(base + n.url) + '" data-category="' + escapeHtml(n.category) + '" data-tags="' + escapeHtml(n.tags.join('|')) + '" data-news-id="' + escapeHtml(n.id) + '">' +
       '<span class="news-date"><span>' + escapeHtml(n.category) + '</span><time datetime="' + escapeHtml(n.date) + '">' + escapeHtml(n.date) + '</time></span>' +
       '<span class="news-body">' +
         '<span class="news-title-line">' + (n.pinned ? '<em>重要</em>' : '') + '<b>' + escapeHtml(n.title) + '</b></span>' +
         '<span class="news-summary">' + escapeHtml(n.summary) + '</span>' +
-        (tags ? '<span class="news-tags">' + tags + '</span>' : '') +
       '</span>' +
       tail +
     '</a>';
@@ -82,28 +74,28 @@ document.addEventListener('DOMContentLoaded', function () {
     return related.filter(function (n) { return !pinnedIds.has(n.id); }).slice(0, limit);
   }
 
-  function renderPinned(container, base) {
+  function renderPinned(container, base, variant) {
     var pinned = news.filter(function (n) { return n.pinned; }).slice(0, 1);
     if (!pinned.length) {
       container.hidden = true;
       return;
     }
     container.hidden = false;
-    container.innerHTML = pinned.map(function (n) { return item(n, base); }).join('');
+    container.innerHTML = pinned.map(function (n) { return item(n, base, variant); }).join('');
   }
 
   var homePinned = document.getElementById('news-pinned');
-  if (homePinned) renderPinned(homePinned, '');
+  if (homePinned) renderPinned(homePinned, '', 'home');
 
   var home = document.getElementById('news-home');
-  if (home) home.innerHTML = latestItems(5).map(function (n) { return item(n, ''); }).join('');
+  if (home) home.innerHTML = latestItems(3).map(function (n) { return item(n, '', 'home'); }).join('');
 
   var listPinned = document.getElementById('news-list-pinned');
   if (listPinned) {
     var concertPinned = news.filter(function (n) { return n.pinned && n.relatedConcert; }).slice(0, 1);
     if (concertPinned.length) {
       listPinned.hidden = false;
-      listPinned.innerHTML = concertPinned.map(function (n) { return item(n, ''); }).join('');
+      listPinned.innerHTML = concertPinned.map(function (n) { return item(n, '', 'concert'); }).join('');
     } else {
       listPinned.hidden = true;
     }
@@ -115,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var pinnedCount = news.filter(function (n) { return n.pinned && n.relatedConcert; }).length ? 1 : 0;
     var visibleLimit = Math.max(0, LIMIT - pinnedCount);
     var concertItems = relatedConcertItems(visibleLimit);
-    list.innerHTML = concertItems.map(function (n) { return item(n, ''); }).join('') || (pinnedCount ? '' : '<p class="muted">目前沒有校友聯演消息。</p>');
+    list.innerHTML = concertItems.map(function (n) { return item(n, '', 'concert'); }).join('') || (pinnedCount ? '' : '<p class="muted">目前沒有校友聯演消息。</p>');
     if (news.filter(function (n) { return n.relatedConcert; }).length > LIMIT) {
       list.insertAdjacentHTML('afterend',
         '<p class="news-more"><a href="news/index.html">查看更多最新消息 →</a></p>');
@@ -127,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var base = all.getAttribute('data-base') || '';
   if (all.getAttribute('data-static') !== 'true') {
-    all.innerHTML = news.map(function (n) { return item(n, base); }).join('') || '<p class="muted">目前沒有消息。</p>';
+    all.innerHTML = news.map(function (n) { return item(n, base, 'index'); }).join('') || '<p class="muted">目前沒有消息。</p>';
   }
 
   var items = Array.prototype.slice.call(all.querySelectorAll('.news-item'));
@@ -142,6 +134,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var filterButtons = Array.prototype.slice.call(document.querySelectorAll('[data-news-filter]'));
   var tagLinks = Array.prototype.slice.call(document.querySelectorAll('[data-news-tag]'));
   var clearButton = document.getElementById('news-clear-filter');
+  var filterPanel = document.querySelector('.news-filter-panel');
+  var filterToggle = document.getElementById('news-filter-toggle');
+  var filterActiveLabel = document.getElementById('news-filter-active-label');
   var emptyState = document.getElementById('news-empty-state');
   var activeCategory = 'all';
   var activeTag = '';
@@ -168,6 +163,15 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
     if (clearButton) clearButton.hidden = activeCategory === 'all' && !activeTag;
+    if (filterActiveLabel) {
+      filterActiveLabel.textContent = activeTag ? ('#' + activeTag) : (activeCategory === 'all' ? '全部' : activeCategory);
+    }
+  }
+
+  function setFilterPanelOpen(open) {
+    if (!filterPanel) return;
+    filterPanel.classList.toggle('is-filter-open', open);
+    if (filterToggle) filterToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
   function updateUrl() {
@@ -210,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
       activeCategory = button.getAttribute('data-news-filter') || 'all';
       activeTag = '';
       applyFilters();
+      if (window.matchMedia('(max-width: 560px)').matches) setFilterPanelOpen(false);
     });
   });
 
@@ -227,6 +232,12 @@ document.addEventListener('DOMContentLoaded', function () {
       activeCategory = 'all';
       activeTag = '';
       applyFilters();
+    });
+  }
+
+  if (filterToggle) {
+    filterToggle.addEventListener('click', function () {
+      setFilterPanelOpen(!filterPanel.classList.contains('is-filter-open'));
     });
   }
 
