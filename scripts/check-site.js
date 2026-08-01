@@ -790,6 +790,12 @@ function checkGeneratedNewsPages() {
   if (!/\.news-article figure img\s*\{[\s\S]*?max-width:\s*100%[\s\S]*?height:\s*auto[\s\S]*?aspect-ratio:\s*auto[\s\S]*?object-fit:\s*contain/i.test(css)) {
     addError('css/style.css: news article images must preserve their intrinsic aspect ratio.');
   }
+  if (!/\.news-share-button\s*\{[\s\S]*?min-height:\s*44px[\s\S]*?touch-action:\s*manipulation/i.test(css)) {
+    addError('css/style.css: news share control must keep a 44px touch target and touch-action: manipulation.');
+  }
+  if (!exists('js/news-share.js')) {
+    addError('js/news-share.js: generated news pages require the share control script.');
+  }
   const activePins = articles.filter((article) => article.pinned && article.pinUntil && article.pinUntil >= new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' }));
   const missingPinUntil = articles.filter((article) => article.pinned && !article.pinUntil);
   const invalidModifiedDates = articles.filter((article) => (
@@ -814,6 +820,9 @@ function checkGeneratedNewsPages() {
     }
     if (!actual.includes(`href="../css/style.css${NEWS_STYLE_VERSION}"`)) {
       addError(`${article.output}: stylesheet cache version is missing or stale.`);
+    }
+    if (!actual.includes('data-news-share') || !actual.includes('../js/news-share.js')) {
+      addError(`${article.output}: article share control is missing or incomplete.`);
     }
 
     const schemaBlocks = [...actual.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];

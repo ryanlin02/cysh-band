@@ -314,6 +314,18 @@ function articlePageNav(article) {
     </nav>`;
 }
 
+function articleShareControl(article) {
+  const shareUrl = `https://cysh.band/${article.output}`;
+  const statusId = `${article.id}-share-status`;
+  return `<div class="news-share" aria-label="分享這則消息">
+      <button class="news-share-button" type="button" data-news-share data-share-url="${escapeHtml(shareUrl)}" data-share-title="${escapeHtml(textFromHtml(article.ogTitle || article.title))}" data-share-text="${escapeHtml(article.summary)}" aria-describedby="${escapeHtml(statusId)}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"></path></svg>
+        <span>分享這則消息</span>
+      </button>
+      <p class="news-share-status" id="${escapeHtml(statusId)}" role="status" aria-live="polite" hidden></p>
+    </div>`;
+}
+
 function renderArticle(article) {
   const sourceBody = fs.readFileSync(path.join(root, article.source), 'utf8');
   const prepared = prepareArticleBody(article, sourceBody);
@@ -321,6 +333,7 @@ function renderArticle(article) {
   const indentedBody = prepared.body.split('\n').map((line) => (line ? `      ${line}` : line)).join('\n');
   const related = relatedArticles(article);
   const pageNav = articlePageNav(article);
+  const shareControl = articleShareControl(article);
   const content = `<header class="page-head">
   <p class="kicker">NEWS</p>
   <h1>${article.headlineHtml}</h1>
@@ -335,6 +348,8 @@ function renderArticle(article) {
     <div class="news-content">
 ${indentedBody}
     </div>
+
+    ${shareControl}
 
 ${related ? `    ${related}\n\n` : ''}    ${pageNav}
   </article>
@@ -354,6 +369,7 @@ ${related ? `    ${related}\n\n` : ''}    ${pageNav}
     styleVersion: NEWS_STYLE_VERSION,
     assetPrefix: '../',
     navActive: 'news',
+    extraScripts: '<script src="../js/news-share.js" defer></script>',
     content
   });
   return autoLinkHtml(html, article.output, profiles);
