@@ -13,6 +13,31 @@
 */
 window.NEWS = [
   {
+    id: "2026-08-01-wu-song-ze-old-photos",
+    date: "2026-08-01",
+    time: "08:30",
+    category: "歷史補檔",
+    tags: ["校友投稿", "影像館", "法國號", "銅管五重奏", "綠色小屋"],
+    pinned: false,
+    priority: "normal",
+    title: "校友吳松澤（8241）分享老照片：回到 1994–1999 年的嘉中管樂",
+    summary: "法國號聲部、82 級銅管五重奏與綠色小屋拆除前的回訪——吳松澤（8241）分享五張老照片，留下 1994 至 1999 年嘉中管樂人的演奏與隊部記憶。",
+    source: "content/news/2026-08-01-wu-song-ze-old-photos.html",
+    output: "news/2026-08-01-wu-song-ze-old-photos.html",
+    url: "news/2026-08-01-wu-song-ze-old-photos.html",
+    thumb: "https://img.cysh.band/thumb/19940821_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%87%BA%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84/19940821%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%87%BA%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84-Sung-Tse-Wu1994%E5%B9%B48%E6%9C%8821%E6%97%A5%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%A5%8F%E6%9C%83%E7%9A%84%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84%E6%88%90%E5%93%A1%E5%90%88%E7%85%A7(%E5%B7%A6%E8%B5%B7%E7%8E%8B%E9%A7%BF%E5%82%91%E3%80%81%E5%90%B3%E9%87%91%E6%B2%B3%E3%80%81%E9%BB%83%E4%BA%AD%E9%9B%B2%E3%80%81%E5%90%B3%E6%9D%BE%E6%BE%A4%E3%80%81%E5%BB%96%E5%BF%97%E5%AE%8F%E3%80%81%E8%94%A1%E6%96%87%E7%AB%8B)-b1aba03febc6.webp",
+    ogImage: "https://img.cysh.band/large/19940821_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%87%BA%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84/19940821%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%87%BA%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84-Sung-Tse-Wu1994%E5%B9%B48%E6%9C%8821%E6%97%A5%E6%A0%A1%E5%8F%8B%E6%BC%94%E5%A5%8F%E6%9C%83%E7%9A%84%E6%B3%95%E5%9C%8B%E8%99%9F%E7%B5%84%E6%88%90%E5%93%A1%E5%90%88%E7%85%A7(%E5%B7%A6%E8%B5%B7%E7%8E%8B%E9%A7%BF%E5%82%91%E3%80%81%E5%90%B3%E9%87%91%E6%B2%B3%E3%80%81%E9%BB%83%E4%BA%AD%E9%9B%B2%E3%80%81%E5%90%B3%E6%9D%BE%E6%BE%A4%E3%80%81%E5%BB%96%E5%BF%97%E5%AE%8F%E3%80%81%E8%94%A1%E6%96%87%E7%AB%8B)-b1aba03febc6.webp",
+    ogImageWidth: "987",
+    ogImageHeight: "556",
+    pageTitle: "校友吳松澤（8241）分享老照片：1994–1999 年的嘉中管樂｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "吳松澤（8241）的五張老照片：從法國號到綠色小屋",
+    description: "嘉義高中管樂隊校友吳松澤（8241，法國號）分享五張 1994 至 1999 年的老照片，記錄校友演奏會法國號聲部、82 級銅管五重奏與綠色小屋拆除前的回訪。",
+    ogDescription: "五張老照片，留下法國號聲部、銅管五重奏與綠色小屋的記憶；一起回到 1994 至 1999 年的嘉中管樂。",
+    headlineHtml: "校友投稿｜<br>吳松澤（8241）的五張老照片",
+    status: "published",
+    sourceNotes: "吳松澤（8241）提供的五張照片與檔名說明；1994 年聯合音樂會日期、場地另依本站第 10 屆資料頁。"
+  },
+  {
     id: "2026-07-27-chiayi-song-youth-wind-concert",
     date: "2026-07-27",
     modifiedDate: "2026-07-28",
