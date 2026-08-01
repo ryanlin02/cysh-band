@@ -40,6 +40,7 @@
 
   --transition-fast: 0.2s ease;
   --transition-normal: 0.32s ease;
+  --transition-section-enter: 0.16s cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* 🌙 暗光音樂廳模式 */
@@ -289,15 +290,26 @@ img {
 
 .page-section {
   display: none;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
 }
 
 .page-section.active {
   display: block;
-  opacity: 1;
-  transform: translateY(0);
+}
+
+.page-section.active.page-section--entering {
+  animation: program-section-enter var(--transition-section-enter) both;
+}
+
+@keyframes program-section-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --- 標題與卡片 --- */
@@ -1158,5 +1170,9 @@ img {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .page-section.active.page-section--entering {
+    animation: none !important;
   }
 }

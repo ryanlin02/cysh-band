@@ -131,7 +131,12 @@ function initNavigation() {
 
   const activateSection = (targetId, updateUrl = true) => {
     const matchedItem = Array.from(navItems).find(item => item.getAttribute('data-target') === targetId);
-    if (!matchedItem) return;
+    const targetSection = document.getElementById(targetId);
+    if (!matchedItem || !targetSection) return;
+
+    const currentSection = Array.from(pageSections).find(section => section.classList.contains('active'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const shouldAnimate = updateUrl && !reducedMotion && currentSection?.id !== targetId;
 
     navItems.forEach(item => {
       const isActive = item === matchedItem;
@@ -141,11 +146,14 @@ function initNavigation() {
     });
 
     pageSections.forEach(section => {
+      section.classList.remove('page-section--entering');
       section.classList.toggle('active', section.id === targetId);
     });
 
+    // 使用者點選時才以極短淡入維持閱讀連續性；內容不延遲、不鎖定操作。
+    if (shouldAnimate) targetSection.classList.add('page-section--entering');
+
     if (updateUrl) history.replaceState(null, '', `#${targetId}`);
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
   };
 
