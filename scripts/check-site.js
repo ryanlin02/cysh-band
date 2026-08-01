@@ -131,7 +131,14 @@ function checkDataReferences() {
     for (const field of ['ogImage', 'ogImageWidth', 'ogImageHeight']) {
       if (!item[field]) addError(`data/news.js: "${label}" missing representative image field ${field}.`);
     }
-    if (!Array.isArray(item.tags) || !item.tags.length) addError(`data/news.js: "${label}" tags must be a non-empty array.`);
+    if (!Array.isArray(item.tags) || item.tags.length < 2 || item.tags.length > 5) {
+      addError(`data/news.js: "${label}" tags must contain 2 to 5 entries.`);
+    } else if (new Set(item.tags).size !== item.tags.length) {
+      addError(`data/news.js: "${label}" tags must not contain duplicates.`);
+    }
+    if (item.listTitle !== undefined && !String(item.listTitle).trim()) {
+      addError(`data/news.js: "${label}" listTitle must not be blank when provided.`);
+    }
     if (item.output && item.url && item.output !== item.url) addError(`data/news.js: "${label}" output/url mismatch: ${item.output} / ${item.url}`);
     if (item.source && !exists(item.source)) addError(`data/news.js: missing news source for "${label}": ${item.source}`);
     if (!item.url || !exists(item.url)) addError(`data/news.js: missing news page: ${item.url || '(empty url)'}`);

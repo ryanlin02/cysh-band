@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
       category: n.category || '最新消息',
       tags: Array.isArray(n.tags) ? n.tags : [],
       title: n.title || '',
+      listTitle: n.listTitle || n.title || '',
       summary: n.summary || '',
       url: n.output || n.url || '',
       thumb: n.thumb || '',
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return '<a class="' + classes + '" href="' + escapeHtml(base + n.url) + '" data-category="' + escapeHtml(n.category) + '" data-tags="' + escapeHtml(n.tags.join('|')) + '" data-news-id="' + escapeHtml(n.id) + '">' +
       '<span class="news-date"><span>' + escapeHtml(n.category) + '</span><time datetime="' + escapeHtml(n.date) + '">' + escapeHtml(n.date) + '</time></span>' +
       '<span class="news-body">' +
-        '<span class="news-title-line">' + (n.pinned ? '<em>重要</em>' : '') + '<b>' + escapeHtml(n.title) + '</b></span>' +
+        '<span class="news-title-line">' + (n.pinned ? '<em>重要</em>' : '') + '<b>' + escapeHtml(n.listTitle) + '</b></span>' +
         '<span class="news-summary">' + escapeHtml(n.summary) + '</span>' +
       '</span>' +
       tail +
@@ -136,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var clearButton = document.getElementById('news-clear-filter');
   var filterPanel = document.querySelector('.news-filter-panel');
   var filterToggle = document.getElementById('news-filter-toggle');
+  var topicExplorer = document.querySelector('.news-filter-topics');
   var filterActiveLabel = document.getElementById('news-filter-active-label');
   var emptyState = document.getElementById('news-empty-state');
   var activeCategory = 'all';
@@ -172,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!filterPanel) return;
     filterPanel.classList.toggle('is-filter-open', open);
     if (filterToggle) filterToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (!open && topicExplorer) topicExplorer.open = false;
   }
 
   function updateUrl() {
@@ -224,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
       activeTag = link.getAttribute('data-news-tag') || '';
       activeCategory = 'all';
       applyFilters();
+      if (window.matchMedia('(max-width: 560px)').matches) setFilterPanelOpen(false);
     });
   });
 

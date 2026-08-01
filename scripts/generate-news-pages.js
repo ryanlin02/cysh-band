@@ -55,6 +55,7 @@ function normalizeArticle(item) {
     url: item.url || output,
     source: item.source,
     title,
+    listTitle: item.listTitle || title,
     pageTitle: item.pageTitle || `${title}｜最新消息｜嘉義高中管樂隊`,
     ogTitle: item.ogTitle || title,
     description: item.description || item.summary || title,
@@ -301,16 +302,16 @@ function scoredNewsLinks(items) {
 
 function articlePageNav(article) {
   const { previous, next } = adjacentArticles(article);
-  const links = [];
+  const neighbors = [];
   if (previous) {
-    links.push(`<a class="btn ghost article-page-nav-link previous" href="../${escapeHtml(previous.output)}"><span>← 上一篇消息</span><b>${escapeHtml(articleNavLabel(previous))}</b></a>`);
+    neighbors.push(`<a class="news-page-neighbor previous" href="../${escapeHtml(previous.output)}"><span>← 上一篇消息</span><b>${escapeHtml(articleNavLabel(previous))}</b></a>`);
   }
-  links.push('<a class="btn ghost article-page-nav-link overview" href="../news/index.html"><span>回到</span><b>最新消息總覽</b></a>');
   if (next) {
-    links.push(`<a class="btn ghost article-page-nav-link next" href="../${escapeHtml(next.output)}"><span>下一篇消息 →</span><b>${escapeHtml(articleNavLabel(next))}</b></a>`);
+    neighbors.push(`<a class="news-page-neighbor next" href="../${escapeHtml(next.output)}"><span>下一篇消息 →</span><b>${escapeHtml(articleNavLabel(next))}</b></a>`);
   }
   return `<nav class="article-page-nav news-page-nav" aria-label="最新消息文章導覽">
-      ${links.join('\n      ')}
+      ${neighbors.length ? `<div class="news-page-neighbors">${neighbors.join('\n        ')}</div>` : ''}
+      <a class="news-page-overview" href="../news/index.html">回到最新消息總覽</a>
     </nav>`;
 }
 
@@ -399,7 +400,7 @@ function renderNewsItem(article, assetPrefix = '../') {
   return `<a class="${classes.join(' ')}" href="${escapeHtml(assetPrefix + article.output)}" data-category="${escapeHtml(article.category)}" data-tags="${escapeHtml(tags.join('|'))}" data-news-id="${escapeHtml(article.id)}">
       <span class="news-date"><span>${escapeHtml(article.category)}</span><time datetime="${escapeHtml(article.date)}">${escapeHtml(article.date)}</time></span>
       <span class="news-body">
-        <span class="news-title-line">${article.pinned && article.pinUntil ? '<em>重要</em>' : ''}<b>${escapeHtml(article.title)}</b></span>
+        <span class="news-title-line">${article.pinned && article.pinUntil ? '<em>重要</em>' : ''}<b>${escapeHtml(article.listTitle)}</b></span>
         <span class="news-summary">${escapeHtml(article.summary)}</span>
       </span>
       ${tail}
@@ -430,7 +431,15 @@ function renderNewsIndex() {
     `<a href="?tag=${encodeURIComponent(tag)}" data-news-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}<span>${count}</span></a>`
   )).join('\n          ');
   const featuredArticle = articles.find((article) => article.featured);
-
+  const featuredMarkup = featuredArticle ? `
+    <aside class="news-sidebar" aria-label="焦點消息">
+      <section class="news-sidebar-featured-section">
+        <h2>焦點消息</h2>
+        <div class="news-sidebar-featured">
+          <a href="../${escapeHtml(featuredArticle.output)}"><span>${escapeHtml(featuredArticle.date)}</span><b>${escapeHtml(featuredArticle.title)}</b></a>
+        </div>
+      </section>
+    </aside>` : '';
   const content = `<header class="page-head news-index-head">
   <p class="kicker">NEWS</p>
   <h1>最新消息總覽</h1>
@@ -451,28 +460,20 @@ function renderNewsIndex() {
         <div class="news-filter-bar" id="news-filter-options" aria-label="最新消息分類篩選">
           ${filters}
         </div>
+        <details class="news-explore news-filter-topics">
+          <summary>探索主題<span aria-hidden="true"></span></summary>
+          <p class="news-sidebar-note">同一主題可跨越不同分類；選擇主題後仍可用網址分享結果。</p>
+          <div class="news-tag-cloud">
+            ${hotTags}
+          </div>
+        </details>
       </div>
       <div class="news-list news-index-list" id="news-all" data-base="../" data-static="true">
         ${allItems.map((article) => renderNewsItem(article)).join('\n        ')}
       </div>
       <p class="news-empty-state" id="news-empty-state" hidden>目前沒有符合這組條件的消息，請改用其他分類或清除篩選。</p>
       <p class="news-more news-index-links"><a href="../concerts.html">← 回校友聯演</a><a href="../feed.xml">RSS 訂閱 →</a></p>
-    </div>
-    <aside class="news-sidebar" aria-label="最新消息輔助導覽">
-      <details class="news-explore">
-        <summary>探索主題<span aria-hidden="true"></span></summary>
-        <p class="news-sidebar-note">同一主題可跨越不同分類；選擇主題後仍可用網址分享結果。</p>
-        <div class="news-tag-cloud">
-          ${hotTags}
-        </div>
-      </details>${featuredArticle ? `
-      <section class="news-sidebar-featured-section">
-        <h2>焦點消息</h2>
-        <div class="news-sidebar-featured">
-          <a href="../${escapeHtml(featuredArticle.output)}"><span>${escapeHtml(featuredArticle.date)}</span><b>${escapeHtml(featuredArticle.title)}</b></a>
-        </div>
-      </section>` : ''}
-    </aside>
+    </div>${featuredMarkup}
   </section>
 </main>`;
 

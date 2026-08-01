@@ -2747,6 +2747,50 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   font-size: .88rem;
   line-height: 1.6;
 }
+.news-content .news-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 64px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 16px;
+  color: var(--ink);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-sm);
+  background: rgba(200,164,92,.05);
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: color var(--duration-fast), background var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
+}
+.news-content .news-cta span {
+  flex: 0 0 auto;
+  color: var(--ink-dim);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.news-content .news-cta b {
+  min-width: 0;
+  color: var(--gold);
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.45;
+  text-align: right;
+}
+.news-content .news-cta:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(200,164,92,.1);
+  transform: translateY(var(--lift-sm));
+}
+.news-content .news-cta:focus-visible,
+.news-page-neighbor:focus-visible,
+.news-page-overview:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
 .article-meta {
   display: flex;
   flex-wrap: wrap;
@@ -2845,6 +2889,86 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .related-news-list b {
   font-family: var(--serif);
   font-size: 1.02rem;
+}
+.news-page-nav {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 24px;
+  max-width: 42em;
+}
+.news-page-neighbors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+}
+.news-page-neighbor {
+  display: block;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+.news-page-neighbor span {
+  display: block;
+  color: var(--ink-dim);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.news-page-neighbor b {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+.news-page-neighbor.next { text-align: right; }
+.news-page-neighbor:hover b { color: var(--gold); }
+.news-page-overview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  color: var(--gold);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-pill);
+  background: rgba(200,164,92,.05);
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--duration-fast), background var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
+}
+.news-page-overview:hover {
+  border-color: var(--gold);
+  background: rgba(200,164,92,.1);
+  transform: translateY(var(--lift-sm));
+}
+@media (max-width: 760px) {
+  .news-content .news-cta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .news-content .news-cta b { text-align: left; }
+  .news-page-nav {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .news-page-neighbors {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .news-page-neighbor {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .news-page-neighbor.next { text-align: left; }
+  .news-page-overview { width: 100%; }
 }
 .news-index-layout { display: block; }
 .news-index-main {
@@ -3001,6 +3125,15 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   line-height: 1;
 }
 .news-explore[open] summary span::before { content: '−'; }
+.news-filter-topics {
+  margin-top: 12px;
+  padding: 10px 0 0;
+  border-top: 1px solid rgba(45,62,54,.1);
+  border-bottom: 0;
+}
+.news-filter-topics .news-sidebar-note {
+  margin: 0 0 10px;
+}
 .news-tag-cloud,
 .news-category-list,
 .news-sidebar-featured {
@@ -3110,6 +3243,9 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .news-filter-panel.is-filter-open .news-filter-bar {
     display: flex;
   }
+  .news-filter-topics { display: none; }
+  html:not(.js) .news-filter-topics,
+  .news-filter-panel.is-filter-open .news-filter-topics { display: block; }
   .news-filter {
     min-height: 44px;
   }

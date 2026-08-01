@@ -7,11 +7,17 @@
    重要欄位：
    id 唯一代碼、date 首次發布日、modifiedDate 重大更新日（未填時等同 date）、
    time 發布時間、category 分類、tags 標籤、
-   title 列表標題、summary 列表摘要、source 正文來源、output 正式頁、
+   title 正式文章／RSS 標題、listTitle（選填，總覽、首頁與聯演預覽的短標題）、
+   summary 列表摘要、source 正文來源、output 正式頁、
    thumb 縮圖路徑（列表統一以滿版裁切呈現）、
    pinned 是否置頂、pinUntil 置頂到期日、priority 重要程度、
    featured（總覽焦點消息，僅在人工明確指定時填 true）。
    ogImage／尺寸是文章代表圖；沒有正文首圖時另填 imageAlt 與 imageCaption。
+
+   標題與標籤規則：
+   - title 保留完整的正式語意；若分類名稱已在列表日期旁顯示，可用 listTitle 移除重複前綴。
+   - 每篇使用 2 至 5 個不重複標籤；先放最能描述內容的具體主題，再補充活動、人物或載體。
+   - 標籤同時用於總覽主題篩選與文章「相關消息」的自動關聯，避免只填過於寬泛的詞。
 */
 window.NEWS = [
   {
@@ -76,6 +82,7 @@ window.NEWS = [
     pinned: false,
     priority: "normal",
     title: "嘉義管樂演出分享｜《管樂•Taiwan•金曲》：把臺灣記憶吹進音樂廳",
+    listTitle: "《管樂•Taiwan•金曲》：把臺灣記憶吹進音樂廳",
     summary: "嘉頌青年管樂團 8/30 登上文化局音樂廳，從臺灣在地創作、管樂經典一路演到跨世代金曲；票價 300 元，購票優惠與剩餘席次請以年代售票最新資訊為準。",
     source: "content/news/2026-07-27-chiayi-song-youth-wind-concert.html",
     output: "news/2026-07-27-chiayi-song-youth-wind-concert.html",
@@ -155,6 +162,7 @@ window.NEWS = [
     pinned: false,
     priority: "normal",
     title: "嘉義管樂演出分享｜2026 桃喜親子藝術節：三個週末，跟著音樂玩嘉義",
+    listTitle: "2026 桃喜親子藝術節：三個週末，跟著音樂玩嘉義",
     summary: "7/25 至 8/9，擊樂、長笛、青少年音樂展演與銅管活動連續三個週末在嘉義接力登場；部分演出成員也是嘉中管樂校友，邀請大小朋友一起聽音樂、玩藝術。",
     source: "content/news/2026-07-24-taoxi-parent-child-arts-festival.html",
     output: "news/2026-07-24-taoxi-parent-child-arts-festival.html",
@@ -180,6 +188,7 @@ window.NEWS = [
     pinned: false,
     priority: "normal",
     title: "嘉義管樂演出分享｜《透南風》南風薩克斯風四重奏創團音樂會",
+    listTitle: "《透南風》南風薩克斯風四重奏創團音樂會",
     summary: "南風薩克斯風四重奏《透南風》8/2 於嘉義南門教會免費演出；團員鄭鈞元（8431）、許哲誠（0431）皆與嘉中管樂有深厚連結，邀請大家一起聆聽從家鄉吹起的薩克斯風室內樂。",
     source: "content/news/2026-07-24-southern-wind-saxophone-quartet.html",
     output: "news/2026-07-24-southern-wind-saxophone-quartet.html",
@@ -316,6 +325,7 @@ window.NEWS = [
     pinned: false,
     priority: "normal",
     title: "嘉義管樂演出分享｜《響十天堂》銅管重奏音樂會",
+    listTitle: "《響十天堂》銅管重奏音樂會",
     summary: "嘉義高中與高雄新興高中音樂班攜手舉辦銅管重奏音樂會，7/25 高雄、8/1 嘉義各有一場；參與同學中也有嘉中管樂社社員，邀請喜歡銅管音樂的朋友一起支持。",
     source: "content/news/2026-07-13-brass-ensemble-concert-sharing.html",
     output: "news/2026-07-13-brass-ensemble-concert-sharing.html",
