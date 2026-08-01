@@ -299,7 +299,7 @@ function renderProgramNotes() {
   const container = document.getElementById('sec-program');
   if (!container) return;
 
-  const { firstHalf, secondHalf } = concertData.program;
+  const { firstHalf, secondHalf, heroImage } = concertData.program;
   const renderHalfSwitcher = (position) => `
     <div class="tab-switcher${position === 'bottom' ? ' tab-switcher-bottom' : ''}" role="tablist" aria-label="選擇上半場或下半場曲目（${position === 'bottom' ? '頁尾' : '頁首'}）">
       <button class="tab-btn active" id="program-tab-${position}-first" type="button" role="tab" aria-selected="true" aria-controls="program-list-container" data-program-half="first" data-program-position="${position}">上半場 (Part I)</button>
@@ -308,6 +308,7 @@ function renderProgramNotes() {
   `;
 
   container.innerHTML = `
+    ${renderSectionHero(heroImage)}
     <div class="section-header">
       <span class="section-kicker">Repertoire & Notes</span>
       <h2 class="section-title">曲目解說</h2>
@@ -410,6 +411,16 @@ function renderPersonBio(bio) {
   return `<p class="p-text">${[bio.career, bio.concert].filter(Boolean).join('')}</p>`;
 }
 
+function renderSectionHero(heroImage) {
+  if (!heroImage?.src) return '';
+
+  return `
+    <figure class="section-hero">
+      <img src="${heroImage.src}" alt="${heroImage.alt || ''}" width="${heroImage.width || 1200}" height="${heroImage.height || 800}" loading="lazy" decoding="async">
+    </figure>
+  `;
+}
+
 /* ==========================================================================
    5. 渲染「團隊與獨奏」 (頂部 Header + 100% 全寬內文，徹底消弭空白與擠壓)
    ========================================================================== */
@@ -493,19 +504,26 @@ function renderTeamAndLeadership() {
     </div>
 
     ${ensembles.map(ens => `
-      <div class="card">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px;">
-          <div>
-            <h3 class="card-title-serif" style="margin-bottom: 2px; padding-bottom: 0; border-bottom: none;">${ens.title}</h3>
-            <p style="font-family: var(--font-number); font-size: 0.82rem; color: var(--accent-gold);">${ens.subtitle}</p>
+      <div class="card ensemble-card">
+        ${ens.photo ? `
+          <figure class="ensemble-photo">
+            <img src="${ens.photo}" alt="${ens.photoAlt || ens.title}" width="${ens.photoWidth || 1200}" height="${ens.photoHeight || 800}" loading="lazy" decoding="async">
+          </figure>
+        ` : ''}
+        <div class="ensemble-card-content">
+          <div class="ensemble-card-header">
+            <div class="ensemble-card-heading">
+              <h3 class="card-title-serif ensemble-title">${ens.title}</h3>
+              <p class="ensemble-subtitle">${ens.subtitle}</p>
+            </div>
+            <a href="${ens.officialLink}" target="_blank" rel="noopener" class="inline-ext-link">
+              <span>官網介紹</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
           </div>
-          <a href="${ens.officialLink}" target="_blank" rel="noopener" class="inline-ext-link">
-            <span>官網介紹</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-          </a>
-        </div>
-        <div style="border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 6px;">
-          ${ens.content.map(p => `<p class="p-text">${p}</p>`).join('')}
+          <div class="ensemble-card-copy">
+            ${ens.content.map(p => `<p class="p-text">${p}</p>`).join('')}
+          </div>
         </div>
       </div>
     `).join('')}
@@ -576,6 +594,7 @@ function renderThanksAndHeritage() {
   const { organization } = concertData;
 
   container.innerHTML = `
+    ${renderSectionHero(organization.heroImage)}
     <div class="section-header">
       <span class="section-kicker">Acknowledgements & Channels</span>
       <h2 class="section-title">特別感謝與社群</h2>

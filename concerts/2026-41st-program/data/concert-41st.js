@@ -75,7 +75,10 @@ window.CONCERT_PROGRAM_DATA = {
       {
         title: "嘉義高中校友管樂團",
         subtitle: "CYSH Alumni Band",
-        photo: "https://cysh.band/assets/img/og.jpg",
+        photo: "assets/images/ensemble-alumni-band.webp",
+        photoAlt: "嘉義高中校友管樂團團員合影",
+        photoWidth: 1280,
+        photoHeight: 854,
         content: [
           "嘉義高中校友管樂團於 2008 年正式立案為演藝團體。樂團由散落於全國乃至世界各地的嘉中管樂校友組成，團員編號橫跨數十個世代字頭。",
           "校友團秉持「傳承、創新與熱情」的理念，每年夏天籌辦「校友暨在校生聯合音樂會」，讓畢業多年的學長們回到熟悉的譜架前，與在校學弟們共同合奏，透過樂音延續對管樂的熱愛與世代交替的情感。"
@@ -85,7 +88,10 @@ window.CONCERT_PROGRAM_DATA = {
       {
         title: "國立嘉義高級中學管樂社",
         subtitle: "CYSH Student Band (Founded 1931)",
-        photo: "https://cysh.band/assets/img/og.jpg",
+        photo: "assets/images/ensemble-student-band.webp",
+        photoAlt: "國立嘉義高級中學管樂社排練情形",
+        photoWidth: 1072,
+        photoHeight: 712,
         content: [
           "國立嘉義高級中學管樂社創立於 1931 年（日治時期昭和六年），是臺灣歷史最悠久的高中學府管樂團之一。",
           "社團在長達九十餘年的歲月中，培育出無數傑出的音樂家與熱愛音樂的各領域人才。在校生團員在極具傳承精神的樂團指導下，連年在音樂比賽與演出中展現亮眼成績，是嘉義高中最具代表性的社團之一。"
@@ -97,6 +103,12 @@ window.CONCERT_PROGRAM_DATA = {
 
   // --- 4. 曲目與詳盡管樂樂曲解說 ---
   program: {
+    heroImage: {
+      src: "assets/images/program-notes-hero.webp",
+      alt: "嘉中管樂團員演奏長號與小號",
+      width: 1064,
+      height: 708
+    },
     firstHalf: [
       {
         no: 1,
@@ -336,6 +348,12 @@ window.CONCERT_PROGRAM_DATA = {
 
   // --- 6. 工作人員名冊 (團長盧宓承 7111 為第一項) ---
   organization: {
+    heroImage: {
+      src: "assets/images/thanks-social-hero.webp",
+      alt: "嘉中管樂團員在社辦共同排練",
+      width: 1280,
+      height: 720
+    },
     staffTitle: "籌備與工作人員名冊",
     staffGroups: [
       { role: "嘉義高中校友管樂團 團長", names: ["盧宓承"] },

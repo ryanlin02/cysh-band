@@ -306,6 +306,24 @@ img {
   text-align: center;
 }
 
+/* --- 分頁主視覺：手機／平板滿版，桌機維持閱讀欄寬 --- */
+.section-hero {
+  width: 100vw;
+  aspect-ratio: 3 / 2;
+  max-height: 52dvh;
+  margin: -16px 50% 24px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  transform: translateX(-50%);
+}
+
+.section-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .section-kicker {
   font-family: var(--font-number);
   font-size: 0.85rem;
@@ -338,6 +356,60 @@ img {
   margin-bottom: 14px;
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+/* --- 演出團隊介紹 --- */
+.ensemble-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.ensemble-photo {
+  aspect-ratio: 3 / 2;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.ensemble-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ensemble-card-content {
+  padding: 18px 20px 20px;
+}
+
+.ensemble-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ensemble-card-heading {
+  min-width: 0;
+}
+
+.ensemble-title {
+  margin-bottom: 2px;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.ensemble-subtitle {
+  font-family: var(--font-number);
+  font-size: 0.82rem;
+  color: var(--accent-gold);
+}
+
+.ensemble-card-copy {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
 }
 
 /* --- 1. 首頁 Hero 區塊 --- */
@@ -1032,6 +1104,14 @@ img {
     padding: 16px;
   }
 
+  .card.ensemble-card {
+    padding: 0;
+  }
+
+  .ensemble-card-content {
+    padding: 16px;
+  }
+
   .person-card {
     padding: 17px 16px;
   }
@@ -1056,6 +1136,15 @@ img {
   .nav-item svg {
     width: 19px;
     height: 19px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-hero {
+    width: 100%;
+    max-height: none;
+    margin: 0 0 24px;
+    transform: none;
   }
 }
 

@@ -19,3 +19,5 @@
 入口頁使用 `data-page-type="concert-program-book"`，代表這是行動裝置優先的獨立功能頁，不套用一般官網的八項導覽與 footer；左上角首頁鍵是返回主站的固定出口。資料以 `window.CONCERT_PROGRAM_DATA` 提供，不用 `fetch()` 或 ES module，才能保留 `file://` 雙擊預覽能力。
 
 曲名採有順序的 `titles` 陣列：第一筆是主要顯示名稱，其餘為輔助語言。指揮與獨奏家的 `bio` 使用單一字串，撰寫成僅供該場音樂會節目冊使用的完整介紹文章；可在文章中自然整合必要學經歷、專業特色與本次演出的關聯，不使用固定分段標籤。團長、指揮與獨奏家有官網人物頁時，均填入 `officialLink`。
+
+若某一屆要在「曲目解說」或「感謝與社群」頁加入主視覺，可分別填入 `program.heroImage` 與 `organization.heroImage` 的 `src`、`alt`、`width`、`height`。主視覺在手機與平板滿版呈現，桌機維持閱讀欄寬；圖片須使用 WebP、保留正確替代文字。演出團隊卡可填入 `photo`、`photoAlt`、`photoWidth`、`photoHeight`，照片會顯示在團名之前。

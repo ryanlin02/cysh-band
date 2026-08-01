@@ -22,6 +22,12 @@ window.CONCERT_PROGRAM_DATA = {
     content: ["第一段內容。", "第二段內容。"]
   },
   program: {
+    heroImage: {
+      src: "assets/images/program-notes-hero.webp",
+      alt: "曲目解說主視覺的說明文字",
+      width: 1200,
+      height: 800
+    },
     firstHalf: [{
       no: 1,
       titles: [
@@ -44,10 +50,25 @@ window.CONCERT_PROGRAM_DATA = {
       bio: "僅供本場音樂會節目冊使用的完整人物介紹文章，內容可整合必要學經歷、專業特色、與本次演出的關聯及詮釋重點。"
     }],
     soloist: [],
-    ensembles: []
+    ensembles: [{
+      title: "演出團隊名稱",
+      subtitle: "Ensemble Name",
+      photo: "assets/images/ensemble.webp",
+      photoAlt: "演出團隊照片的說明文字",
+      photoWidth: 1200,
+      photoHeight: 800,
+      content: ["團隊介紹。"],
+      officialLink: "https://example.com/"
+    }]
   },
   roster: [],
   organization: {
+    heroImage: {
+      src: "assets/images/thanks-hero.webp",
+      alt: "感謝與社群主視覺的說明文字",
+      width: 1200,
+      height: 800
+    },
     staffTitle: "工作人員",
     staffGroups: [],
     thanksTitle: "特別感謝",
