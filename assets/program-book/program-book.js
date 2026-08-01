@@ -516,7 +516,7 @@ function renderTeamAndLeadership() {
               <h3 class="card-title-serif ensemble-title">${ens.title}</h3>
               <p class="ensemble-subtitle">${ens.subtitle}</p>
             </div>
-            <a href="${ens.officialLink}" target="_blank" rel="noopener" class="inline-ext-link">
+            <a href="${ens.officialLink}" target="_blank" rel="noopener" class="inline-ext-link profile-link" aria-label="查看${ens.title}的官網介紹">
               <span>官網介紹</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
