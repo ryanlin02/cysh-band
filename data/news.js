@@ -15,6 +15,32 @@
 */
 window.NEWS = [
   {
+    id: "2026-08-01-sausage-grill-gathering",
+    date: "2026-08-01",
+    time: "21:30",
+    category: "活動紀錄",
+    tags: ["烤香腸", "為伍", "校友歸隊", "社辦日常", "影像館"],
+    pinned: false,
+    priority: "normal",
+    title: "8/1 莫名其妙烤香腸大會：香腸一上烤網，校友就回來了！",
+    summary: "外縣市校友回到嘉中，張永澤剛從美國返臺也直奔社辦；烤架、芒果與笑聲一起到齊。演出倒數一週，明天團練改為晚上，大家繼續回來！",
+    source: "content/news/2026-08-01-sausage-grill-gathering.html",
+    output: "news/2026-08-01-sausage-grill-gathering.html",
+    url: "news/2026-08-01-sausage-grill-gathering.html",
+    thumb: "assets/img/news/2026-08-01-sausage-grill-gathering-thumb.webp",
+    ogImage: "assets/img/news/2026-08-01-sausage-grill-gathering.webp",
+    ogImageWidth: "2048",
+    ogImageHeight: "1537",
+    pageTitle: "8/1 莫名其妙烤香腸大會：香腸一上烤網，校友就回來了！｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "8/1 莫名其妙烤香腸大會：香腸一上烤網，校友就回來了！",
+    description: "嘉中管樂校友與在校生在社辦外舉辦 8/1 烤香腸大會；許多校友從外縣市回來，張永澤剛從美國返臺也直奔現場。第 41 屆《為伍》演出倒數一週，8/2 團練調整至晚上。",
+    ogDescription: "香腸一上烤網，校友就回來了！8/1 社辦外的烤香腸大會，為《為伍》演出倒數一週暖身；明天團練改在晚上，大家繼續回來！",
+    headlineHtml: "8/1 莫名其妙烤香腸大會：<br>香腸一上烤網，校友就回來了！",
+    relatedConcert: "2026-41st",
+    status: "published",
+    sourceNotes: "2026-08-01 社辦烤香腸公開影像與使用者確認的活動資訊。"
+  },
+  {
     id: "2026-08-01-wu-song-ze-old-photos",
     date: "2026-08-01",
     time: "08:30",
