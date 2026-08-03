@@ -28,7 +28,10 @@ window.CONCERT_PROGRAM_DATA = {
     role: "團長",
     author: "團長 盧宓承",
     number: "7111",
-    photo: "https://cysh.band/assets/img/members/7111.webp",
+    photo: "assets/images/president-lu-mi-cheng.webp",
+    photoAlt: "盧宓承",
+    photoWidth: 2610,
+    photoHeight: 1832,
     officialLink: "https://cysh.band/people/7111.html",
     subtitle: "以音樂為伍，跨越世代的聚首",
     content: [
@@ -42,20 +45,38 @@ window.CONCERT_PROGRAM_DATA = {
   leadership: {
     conductors: [
       {
-        id: "8861",
-        name: "簡晟軒",
-        number: "8861",
-        role: "樂團指導 / 指揮",
-        photo: "https://cysh.band/assets/img/members/8861.webp",
-        bio: "簡晟軒於 1999 年進入嘉義高中後開始學習長號，後就讀國立高雄師範大學音樂學系，2009 年赴德國萊比錫音樂暨戲劇學院進修，並於 2012 年取得長號演奏文憑；留學期間曾入選亞洲青年管弦樂團。返臺後，他再完成高師大音樂系研究所指揮組碩士學位，持續以長號演奏者、樂團指揮與管樂教師身分活躍於南臺灣，也長期回到嘉義投入學校與地方樂團。在本屆《為伍》中，簡晟軒擔任樂團指導與指揮，憑藉對嘉中管樂社與校友團傳承脈絡的熟悉，整合不同世代團員的演奏經驗、排練時間與聲音習慣，並將經典管樂作品、小號協奏曲、流行與遊戲音樂改編串連成清楚而完整的舞台敘事，讓每個聲部在保有特色的同時，共同建立屬於本屆聯演的聲音。",
-        officialLink: "https://cysh.band/people/8861.html"
+        id: "7111",
+        name: "盧宓承",
+        number: "7111",
+        role: "樂團指揮",
+        photo: "assets/images/conductor-lu-mi-cheng.webp",
+        photoAlt: "盧宓承",
+        photoWidth: 1978,
+        photoHeight: 1380,
+        bio: "盧宓承為嘉義高中校友管樂團團長，編號 7111，民國 71 年入學、長笛聲部，校友間暱稱「咪咪學長」。他取得國立中正大學資訊管理博士學位，現任雲林縣立蔦松藝術高中教師；長期參與嘉中校友暨在校生聯合音樂會，曾擔任多屆核心指揮，也投入地方管樂教育。在本屆《為伍》中，他以樂團指導與指揮身分，與不同世代團員共同整理合奏的呼吸、音色與樂句方向，延續校友聯演的傳承。",
+        officialLink: "https://cysh.band/people/7111.html"
+      },
+      {
+        id: "7581",
+        name: "翁啟榮",
+        number: "7581",
+        role: "樂團指揮",
+        photo: "assets/images/conductor-weng-qi-rong.webp",
+        photoAlt: "翁啟榮",
+        photoWidth: 2808,
+        photoHeight: 1832,
+        bio: "翁啟榮為嘉中校友，編號 7581，民國 75 年入學、低音號聲部，校友間暱稱「警伯」。他現職警務人員，也是嘉義市管樂團低音號團員；自學生時代起持續投入管樂，曾協助母隊規劃曲目與團練，長期統籌校友聯演的行政與召集工作。在本屆《為伍》中，他以樂團指導與指揮身分，結合低音聲部的合奏經驗與多年籌備脈絡，協助不同世代團員在有限排練時間中建立穩定而完整的聲音。",
+        officialLink: "https://cysh.band/people/7581.html"
       },
       {
         id: "8501",
         name: "丁肇賢",
         number: "8501",
-        role: "樂團指導 / 指揮",
-        photo: "https://cysh.band/assets/img/members/8501.webp",
+        role: "樂團指揮",
+        photo: "assets/images/conductor-ding-zhao-xian.webp",
+        photoAlt: "丁肇賢",
+        photoWidth: 1432,
+        photoHeight: 1434,
         bio: "丁肇賢為嘉義高中管樂隊校友，民國 85 年入學、當屆社長，主修低音號。其後畢業於國立臺灣師範大學音樂系研究所指揮組，師事廖嘉弘教授，並曾參與美國辛辛那提音樂學院 Rodney Winther 教授的指揮研習；多年來持續指導大學與中學管樂團，也擔任管弦樂團指揮，同時保有低音號演奏者的合奏視角。長期參與嘉中校友暨在校生聯合音樂會的他，熟悉校友團在短期集訓中整合不同年齡、職業與演奏經驗的特殊需求；本次《為伍》中，他以樂團指導與指揮身分協助團員整理呼吸、音準、和聲平衡與樂句方向，讓低音基礎、內聲部連接與主旋律彼此支撐，成為不同世代在同一座舞台上形成共同聲音的重要基礎。",
         officialLink: "https://cysh.band/people/8501.html"
       }
@@ -66,7 +87,11 @@ window.CONCERT_PROGRAM_DATA = {
         name: "黃鈺芠",
         number: "1051",
         role: "小號獨奏 / Sparke: Manhattan",
-        photo: "https://cysh.band/assets/img/members/1051.webp",
+        photo: "assets/images/soloist-huang-yu-wen.webp",
+        photoAlt: "黃鈺芠",
+        photoWidth: 3024,
+        photoHeight: 4032,
+        photoPosition: "center 62%",
         bio: "黃鈺芠自嘉義地區的校園管樂教育一路成長，曾參與世賢國小音樂活動、北興國中管樂班演出，進入嘉義高中後持續投入管樂社與小號演奏。高中階段，她曾以 Arban《Fantasie Brillante for Trumpet and Piano》參加學生音樂比賽，之後加入校友與在校生共同演出的聯演傳承；依本人校友資料登錄，目前就讀臺北市立大學音樂系。本次《為伍》，黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏，以歌唱性的長線條、靈活節奏與明亮音色，呈現作品前段夜晚爵士俱樂部般的藍調色彩，以及後段週日城市與中央公園的明快律動。這段在高強度技巧與細膩音樂性之間持續轉換、並與管樂團敏銳對話的協奏，也象徵年輕校友把不斷累積的新聲音帶回共同舞台。",
         officialLink: "https://cysh.band/people/1051.html"
       }

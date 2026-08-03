@@ -261,12 +261,13 @@ function renderHeroAndOverview() {
     </div>
 
     <!-- 團長的話 -->
-    <div class="card person-card president-card">
-      <div class="person-card-header">
-        <div class="person-avatar-mini">
-          <img src="${presidentMessage.photo}" alt="${presidentMessage.author}" loading="lazy">
-        </div>
-        <div class="person-header-info">
+    <div class="card person-feature-card president-card">
+      <figure class="person-feature-photo">
+        <img src="${presidentMessage.photo}" alt="${presidentMessage.photoAlt || presidentMessage.name || presidentMessage.author}" width="${presidentMessage.photoWidth || 1200}" height="${presidentMessage.photoHeight || 800}" loading="lazy" decoding="async">
+      </figure>
+      <div class="person-feature-content">
+        <div class="person-feature-header">
+          <div class="person-feature-heading">
           <div class="person-card-kicker">${presidentMessage.title}</div>
           <div class="person-header-top president-name-row">
             <div class="person-name-line">
@@ -278,11 +279,12 @@ function renderHeroAndOverview() {
           <div class="person-header-meta">
             <div class="person-header-role">${presidentMessage.role || '團長'}<span class="meta-separator">｜</span>${presidentMessage.subtitle}</div>
           </div>
+          </div>
         </div>
-      </div>
 
-      <div class="person-full-bio">
-        ${presidentMessage.content.map(p => `<p class="p-text">${p}</p>`).join('')}
+        <div class="person-full-bio">
+          ${presidentMessage.content.map(p => `<p class="p-text">${p}</p>`).join('')}
+        </div>
       </div>
     </div>
 
@@ -452,12 +454,13 @@ function renderTeamAndLeadership() {
     </div>
 
     ${conductors.map(c => `
-      <div class="card person-card">
-        <div class="person-card-header">
-          <div class="person-avatar-mini">
-            <img src="${c.photo}" alt="${c.name}" loading="lazy">
-          </div>
-          <div class="person-header-info">
+      <div class="card person-feature-card">
+        <figure class="person-feature-photo">
+          <img src="${c.photo}" alt="${c.photoAlt || c.name}" width="${c.photoWidth || 1200}" height="${c.photoHeight || 800}" loading="lazy" decoding="async">
+        </figure>
+        <div class="person-feature-content">
+          <div class="person-feature-header">
+            <div class="person-feature-heading">
             <div class="person-header-top">
               <h3 class="person-title-name">${c.name}</h3>
               <span class="person-number-inline">${c.number}</span>
@@ -466,11 +469,12 @@ function renderTeamAndLeadership() {
               <span class="person-header-role">${c.role}</span>
               ${renderPersonProfileLink(c.officialLink, c.name)}
             </div>
+            </div>
           </div>
-        </div>
 
-        <div class="person-full-bio">
-          ${renderPersonBio(c.bio)}
+          <div class="person-full-bio">
+            ${renderPersonBio(c.bio)}
+          </div>
         </div>
       </div>
     `).join('')}
@@ -482,12 +486,13 @@ function renderTeamAndLeadership() {
     </div>
 
     ${soloist.map(s => `
-      <div class="card person-card">
-        <div class="person-card-header">
-          <div class="person-avatar-mini">
-            <img src="${s.photo}" alt="${s.name}" loading="lazy">
-          </div>
-          <div class="person-header-info">
+      <div class="card person-feature-card">
+        <figure class="person-feature-photo">
+          <img src="${s.photo}" alt="${s.photoAlt || s.name}" width="${s.photoWidth || 1200}" height="${s.photoHeight || 800}" style="object-position: ${s.photoPosition || 'center'}" loading="lazy" decoding="async">
+        </figure>
+        <div class="person-feature-content">
+          <div class="person-feature-header">
+            <div class="person-feature-heading">
             <div class="person-header-top">
               <h3 class="person-title-name">${s.name}</h3>
               <span class="person-number-inline">${s.number}</span>
@@ -496,11 +501,12 @@ function renderTeamAndLeadership() {
               <span class="person-header-role">${s.role}</span>
               ${renderPersonProfileLink(s.officialLink, s.name)}
             </div>
+            </div>
           </div>
-        </div>
 
-        <div class="person-full-bio">
-          ${renderPersonBio(s.bio)}
+          <div class="person-full-bio">
+            ${renderPersonBio(s.bio)}
+          </div>
         </div>
       </div>
     `).join('')}
