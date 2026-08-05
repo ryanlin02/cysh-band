@@ -1231,6 +1231,27 @@ a.card-head:hover .num { color: var(--gold-soft); }
   gap: 12px;
   margin: 0;
 }
+.concert-current-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  min-height: 52px;
+  margin: 0;
+  padding: 9px 26px;
+  box-sizing: border-box;
+}
+.concert-current-more { margin: 10px 0 0; }
+.concert-current-more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.concert-current-more a:hover { color: #7d5f22; }
+.concert-current-more a span { margin-left: 8px; }
 .concert-current-details {
   grid-area: details;
   min-width: 0;
@@ -1289,6 +1310,8 @@ a.card-head:hover .num { color: var(--gold-soft); }
     display: grid;
     gap: 10px;
   }
+  .concert-current-actions .btn { width: 100%; }
+  .concert-current-more { margin-top: 8px; }
   .concert-current-summary { line-height: 1.78; }
   .concert-current-details dl { margin-top: 18px; }
   .concert-current-details dl > div {
