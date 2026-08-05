@@ -850,6 +850,29 @@ window.PEOPLE_PROFILES = [
     sourceHtml: "本文整理自嘉中校友聯演公開名單、東吳大學與臺師大相關演出資料、Taiwan Connection 演出資料、臺北市立交響樂團附設團成員資料、學校公開音樂比賽資料，以及校友團整理之人物資料；完整師承與現任教學職務待本人補充確認。歷史資料以當年紀錄為準；如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
   },
   {
+    num: "9501",
+    name: "侯冠廷",
+    source: "content/people/9501.html",
+    output: "people/9501.html",
+    title: "侯冠廷（9501）｜嘉義高中管樂隊校友",
+    description: "侯冠廷（編號 9501）是嘉義高中管樂社第 95 屆社長、上低音號聲部校友；以熱力學、聲學防護與動態調配的趣味敘述，記錄他的領導與和聲故事。",
+    ogTitle: "侯冠廷（9501）｜以溫潤和聲與領導號召力，調控現代生活的熱力學與動態平衡",
+    ogDescription: "嘉中管樂社第 95 屆社長、上低音號校友侯冠廷，以熱能轉移、水合平衡、降噪、KTV、刮刮樂與電梯的趣味故事，記錄生活裡的領導力。",
+    headlineHtml: "侯冠廷：以溫潤和聲與領導號召力<br>調控現代生活的熱力學與動態平衡",
+    photo: "../assets/img/members/9501.webp",
+    facts: [
+      ["編號", "<b>9501</b>（民國 95 年入學．社長．上低音號聲部）"],
+      ["主要樂器", "上低音號（Euphonium）"],
+      ["主要專業", "Band Leadership（樂團領導力）、Thermodynamic Energy Transfer（熱力學能量轉移）、Stochastic Asset Allocation（隨機資產調配）、Active Noise Cancellation（主動聲學隔離）、Vertical Transport Systems（垂直運輸系統）"],
+      ["稱號", "好害羞"],
+      ["現職", "嘉義高中管樂社第 95 屆社長、微型熱力學能量轉化調控師、跨國移動終端裝置耐力測試員"]
+    ],
+    navActive: "roster",
+    rosterLink: "../roster.html#p-9501",
+    relatedLinks: [],
+    sourceHtml: "本文依侯冠廷提供之人物介紹文字與嘉義高中管樂社校友名錄整理。文中關於日常生活角色的敘述，保留本人提供的趣味表達；歷史資料以當年紀錄為準，如需補充或更正，歡迎透過粉絲專頁與我們聯繫。"
+  },
+  {
     num: "9531",
     name: "郭昱廷",
     source: "content/people/9531.html",
