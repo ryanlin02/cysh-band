@@ -137,6 +137,11 @@ window.PEOPLE_PROFILE_LINKS = {
       "url": "../people/9261.html",
       "photo": "../assets/img/members/9261.webp"
     },
+    "9501": {
+      "name": "侯冠廷",
+      "url": "../people/9501.html",
+      "photo": "../assets/img/members/9501.webp"
+    },
     "9531": {
       "name": "郭昱廷",
       "url": "../people/9531.html",
