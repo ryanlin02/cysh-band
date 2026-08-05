@@ -36,8 +36,8 @@ window.CONCERT_PROGRAM_DATA = {
     subtitle: "以音樂為伍，跨越世代的聚首",
     content: [
       "歡迎各位蒞臨 2026 年第 41 屆嘉義高中校友暨在校生聯合音樂會《為伍》。",
-      "從 1931 年嘉中管樂社創立至今，吹奏音樂的熱情在校園與社辦裡延續了近百年。每年夏天，散落各地的校友帶著久未保養卻熟悉的樂器歸隊，與年輕的在校生譜架並排，在同一組指揮棒下吹出相同的和聲。",
-      "「為伍」，代表著相聚、陪伴與同行。睽違六年，我們重新回到熟悉的嘉義市政府文化局音樂廳。感謝每一位撥空到場的聽眾，願今晚的樂音能與大家常相陪伴。"
+      "從 1931 年嘉中管樂社創立至今，吹奏音樂的熱情在校園與社辦裡延續了近百年。每年夏天，來自不同世代的校友與在校生因音樂相聚，在同一座舞台上分享熟悉的旋律與共同的記憶。",
+      "「為伍」，代表著相聚、陪伴與同行。睽違六年，我們重新回到熟悉的嘉義市政府文化局音樂廳。感謝每一位撥空到場的聽眾，願今日的樂音陪伴大家，也與我們一同見證不同世代在舞台上的相遇。"
     ]
   },
 
@@ -73,11 +73,11 @@ window.CONCERT_PROGRAM_DATA = {
         name: "丁肇賢",
         number: "8501",
         role: "樂團指揮",
-        photo: "assets/images/conductor-ding-zhao-xian.webp",
-        photoAlt: "丁肇賢",
-        photoWidth: 1432,
-        photoHeight: 1434,
-        bio: "丁肇賢為嘉義高中管樂隊校友，民國 85 年入學、當屆社長，主修低音號。其後畢業於國立臺灣師範大學音樂系研究所指揮組，師事廖嘉弘教授，並曾參與美國辛辛那提音樂學院 Rodney Winther 教授的指揮研習；多年來持續指導大學與中學管樂團，也擔任管弦樂團指揮，同時保有低音號演奏者的合奏視角。長期參與嘉中校友暨在校生聯合音樂會的他，熟悉校友團在短期集訓中整合不同年齡、職業與演奏經驗的特殊需求；本次《為伍》中，他以樂團指導與指揮身分協助團員整理呼吸、音準、和聲平衡與樂句方向，讓低音基礎、內聲部連接與主旋律彼此支撐，成為不同世代在同一座舞台上形成共同聲音的重要基礎。",
+        photo: "assets/images/conductor-ding-zhao-xian-20260805.webp",
+        photoAlt: "丁肇賢於音樂廳排練時指揮樂團",
+        photoWidth: 1434,
+        photoHeight: 956,
+        bio: "丁肇賢出生於臺東，民國 85 年入學嘉義高中，主修低音號。大學就讀淡江大學期間開始接觸指揮，曾師從陳一夫老師與 Rodney Winther 教授，後畢業於國立臺灣師範大學音樂學系研究所碩士班指揮組，師事廖嘉弘教授。他曾任西安國小、錦園國小、立德思國小、嘉義高中、金山高中、大有國中、淡江大學、中正大學等校管樂團指導及分部老師，並擔任多所學校管樂團低音銅管分部老師；現任享響樂集藝術總監、臺北音樂家管弦樂團音樂總監、陝西省音樂家協會理事及瀧音音樂工坊（たきのおと）特約編曲家，並以「尚水堂」為筆名活躍於中國與日本兩地的編曲領域。",
         officialLink: "https://cysh.band/people/8501.html"
       }
     ],
@@ -87,12 +87,12 @@ window.CONCERT_PROGRAM_DATA = {
         name: "黃鈺芠",
         number: "1051",
         role: "小號獨奏 / Sparke: Manhattan",
-        photo: "assets/images/soloist-huang-yu-wen.webp",
-        photoAlt: "黃鈺芠",
-        photoWidth: 3024,
-        photoHeight: 4032,
-        photoPosition: "center 62%",
-        bio: "黃鈺芠自嘉義地區的校園管樂教育一路成長，曾參與世賢國小音樂活動、北興國中管樂班演出，進入嘉義高中後持續投入管樂社與小號演奏。高中階段，她曾以 Arban《Fantasie Brillante for Trumpet and Piano》參加學生音樂比賽，之後加入校友與在校生共同演出的聯演傳承；依本人校友資料登錄，目前就讀臺北市立大學音樂系。本次《為伍》，黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏，以歌唱性的長線條、靈活節奏與明亮音色，呈現作品前段夜晚爵士俱樂部般的藍調色彩，以及後段週日城市與中央公園的明快律動。這段在高強度技巧與細膩音樂性之間持續轉換、並與管樂團敏銳對話的協奏，也象徵年輕校友把不斷累積的新聲音帶回共同舞台。",
+        photo: "assets/images/soloist-huang-yu-wen-20260805.webp",
+        photoAlt: "黃鈺芠於音樂廳演奏小號",
+        photoWidth: 1434,
+        photoHeight: 956,
+        photoPosition: "center",
+        bio: "黃鈺芠學習小號 12 年，目前就讀臺北市立大學音樂系大三，師從聶中興老師。她畢業於嘉義高中音樂班、北興國中管樂班及世賢國小，曾師從張介凡老師、高士根老師。本次《為伍》，黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏。",
         officialLink: "https://cysh.band/people/1051.html"
       }
     ],
@@ -138,29 +138,29 @@ window.CONCERT_PROGRAM_DATA = {
       {
         no: 1,
         titles: [
-          { lang: "zh-Hant", text: "閃耀之風" },
+          { lang: "zh-Hant", text: "閃耀的管樂" },
           { lang: "en", text: "Flashing Winds" }
         ],
-        composer: ["Jan Van der Roost", "揚·范德羅斯特"],
+        composer: ["Jan Van der Roost", "楊・范德魯斯特"],
         arranger: "",
         duration: "約 4 分 30 秒",
         note: [
-          "《Flashing Winds》（閃耀之風）是比利時管樂大師揚·范德羅斯特（Jan Van der Roost）受「西法蘭德斯音樂聯盟」（Het muziekverbond van West-Vlaanderen）委託創作之代表作品（難度 Grade 5），並題獻給 Arlequino 青年管樂團。",
-          "樂曲最顯著的特色在於「全曲速度始終不變」，在單一高速節奏下保持極強的向前推進動力。開頭由全團發出震撼力十足的「和聲音塊」（chord-blocks），隨即進入木管群疾風般流轉的六八拍與二四拍交錯主題。中段銅管號角與木管旋律交織，後段再度重現開頭壯麗的和聲音塊，達到首尾嚴謹呼應的建築美感，為音樂會揭開華麗燦爛的序幕。"
+          "《Flashing Winds》（閃耀的管樂）是比利時作曲家楊・范德魯斯特於 1989 年創作的管樂合奏作品，由「Het muziekverbond van West-Vlaanderen」（西佛蘭德斯音樂聯盟）委託，獻給比利時的 Arlequino 青年樂團。這是一首充滿活力、色彩豐富且效果強烈的管樂作品。",
+          "樂曲以簡短而莊嚴的信號曲風格開場，呈現強而有力的和弦音塊，隨後便以穩定的快速節奏一路奔向終點，中間沒有任何速度變化，展現持續的動能與光彩。作曲家巧妙運用管樂團的豐富配器，讓音樂充滿色彩與效果；開頭的和弦音塊也在結尾處再度出現，形成結構上的統一與呼應，讓整首曲子既熱烈又具凝聚力。"
         ]
       },
       {
         no: 2,
         titles: [
-          { lang: "zh-Hant", text: "美麗邦尼鄧的河岸與丘陵" },
+          { lang: "zh-Hant", text: "邦妮杜恩的美麗河畔" },
           { lang: "en", text: "Ye Banks and Braes o' Bonnie Doon" }
         ],
-        composer: ["Percy A. Grainger", "珀西·格蘭傑"],
+        composer: ["Percy Grainger", "帕西・葛人傑"],
         arranger: "",
         duration: "約 3 分 00 秒",
         note: [
-          "《Ye Banks and Braes o' Bonnie Doon》是澳洲裔作曲家珀西·格蘭傑（Percy Grainger）著名的「英國民謠設定」（British Folk-Music Settings）第 32 號作品。改編自蘇格蘭詩人羅伯特·彭斯（Robert Burns）於 1791 年寫下的抒情詩篇，搭配傳統蘇格蘭曲調《The Caledonian Hunt's Delight》。",
-          "全曲以簡潔嚴謹的 17 小節 AABA 結構組成，描繪流經蘇格蘭丘陵的鄧河（Doon River）。格蘭傑將管樂團運用如管風琴般深邃溫暖，低音木管與法國號鋪設持久的微音襯底（drone background），長笛與單簧管吹奏富有彈性速度（tempo rubato）的複音對位。極度考驗樂團的呼吸控制與音色融合度，傳達出濃郁的懷舊與深情。"
+          "這是澳洲裔美國作曲家帕西・葛人傑對蘇格蘭傳統民謠的著名管樂改編作品，原曲為 Robert Burns 於 1791 年創作的詩歌。這是一首緩慢、抒情的民謠改編，展現葛人傑對英國民間音樂的熱愛與獨特處理手法。",
+          "音樂以蘇格蘭民謠旋律為核心，營造寧靜而略帶憂傷的氛圍，彷彿描繪杜恩河畔的美麗風景與失落愛情的感慨。葛人傑運用豐富的和聲、溫柔的對位旋律與變化速度，讓樂曲充滿魅力與共鳴；木管與銅管交織出豐富層次。整首曲子由兩個十七小節的樂段構成，結構簡潔卻情感深刻，是適合展現樂團音色與表現力的佳作。"
         ]
       },
       {
@@ -170,99 +170,101 @@ window.CONCERT_PROGRAM_DATA = {
           { lang: "ja", text: "たなばた" },
           { lang: "en", text: "The Seventh Night of July" }
         ],
-        composer: ["酒井格", "Itaru Sakai"],
+        composer: ["Itaru Sakai", "酒井格"],
         arranger: "",
-        duration: "約 6 分 00 秒",
+        duration: "約 8 分 38 秒",
         note: [
-          "《たなばた》（七夕）是日本著名管樂作曲家酒井格於 1988 年高三時期創作的管樂傳承名作。樂曲創作靈感來自七夕夜晚織女星（Orihime）與牛郎星（Hikoboshi）跨越銀河相會的浪漫傳說。",
-          "樂曲開頭由輝煌華麗的快板（Allegro）展開，璀璨的木管音符宛如夏季夜空繁星閃爍。曲中令人心醉的慢板（Andante）段落，由中音薩克斯風吹出深情款款的織女主題，隨後由上低音號（或法國號）吹奏牛郎的主題回應，兩者在樂團溫柔的和聲中對唱。末段再現快板的主題並融合節慶氛圍，將跨越時空的相聚情感推向最震撼的高潮。"
+          "《The Seventh Night of July / Tanabata》（七夕）是日本作曲家酒井格以日本傳統節日七夕為靈感創作的作品，充滿東方詩意與管樂色彩。酒井格出生於大阪，高中時加入管樂團並開始創作；《七夕》是他最早的管樂作品之一，後續他也創作多首廣受歡迎、融合日本傳統元素與現代管樂技法的作品。",
+          "樂曲中段由中音薩克斯風與上低音號二重奏代表傳說中的男女主角，情感豐富而動人。整體結構生動，結合慶典的熱鬧、銀河的夢幻與相會的喜悅，展現強烈的畫面感與敘事性；多樣的打擊樂器也為作品增添豐富氛圍。這首作品是酒井格的成名作之一，也是亞洲管樂文獻中的熱門曲目。"
         ]
       },
       {
         no: 4,
         titles: [
-          { lang: "zh-Hant", text: "曼哈頓（小號協奏曲）" },
-          { lang: "en", text: "Manhattan (Concerto for Trumpet)" }
+          { lang: "en", text: "Novena to Seagate Overture" }
         ],
-        composer: ["Philip Sparke", "菲利浦·史巴克"],
-        soloist: "黃鈺芠 (1051)",
+        composer: ["James Swearingen", "詹姆士・史威林金"],
+        arranger: "",
+        duration: "約 7 分 30 秒",
+        note: [
+          "James Swearingen 是美國當代著名的管樂作曲家、編曲家、指揮家與音樂教育家，已出版超過 700 首管樂作品與編曲，涵蓋多樣形式與風格；其中多首為委託創作，並廣泛選入各級比賽與音樂節指定曲目。他的音樂以旋律優美、結構清晰且適合學生演奏著稱。",
+          "管樂界常有趣聞提到，Swearingen 的作品多到可以自由銜接變換。本次音樂會選擇兩首風格不同的樂曲串聯演出，從《Novena》過渡至《Seagate Overture》，在熟悉的管樂語彙中展現不同的情緒與色彩。"
+        ]
+      },
+      {
+        no: 5,
+        titles: [
+          { lang: "zh-Hant", text: "曼哈頓" },
+          { lang: "en", text: "Manhattan" }
+        ],
+        composer: ["Philip Sparke", "菲利浦・史巴克"],
+        soloist: "黃鈺芠（1051）",
         soloInstrument: "小號 Solo Trumpet",
         duration: "約 10 分 00 秒",
         note: [
-          "《Manhattan》是英國管樂大師菲利浦·史巴克（Philip Sparke）應美國陸軍軍樂隊（The United States Army Band）委託創作的小號協奏曲名作，2003 年於紐約卡內基音樂廳首演。全曲以紐約曼哈頓的都市風貌與生活節奏為背景，分為兩個風格鮮明的樂章：",
-          "第一樂章〈週六小夜曲 Saturday Serenade〉帶有濃厚的藍調（bluesy）色彩，從小號優雅高亢的抒情長調，描繪紐約週末夜晚煙霧繚繞的爵士酒吧與街頭浪漫；第二樂章〈週日詼諧曲 Sunday Scherzo〉則轉為節奏輕快、充滿活力的切分快板，描繪週日清晨中央公園慢跑的人群與天際線光影。全曲極具技術與音樂性挑戰，將由校友黃鈺芠精彩詮釋。"
+          "菲利浦・史巴克是當代英國著名的管樂作曲家，以豐富的旋律、精湛的技巧展現，以及適合各級樂團演出的作品聞名。他的《Manhattan》（曼哈頓）是一首為小號與管樂團而作的獨奏作品，於 2004 年出版，成為現代小號獨奏曲目中的重要代表作。",
+          "全曲以「紐約的一個週末」為主題，生動描繪曼哈頓的都市風情，分為兩個樂章。",
+          "第一樂章〈Saturday Serenade（星期六小夜曲）〉帶有藍調（bluesy）風格，氛圍慵懶而富有爵士感。作曲家想像紐約週六夜晚的景象——或許是在煙霧繚繞的爵士酒吧中，充滿迷人的城市夜生活氣息。小號獨奏在此展現優美的抒情線條，與樂團伴奏交織出溫暖而略帶慵懶的爵士氛圍，考驗演奏者的音色控制與音樂表現力。",
+          "第二樂章〈Sunday Scherzo（星期日諧謔曲）〉與第一樂章形成鮮明對比，是一個充滿活力、節奏鮮明的快板樂章。作曲家在創作時想像清晨於中央公園慢跑的畫面，音樂輕快、跳躍而富有生氣；樂章最後進入更急速的尾聲（coda），以華麗而燦爛的方式結束全曲，充分展現小號的技巧與輝煌音色。",
+          "《Manhattan》融合古典管樂的結構與現代爵士、流行元素，旋律性強、畫面感豐富，既有抒情詩意，也充滿節奏活力。它不僅考驗獨奏者的全面技術，也讓聽眾彷彿親臨紐約，感受這座城市的多元魅力。"
         ]
       }
     ],
     secondHalf: [
       {
-        no: 5,
-        titles: [
-          { lang: "zh-Hant", text: "諾維娜與海門序曲組曲" },
-          { lang: "en", text: "Novena + Seagate Overture" }
-        ],
-        composer: ["James Swearingen", "詹姆斯·斯威靈根"],
-        arranger: "",
-        duration: "約 7 分 30 秒",
-        note: [
-          "美國管樂教育家兼作曲家詹姆斯·斯威靈根（James Swearingen）的作品，是全球無數管樂學習者學生時代最重要的啟蒙記憶與音樂基石。本場音樂會特別將 Swearingen 最具代表性的兩首 Grade 3 經典串聯呈現：",
-          "前半段《Novena》（管樂狂想曲，1980）由深沉感性的慢板（Adagio）展開，經由木管獨奏與層層堆疊的和聲懸疑，推進至震撼的情感高潮；後半段無縫銜接《Seagate Overture》（海門序曲，1988），以輝煌雄渾的銅管號角與充滿動感的切分節奏展現宏偉氣勢。兩曲交織重現了青春時期合奏時最純粹、最澎湃的音樂感動。"
-        ]
-      },
-      {
         no: 6,
         titles: [
-          { lang: "zh-Hant", text: "美酒與玫瑰的日子" },
-          { lang: "en", text: "The Days of Wine and Roses" }
+          { lang: "zh-Hant", text: "銀河交響組曲（選自《超級瑪利歐銀河》）" },
+          { lang: "en", text: "Symphonic Suite of Galaxy (from Super Mario Galaxy)" }
         ],
-        composer: "Henry Mancini",
-        arranger: ["岩井直溥", "Naohiro Iwai"],
-        duration: "約 4 分 00 秒",
+        composer: ["Koji Kondo、Mahito Yokota", "近藤浩治、橫田真人"],
+        arranger: "尚水堂",
+        duration: "約 8 分 30 秒",
         note: [
-          "本曲原為亨利·曼西尼（Henry Mancini）於 1962 年榮獲奧斯卡最佳原創歌曲獎的同名電影主題曲，由日本吹奏樂教父岩井直溥親自改編（收錄於經典《New Sounds in Brass》系列）。",
-          "岩井直溥以極具成熟魅力的中速 Swing 爵士搖擺風格改編。配器上融合了薩克斯風組迷人濃郁的密聲部和聲、銅管加弱音器的對位答唱，以及低音聲部流暢的行走貝斯（Walking Bass）。整首作品散發出如 1960 年代好萊塢爵士酒吧般溫潤、復古且令人醉心的微醺韻味。"
+          "《超級瑪利歐銀河》的配樂由橫田真人（Mahito Yokota）擔任主要作曲，近藤浩治（Koji Kondo）擔任音樂監督並創作數首關鍵曲目，如〈Egg Planet〉與羅莎塔觀測所主題。",
+          "這是瑪利歐系列首次大規模採用交響樂團錄音，由 Mario Galaxy Orchestra 演奏，成功營造宇宙浩瀚壯麗的氛圍。橫田以管弦樂為主軸，結合電子音色，打造出既宏偉又充滿冒險感的音樂風格，擺脫以往「可愛」的印象，轉向「酷炫」與史詩感。整套原聲帶評價極高，被視為遊戲音樂中的經典之作。",
+          "橫田在創作初期曾被近藤否定「過於可愛」的方向，後來調整為更有氣勢的管弦編曲，並邀請近藤親自譜寫幾首核心主題，讓整部作品在宏大與親切之間取得平衡。著名曲目如〈Gusty Garden Galaxy〉與〈Purple Comet〉主題，至今仍被廣泛運用於其他系列遊戲。"
         ]
       },
       {
         no: 7,
         titles: [
-          { lang: "zh-Hant", text: "拯救世界" },
+          { lang: "zh-Hant", text: "治癒世界" },
           { lang: "en", text: "Heal the World" }
         ],
-        composer: "Michael Jackson",
+        composer: ["Michael Jackson", "麥可・傑克森"],
         arranger: "Ron Sebregts",
         duration: "約 5 分 00 秒",
         note: [
-          "《Heal The World》為流行樂之王麥可·傑克森（Michael Jackson）於 1991 年專輯《Dangerous》中發行的經典和平大愛名曲，由荷蘭編曲家 Ron Sebregts 精緻改編為管樂合奏版本。",
-          "樂曲開端由長笛與單簧管吹奏出純真暖心的主旋律，隨後法國號與中音聲部加入疊加層次。音樂隨著調性轉調層層遞進，最終匯聚成全團宏亮輝煌的大合奏唱段，將大愛、希望與跨越世代相互擁抱的溫暖力量注入每一位聽眾的心中。"
+          "《Heal the World》是麥可・傑克森最具代表性的人道關懷歌曲之一，收錄於 1991 年專輯《Dangerous》。這首歌呼籲人們以愛與行動讓世界變得更美好，特別關注兒童與下一代的未來；歌詞充滿反戰與慈悲精神，強調「治癒世界、為全人類創造更好的地方」。傑克森曾表示，這是他最自豪的創作。1992 年，他以此歌為名成立 Heal the World Foundation，致力於改善全球兒童生活，並在 Dangerous 世界巡演中以此作為核心主題。這首歌至今仍是他經典的和平與愛之歌。"
         ]
       },
       {
         no: 8,
         titles: [
-          { lang: "zh-Hant", text: "日本流行塗鴉 XXII：City Pop 組曲" },
-          { lang: "en", text: "Japanese Graffiti XXII: City Pop Medley" }
+          { lang: "zh-Hant", text: "酒與玫瑰的日子" },
+          { lang: "en", text: "Days of Wine and Roses" }
         ],
-        composer: "Various Artists",
-        arranger: ["金山徹", "Tohru Kanayama"],
-        duration: "約 7 分 00 秒",
+        composer: ["Henry Mancini", "亨利・曼西尼"],
+        arranger: ["Naohiro Iwai", "岩井直溥"],
+        duration: "約 4 分 00 秒",
         note: [
-          "收錄日本 1980 年代掀起全球熱潮的「City Pop」五首黃金歲月代表作，由金山徹精心編曲：",
-          "1. 山下達郎〈SPARKLE〉：以強烈吉他切分律動改編的耀眼銅管開場；\n2. 竹內瑪莉亞〈Plastic Love〉：神秘動感迪斯可節奏與薩克斯風性感和聲；\n3. 大瀧詠一〈君は天然色〉：明快流暢的六八拍 POP 搖擺與木管亮麗音符；\n4. 泰葉〈Flyday Chinatown〉：帶有東方都市異國風情的狂野爵士切分；\n5. 松原美紀〈真夜中的ドア〜stay with me〉：深情高亢的銅管主旋律帶領全場重回復古耀眼的霓虹夜光。"
+          "這首樂曲是亨利・曼西尼（Henry Mancini）作曲、強尼・默瑟（Johnny Mercer）作詞，為 1962 年電影《相見難時別亦難》創作的主題曲，曾獲奧斯卡最佳原創歌曲獎，其後亦由 Frank Sinatra 等歌手錄唱。",
+          "本次演出採岩井直溥編曲、收錄於其電影主題曲合輯的管樂版本。原曲是一首優美而帶有淡淡憂傷的中板抒情曲，描寫美好時光轉瞬即逝的意境；標題取自詩句，象徵人生中短暫而珍貴的快樂歲月。管樂編曲保留原曲的優雅與詩意，音色溫暖而富有層次，展現經典電影音樂在管樂編制下的另一種魅力。"
         ]
       },
       {
         no: 9,
         titles: [
-          { lang: "zh-Hant", text: "星雲交響組曲（選自《超級瑪利歐銀河》）" },
-          { lang: "en", text: "Symphonic Suite of Galaxy (Super Mario Galaxy)" }
+          { lang: "zh-Hant", text: "日本風情畫 XXII：City Pop 組曲" },
+          { lang: "ja", text: "ジャパニーズ・グラフィティXXII シティー・ポップ・メドレー" },
+          { lang: "en", text: "Japanese Graffiti XXII: City Pop Medley" }
         ],
-        composer: ["橫田真人", "近藤浩治"],
-        arranger: "尚水堂",
-        duration: "約 8 分 30 秒",
+        arranger: ["Tohru Kanayama", "金山徹"],
+        duration: "約 7 分 00 秒",
         note: [
-          "任天堂 2007 年經典電玩巨作《Super Mario Galaxy》（超級瑪利歐銀河）管樂交響改編組曲。原聲帶由橫田真人與近藤浩治指揮管弦樂團實錄，被譽為遊戲音樂史上不可逾越的高峰。",
-          "本曲將宇宙冒險的浩瀚與奇幻色彩極致交響化。曲中收錄最知名的〈Gusty Garden Galaxy〉（風之花園）宏偉主旋律、太空打擊樂的磅礡推進與木管群如星芒般的快速琶音。全團銅管與打擊樂交織出極具震撼力的交響終曲，為第 41 屆《為伍》下半場劃下圓滿燦爛的句點。"
+          "這首樂曲由金山徹編曲，收錄於《New Sounds in Brass 2024》（NSB 第 49 集），選取 1970 至 1980 年代日本 City Pop 黃金時期廣受歡迎的五首經典名曲組成組曲，依序為山下達郎〈SPARKLE〉、竹內瑪莉亞〈プラスティック・ラヴ〉（Plastic Love）、大瀧詠一〈君は天然色〉、泰葉〈フライディ・チャイナタウン〉，以及松原みき〈真夜中のドア～stay with me〉。",
+          "編曲保留 City Pop 特有的洗練都會感與懷舊氛圍，同時充分發揮管樂豐富的音色與節奏律動。近年 City Pop 在全球重新受到矚目，這首組曲捕捉了這股熱潮，兼具懷舊與現代感，是現代演出中相當受歡迎的曲目。"
         ]
       }
     ]
