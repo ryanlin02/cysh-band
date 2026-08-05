@@ -143,7 +143,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Jan Van der Roost", "楊・范德魯斯特"],
         arranger: "",
-        duration: "約 4 分 30 秒",
+        duration: "約 4 分 07 秒",
         note: [
           "《Flashing Winds》（閃耀的管樂）是比利時作曲家楊・范德魯斯特於 1989 年創作的管樂合奏作品，由「Het muziekverbond van West-Vlaanderen」（西佛蘭德斯音樂聯盟）委託，獻給比利時的 Arlequino 青年樂團。這是一首充滿活力、色彩豐富且效果強烈的管樂作品。",
           "樂曲以簡短而莊嚴的信號曲風格開場，呈現強而有力的和弦音塊，隨後便以穩定的快速節奏一路奔向終點，中間沒有任何速度變化，展現持續的動能與光彩。作曲家巧妙運用管樂團的豐富配器，讓音樂充滿色彩與效果；開頭的和弦音塊也在結尾處再度出現，形成結構上的統一與呼應，讓整首曲子既熱烈又具凝聚力。"
@@ -157,7 +157,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Percy Grainger", "帕西・葛人傑"],
         arranger: "",
-        duration: "約 3 分 00 秒",
+        duration: "約 2 分 00 秒",
         note: [
           "這是澳洲裔美國作曲家帕西・葛人傑對蘇格蘭傳統民謠的著名管樂改編作品，原曲為 Robert Burns 於 1791 年創作的詩歌。這是一首緩慢、抒情的民謠改編，展現葛人傑對英國民間音樂的熱愛與獨特處理手法。",
           "音樂以蘇格蘭民謠旋律為核心，營造寧靜而略帶憂傷的氛圍，彷彿描繪杜恩河畔的美麗風景與失落愛情的感慨。葛人傑運用豐富的和聲、溫柔的對位旋律與變化速度，讓樂曲充滿魅力與共鳴；木管與銅管交織出豐富層次。整首曲子由兩個十七小節的樂段構成，結構簡潔卻情感深刻，是適合展現樂團音色與表現力的佳作。"
@@ -200,7 +200,7 @@ window.CONCERT_PROGRAM_DATA = {
         composer: ["Philip Sparke", "菲利浦・史巴克"],
         soloist: "黃鈺芠（1051）",
         soloInstrument: "小號 Solo Trumpet",
-        duration: "約 10 分 00 秒",
+        duration: "約 9 分 00 秒",
         note: [
           "菲利浦・史巴克是當代英國著名的管樂作曲家，以豐富的旋律、精湛的技巧展現，以及適合各級樂團演出的作品聞名。他的《Manhattan》（曼哈頓）是一首為小號與管樂團而作的獨奏作品，於 2004 年出版，成為現代小號獨奏曲目中的重要代表作。",
           "全曲以「紐約的一個週末」為主題，生動描繪曼哈頓的都市風情，分為兩個樂章。",
@@ -234,7 +234,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Michael Jackson", "麥可・傑克森"],
         arranger: "Ron Sebregts",
-        duration: "約 5 分 00 秒",
+        duration: "約 4 分 44 秒",
         note: [
           "《Heal the World》是麥可・傑克森最具代表性的人道關懷歌曲之一，收錄於 1991 年專輯《Dangerous》。這首歌呼籲人們以愛與行動讓世界變得更美好，特別關注兒童與下一代的未來；歌詞充滿反戰與慈悲精神，強調「治癒世界、為全人類創造更好的地方」。傑克森曾表示，這是他最自豪的創作。1992 年，他以此歌為名成立 Heal the World Foundation，致力於改善全球兒童生活，並在 Dangerous 世界巡演中以此作為核心主題。這首歌至今仍是他經典的和平與愛之歌。"
         ]
@@ -247,7 +247,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Henry Mancini", "亨利・曼西尼"],
         arranger: ["Naohiro Iwai", "岩井直溥"],
-        duration: "約 4 分 00 秒",
+        duration: "約 5 分 05 秒",
         note: [
           "這首樂曲是亨利・曼西尼（Henry Mancini）作曲、強尼・默瑟（Johnny Mercer）作詞，為 1962 年電影《相見難時別亦難》創作的主題曲，曾獲奧斯卡最佳原創歌曲獎，其後亦由 Frank Sinatra 等歌手錄唱。",
           "本次演出採岩井直溥編曲、收錄於其電影主題曲合輯的管樂版本。原曲是一首優美而帶有淡淡憂傷的中板抒情曲，描寫美好時光轉瞬即逝的意境；標題取自詩句，象徵人生中短暫而珍貴的快樂歲月。管樂編曲保留原曲的優雅與詩意，音色溫暖而富有層次，展現經典電影音樂在管樂編制下的另一種魅力。"
@@ -261,7 +261,7 @@ window.CONCERT_PROGRAM_DATA = {
           { lang: "en", text: "Japanese Graffiti XXII: City Pop Medley" }
         ],
         arranger: ["Tohru Kanayama", "金山徹"],
-        duration: "約 7 分 00 秒",
+        duration: "約 7 分 55 秒",
         note: [
           "這首樂曲由金山徹編曲，收錄於《New Sounds in Brass 2024》（NSB 第 49 集），選取 1970 至 1980 年代日本 City Pop 黃金時期廣受歡迎的五首經典名曲組成組曲，依序為山下達郎〈SPARKLE〉、竹內瑪莉亞〈プラスティック・ラヴ〉（Plastic Love）、大瀧詠一〈君は天然色〉、泰葉〈フライディ・チャイナタウン〉，以及松原みき〈真夜中のドア～stay with me〉。",
           "編曲保留 City Pop 特有的洗練都會感與懷舊氛圍，同時充分發揮管樂豐富的音色與節奏律動。近年 City Pop 在全球重新受到矚目，這首組曲捕捉了這股熱潮，兼具懷舊與現代感，是現代演出中相當受歡迎的曲目。"
