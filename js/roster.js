@@ -445,19 +445,18 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderCard(p) {
     var anchorId = personAnchorId(p);
     var hasProfileLink = hasProfile(p);
-    var html = '<div class="card roster-card" id="' + anchorId + '">';
-    html += hasProfileLink
-      ? '<a class="card-head" href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →">'
-      : '<div class="card-head">';
+    var tag = hasProfileLink ? 'a' : 'div';
+    var html = '<' + tag + ' class="card roster-card' + (hasProfileLink ? ' linked' : '') + '" id="' + anchorId + '"' + (hasProfileLink ? ' href="' + p.link + '" aria-label="查看' + p.name + '完整介紹 →"' : '') + '>';
+    html += '<div class="card-head">';
     html += '<img class="avatar" src="assets/img/members/' + (p.photo || 'blank') + '.webp" alt="' + p.name + '" loading="lazy">';
     html += '<div>';
     html += '<p class="num">' + (p.num || '—') + (p.part ? ' <small>' + (p.year != null ? '民國 ' + p.year + ' 年入學．' : '') + p.part + '</small>' : (p.year != null ? ' <small>民國 ' + p.year + ' 年入學</small>' : '')) + '</p>';
-    html += '<h3>' + p.name + '</h3>';
-    html += hasProfileLink ? '</div></a>' : '</div></div>';
+    html += '<div class="roster-card-name-row"><h3>' + p.name + '</h3>';
+    if (hasProfileLink) html += '<span class="roster-card-profile-mark" aria-hidden="true">人物頁 →</span>';
+    html += '</div></div></div>';
     if (p.role) html += '<p class="role">' + p.role + '</p>';
     if (p.desc) html += '<p>' + p.desc + '</p>';
-    if (hasProfileLink) html += '<p class="more"><a href="' + p.link + '">詳細介紹 →</a></p>';
-    html += '</div>';
+    html += '</' + tag + '>';
     return html;
   }
 
@@ -471,6 +470,7 @@ document.addEventListener('DOMContentLoaded', function () {
     html += '<span class="roster-row-content">';
     html += '<span class="roster-row-heading"><b>' + p.name + '</b>';
     if (p.num) html += '<span class="roster-row-num">' + p.num + '</span>';
+    if (hasProfileLink) html += '<span class="roster-row-profile-mark" aria-hidden="true">人物頁 →</span>';
     html += '</span>';
     html += '<span class="roster-row-meta">' + personMeta(p) + '</span>';
     if (detail) html += '<small class="roster-row-detail">' + detail + '</small>';

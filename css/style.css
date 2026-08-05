@@ -63,7 +63,7 @@ button:focus-visible,
 .session-nav a:focus-visible,
 .news-item:focus-visible,
 .way:focus-visible,
-a.card-head:focus-visible,
+a.roster-card.linked:focus-visible,
 .roster-row.linked:focus-visible,
 .gallery-grid figure > a:focus-visible {
   outline: 2px solid rgba(160,124,49,.75);
@@ -2037,8 +2037,46 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .roster-sticky-tools:has(.roster-sticky-filter-panel[open]) + .roster-scroll-marker {
   opacity: 0;
 }
+.roster-card { min-height: 0; }
+/* 桌機名錄：保留既有卡片語言，收斂無資訊的留白並提高人物照片辨識度。 */
+@media (min-width: 761px) {
+  .roster-group > .roster-cards { margin-top: 20px; }
+  .roster-cards { gap: 16px; }
+  .roster-card { padding: 24px 22px; }
+  .roster-card .card-head { gap: 14px; margin-bottom: 10px; }
+  .roster-card .avatar { width: 118px; height: 118px; }
+  .roster-card .role { margin-bottom: 10px; }
+}
+a.roster-card.linked {
+  display: block;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+a.roster-card.linked:hover {
+  border-color: var(--gold-soft);
+  box-shadow: var(--shadow-md);
+}
 .roster-card p { font-size: .9rem; }
-.roster-card .more { margin-top: 10px; font-size: .88rem; }
+.roster-card-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+.roster-card-name-row h3 { min-width: 0; }
+.roster-card-profile-mark,
+.roster-row-profile-mark {
+  flex: 0 0 auto;
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.roster-card-profile-mark { margin-left: auto; }
 .section.roster-group-list {
   padding-top: 32px;
   padding-bottom: 32px;
@@ -2098,6 +2136,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   gap: 4px 10px;
   min-width: 0;
 }
+.roster-row.linked .roster-row-heading { flex-wrap: nowrap; }
 .roster-row-heading b {
   min-width: 0;
   font-family: var(--serif);
@@ -2114,6 +2153,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   letter-spacing: .08em;
   font-variant-numeric: tabular-nums;
 }
+.roster-row-profile-mark { margin-left: auto; }
 .roster-row-detail {
   grid-area: detail;
   min-width: 0;
@@ -2155,6 +2195,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .roster-row-heading {
     gap: 3px 8px;
   }
+  .roster-row-profile-mark { font-size: .7rem; letter-spacing: .06em; }
   .roster-row-heading b {
     font-size: 1.02rem;
   }
@@ -2501,6 +2542,7 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
   .roster-row-heading b {
     font-size: .98rem;
   }
+  .roster-row-profile-mark { font-size: .66rem; letter-spacing: .04em; }
 }
 
 /* ---------- 最新消息 ---------- */
