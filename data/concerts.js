@@ -58,23 +58,113 @@ window.CONCERTS = [
     venue: "嘉義市政府文化局音樂廳",
     venueNote: "嘉義市東區忠孝路 275 號；睽違六年重返文化局音樂廳",
     hostHead: "五字頭",
+    metaDescription: "2026 年第 41 屆嘉義高中校友暨在校生聯合音樂會《為伍》演出資訊：8 月 8 日下午於嘉義市政府文化局音樂廳登場，由盧宓承、翁啟榮、丁肇賢擔任樂團指揮，黃鈺芠擔任小號獨奏。",
+    lede: "「為伍」代表相聚、陪伴與同行。第 41 屆嘉義高中校友暨在校生聯合音樂會睽違六年重返嘉義市政府文化局音樂廳，邀請不同世代的校友與在校生再次同台。",
     conductors: [
-      { name: "簡晟軒", num: "8861", role: "樂團指導" },
-      { name: "丁肇賢", num: "8501", role: "樂團指導" }
+      { name: "盧宓承", num: "7111", role: "樂團指揮" },
+      { name: "翁啟榮", num: "7581", role: "樂團指揮" },
+      {
+        name: "丁肇賢",
+        num: "8501",
+        role: "樂團指揮",
+        concertBio: "丁肇賢出生於臺東，民國 85 年入學嘉義高中，主修低音號。大學就讀淡江大學期間開始接觸指揮，曾師從陳一夫老師與 Rodney Winther 教授，後畢業於國立臺灣師範大學音樂學系研究所碩士班指揮組，師事廖嘉弘教授。他曾任多所學校管樂團指導及低音銅管分部老師；現任享響樂集藝術總監、臺北音樂家管弦樂團音樂總監、陝西省音樂家協會理事及瀧音音樂工坊特約編曲家，並以「尚水堂」為筆名從事編曲。"
+      }
     ],
     soloists: [
-      { name: "黃鈺芠", num: "1051", instrument: "小號", work: "Philip Sparke: Manhattan" }
+      {
+        name: "黃鈺芠",
+        num: "1051",
+        instrument: "小號",
+        work: "Philip Sparke《Manhattan》",
+        concertBio: "黃鈺芠學習小號 12 年，目前就讀臺北市立大學音樂系大三，師從聶中興老師。她畢業於嘉義高中音樂班、北興國中管樂班及世賢國小，曾師從張介凡老師、高士根老師。本次《為伍》，黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏。"
+      }
     ],
     program: [
-      { section: "上半場", title: "Flashing Winds", composer: "Jan Van der Roost", status: "confirmed" },
-      { section: "上半場", title: "Ye Banks and Braes o' Bonnie Doon", composer: "Percy A. Grainger", status: "confirmed" },
-      { section: "上半場", title: "The Seventh Night of July", foreignTitle: "たなばた", composer: "酒井格", status: "confirmed" },
-      { section: "上半場", title: "Manhattan", composer: "Philip A. Sparke", note: "小號獨奏：黃鈺芠", status: "confirmed" },
-      { section: "下半場", title: "Novena + Seagate Overture", composer: "James Swearingen", status: "confirmed" },
-      { section: "下半場", title: "The Days Of Wine And Roses", composer: "Henry Mancini", arranger: "岩井直溥", status: "confirmed" },
-      { section: "下半場", title: "Heal The World", composer: "Michael Jackson", arranger: "Ron Sebregts", status: "confirmed" },
-      { section: "下半場", title: "Japanese Graffiti XXII City Pop Medley", arranger: "金山徹", note: "〈SPARKLE〉、〈プラスティック・ラヴ〉、〈君は天然色〉、〈フライディ・チャイナタウン〉、〈真夜中のドア〜stay with me〉", status: "confirmed" },
-      { section: "下半場", title: "Symphonic Suite of Galaxy (from Video Game Super Mario Galaxy)", composer: "橫田真人、近藤浩治", arranger: "尚水堂", status: "confirmed" }
+      {
+        section: "上半場",
+        localTitle: "閃耀的管樂",
+        foreignTitle: "Flashing Winds",
+        composer: "Jan Van der Roost／楊・范德魯斯特",
+        duration: "約 4 分 07 秒",
+        description: "這首 1989 年創作的管樂合奏作品以簡短莊嚴的信號曲風格開場，隨後以穩定快速的節奏一路推進；開頭的和弦音塊在結尾再次出現，使熱烈而色彩豐富的音樂形成完整呼應。",
+        status: "confirmed"
+      },
+      {
+        section: "上半場",
+        localTitle: "邦妮杜恩的美麗河畔",
+        foreignTitle: "Ye Banks and Braes o' Bonnie Doon",
+        composer: "Percy Grainger／帕西・葛人傑",
+        duration: "約 2 分 00 秒",
+        description: "葛人傑以蘇格蘭傳統民謠為核心，運用豐富和聲、溫柔對位與速度變化，描繪杜恩河畔的寧靜景色與失落愛情的感慨。",
+        status: "confirmed"
+      },
+      {
+        section: "上半場",
+        localTitle: "七夕",
+        foreignTitle: "たなばた／The Seventh Night of July",
+        composer: "Itaru Sakai／酒井格",
+        duration: "約 8 分 38 秒",
+        description: "酒井格以日本七夕傳說為靈感，中段由中音薩克斯風與上低音號二重奏代表故事中的男女主角，在慶典熱鬧、銀河夢幻與相會喜悅之間展開鮮明的音樂敘事。",
+        status: "confirmed"
+      },
+      {
+        section: "上半場",
+        title: "Novena to Seagate Overture",
+        composer: "James Swearingen／詹姆士・史威林金",
+        duration: "約 7 分 30 秒",
+        description: "本次演出將 James Swearingen 兩首風格不同的作品串聯，從《Novena》過渡至《Seagate Overture》，在熟悉的管樂語彙中呈現不同情緒與色彩。",
+        status: "confirmed"
+      },
+      {
+        section: "上半場",
+        localTitle: "曼哈頓",
+        foreignTitle: "Manhattan",
+        composer: "Philip Sparke／菲利浦・史巴克",
+        soloist: "黃鈺芠（1051）",
+        duration: "約 9 分 00 秒",
+        description: "這首小號與管樂團作品以「紐約的一個週末」為主題：第一樂章描繪星期六夜晚帶有藍調色彩的爵士酒吧，第二樂章則以鮮明節奏呈現星期日清晨在中央公園慢跑的活力。",
+        status: "confirmed"
+      },
+      {
+        section: "下半場",
+        localTitle: "銀河交響組曲（選自《超級瑪利歐銀河》）",
+        foreignTitle: "Symphonic Suite of Galaxy (from Super Mario Galaxy)",
+        composer: "Koji Kondo、Mahito Yokota／近藤浩治、橫田真人",
+        arranger: "尚水堂",
+        duration: "約 8 分 30 秒",
+        description: "《超級瑪利歐銀河》配樂以管弦樂為主軸並結合電子音色，在宏大宇宙感與親切旋律之間取得平衡；本次由尚水堂編為管樂團交響組曲。",
+        status: "confirmed"
+      },
+      {
+        section: "下半場",
+        localTitle: "治癒世界",
+        foreignTitle: "Heal the World",
+        composer: "Michael Jackson／麥可・傑克森",
+        arranger: "Ron Sebregts",
+        duration: "約 4 分 44 秒",
+        description: "作品收錄於 Michael Jackson 1991 年專輯《Dangerous》，以愛、和平與對下一代的關懷為主題，本次演出採 Ron Sebregts 的管樂團編曲版本。",
+        status: "confirmed"
+      },
+      {
+        section: "下半場",
+        localTitle: "酒與玫瑰的日子",
+        foreignTitle: "Days of Wine and Roses",
+        composer: "Henry Mancini／亨利・曼西尼",
+        arranger: "Naohiro Iwai／岩井直溥",
+        duration: "約 5 分 05 秒",
+        description: "Henry Mancini 為 1962 年電影創作的主題曲，以優美而略帶憂傷的旋律描寫美好時光的短暫；岩井直溥的管樂編曲保留原曲的優雅與溫暖層次。",
+        status: "confirmed"
+      },
+      {
+        section: "下半場",
+        localTitle: "日本風情畫 XXII：City Pop 組曲",
+        foreignTitle: "ジャパニーズ・グラフィティXXII シティー・ポップ・メドレー",
+        arranger: "Tohru Kanayama／金山徹",
+        duration: "約 7 分 55 秒",
+        note: "〈SPARKLE〉、〈プラスティック・ラヴ〉、〈君は天然色〉、〈フライディ・チャイナタウン〉、〈真夜中のドア～stay with me〉",
+        description: "金山徹編曲的《New Sounds in Brass 2024》作品，串連五首 1970 至 1980 年代日本 City Pop 名曲，保留洗練的都會感、懷舊氛圍與鮮明節奏律動。",
+        status: "confirmed"
+      }
     ],
     ticket: {
       type: "ticketed",
@@ -87,8 +177,8 @@ window.CONCERTS = [
     page: "concerts/2026-41st.html",
     onlineProgramBook: {
       url: "concerts/2026-41st-program/",
-      label: "開啟第 41 屆《為伍》線上節目冊（第一版）",
-      note: "目前為第一版，內容仍在持續校對中。"
+      label: "開啟第 41 屆《為伍》線上節目冊",
+      note: "曲序、人物與曲目資料已依目前可確認資訊校正；完整演出名冊等內容仍會持續更新。"
     },
     gallery: ["gallery/2026-weiwu.html"],
     news: [
@@ -102,14 +192,20 @@ window.CONCERTS = [
       "news/2026-07-18-rehearsal-sound-coming-together.html",
       "news/2026-07-19-rehearsal-stage-in-sight.html"
     ],
-    sources: ["concerts.html", "data/news.js", "news/2026-07-02-weiwu-announce.html", "OPENTIX 售票頁（2026-07-18）"],
-    status: "confirmed",
-    intro: [
-      "嘉義高中校友管樂團由各屆校友組成，秉持傳承、創新與熱情的理念，透過跨世代的音樂連結持續在舞台上相聚。",
-      "本次節目以《Manhattan》小號協奏曲為重頭戲，由校友黃鈺芠獨奏；另橫跨經典管樂、電玩遊戲改編、電影音樂、City Pop 與流行改編，展現管樂團多元的聲音面貌。"
+    sources: [
+      "第 41 屆《為伍》線上節目冊（2026-08-05 校正版）",
+      "丁肇賢指揮提供之曲序、曲目介紹與個人介紹資料",
+      "黃鈺芠本人提供之個人介紹資料",
+      "OPENTIX 售票頁（2026-07-18）"
     ],
-    programNote: "演出曲目依 OPENTIX 正式售票頁整理；主辦單位保留演出曲目異動之權利。",
-    notes: "OPENTIX 購票連結已於 2026-07-18 上架；票價 200 元，憑票入場、自由入座。"
+    sourceNote: "本頁日期、時間、場地與票務依正式海報及 OPENTIX 售票頁整理；指揮、獨奏者、曲序、曲名、樂曲介紹與演奏時間，依 2026-08-05 校正後的線上節目冊、指揮提供資料及可確認的管樂團出版資料更新。完整演出人員、幕後工作人員及贊助致謝尚未確認，因此不採用線上節目冊中的測試內容。",
+    status: "partial",
+    intro: [
+      "「為伍」代表相聚、陪伴與同行。睽違六年，嘉義高中校友管樂團與在校生重新回到嘉義市政府文化局音樂廳，讓不同世代的嘉中管樂人再次在同一座舞台相遇。",
+      "上半場由經典管樂原創與民謠作品展開，並由黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏；下半場則橫跨電玩交響組曲、流行音樂、電影音樂與日本 City Pop，呈現管樂團多元的聲音面貌。"
+    ],
+    programNote: "曲序、曲名、作曲／編曲者與演奏時間依目前校正完成的線上節目冊整理；主辦單位保留演出曲目異動之權利。",
+    notes: "基本演出資訊、三位樂團指揮、小號獨奏與正式曲序已依目前可確認資料更新；完整演出人員、幕後工作人員及贊助致謝仍待確認。"
   },
   {
     id: "2025-40th",

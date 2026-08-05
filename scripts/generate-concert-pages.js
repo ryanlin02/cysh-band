@@ -328,6 +328,7 @@ function programList(program, concert = {}) {
       : [work.composer, work.arranger ? `arr. ${work.arranger}` : ''];
     return [
       ...base,
+      work.duration ? `演奏時間：${work.duration}` : '',
       work.conductor ? `指揮：${work.conductor}` : '',
       work.soloist ? `獨奏：${work.soloist}` : '',
       work.note
@@ -621,7 +622,7 @@ function concertPageNav(concert) {
 function render(concert) {
   const title = pageTitle(concert);
   const plainTitle = `${title}｜校友聯演｜嘉義高中管樂隊`;
-  const desc = `${concert.year} 年第 ${concert.nth} 屆嘉義高中校友暨在校生聯合音樂會${displayTitle(concert)}資料頁：整理日期、場地、指揮、曲目、錄影與待考資訊。`;
+  const desc = concert.metaDescription || `${concert.year} 年第 ${concert.nth} 屆嘉義高中校友暨在校生聯合音樂會${displayTitle(concert)}資料頁：整理日期、場地、指揮、曲目、錄影與待考資訊。`;
   const lede = concertLead(concert, desc);
   const hasPoster = concert.poster && exists(concert.poster);
   const missing = missingFields(concert);
