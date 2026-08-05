@@ -402,6 +402,11 @@ window.CONCERT_PROGRAM_DATA = {
       "熱心贊助與協助練習之全體校友與親友",
       "所有蒞臨現場支持的樂迷朋友"
     ],
+    supportLink: {
+      label: "支持我們",
+      url: "https://cysh.band/support.html",
+      description: "若您願意陪伴嘉中管樂持續排練、演出與保存史料，歡迎了解支持方式。"
+    },
     feedbackUrl: "https://forms.gle/sample-feedback-form-41st"
   }
 };

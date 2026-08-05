@@ -655,6 +655,15 @@ function renderThanksAndHeritage() {
           <svg class="channel-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
         </a>
       </div>
+      ${organization.supportLink ? `
+        <div class="channel-support">
+          <p>${organization.supportLink.description}</p>
+          <a href="${organization.supportLink.url}" class="channel-support-link">
+            <span>${organization.supportLink.label}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+          </a>
+        </div>
+      ` : ''}
     </div>
 
     <!-- 電子問卷連結按鈕 -->

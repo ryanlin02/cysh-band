@@ -23,3 +23,5 @@
 曲名採有順序的 `titles` 陣列：第一筆是主要顯示名稱，其餘為輔助語言。指揮與獨奏家的 `bio` 使用單一字串，撰寫成僅供該場音樂會節目冊使用的完整介紹文章；可在文章中自然整合必要學經歷、專業特色與本次演出的關聯，不使用固定分段標籤。團長、指揮與獨奏家有官網人物頁時，均填入 `officialLink`。
 
 若某一屆要在「曲目解說」或「感謝與社群」頁加入主視覺，可分別填入 `program.heroImage` 與 `organization.heroImage` 的 `src`、`alt`、`width`、`height`。主視覺在手機與平板滿版呈現，桌機維持閱讀欄寬；圖片須使用 WebP、保留正確替代文字。演出團隊卡可填入 `photo`、`photoAlt`、`photoWidth`、`photoHeight`，照片會顯示在團名之前。
+
+若要在「感謝與社群」頁低調加入支持入口，可填入 `organization.supportLink` 的 `label`、`url` 與 `description`。連結會顯示在官方頻道卡片底部，不直接複製匯款帳號；未提供此欄位時不會產生支持入口。
