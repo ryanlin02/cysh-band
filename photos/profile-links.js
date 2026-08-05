@@ -147,6 +147,11 @@ window.PEOPLE_PROFILE_LINKS = {
       "url": "../people/9551.html",
       "photo": "../assets/img/members/9551.webp"
     },
+    "9581": {
+      "name": "李函濰",
+      "url": "../people/9581.html",
+      "photo": "../assets/img/members/9581.webp"
+    },
     "9601": {
       "name": "張永澤",
       "url": "../people/9601.html",

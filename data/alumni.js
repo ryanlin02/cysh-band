@@ -104,7 +104,7 @@ window.ALUMNI = [
   { num: "9531", name: "郭昱廷", year: 95, part: "薩克斯風", tags: ["薩克斯風"], role: "社狗小白飼料人形餵食器兼排泄物清理者", desc: "民國 95 年入學校友，曾參與第 31、35、38 屆校友聯演。", photo: "9531", link: "people/9531.html" },
   { num: "9541", name: "蔡秉憲", year: 95, part: "法國號", tags: ["法國號"], role: "", desc: "民國 95 年入學校友，曾參與第 96 屆校友聯演。", photo: "blank", link: "" },
   { num: "9551", name: "吳東謙", year: 95, part: "小號", tags: ["小號"], role: "海底撈月．槓上開花", desc: "民國 95 年入學校友，曾參與 96、97 屆校友聯演。", photo: "9551", link: "people/9551.html" },
-  { num: "9581", name: "李函濰", year: 95, part: "低音號", tags: ["低音號"], role: "我住嘉義", desc: "民國 95 年入學，低音號聲部校友。", photo: "9581", link: "" },
+  { num: "9581", name: "李函濰", year: 95, part: "低音號", tags: ["低音號"], role: "我住嘉義", desc: "民國 95 年入學，低音號聲部校友。", photo: "9581", link: "people/9581.html" },
   { num: "9601", name: "張永澤", year: 96, part: "社長．長號", tags: ["幹部", "長號"], role: "長號．校友聯演籌備", desc: "民國 96 年入學，當屆社長，長號聲部。曾參與第 28 屆《追憶・榮耀》主要籌備與行政統籌。", photo: "9601", link: "people/9601.html" },
   { num: "9611", name: "張容慈", year: 96, part: "長笛", tags: ["長笛"], role: "", desc: "民國 96 年入學校友，曾參與 97~99、105 屆校友聯演。", photo: "blank", link: "" },
   { num: "9661", name: "謝梓嫣", year: 96, part: "長號", tags: ["長號"], role: "", desc: "民國 96 年入學校友，曾參與第 98 屆校友聯演。", photo: "9661", link: "" },
