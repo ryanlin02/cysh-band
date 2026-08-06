@@ -551,15 +551,17 @@ img {
 }
 
 .venue-tour-link {
+  position: relative;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  margin-left: 6px;
-  padding: 8px 11px;
-  border: 1px solid var(--accent-gold-border);
-  border-radius: 999px;
-  background: var(--accent-gold-light);
+  align-items: baseline;
+  gap: .28em;
+  max-width: 100%;
+  margin-left: .45rem;
+  padding: 0 0 .08em;
+  border: 0;
+  border-bottom: 1px solid var(--accent-gold);
+  border-radius: 0;
+  background: transparent;
   color: var(--accent-gold);
   font-size: .78em;
   font-weight: 700;
@@ -567,13 +569,29 @@ img {
   line-height: 1.2;
   white-space: nowrap;
   vertical-align: middle;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
 }
-
+.venue-tour-link::before {
+  content: "";
+  position: absolute;
+  inset: -15px -8px;
+}
+.venue-tour-link::after {
+  content: "→";
+  flex: 0 0 auto;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
 .venue-tour-link:hover,
 .venue-tour-link:focus-visible {
-  border-color: var(--accent-gold);
-  background: rgba(184, 142, 40, .16);
+  border-bottom-color: currentColor;
+  background: transparent;
   color: var(--accent-gold-hover);
+}
+.venue-tour-link:hover::after { transform: translateX(2px); }
+.venue-tour-link:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 4px;
 }
 
 .card-title-serif {

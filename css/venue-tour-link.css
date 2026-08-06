@@ -1,0 +1,45 @@
+/* 線上導覽：一般官網頁面的低干擾 inline 入口。 */
+.venue-tour-link {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: .28em;
+  max-width: 100%;
+  min-height: 0;
+  margin-left: .45rem;
+  padding: 0 0 .08em;
+  border: 0;
+  border-bottom: 1px solid var(--gold-soft);
+  border-radius: 0;
+  background: transparent;
+  color: var(--gold);
+  font-size: .76em;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: color var(--duration-fast), border-color var(--duration-fast);
+}
+.venue-tour-link::before {
+  content: "";
+  position: absolute;
+  inset: -15px -8px;
+}
+.venue-tour-link::after {
+  content: "→";
+  flex: 0 0 auto;
+  line-height: 1;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.venue-tour-link:hover,
+.venue-tour-link:focus-visible {
+  border-bottom-color: currentColor;
+  background: transparent;
+  color: var(--gold);
+}
+.venue-tour-link:hover::after { transform: translateX(2px); }
+.venue-tour-link:focus-visible {
+  outline: 2px solid rgba(160,124,49,.75);
+  outline-offset: 4px;
+}
