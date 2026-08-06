@@ -1178,10 +1178,21 @@ function checkHallTour() {
   if (!/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex[^"']*nofollow/i.test(html)) {
     addError('hall/tour/index.html: test page must remain noindex and nofollow.');
   }
+  if (!/data-tour-layout=["']immersive["']/i.test(html)) {
+    addError('hall/tour/index.html: immersive full-screen layout marker is missing.');
+  }
+  ['scenesBtn', 'mapBtn', 'infoBtn', 'gyroBtn', 'tourPanel'].forEach((id) => {
+    if (!html.includes(`id="${id}"`)) {
+      addError(`hall/tour/index.html: immersive control #${id} is missing.`);
+    }
+  });
+  if (!html.includes("gyroPlugin.start('fast')")) {
+    addError('hall/tour/index.html: gyroscope must remain user-initiated in fast mode.');
+  }
   if (read('sitemap.xml').includes('https://cysh.band/hall/tour/')) {
     addError('sitemap.xml: hall tour test page must not be listed before public release.');
   }
-  info.push('Hall tour checked: source data, generated page, private-test markers, and sitemap exclusion');
+  info.push('Hall tour checked: source data, immersive controls, user-initiated gyroscope, private-test markers, and sitemap exclusion');
 }
 
 function printReport() {

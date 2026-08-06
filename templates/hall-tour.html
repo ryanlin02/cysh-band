@@ -6,7 +6,7 @@
 <title>360 環景導覽｜{{VENUE}}</title>
 <meta name="description" content="{{DESC}}">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<meta name="theme-color" content="#faf8f3">
+<meta name="theme-color" content="#171310">
 <link rel="canonical" href="https://cysh.band/hall/tour/">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
 <meta property="og:type" content="website">
@@ -21,55 +21,145 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.min.css">
 <style>
-  :root{--paper:#faf8f3;--ink:#241f1a;--muted:#7a7068;--line:#e2dcd1;--accent:#8c2f28}
+  :root{
+    --paper:#faf8f3;--surface:#fffdf9;--ink:#241f1a;--muted:#746a62;--line:#ded6ca;
+    --accent:#8c2f28;--control:rgba(24,20,17,.72);--control-hover:rgba(24,20,17,.9);
+    --white:#fff;--focus:#f3bd57;--z-viewer:0;--z-chrome:20;--z-scrim:30;--z-panel:40;
+    --z-dialog:50;--motion:220ms cubic-bezier(.2,.8,.2,1)
+  }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);line-height:1.7;
+  html,body{width:100%;height:100%;height:100dvh;overflow:hidden}
+  body{margin:0;background:#171310;color:var(--ink);line-height:1.6;
     font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;
-    -webkit-text-size-adjust:100%}
-  .skip-link{position:fixed;left:12px;top:8px;z-index:1000;transform:translateY(-160%);
-    background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:6px}
+    -webkit-text-size-adjust:100%;overscroll-behavior:none}
+  button,a{touch-action:manipulation}
+  button{font:inherit}
+  [hidden]{display:none!important}
+  .skip-link{position:fixed;left:12px;top:max(8px,env(safe-area-inset-top));z-index:100;
+    transform:translateY(-180%);background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:8px}
   .skip-link:focus{transform:translateY(0)}
-  .wrap{max-width:940px;margin:0 auto;padding:22px 16px 60px}
-  .utility{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
-  .home-link{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);
-    text-underline-offset:4px;font-size:14px}
-  .status-pill{display:inline-flex;align-items:center;min-height:32px;padding:4px 11px;
-    border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:12px;font-weight:700}
-  h1{font-size:20px;font-weight:600;margin:0 0 2px}
-  .sub{font-size:13px;color:var(--muted);margin:0 0 16px}
-  .testing-note{margin:0 0 16px;padding:10px 12px;border-left:3px solid var(--accent);
-    background:#fffdf9;color:var(--muted);font-size:13px}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
-  .tabs button{background:transparent;border:1px solid var(--line);border-radius:20px;
-    min-height:44px;padding:7px 16px;font-size:13.5px;cursor:pointer;font-family:inherit;color:var(--muted);
-    touch-action:manipulation}
-  .tabs button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .tabs button:disabled{opacity:.35;cursor:default}
-  #viewer{width:100%;height:56vh;min-height:320px;background:#1a1613;
-    border-radius:10px;overflow:hidden;border:1px solid var(--line)}
-  .now{margin:12px 0 0}
-  .now b{font-size:16px;font-weight:600}
-  .now span{font-size:13px;color:var(--muted);margin-left:8px}
-  .desc{font-size:14px;margin:6px 0 0;color:var(--ink)}
-  .floorbar{display:flex;gap:8px;margin:14px 0 8px}
-  .floorbar button{background:transparent;border:1px solid var(--line);border-radius:20px;
-    min-height:44px;padding:7px 15px;font-size:13px;cursor:pointer;font-family:inherit;color:var(--muted);
-    touch-action:manipulation}
-  .floorbar button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;-webkit-overflow-scrolling:touch}
-  .thumb{flex:0 0 auto;width:126px;min-height:82px;border:2px solid transparent;border-radius:8px;
-    overflow:hidden;cursor:pointer;background:#fffdf9;padding:0;text-align:left}
+  .tour-shell{position:relative;width:100%;height:100%;isolation:isolate;overflow:hidden}
+  #tour-main,#viewer{position:absolute;inset:0;width:100%;height:100%}
+  #viewer{z-index:var(--z-viewer);background:#171310}
+  .topbar{position:absolute;z-index:var(--z-chrome);top:0;left:0;right:0;display:flex;
+    align-items:flex-start;gap:10px;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 12px max(12px,env(safe-area-inset-left));
+    pointer-events:none;transition:opacity var(--motion)}
+  .glass-control{border:1px solid rgba(255,255,255,.28);background:var(--control);color:var(--white);
+    box-shadow:0 8px 26px rgba(0,0,0,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .home-link,.top-action{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;
+    width:48px;height:48px;flex:0 0 48px;border-radius:50%;text-decoration:none;cursor:pointer}
+  .top-action{border:1px solid rgba(255,255,255,.28);margin-left:auto}
+  .home-link:hover,.top-action:hover,.home-link:active,.top-action:active{background:var(--control-hover)}
+  .home-link svg,.top-action svg,.dock-button svg,.close-button svg{width:22px;height:22px;fill:none;
+    stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .scene-chip{pointer-events:none;min-height:48px;max-width:min(520px,calc(100vw - 130px));padding:7px 14px;
+    border-radius:14px;color:var(--white)}
+  .scene-chip small{display:block;font-size:11px;line-height:1.2;letter-spacing:.08em;color:rgba(255,255,255,.72)}
+  .scene-chip strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;line-height:1.45;font-weight:650}
+  .scene-chip span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;color:rgba(255,255,255,.78)}
+  .bottom-dock{position:absolute;z-index:var(--z-chrome);left:50%;bottom:max(12px,env(safe-area-inset-bottom));
+    transform:translateX(-50%);display:flex;align-items:stretch;gap:4px;padding:5px;border-radius:19px;
+    transition:opacity var(--motion),transform var(--motion)}
+  .dock-button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;min-width:64px;min-height:58px;padding:6px 9px;border:0;border-radius:14px;background:transparent;
+    color:rgba(255,255,255,.82);font-size:11.5px;line-height:1;cursor:pointer}
+  .dock-button:hover,.dock-button:active,.dock-button[aria-expanded="true"],.dock-button[aria-pressed="true"]{
+    background:rgba(255,255,255,.16);color:var(--white)}
+  .dock-button:disabled{opacity:.45;cursor:not-allowed}
+  .dock-button svg{width:23px;height:23px}
+  .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .topbar,
+  .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .bottom-dock{opacity:.56}
+  .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .bottom-dock{transform:translateX(-50%) translateY(3px)}
+  .scrim{position:absolute;z-index:var(--z-scrim);inset:0;background:rgba(8,7,6,.5);backdrop-filter:blur(2px);
+    -webkit-backdrop-filter:blur(2px);opacity:1;transition:opacity var(--motion)}
+  .panel{position:absolute;z-index:var(--z-panel);left:8px;right:8px;bottom:8px;max-height:min(72dvh,680px);
+    display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.45);border-radius:22px;
+    background:rgba(250,248,243,.98);box-shadow:0 -12px 38px rgba(0,0,0,.25);
+    transform:translateY(0);transition:transform var(--motion),opacity var(--motion)}
+  .panel-head{display:flex;align-items:center;gap:12px;padding:14px 14px 10px 18px;border-bottom:1px solid var(--line)}
+  .panel-head-copy{min-width:0;flex:1}
+  .panel-kicker{display:block;font-size:11px;letter-spacing:.08em;color:var(--accent);font-weight:700}
+  .panel-title{margin:0;font-size:19px;line-height:1.35;font-weight:650}
+  .close-button{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;flex:0 0 48px;
+    border:0;border-radius:50%;background:#eee8df;color:var(--ink);cursor:pointer}
+  .close-button:hover,.close-button:active{background:#e4dccf}
+  .panel-body{overflow:auto;-webkit-overflow-scrolling:touch;padding:16px 18px max(24px,env(safe-area-inset-bottom));overscroll-behavior:contain}
+  .panel-view{min-width:0}
+  .tabs,.floorbar{display:flex;gap:8px;flex-wrap:wrap}
+  .tabs{margin:0 0 16px}
+  .tabs button,.floorbar button{background:transparent;border:1px solid var(--line);border-radius:999px;
+    min-height:44px;padding:7px 15px;font-size:13.5px;cursor:pointer;color:var(--muted)}
+  .tabs button.on,.floorbar button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .tabs button:disabled{opacity:.4;cursor:default}
+  .floorbar{margin:0 0 10px}
+  .strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .thumb{min-width:0;min-height:108px;border:2px solid transparent;border-radius:12px;overflow:hidden;
+    cursor:pointer;background:var(--surface);padding:0;text-align:left;box-shadow:0 1px 0 rgba(36,31,26,.05)}
   .thumb.on{border-color:var(--accent)}
-  .thumb img{width:100%;height:60px;object-fit:cover;display:block;background:#efe9de}
-  .thumb span{display:block;font-size:11.5px;padding:5px 7px;line-height:1.35;color:var(--ink)}
-  h2{font-size:15px;font-weight:600;margin:28px 0 4px}
+  .thumb img{width:100%;height:82px;object-fit:cover;display:block;background:#efe9de}
+  .thumb span{display:block;font-size:12px;padding:7px 9px;line-height:1.4;color:var(--ink)}
+  .info-card{padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+  .info-card+.info-card{margin-top:12px}
+  .info-card h3{margin:0 0 5px;font-size:15px}
+  .info-card p{margin:0;font-size:14px;color:var(--muted)}
+  .info-card p+p{margin-top:7px}
+  .testing-note{border-left:3px solid var(--accent);padding-left:11px}
+  .scene-info{margin-bottom:14px}
+  .scene-info b{display:block;font-size:17px;font-weight:650}
+  .scene-info span{display:block;font-size:13px;color:var(--muted)}
+  .desc{font-size:14px;margin:6px 0 0;color:var(--ink)}
+  .map-heading{font-size:16px;margin:0 0 3px}
   .note{font-size:13px;color:var(--muted);margin:0 0 12px}
-  footer{margin-top:40px;font-size:12px;color:var(--muted)}
-  button:focus-visible,a:focus-visible,[role="button"]:focus-visible{outline:3px solid #c9993f;outline-offset:3px}
+  .updated{font-size:12px;color:var(--muted);margin:16px 0 0}
+  .gyro-intro{position:absolute;z-index:var(--z-dialog);left:50%;bottom:92px;width:min(440px,calc(100% - 24px));
+    transform:translateX(-50%);padding:18px;border:1px solid rgba(255,255,255,.35);border-radius:20px;
+    background:rgba(24,20,17,.92);box-shadow:0 18px 48px rgba(0,0,0,.34);color:var(--white);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .gyro-intro h2{font-size:18px;margin:0 0 5px}
+  .gyro-intro p{font-size:14px;line-height:1.6;margin:0;color:rgba(255,255,255,.78)}
+  .intro-actions{display:flex;gap:8px;margin-top:15px}
+  .intro-actions button{min-height:48px;border-radius:12px;padding:9px 14px;border:1px solid rgba(255,255,255,.25);cursor:pointer}
+  .intro-primary{flex:1;background:var(--white);color:var(--ink);font-weight:650}
+  .intro-secondary{background:transparent;color:var(--white)}
+  .toast{position:absolute;z-index:var(--z-dialog);left:50%;top:84px;transform:translateX(-50%);
+    max-width:calc(100% - 24px);padding:9px 14px;border-radius:999px;background:rgba(24,20,17,.9);
+    color:var(--white);font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.24)}
+  button:focus-visible,a:focus-visible,[role="button"]:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+  @media (min-width:720px){
+    .strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  @media (min-width:900px){
+    .topbar{padding:18px}
+    .scene-chip{max-width:560px}
+    .panel{top:84px;bottom:92px;left:18px;right:auto;width:min(390px,calc(100vw - 36px));max-height:none;border-radius:18px;
+      box-shadow:14px 0 40px rgba(0,0,0,.25)}
+    .panel-body{padding-bottom:20px}
+    .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .scrim{background:rgba(8,7,6,.28);backdrop-filter:none;-webkit-backdrop-filter:none}
+    .bottom-dock{bottom:18px}
+    .gyro-intro{bottom:98px}
+  }
   @media (max-width:480px){
-    .wrap{padding-top:max(14px,env(safe-area-inset-top));padding-bottom:max(52px,env(safe-area-inset-bottom))}
-    .utility{align-items:flex-start}
-    #viewer{height:58vh;min-height:360px;max-height:560px}
+    .scene-chip{max-width:calc(100vw - 78px);padding-right:12px}
+    .top-action{display:none}
+    .bottom-dock{width:calc(100% - 16px);justify-content:space-around;bottom:max(8px,env(safe-area-inset-bottom));padding:4px}
+    .dock-button{flex:1;min-width:0;min-height:60px;padding-inline:4px}
+    .panel{left:4px;right:4px;bottom:4px;max-height:76dvh}
+    .panel-head{padding-top:12px}
+    .panel-body{padding-inline:14px}
+    .gyro-intro{bottom:84px}
+    .intro-actions{flex-direction:column}
+    .intro-secondary{order:2}
+  }
+  @media (orientation:landscape) and (max-height:520px){
+    .topbar{padding-top:max(8px,env(safe-area-inset-top))}
+    .scene-chip small,.scene-chip span{display:none}
+    .scene-chip{min-height:48px;display:flex;align-items:center}
+    .panel{top:6px;bottom:6px;left:6px;right:auto;width:min(390px,55vw);max-height:none}
+    .bottom-dock{left:auto;right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));transform:none;flex-direction:column}
+    .dock-button{min-width:54px;min-height:46px;flex-direction:row;gap:6px}
+    .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .bottom-dock{transform:translateY(3px)}
+    .gyro-intro{left:auto;right:74px;bottom:8px;transform:none;width:min(420px,calc(100% - 160px))}
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;
@@ -78,32 +168,83 @@
 </style>
 </head>
 <body>
-<a class="skip-link" href="#tour-main">跳到導覽內容</a>
-<div class="wrap">
-  <div class="utility">
-    <a class="home-link" href="../../">← 返回嘉中管樂</a>
-    <span class="status-pill">線上測試版</span>
-  </div>
-  <h1>360 環景導覽</h1>
-  <p class="sub">{{VENUE}}</p>
-  <p class="testing-note">目前開放音樂廳前廳與觀眾席測試；舞台、後台入口及地下室休息室尚未開放。</p>
-
-  <main id="tour-main">
-  <div class="tabs" id="regions"></div>
-  <div id="viewer"></div>
-
-  <div class="now"><b id="nowName">—</b><span id="nowPos"></span></div>
-  <p class="desc" id="nowDesc"></p>
-
-  <div class="floorbar" id="floorbar"></div>
-  <div class="strip" id="strip"></div>
-
-  <h2 id="mapTitle">位置</h2>
-  <p class="note" id="mapNote"></p>
-  <div id="map"></div>
+<a class="skip-link" href="#tour-controls">跳到導覽控制列</a>
+<div class="tour-shell" data-tour-layout="immersive">
+  <main id="tour-main" aria-label="{{VENUE}} 360 環景">
+    <div id="viewer"></div>
   </main>
 
-  <footer>資料更新：{{GENERATED}}</footer>
+  <header class="topbar" aria-label="目前場景">
+    <a class="home-link glass-control" href="../../" aria-label="返回嘉中管樂官網">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <div class="scene-chip glass-control">
+      <small>線上測試版 · {{VENUE}}</small>
+      <strong id="nowName">載入場景中</strong>
+      <span id="nowPos"></span>
+    </div>
+    <button class="top-action glass-control" id="fullscreenBtn" type="button" aria-label="切換全螢幕">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+    </button>
+  </header>
+
+  <nav class="bottom-dock glass-control" id="tour-controls" aria-label="導覽工具">
+    <button class="dock-button" id="scenesBtn" type="button" data-panel="scenes" aria-controls="tourPanel" aria-expanded="false">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>場景</span>
+    </button>
+    <button class="dock-button" id="mapBtn" type="button" data-panel="map" aria-controls="tourPanel" aria-expanded="false">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 6 5-3 8 3 5-3v15l-5 3-8-3-5 3Z"/><path d="M8 3v15M16 6v15"/></svg>
+      <span>地圖</span>
+    </button>
+    <button class="dock-button" id="infoBtn" type="button" data-panel="info" aria-controls="tourPanel" aria-expanded="false">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>
+      <span>說明</span>
+    </button>
+    <button class="dock-button" id="gyroBtn" type="button" aria-pressed="false" disabled>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M10 5h4M11.5 19h1"/><path d="M4 8a9 9 0 0 0 0 8M20 8a9 9 0 0 1 0 8"/></svg>
+      <span>感應</span>
+    </button>
+  </nav>
+
+  <div class="scrim" id="panelScrim" hidden></div>
+  <section class="panel" id="tourPanel" role="dialog" aria-modal="true" aria-labelledby="panelTitle" hidden>
+    <div class="panel-head">
+      <div class="panel-head-copy"><span class="panel-kicker">360 環景導覽</span><h2 class="panel-title" id="panelTitle">場景</h2></div>
+      <button class="close-button" id="panelClose" type="button" aria-label="關閉面板">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="panel-body">
+      <div class="panel-view" data-panel-view="scenes" hidden>
+        <div class="tabs" id="regions"></div>
+        <div class="floorbar" id="floorbar"></div>
+        <div class="strip" id="strip"></div>
+      </div>
+      <div class="panel-view" data-panel-view="map" hidden>
+        <h3 class="map-heading" id="mapTitle">位置</h3>
+        <p class="note" id="mapNote"></p>
+        <div id="map"></div>
+      </div>
+      <div class="panel-view" data-panel-view="info" hidden>
+        <div class="scene-info"><b id="infoSceneName">目前場景</b><span id="infoScenePos"></span><p class="desc" id="nowDesc"></p></div>
+        <div class="info-card testing-note"><h3>目前測試範圍</h3><p>開放音樂廳前廳與觀眾席；舞台、後台入口及地下室休息室尚未開放。</p></div>
+        <div class="info-card"><h3>操作方式</h3><p>用手指拖曳或滑鼠轉動視角，點畫面中的圓點前往下一個拍攝位置；手機也可自行開啟「感應」模式。</p></div>
+        <div class="info-card"><h3>關於本頁</h3><p>本頁為嘉義市政府文化局音樂廳 360 導覽的線上測試版，目前不列入官網導覽與搜尋引擎索引。</p></div>
+        <p class="updated">資料更新：{{GENERATED}}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="gyro-intro" id="gyroIntro" role="dialog" aria-modal="false" aria-labelledby="gyroTitle" hidden>
+    <h2 id="gyroTitle">要用轉動手機來看四周嗎？</h2>
+    <p>這項功能需要你主動允許動作感應。也可以先略過，隨時用手指拖曳瀏覽。</p>
+    <div class="intro-actions">
+      <button class="intro-primary" id="gyroStart" type="button">開啟感應導覽</button>
+      <button class="intro-secondary" id="gyroSkip" type="button">先用手指瀏覽</button>
+    </div>
+  </section>
+  <div class="toast" id="tourToast" role="status" aria-live="polite" hidden></div>
 </div>
 
 <script type="importmap">
@@ -126,6 +267,84 @@ import { createPlanMap, PLAN_MAP_CSS } from '../../assets/hall-tour/plan-map.js'
 import { linksFor, toMarkers, TOUR_DOT_CSS } from '../../assets/hall-tour/links.js';
 
 const REDUCED_MOTION = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_COMPACT = () => matchMedia('(max-width: 899px)').matches;
+
+const shell = document.querySelector('.tour-shell');
+const panel = document.getElementById('tourPanel');
+const panelScrim = document.getElementById('panelScrim');
+const panelTitle = document.getElementById('panelTitle');
+const panelClose = document.getElementById('panelClose');
+const panelButtons = [...document.querySelectorAll('[data-panel]')];
+const panelViews = [...document.querySelectorAll('[data-panel-view]')];
+const gyroIntro = document.getElementById('gyroIntro');
+const gyroBtn = document.getElementById('gyroBtn');
+const gyroStart = document.getElementById('gyroStart');
+const gyroSkip = document.getElementById('gyroSkip');
+const toast = document.getElementById('tourToast');
+let activePanel = null;
+let lastPanelTrigger = null;
+let idleTimer = null;
+let toastTimer = null;
+
+function wakeControls() {
+  shell.classList.remove('controls-idle');
+  clearTimeout(idleTimer);
+  if (!activePanel && gyroIntro.hidden) {
+    idleTimer = setTimeout(() => shell.classList.add('controls-idle'), 4500);
+  }
+}
+
+function showToast(message) {
+  clearTimeout(toastTimer);
+  toast.textContent = message;
+  toast.hidden = false;
+  toastTimer = setTimeout(() => { toast.hidden = true; }, 3600);
+}
+
+function closePanel({ restoreFocus = true } = {}) {
+  if (!activePanel) return;
+  panel.hidden = true;
+  panelScrim.hidden = true;
+  shell.classList.remove('panel-open');
+  panelButtons.forEach(b => b.setAttribute('aria-expanded', 'false'));
+  activePanel = null;
+  if (restoreFocus && lastPanelTrigger) lastPanelTrigger.focus({ preventScroll: true });
+  wakeControls();
+}
+
+function openPanel(name, trigger) {
+  const samePanel = activePanel === name && !panel.hidden;
+  if (samePanel) return closePanel();
+  activePanel = name;
+  lastPanelTrigger = trigger || lastPanelTrigger;
+  panelTitle.textContent = { scenes: '選擇場景', map: '地圖與位置', info: '導覽說明' }[name];
+  panelViews.forEach(view => { view.hidden = view.dataset.panelView !== name; });
+  panelButtons.forEach(b => b.setAttribute('aria-expanded', String(b.dataset.panel === name)));
+  panel.hidden = false;
+  panelScrim.hidden = false;
+  shell.classList.add('panel-open');
+  shell.classList.remove('controls-idle');
+  requestAnimationFrame(() => panelClose.focus({ preventScroll: true }));
+}
+
+panelButtons.forEach(button => button.addEventListener('click', () => openPanel(button.dataset.panel, button)));
+panelClose.addEventListener('click', () => closePanel());
+panelScrim.addEventListener('click', () => closePanel());
+panel.addEventListener('keydown', event => {
+  if (event.key !== 'Tab') return;
+  const focusable = [...panel.querySelectorAll('button:not([disabled]),a[href]')]
+    .filter(el => !el.closest('[hidden]'));
+  if (!focusable.length) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && activePanel) closePanel();
+  if (event.key === 'Escape' && !gyroIntro.hidden) dismissGyroIntro();
+});
+['pointerdown', 'pointermove', 'keydown'].forEach(type =>
+  shell.addEventListener(type, wakeControls, { passive: true }));
 
 document.head.appendChild(Object.assign(document.createElement('style'),
   { textContent: SEAT_MAP_CSS + PLAN_MAP_CSS + TOUR_DOT_CSS }));
@@ -154,7 +373,7 @@ const viewer = new Viewer({
   container: 'viewer',
   panorama: viewerSrcOf(region, region.nodes[0], 'preview'),
   caption: region.nodes[0].name,
-  navbar: ['zoom', 'move', 'gyroscope', 'caption', 'fullscreen'],
+  navbar: false,
   defaultZoomLvl: 30,
   defaultTransition: { speed: 700, effect: 'fade', rotation: true },
   plugins: [
@@ -165,6 +384,75 @@ const viewer = new Viewer({
 });
 const rd = viewer.renderer && viewer.renderer.renderer;
 if (rd && rd.setPixelRatio) rd.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+const gyroPlugin = viewer.getPlugin(GyroscopePlugin);
+const gyroLabel = gyroBtn.querySelector('span');
+const sessionGet = key => { try { return sessionStorage.getItem(key); } catch (_) { return null; } };
+const sessionSet = (key, value) => { try { sessionStorage.setItem(key, value); } catch (_) {} };
+
+function syncGyroState(enabled) {
+  gyroBtn.setAttribute('aria-pressed', String(enabled));
+  gyroLabel.textContent = enabled ? '關閉感應' : '感應';
+  gyroBtn.setAttribute('aria-label', enabled ? '關閉手機動作感應' : '開啟手機動作感應');
+}
+
+function dismissGyroIntro() {
+  gyroIntro.hidden = true;
+  shell.classList.remove('intro-open');
+  sessionSet('hall-tour-gyro-intro', 'seen');
+  wakeControls();
+}
+
+async function startGyroscope() {
+  gyroBtn.disabled = true;
+  gyroStart.disabled = true;
+  gyroStart.textContent = '正在開啟…';
+  try {
+    await gyroPlugin.start('fast');
+    dismissGyroIntro();
+    showToast('感應導覽已開啟；轉動手機即可環顧四周');
+  } catch (_) {
+    dismissGyroIntro();
+    showToast('未能開啟動作感應，仍可用手指拖曳瀏覽');
+  } finally {
+    gyroBtn.disabled = false;
+    gyroStart.disabled = false;
+    gyroStart.textContent = '開啟感應導覽';
+    syncGyroState(gyroPlugin.isEnabled());
+  }
+}
+
+gyroPlugin.addEventListener('gyroscope-updated', event => syncGyroState(event.gyroscopeEnabled));
+gyroBtn.addEventListener('click', async () => {
+  if (gyroPlugin.isEnabled()) {
+    gyroPlugin.stop();
+    showToast('感應導覽已關閉');
+  } else {
+    await startGyroscope();
+  }
+});
+gyroStart.addEventListener('click', startGyroscope);
+gyroSkip.addEventListener('click', dismissGyroIntro);
+
+gyroPlugin.isSupported().then(supported => {
+  gyroBtn.disabled = !supported;
+  if (!supported) {
+    gyroBtn.hidden = true;
+  }
+}).catch(() => {
+  gyroBtn.disabled = true;
+  gyroBtn.hidden = true;
+});
+
+document.getElementById('fullscreenBtn').addEventListener('click', async () => {
+  try {
+    if (document.fullscreenElement) await document.exitFullscreen();
+    else await shell.requestFullscreen();
+  } catch (_) {
+    showToast('這個瀏覽器目前無法切換全螢幕');
+  }
+});
+if (!shell.requestFullscreen) document.getElementById('fullscreenBtn').hidden = true;
 
 // 座位表與平面圖是兩種定位方式，依區域使用的欄位決定顯示哪一種
 const mapEl = document.getElementById('map');
@@ -227,21 +515,21 @@ function buildMap() {
                   + (q.floor === p.floor ? 0 : 40);
           if (d < bd) { bd = d; best = i; }
         });
-        if (best !== null) go(best);
+        if (best !== null) { go(best); closePanelOnCompact(); }
       },
     });
     seatMap.setMarkers(
       region.nodes.filter(n => n.seat).map(n => ({
         id: n.id, seatId: n.seat, label: n.name, n: region.nodes.indexOf(n) + 1,
       })),
-      m => go(region.nodes.findIndex(n => n.id === m.id)));
+      m => { go(region.nodes.findIndex(n => n.id === m.id)); closePanelOnCompact(); });
   } else {
     planMap = createPlanMap(mapEl, {
       plans: { '1F': '../../assets/hall-tour/plan/1F.png',
                '2F': '../../assets/hall-tour/plan/2F.png' },
       floor,
       pickable: false,
-      onMarker(m) { go(region.nodes.findIndex(n => n.id === m.id)); },
+      onMarker(m) { go(region.nodes.findIndex(n => n.id === m.id)); closePanelOnCompact(); },
     });
   }
   refreshMap();
@@ -268,7 +556,7 @@ function buildTabs() {
     b.textContent = r.name + (ready ? '' : '（尚未開放）');
     b.className = r.id === region.id ? 'on' : '';
     b.disabled = !ready;
-    b.onclick = () => switchRegion(r, 0);
+    b.onclick = () => { switchRegion(r, 0); closePanelOnCompact(); };
     bar.appendChild(b);
   });
 }
@@ -304,9 +592,13 @@ function buildStrip() {
     // 一份不可供 WebGL 讀取的快取，造成點擊縮圖後顯示載入失敗。
     b.innerHTML = `<img src="${srcOf(region, n, 'preview')}" alt="" loading="lazy" crossorigin="anonymous">` +
                   `<span>${n.name}</span>`;
-    b.onclick = () => go(i);
+    b.onclick = () => { go(i); closePanelOnCompact(); };
     strip.appendChild(b);
   });
+}
+
+function closePanelOnCompact() {
+  if (IS_COMPACT()) closePanel({ restoreFocus: false });
 }
 
 let loadedPano = viewerSrcOf(regions[0], regions[0].nodes[0], "preview");
@@ -367,8 +659,11 @@ async function performGo(i, _unused, keepDirection = true) {
   buildStrip();
 
   document.getElementById('nowName').textContent = n.name;
-  document.getElementById('nowPos').textContent =
-    n.seat && seatMap && seatMap.get(n.seat) ? `拍攝位置約在 ${seatMap.get(n.seat).label}` : '';
+  const positionText = n.seat && seatMap && seatMap.get(n.seat)
+    ? `拍攝位置約在 ${seatMap.get(n.seat).label}` : '';
+  document.getElementById('nowPos').textContent = positionText;
+  document.getElementById('infoSceneName').textContent = n.name;
+  document.getElementById('infoScenePos').textContent = positionText;
   document.getElementById('nowDesc').textContent = n.description || '';
   refreshMap();
 
@@ -401,7 +696,20 @@ async function performGo(i, _unused, keepDirection = true) {
 buildTabs();
 buildFloorBar();
 buildMap();
-viewer.addEventListener('ready', () => go(0, null, false), { once: true });
+viewer.addEventListener('ready', async () => {
+  go(0, null, false);
+  wakeControls();
+  const supported = await gyroPlugin.isSupported().catch(() => false);
+  const mobileLike = matchMedia('(pointer: coarse)').matches;
+  if (supported && mobileLike && !sessionGet('hall-tour-gyro-intro')) {
+    setTimeout(() => {
+      if (activePanel || !gyroIntro.hidden) return;
+      gyroIntro.hidden = false;
+      shell.classList.add('intro-open');
+      shell.classList.remove('controls-idle');
+    }, 700);
+  }
+}, { once: true });
 viewer.addEventListener('panorama-error', e => console.error('全景載入失敗', e.error));
 </script>
 </body>
