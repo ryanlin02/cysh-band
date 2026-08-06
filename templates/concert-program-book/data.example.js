@@ -40,6 +40,7 @@ window.CONCERT_PROGRAM_DATA = {
       ],
       composer: ["中文姓名", "Romanized Name"],
       arranger: "編曲者",
+      conductor: "指揮姓名",
       note: ["曲目解說第一段。"]
     }],
     secondHalf: []

@@ -85,6 +85,7 @@ window.CONCERTS = [
         localTitle: "閃耀的管樂",
         foreignTitle: "Flashing Winds",
         composer: "Jan Van der Roost／楊・范德魯斯特",
+        conductor: "丁肇賢",
         duration: "約 4 分 07 秒",
         description: "這首 1989 年創作的管樂合奏作品以簡短莊嚴的信號曲風格開場，隨後以穩定快速的節奏一路推進；開頭的和弦音塊在結尾再次出現，使熱烈而色彩豐富的音樂形成完整呼應。",
         status: "confirmed"
@@ -94,6 +95,7 @@ window.CONCERTS = [
         localTitle: "邦妮杜恩的美麗河畔",
         foreignTitle: "Ye Banks and Braes o' Bonnie Doon",
         composer: "Percy Grainger／帕西・葛人傑",
+        conductor: "丁肇賢",
         duration: "約 2 分 00 秒",
         description: "葛人傑以蘇格蘭傳統民謠為核心，運用豐富和聲、溫柔對位與速度變化，描繪杜恩河畔的寧靜景色與失落愛情的感慨。",
         status: "confirmed"
@@ -103,6 +105,7 @@ window.CONCERTS = [
         localTitle: "七夕",
         foreignTitle: "たなばた／The Seventh Night of July",
         composer: "Itaru Sakai／酒井格",
+        conductor: "盧宓承",
         duration: "約 8 分 38 秒",
         description: "酒井格以日本七夕傳說為靈感，中段由中音薩克斯風與上低音號二重奏代表故事中的男女主角，在慶典熱鬧、銀河夢幻與相會喜悅之間展開鮮明的音樂敘事。",
         status: "confirmed"
@@ -111,6 +114,7 @@ window.CONCERTS = [
         section: "上半場",
         title: "Novena to Seagate Overture",
         composer: "James Swearingen／詹姆士・史威林金",
+        conductor: "翁啟榮",
         duration: "約 7 分 30 秒",
         description: "本次演出將 James Swearingen 兩首風格不同的作品串聯，從《Novena》過渡至《Seagate Overture》，在熟悉的管樂語彙中呈現不同情緒與色彩。",
         status: "confirmed"
@@ -120,6 +124,7 @@ window.CONCERTS = [
         localTitle: "曼哈頓",
         foreignTitle: "Manhattan",
         composer: "Philip Sparke／菲利浦・史巴克",
+        conductor: "丁肇賢",
         soloist: "黃鈺芠（1051）",
         duration: "約 9 分 00 秒",
         description: "這首小號與管樂團作品以「紐約的一個週末」為主題：第一樂章描繪星期六夜晚帶有藍調色彩的爵士酒吧，第二樂章則以鮮明節奏呈現星期日清晨在中央公園慢跑的活力。",
@@ -131,6 +136,7 @@ window.CONCERTS = [
         foreignTitle: "Symphonic Suite of Galaxy (from Super Mario Galaxy)",
         composer: "Koji Kondo、Mahito Yokota／近藤浩治、橫田真人",
         arranger: "尚水堂",
+        conductor: "丁肇賢",
         duration: "約 8 分 30 秒",
         description: "《超級瑪利歐銀河》配樂以管弦樂為主軸並結合電子音色，在宏大宇宙感與親切旋律之間取得平衡；本次由尚水堂編為管樂團交響組曲。",
         status: "confirmed"
@@ -141,6 +147,7 @@ window.CONCERTS = [
         foreignTitle: "Heal the World",
         composer: "Michael Jackson／麥可・傑克森",
         arranger: "Ron Sebregts",
+        conductor: "丁肇賢",
         duration: "約 4 分 44 秒",
         description: "作品收錄於 Michael Jackson 1991 年專輯《Dangerous》，以愛、和平與對下一代的關懷為主題，本次演出採 Ron Sebregts 的管樂團編曲版本。",
         status: "confirmed"
@@ -151,6 +158,7 @@ window.CONCERTS = [
         foreignTitle: "Days of Wine and Roses",
         composer: "Henry Mancini／亨利・曼西尼",
         arranger: "Naohiro Iwai／岩井直溥",
+        conductor: "盧宓承",
         duration: "約 5 分 05 秒",
         description: "Henry Mancini 為 1962 年電影創作的主題曲，以優美而略帶憂傷的旋律描寫美好時光的短暫；岩井直溥的管樂編曲保留原曲的優雅與溫暖層次。",
         status: "confirmed"
@@ -160,6 +168,7 @@ window.CONCERTS = [
         localTitle: "日本風情畫 XXII：City Pop 組曲",
         foreignTitle: "ジャパニーズ・グラフィティXXII シティー・ポップ・メドレー",
         arranger: "Tohru Kanayama／金山徹",
+        conductor: "丁肇賢",
         duration: "約 7 分 55 秒",
         note: "〈SPARKLE〉、〈プラスティック・ラヴ〉、〈君は天然色〉、〈フライディ・チャイナタウン〉、〈真夜中のドア～stay with me〉",
         description: "金山徹編曲的《New Sounds in Brass 2024》作品，串連五首 1970 至 1980 年代日本 City Pop 名曲，保留洗練的都會感、懷舊氛圍與鮮明節奏律動。",
@@ -193,18 +202,18 @@ window.CONCERTS = [
       "news/2026-07-19-rehearsal-stage-in-sight.html"
     ],
     sources: [
-      "第 41 屆《為伍》線上節目冊（2026-08-05 校正版）",
-      "丁肇賢指揮提供之曲序、曲目介紹與個人介紹資料",
+      "第 41 屆《為伍》線上節目冊（2026-08-06 校正版）",
+      "丁肇賢指揮提供之曲序、各曲指揮分配、曲目介紹與個人介紹資料",
       "黃鈺芠本人提供之個人介紹資料",
       "OPENTIX 售票頁（2026-07-18）"
     ],
-    sourceNote: "本頁日期、時間、場地與票務依正式海報及 OPENTIX 售票頁整理；指揮、獨奏者、曲序、曲名、樂曲介紹與演奏時間，依 2026-08-05 校正後的線上節目冊、指揮提供資料及可確認的管樂團出版資料更新。完整演出人員、幕後工作人員及贊助致謝尚未確認，因此不採用線上節目冊中的測試內容。",
+    sourceNote: "本頁日期、時間、場地與票務依正式海報及 OPENTIX 售票頁整理；各曲指揮分配依丁肇賢指揮 2026-08-06 提供之對話紀錄更新；獨奏者、曲序、曲名、樂曲介紹與演奏時間，依校正後的線上節目冊、指揮提供資料及可確認的管樂團出版資料整理。完整演出人員、幕後工作人員及贊助致謝尚未確認，因此不採用線上節目冊中的測試內容。",
     status: "partial",
     intro: [
       "「為伍」代表相聚、陪伴與同行。睽違六年，嘉義高中校友管樂團與在校生重新回到嘉義市政府文化局音樂廳，讓不同世代的嘉中管樂人再次在同一座舞台相遇。",
       "上半場由經典管樂原創與民謠作品展開，並由黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏；下半場則橫跨電玩交響組曲、流行音樂、電影音樂與日本 City Pop，呈現管樂團多元的聲音面貌。"
     ],
-    programNote: "曲序、曲名、作曲／編曲者與演奏時間依目前校正完成的線上節目冊整理；主辦單位保留演出曲目異動之權利。",
+    programNote: "曲序、曲名、作曲／編曲者、各曲指揮與演奏時間依目前校正完成的線上節目冊及指揮提供資料整理；主辦單位保留演出曲目異動之權利。",
     notes: "基本演出資訊、三位樂團指揮、小號獨奏與正式曲序已依目前可確認資料更新；完整演出人員、幕後工作人員及贊助致謝仍待確認。"
   },
   {

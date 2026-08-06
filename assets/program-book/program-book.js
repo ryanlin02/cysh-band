@@ -187,7 +187,8 @@ function renderTrackTitles(track, compact = false) {
 function renderTrackCredits(track, compact = false) {
   const rows = [
     track.composer ? ['作曲', creditText(track.composer)] : null,
-    track.arranger ? ['編曲', creditText(track.arranger)] : null
+    track.arranger ? ['編曲', creditText(track.arranger)] : null,
+    compact && track.conductor ? ['指揮', creditText(track.conductor)] : null
   ].filter(Boolean);
   const className = compact ? 'program-overview-credits' : 'track-credit-list';
   return `<div class="${className}">${rows.map(([label, value]) => `<span><b>${label}</b>${value}</span>`).join('')}</div>`;
@@ -349,6 +350,7 @@ function renderProgramNotes() {
               ${renderTrackTitles(track)}
               ${renderTrackCredits(track)}
               <div class="track-meta-row">
+                ${track.conductor ? `<span><b>指揮</b>${creditText(track.conductor)}</span>` : ''}
                 ${track.soloist ? `<span><b>獨奏</b>${track.soloist}</span>` : ''}
                 ${track.duration ? `<span><b>演奏時間</b>${track.duration}</span>` : ''}
               </div>

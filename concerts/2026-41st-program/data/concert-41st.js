@@ -143,6 +143,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Jan Van der Roost", "楊・范德魯斯特"],
         arranger: "",
+        conductor: "丁肇賢",
         duration: "約 4 分 07 秒",
         note: [
           "《Flashing Winds》（閃耀的管樂）是比利時作曲家楊・范德魯斯特於 1989 年創作的管樂合奏作品，由「Het muziekverbond van West-Vlaanderen」（西佛蘭德斯音樂聯盟）委託，獻給比利時的 Arlequino 青年樂團。這是一首充滿活力、色彩豐富且效果強烈的管樂作品。",
@@ -157,6 +158,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Percy Grainger", "帕西・葛人傑"],
         arranger: "",
+        conductor: "丁肇賢",
         duration: "約 2 分 00 秒",
         note: [
           "這是澳洲裔美國作曲家帕西・葛人傑對蘇格蘭傳統民謠的著名管樂改編作品，原曲為 Robert Burns 於 1791 年創作的詩歌。這是一首緩慢、抒情的民謠改編，展現葛人傑對英國民間音樂的熱愛與獨特處理手法。",
@@ -172,6 +174,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Itaru Sakai", "酒井格"],
         arranger: "",
+        conductor: "盧宓承",
         duration: "約 8 分 38 秒",
         note: [
           "《The Seventh Night of July / Tanabata》（七夕）是日本作曲家酒井格以日本傳統節日七夕為靈感創作的作品，充滿東方詩意與管樂色彩。酒井格出生於大阪，高中時加入管樂團並開始創作；《七夕》是他最早的管樂作品之一，後續他也創作多首廣受歡迎、融合日本傳統元素與現代管樂技法的作品。",
@@ -185,6 +188,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["James Swearingen", "詹姆士・史威林金"],
         arranger: "",
+        conductor: "翁啟榮",
         duration: "約 7 分 30 秒",
         note: [
           "James Swearingen 是美國當代著名的管樂作曲家、編曲家、指揮家與音樂教育家，已出版超過 700 首管樂作品與編曲，涵蓋多樣形式與風格；其中多首為委託創作，並廣泛選入各級比賽與音樂節指定曲目。他的音樂以旋律優美、結構清晰且適合學生演奏著稱。",
@@ -198,6 +202,7 @@ window.CONCERT_PROGRAM_DATA = {
           { lang: "en", text: "Manhattan" }
         ],
         composer: ["Philip Sparke", "菲利浦・史巴克"],
+        conductor: "丁肇賢",
         soloist: "黃鈺芠（1051）",
         soloInstrument: "小號 Solo Trumpet",
         duration: "約 9 分 00 秒",
@@ -219,6 +224,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Koji Kondo、Mahito Yokota", "近藤浩治、橫田真人"],
         arranger: "尚水堂",
+        conductor: "丁肇賢",
         duration: "約 8 分 30 秒",
         note: [
           "《超級瑪利歐銀河》的配樂由橫田真人（Mahito Yokota）擔任主要作曲，近藤浩治（Koji Kondo）擔任音樂監督並創作數首關鍵曲目，如〈Egg Planet〉與羅莎塔觀測所主題。",
@@ -234,6 +240,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Michael Jackson", "麥可・傑克森"],
         arranger: "Ron Sebregts",
+        conductor: "丁肇賢",
         duration: "約 4 分 44 秒",
         note: [
           "《Heal the World》是麥可・傑克森最具代表性的人道關懷歌曲之一，收錄於 1991 年專輯《Dangerous》。這首歌呼籲人們以愛與行動讓世界變得更美好，特別關注兒童與下一代的未來；歌詞充滿反戰與慈悲精神，強調「治癒世界、為全人類創造更好的地方」。傑克森曾表示，這是他最自豪的創作。1992 年，他以此歌為名成立 Heal the World Foundation，致力於改善全球兒童生活，並在 Dangerous 世界巡演中以此作為核心主題。這首歌至今仍是他經典的和平與愛之歌。"
@@ -247,6 +254,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Henry Mancini", "亨利・曼西尼"],
         arranger: ["Naohiro Iwai", "岩井直溥"],
+        conductor: "盧宓承",
         duration: "約 5 分 05 秒",
         note: [
           "這首樂曲是亨利・曼西尼（Henry Mancini）作曲、強尼・默瑟（Johnny Mercer）作詞，為 1962 年電影《相見難時別亦難》創作的主題曲，曾獲奧斯卡最佳原創歌曲獎，其後亦由 Frank Sinatra 等歌手錄唱。",
@@ -261,6 +269,7 @@ window.CONCERT_PROGRAM_DATA = {
           { lang: "en", text: "Japanese Graffiti XXII: City Pop Medley" }
         ],
         arranger: ["Tohru Kanayama", "金山徹"],
+        conductor: "丁肇賢",
         duration: "約 7 分 55 秒",
         note: [
           "這首樂曲由金山徹編曲，收錄於《New Sounds in Brass 2024》（NSB 第 49 集），選取 1970 至 1980 年代日本 City Pop 黃金時期廣受歡迎的五首經典名曲組成組曲，依序為山下達郎〈SPARKLE〉、竹內瑪莉亞〈プラスティック・ラヴ〉（Plastic Love）、大瀧詠一〈君は天然色〉、泰葉〈フライディ・チャイナタウン〉，以及松原みき〈真夜中のドア～stay with me〉。",
