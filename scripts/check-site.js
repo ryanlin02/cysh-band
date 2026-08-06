@@ -1189,10 +1189,16 @@ function checkHallTour() {
   if (!html.includes("gyroPlugin.start('fast')")) {
     addError('hall/tour/index.html: gyroscope must remain user-initiated in fast mode.');
   }
+  if (!html.includes('let gyroRequested = false') || !html.includes('navigationInProgress && gyroRequested')) {
+    addError('hall/tour/index.html: gyroscope intent must persist across panorama changes.');
+  }
+  if (!html.includes("panel.dataset.size = name === 'scenes' || name === 'map' ? 'full' : 'sheet'")) {
+    addError('hall/tour/index.html: mobile scene and map panels must remain full-screen.');
+  }
   if (read('sitemap.xml').includes('https://cysh.band/hall/tour/')) {
     addError('sitemap.xml: hall tour test page must not be listed before public release.');
   }
-  info.push('Hall tour checked: source data, immersive controls, user-initiated gyroscope, private-test markers, and sitemap exclusion');
+  info.push('Hall tour checked: immersive controls, persistent user-initiated gyroscope, mobile full-screen tools, private-test markers, and sitemap exclusion');
 }
 
 function printReport() {

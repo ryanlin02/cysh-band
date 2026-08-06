@@ -125,6 +125,13 @@
     max-width:calc(100% - 24px);padding:9px 14px;border-radius:999px;background:rgba(24,20,17,.9);
     color:var(--white);font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.24)}
   button:focus-visible,a:focus-visible,[role="button"]:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+  @media (max-width:899px){
+    .panel[data-size="full"]{inset:0;width:auto;max-height:none;border:0;border-radius:0;box-shadow:none;background:var(--paper)}
+    .panel[data-size="full"] .panel-head{padding-top:max(12px,env(safe-area-inset-top));
+      padding-left:max(18px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+    .panel[data-size="full"] .panel-body{padding-left:max(18px,env(safe-area-inset-left));
+      padding-right:max(18px,env(safe-area-inset-right));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+  }
   @media (min-width:720px){
     .strip{grid-template-columns:repeat(3,minmax(0,1fr))}
   }
@@ -308,6 +315,7 @@ function closePanel({ restoreFocus = true } = {}) {
   shell.classList.remove('panel-open');
   panelButtons.forEach(b => b.setAttribute('aria-expanded', 'false'));
   activePanel = null;
+  delete panel.dataset.size;
   if (restoreFocus && lastPanelTrigger) lastPanelTrigger.focus({ preventScroll: true });
   wakeControls();
 }
@@ -316,6 +324,7 @@ function openPanel(name, trigger) {
   const samePanel = activePanel === name && !panel.hidden;
   if (samePanel) return closePanel();
   activePanel = name;
+  panel.dataset.size = name === 'scenes' || name === 'map' ? 'full' : 'sheet';
   lastPanelTrigger = trigger || lastPanelTrigger;
   panelTitle.textContent = { scenes: '選擇場景', map: '地圖與位置', info: '導覽說明' }[name];
   panelViews.forEach(view => { view.hidden = view.dataset.panelView !== name; });
@@ -324,6 +333,7 @@ function openPanel(name, trigger) {
   panelScrim.hidden = false;
   shell.classList.add('panel-open');
   shell.classList.remove('controls-idle');
+  panel.querySelector('.panel-body').scrollTop = 0;
   requestAnimationFrame(() => panelClose.focus({ preventScroll: true }));
 }
 
@@ -387,13 +397,16 @@ if (rd && rd.setPixelRatio) rd.setPixelRatio(Math.min(devicePixelRatio, 2));
 
 const gyroPlugin = viewer.getPlugin(GyroscopePlugin);
 const gyroLabel = gyroBtn.querySelector('span');
+let gyroRequested = false;
+let navigationInProgress = false;
 const sessionGet = key => { try { return sessionStorage.getItem(key); } catch (_) { return null; } };
 const sessionSet = (key, value) => { try { sessionStorage.setItem(key, value); } catch (_) {} };
 
 function syncGyroState(enabled) {
-  gyroBtn.setAttribute('aria-pressed', String(enabled));
-  gyroLabel.textContent = enabled ? '關閉感應' : '感應';
-  gyroBtn.setAttribute('aria-label', enabled ? '關閉手機動作感應' : '開啟手機動作感應');
+  const active = enabled || (navigationInProgress && gyroRequested);
+  gyroBtn.setAttribute('aria-pressed', String(active));
+  gyroLabel.textContent = active ? '關閉感應' : '感應';
+  gyroBtn.setAttribute('aria-label', active ? '關閉手機動作感應' : '開啟手機動作感應');
 }
 
 function dismissGyroIntro() {
@@ -409,9 +422,11 @@ async function startGyroscope() {
   gyroStart.textContent = '正在開啟…';
   try {
     await gyroPlugin.start('fast');
+    gyroRequested = true;
     dismissGyroIntro();
     showToast('感應導覽已開啟；轉動手機即可環顧四周');
   } catch (_) {
+    gyroRequested = false;
     dismissGyroIntro();
     showToast('未能開啟動作感應，仍可用手指拖曳瀏覽');
   } finally {
@@ -424,7 +439,8 @@ async function startGyroscope() {
 
 gyroPlugin.addEventListener('gyroscope-updated', event => syncGyroState(event.gyroscopeEnabled));
 gyroBtn.addEventListener('click', async () => {
-  if (gyroPlugin.isEnabled()) {
+  if (gyroRequested || gyroPlugin.isEnabled()) {
+    gyroRequested = false;
     gyroPlugin.stop();
     showToast('感應導覽已關閉');
   } else {
@@ -647,6 +663,26 @@ function go(i, _unused, keepDirection = true) {
 }
 
 async function performGo(i, _unused, keepDirection = true) {
+  navigationInProgress = true;
+  syncGyroState(gyroPlugin.isEnabled());
+  try {
+    await performSceneChange(i, _unused, keepDirection);
+  } finally {
+    if (gyroRequested && !gyroPlugin.isEnabled()) {
+      try {
+        // setPanorama 指定視角時會呼叫 stopAll；使用者已授權且原本開啟時，自動恢復。
+        await gyroPlugin.start('fast');
+      } catch (_) {
+        gyroRequested = false;
+        showToast('感應模式未能自動恢復，請再點一次「感應」');
+      }
+    }
+    navigationInProgress = false;
+    syncGyroState(gyroPlugin.isEnabled());
+  }
+}
+
+async function performSceneChange(i, _unused, keepDirection = true) {
   // 延續方向要在改 cur 之前算，否則抓到的已經是新場景
   const carried = keepDirection ? carryOverYaw(region.nodes[cur], region.nodes[i]) : null;
   cur = i;
@@ -683,13 +719,14 @@ async function performGo(i, _unused, keepDirection = true) {
   }
   loadedPano = previewSrc;
 
-  const pos = viewer.getPosition();
   const hi = viewerSrcOf(region, n, TIER);
-  await viewer.setPanorama(hi, {
-    transition: false, showLoader: false, position: pos,
-    zoom: viewer.getZoomLevel(), caption: n.name,
-  });
-  loadedPano = hi;
+  if (hi !== loadedPano) {
+    // 不重送 position／zoom，讓高清替換保留目前視角，也避免第二次停止控制器。
+    await viewer.setPanorama(hi, {
+      transition: false, showLoader: false, caption: n.name,
+    });
+    loadedPano = hi;
+  }
   refreshDots();
 }
 
