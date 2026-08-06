@@ -1148,6 +1148,42 @@ function checkPeopleNameLinks() {
   info.push(`People name auto-links checked: ${files.length} HTML files`);
 }
 
+function checkHallTour() {
+  const required = [
+    'data/tour.js',
+    'data/hall-seats.js',
+    'templates/hall-tour.html',
+    'hall/tour/index.html',
+    'assets/hall-tour/links.js',
+    'assets/hall-tour/plan-map.js',
+    'assets/hall-tour/seat-map.js'
+  ];
+  required.forEach((file) => {
+    if (!exists(file)) addError(`Hall tour required file missing: ${file}`);
+  });
+  if (!required.every(exists)) return;
+
+  const result = spawnSync(process.execPath, ['scripts/generate-tour.js', '--check'], {
+    cwd: root,
+    encoding: 'utf8'
+  });
+  if (result.status !== 0) {
+    addError(`Hall tour data validation failed:\n${(result.stdout || result.stderr || '').trim()}`);
+  }
+
+  const html = read('hall/tour/index.html');
+  if (!/data-page-type=["']hall-tour-test["']/i.test(html)) {
+    addError('hall/tour/index.html: missing test-page marker.');
+  }
+  if (!/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex[^"']*nofollow/i.test(html)) {
+    addError('hall/tour/index.html: test page must remain noindex and nofollow.');
+  }
+  if (read('sitemap.xml').includes('https://cysh.band/hall/tour/')) {
+    addError('sitemap.xml: hall tour test page must not be listed before public release.');
+  }
+  info.push('Hall tour checked: source data, generated page, private-test markers, and sitemap exclusion');
+}
+
 function printReport() {
   console.log('CYSH Band site health check');
   console.log('===========================');
@@ -1190,4 +1226,5 @@ checkPeopleIndexCards();
 checkPeopleProfilePages();
 checkGalleryProfileLinks();
 checkPeopleNameLinks();
+checkHallTour();
 printReport();

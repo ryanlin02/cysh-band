@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-page-shell="standalone" data-page-type="hall-tour-test">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>360 環景導覽｜嘉義市政府文化局音樂廳</title>
+<meta name="description" content="嘉義市政府文化局音樂廳 360 度環景導覽，共 55 個場景。961 席，可售 951 席。">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#faf8f3">
+<link rel="canonical" href="https://cysh.band/hall/tour/">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="嘉義高中管樂隊暨校友管樂團">
+<meta property="og:title" content="360 環景導覽｜嘉義市政府文化局音樂廳">
+<meta property="og:description" content="嘉義市政府文化局音樂廳 360 度環景導覽，共 55 個場景。961 席，可售 951 席。">
+<meta property="og:url" content="https://cysh.band/hall/tour/">
+<meta property="og:image" content="https://cysh.band/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.min.css">
+<style>
+  :root{--paper:#faf8f3;--ink:#241f1a;--muted:#7a7068;--line:#e2dcd1;--accent:#8c2f28}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);line-height:1.7;
+    font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;
+    -webkit-text-size-adjust:100%}
+  .skip-link{position:fixed;left:12px;top:8px;z-index:1000;transform:translateY(-160%);
+    background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:6px}
+  .skip-link:focus{transform:translateY(0)}
+  .wrap{max-width:940px;margin:0 auto;padding:22px 16px 60px}
+  .utility{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+  .home-link{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);
+    text-underline-offset:4px;font-size:14px}
+  .status-pill{display:inline-flex;align-items:center;min-height:32px;padding:4px 11px;
+    border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:12px;font-weight:700}
+  h1{font-size:20px;font-weight:600;margin:0 0 2px}
+  .sub{font-size:13px;color:var(--muted);margin:0 0 16px}
+  .testing-note{margin:0 0 16px;padding:10px 12px;border-left:3px solid var(--accent);
+    background:#fffdf9;color:var(--muted);font-size:13px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+  .tabs button{background:transparent;border:1px solid var(--line);border-radius:20px;
+    min-height:44px;padding:7px 16px;font-size:13.5px;cursor:pointer;font-family:inherit;color:var(--muted);
+    touch-action:manipulation}
+  .tabs button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .tabs button:disabled{opacity:.35;cursor:default}
+  #viewer{width:100%;height:56vh;min-height:320px;background:#1a1613;
+    border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+  .now{margin:12px 0 0}
+  .now b{font-size:16px;font-weight:600}
+  .now span{font-size:13px;color:var(--muted);margin-left:8px}
+  .desc{font-size:14px;margin:6px 0 0;color:var(--ink)}
+  .floorbar{display:flex;gap:8px;margin:14px 0 8px}
+  .floorbar button{background:transparent;border:1px solid var(--line);border-radius:20px;
+    min-height:44px;padding:7px 15px;font-size:13px;cursor:pointer;font-family:inherit;color:var(--muted);
+    touch-action:manipulation}
+  .floorbar button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;-webkit-overflow-scrolling:touch}
+  .thumb{flex:0 0 auto;width:126px;min-height:82px;border:2px solid transparent;border-radius:8px;
+    overflow:hidden;cursor:pointer;background:#fffdf9;padding:0;text-align:left}
+  .thumb.on{border-color:var(--accent)}
+  .thumb img{width:100%;height:60px;object-fit:cover;display:block;background:#efe9de}
+  .thumb span{display:block;font-size:11.5px;padding:5px 7px;line-height:1.35;color:var(--ink)}
+  h2{font-size:15px;font-weight:600;margin:28px 0 4px}
+  .note{font-size:13px;color:var(--muted);margin:0 0 12px}
+  footer{margin-top:40px;font-size:12px;color:var(--muted)}
+  button:focus-visible,a:focus-visible,[role="button"]:focus-visible{outline:3px solid #c9993f;outline-offset:3px}
+  @media (max-width:480px){
+    .wrap{padding-top:max(14px,env(safe-area-inset-top));padding-bottom:max(52px,env(safe-area-inset-bottom))}
+    .utility{align-items:flex-start}
+    #viewer{height:58vh;min-height:360px;max-height:560px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;
+      animation-iteration-count:1!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#tour-main">跳到導覽內容</a>
+<div class="wrap">
+  <div class="utility">
+    <a class="home-link" href="../../">← 返回嘉中管樂</a>
+    <span class="status-pill">線上測試版</span>
+  </div>
+  <h1>360 環景導覽</h1>
+  <p class="sub">嘉義市政府文化局音樂廳</p>
+  <p class="testing-note">目前開放音樂廳前廳與觀眾席測試；舞台、後台入口及地下室休息室尚未開放。</p>
+
+  <main id="tour-main">
+  <div class="tabs" id="regions"></div>
+  <div id="viewer"></div>
+
+  <div class="now"><b id="nowName">—</b><span id="nowPos"></span></div>
+  <p class="desc" id="nowDesc"></p>
+
+  <div class="floorbar" id="floorbar"></div>
+  <div class="strip" id="strip"></div>
+
+  <h2 id="mapTitle">位置</h2>
+  <p class="note" id="mapNote"></p>
+  <div id="map"></div>
+  </main>
+
+  <footer>資料更新：2026-08-06</footer>
+</div>
+
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+  "@photo-sphere-viewer/core":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.module.js",
+  "@photo-sphere-viewer/gyroscope-plugin":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/gyroscope-plugin@5.15.1/index.module.js",
+  "@photo-sphere-viewer/markers-plugin":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.module.js"
+}}
+</script>
+
+<script type="module">
+import { Viewer } from '@photo-sphere-viewer/core';
+import { GyroscopePlugin } from '@photo-sphere-viewer/gyroscope-plugin';
+import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
+import { TOUR } from '../../data/tour.js';
+import { HALL_SEATS } from '../../data/hall-seats.js';
+import { createSeatMap, SEAT_MAP_CSS } from '../../assets/hall-tour/seat-map.js';
+import { createPlanMap, PLAN_MAP_CSS } from '../../assets/hall-tour/plan-map.js';
+import { linksFor, toMarkers, TOUR_DOT_CSS } from '../../assets/hall-tour/links.js';
+
+const REDUCED_MOTION = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+document.head.appendChild(Object.assign(document.createElement('style'),
+  { textContent: SEAT_MAP_CSS + PLAN_MAP_CSS + TOUR_DOT_CSS }));
+
+// ── Stage A 實測定案的設定，改動前請看維護手冊 ──────────────
+const gl = document.createElement('canvas').getContext('webgl2')
+        || document.createElement('canvas').getContext('webgl');
+const maxTex = gl ? gl.getParameter(gl.MAX_TEXTURE_SIZE) : 4096;
+const TIER = maxTex >= 16384 ? 'full' : maxTex >= 8192 ? 'mid' : 'preview';
+
+const regions = TOUR.regions
+  .filter(r => r.status === 'ready' && r.nodes.length)
+  .sort((a, b) => a.order - b.order);
+
+// 影像由網站既有的 Cloudflare R2 自訂網域提供
+const srcOf = (region, n, tier) =>
+  (TOUR.imageBase || (region.workDir ? `../../../${region.workDir}/` : '')) + n.images[tier];
+// 檢視器的網址與一般縮圖分開快取，避免無 Origin 的縮圖回應被 WebGL 重用。
+const viewerSrcOf = (region, n, tier) => srcOf(region, n, tier) + '?viewer=1';
+
+let region = regions[0];
+let cur = 0;
+let floor = region.nodes[0].floor;
+
+const viewer = new Viewer({
+  container: 'viewer',
+  panorama: viewerSrcOf(region, region.nodes[0], 'preview'),
+  caption: region.nodes[0].name,
+  navbar: ['zoom', 'move', 'gyroscope', 'caption', 'fullscreen'],
+  defaultZoomLvl: 30,
+  defaultTransition: { speed: 700, effect: 'fade', rotation: true },
+  plugins: [
+    [GyroscopePlugin, { touchmove: true, moveMode: 'fast' }],
+    [MarkersPlugin, {}],
+  ],
+  loadingTxt: '載入中',
+});
+const rd = viewer.renderer && viewer.renderer.renderer;
+if (rd && rd.setPixelRatio) rd.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+// 座位表與平面圖是兩種定位方式，依區域使用的欄位決定顯示哪一種
+const mapEl = document.getElementById('map');
+let seatMap = null, planMap = null;
+
+const SEAT_POS = new Map();
+HALL_SEATS.floors.forEach(f => f.rows.forEach(r => r.seats.forEach(s =>
+  SEAT_POS.set(`${f.id}-${r.row}-${s.n}`, { floor: f.id, row: r.row, c: s.c }))));
+
+function usesSeats() { return region.nodes.some(n => n.seat); }
+
+// ── 全景內跳點 ───────────────────────────────────────────
+// 圓點而非箭頭：我們是在固定拍攝點之間跳，圓點讀作「那裡可以站」，
+// 箭頭會暗示連續移動，且方位差幾度就看得出歪。
+const markersPlugin = viewer.getPlugin(MarkersPlugin);
+const nodesById = new Map();
+const regionsById = new Map();
+TOUR.regions.forEach(r => {
+  regionsById.set(r.id, r);
+  (r.nodes || []).forEach(n => nodesById.set(n.id, n));
+});
+
+function refreshDots() {
+  if (!markersPlugin) return;
+  markersPlugin.clearMarkers();
+  const links = linksFor(region.nodes[cur], region, { seatPos: SEAT_POS, regionsById, nodesById });
+  toMarkers(links).forEach(m => markersPlugin.addMarker(m));
+}
+
+markersPlugin && markersPlugin.addEventListener('select-marker', e => {
+  const l = e.marker.data;
+  if (!l) return;
+  if (l.region !== region.id) {
+    const r = regionsById.get(l.region);
+    const i = l.id ? r.nodes.findIndex(n => n.id === l.id) : 0;
+    switchRegion(r, i < 0 ? 0 : i);
+  } else {
+    go(region.nodes.findIndex(n => n.id === l.id));
+  }
+});
+
+function buildMap() {
+  mapEl.innerHTML = '';
+  seatMap = planMap = null;
+  document.getElementById('mapTitle').textContent = usesSeats() ? '從座位看出去' : '平面圖';
+  document.getElementById('mapNote').textContent = usesSeats()
+    ? '點紅色圓點跳到該拍攝位置；也可以直接點座位，會切到最接近的畫面。'
+    : '點紅色圓點跳到該拍攝位置。';
+
+  if (usesSeats()) {
+    seatMap = createSeatMap(mapEl, {
+      data: HALL_SEATS,
+      onSeatClick(seat) {
+        let best = null, bd = Infinity;
+        region.nodes.forEach((n, i) => {
+          const q = n.seat && SEAT_POS.get(n.seat);
+          if (!q) return;
+          const p = SEAT_POS.get(seat.id);
+          const d = Math.hypot(q.c - p.c, (q.row - p.row) * 2.2)
+                  + (q.floor === p.floor ? 0 : 40);
+          if (d < bd) { bd = d; best = i; }
+        });
+        if (best !== null) go(best);
+      },
+    });
+    seatMap.setMarkers(
+      region.nodes.filter(n => n.seat).map(n => ({
+        id: n.id, seatId: n.seat, label: n.name, n: region.nodes.indexOf(n) + 1,
+      })),
+      m => go(region.nodes.findIndex(n => n.id === m.id)));
+  } else {
+    planMap = createPlanMap(mapEl, {
+      plans: { '1F': '../../assets/hall-tour/plan/1F.png',
+               '2F': '../../assets/hall-tour/plan/2F.png' },
+      floor,
+      pickable: false,
+      onMarker(m) { go(region.nodes.findIndex(n => n.id === m.id)); },
+    });
+  }
+  refreshMap();
+}
+
+function refreshMap() {
+  const n = region.nodes[cur];
+  if (seatMap) { seatMap.select(n.seat || null); seatMap.activeMarker(n.id); }
+  if (planMap) {
+    planMap.setMarkers(region.nodes.filter(x => x.plan)
+      .map((x, i) => ({ id: x.id, floor: x.floor, x: x.plan.x, y: x.plan.y,
+                        label: x.name, n: region.nodes.indexOf(x) + 1 })));
+    planMap.active(n.id);
+  }
+}
+
+function buildTabs() {
+  const bar = document.getElementById('regions');
+  bar.innerHTML = '';
+  TOUR.regions.sort((a, b) => a.order - b.order).forEach(r => {
+    const ready = r.status === 'ready' && r.nodes.length;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = r.name + (ready ? '' : '（尚未開放）');
+    b.className = r.id === region.id ? 'on' : '';
+    b.disabled = !ready;
+    b.onclick = () => switchRegion(r, 0);
+    bar.appendChild(b);
+  });
+}
+
+function buildFloorBar() {
+  const bar = document.getElementById('floorbar');
+  bar.innerHTML = '';
+  const fs = [...new Set(region.nodes.map(n => n.floor))];
+  bar.style.display = fs.length > 1 ? 'flex' : 'none';
+  fs.forEach(f => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = f === '1F' ? '一樓' : '二樓';
+    b.className = f === floor ? 'on' : '';
+    b.onclick = () => {
+      floor = f;
+      if (planMap) planMap.setFloor(f);
+      buildFloorBar(); buildStrip();
+    };
+    bar.appendChild(b);
+  });
+}
+
+function buildStrip() {
+  const strip = document.getElementById('strip');
+  strip.innerHTML = '';
+  region.nodes.forEach((n, i) => {
+    if (n.floor !== floor) return;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'thumb' + (i === cur ? ' on' : '');
+    // 縮圖與 360 檢視器必須使用相同的 CORS 模式，否則瀏覽器可能重用
+    // 一份不可供 WebGL 讀取的快取，造成點擊縮圖後顯示載入失敗。
+    b.innerHTML = `<img src="${srcOf(region, n, 'preview')}" alt="" loading="lazy" crossorigin="anonymous">` +
+                  `<span>${n.name}</span>`;
+    b.onclick = () => go(i);
+    strip.appendChild(b);
+  });
+}
+
+let loadedPano = viewerSrcOf(regions[0], regions[0].nodes[0], "preview");
+let pendingYaw = null;
+let navigationQueue = Promise.resolve();
+
+// 手機上連點不同場景時，Photo Sphere Viewer 會中止前一張尚未完成的下載。
+// 將切換依序執行，避免兩次 setPanorama 互相取消並留下錯誤。
+function queueNavigation(task) {
+  navigationQueue = navigationQueue.then(task).catch(error => {
+    console.error('場景切換失敗', error);
+  });
+  return navigationQueue;
+}
+
+function switchRegion(r, startIndex = 0) {
+  return queueNavigation(async () => {
+    const prev = region.nodes[cur];
+    const carried = carryOverYaw(prev, r.nodes[startIndex]);
+    region = r; cur = startIndex; floor = r.nodes[startIndex].floor;
+    buildTabs(); buildFloorBar(); buildMap();
+    pendingYaw = carried;
+    await performGo(startIndex, null, false);
+  });
+}
+
+
+// 移動到新場景時維持使用者原本面對的「真實方向」，而不是硬轉回該場景的正面。
+// 兩個節點都知道自己「正對平面圖上方時的 yaw」，所以可以換算：
+//   目前看的方向（相對正上方）＝ 現在的 yaw − 這個節點的 heading
+//   到了新場景，用同樣的相對方向反推新的 yaw。
+// 沒有這個換算，每跳一次視角就被拉回正面，走起來會一直迷失方向。
+function carryOverYaw(fromNode, toNode) {
+  if (!fromNode || !toNode) return null;
+  if (typeof fromNode.heading !== 'number' || typeof toNode.heading !== 'number') return null;
+  const now = viewer.getPosition().yaw * 180 / Math.PI;
+  return ((toNode.heading + (now - fromNode.heading)) % 360 + 360) % 360;
+}
+
+function go(i, _unused, keepDirection = true) {
+  const requestedRegion = region;
+  return queueNavigation(() => {
+    if (requestedRegion !== region) return;
+    return performGo(i, _unused, keepDirection);
+  });
+}
+
+async function performGo(i, _unused, keepDirection = true) {
+  // 延續方向要在改 cur 之前算，否則抓到的已經是新場景
+  const carried = keepDirection ? carryOverYaw(region.nodes[cur], region.nodes[i]) : null;
+  cur = i;
+  const n = region.nodes[i];
+  if (n.floor !== floor) {
+    floor = n.floor;
+    if (planMap) planMap.setFloor(floor);
+    buildFloorBar();
+  }
+  buildStrip();
+
+  document.getElementById('nowName').textContent = n.name;
+  document.getElementById('nowPos').textContent =
+    n.seat && seatMap && seatMap.get(n.seat) ? `拍攝位置約在 ${seatMap.get(n.seat).label}` : '';
+  document.getElementById('nowDesc').textContent = n.description || '';
+  refreshMap();
+
+  const useYaw = carried != null ? carried
+               : pendingYaw != null ? pendingYaw
+               : (n.heading || 0);
+  pendingYaw = null;
+  const startYaw = useYaw * Math.PI / 180;
+  const previewSrc = viewerSrcOf(region, n, 'preview');
+  if (previewSrc !== loadedPano) {
+    await viewer.setPanorama(previewSrc, {
+      transition: !REDUCED_MOTION, caption: n.name,
+      position: { yaw: startYaw, pitch: 0 },
+    });
+  } else {
+    viewer.rotate({ yaw: startYaw, pitch: 0 });
+  }
+  loadedPano = previewSrc;
+
+  const pos = viewer.getPosition();
+  const hi = viewerSrcOf(region, n, TIER);
+  await viewer.setPanorama(hi, {
+    transition: false, showLoader: false, position: pos,
+    zoom: viewer.getZoomLevel(), caption: n.name,
+  });
+  loadedPano = hi;
+  refreshDots();
+}
+
+buildTabs();
+buildFloorBar();
+buildMap();
+viewer.addEventListener('ready', () => go(0, null, false), { once: true });
+viewer.addEventListener('panorama-error', e => console.error('全景載入失敗', e.error));
+</script>
+</body>
+</html>
