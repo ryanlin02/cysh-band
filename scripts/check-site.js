@@ -1195,10 +1195,13 @@ function checkHallTour() {
   if (!html.includes("panel.dataset.size = name === 'scenes' || name === 'map' ? 'full' : 'sheet'")) {
     addError('hall/tour/index.html: mobile scene and map panels must remain full-screen.');
   }
+  if (!html.includes('--tour-viewport-height') || !html.includes('window.visualViewport')) {
+    addError('hall/tour/index.html: visible viewport height guard is missing for installed PWA controls.');
+  }
   if (read('sitemap.xml').includes('https://cysh.band/hall/tour/')) {
     addError('sitemap.xml: hall tour test page must not be listed before public release.');
   }
-  info.push('Hall tour checked: immersive controls, persistent user-initiated gyroscope, mobile full-screen tools, private-test markers, and sitemap exclusion');
+  info.push('Hall tour checked: immersive controls, persistent user-initiated gyroscope, PWA viewport guard, mobile full-screen tools, private-test markers, and sitemap exclusion');
 }
 
 function printReport() {

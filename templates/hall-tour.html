@@ -20,15 +20,32 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.min.css">
+<script>
+  (() => {
+    let viewportFrame = 0;
+    const syncTourViewportHeight = () => {
+      cancelAnimationFrame(viewportFrame);
+      viewportFrame = requestAnimationFrame(() => {
+        const viewport = window.visualViewport;
+        const height = viewport && viewport.scale === 1 ? viewport.height : window.innerHeight;
+        document.documentElement.style.setProperty('--tour-viewport-height', `${Math.round(height)}px`);
+      });
+    };
+    syncTourViewportHeight();
+    addEventListener('resize', syncTourViewportHeight, { passive: true });
+    addEventListener('orientationchange', syncTourViewportHeight, { passive: true });
+    window.visualViewport?.addEventListener('resize', syncTourViewportHeight, { passive: true });
+  })();
+</script>
 <style>
   :root{
     --paper:#faf8f3;--surface:#fffdf9;--ink:#241f1a;--muted:#746a62;--line:#ded6ca;
     --accent:#8c2f28;--control:rgba(24,20,17,.72);--control-hover:rgba(24,20,17,.9);
     --white:#fff;--focus:#f3bd57;--z-viewer:0;--z-chrome:20;--z-scrim:30;--z-panel:40;
-    --z-dialog:50;--motion:220ms cubic-bezier(.2,.8,.2,1)
+    --z-dialog:50;--motion:220ms cubic-bezier(.2,.8,.2,1);--tour-viewport-height:100dvh
   }
   *{box-sizing:border-box}
-  html,body{width:100%;height:100%;height:100dvh;overflow:hidden}
+  html,body{width:100%;height:100%;height:var(--tour-viewport-height);overflow:hidden}
   body{margin:0;background:#171310;color:var(--ink);line-height:1.6;
     font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;
     -webkit-text-size-adjust:100%;overscroll-behavior:none}
