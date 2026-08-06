@@ -252,7 +252,7 @@
       </div>
       <div class="panel-view" data-panel-view="info" hidden>
         <div class="scene-info"><b id="infoSceneName">目前場景</b><span id="infoScenePos"></span><p class="desc" id="nowDesc"></p></div>
-        <div class="info-card testing-note"><h3>目前測試範圍</h3><p>開放音樂廳前廳與觀眾席；舞台、後台入口及地下室休息室尚未開放。</p></div>
+        <div class="info-card testing-note"><h3>目前測試範圍</h3><p>開放音樂廳前廳、觀眾席與地下室休息室；舞台與後台入口尚未開放。</p></div>
         <div class="info-card"><h3>操作方式</h3><p>用手指拖曳或滑鼠轉動視角，點畫面中的圓點前往下一個拍攝位置；手機也可自行開啟「感應」模式。</p></div>
         <div class="info-card"><h3>關於本頁</h3><p>本頁為嘉義市政府文化局音樂廳 360 導覽的線上測試版，目前不列入官網導覽與搜尋引擎索引。</p></div>
         <p class="updated">資料更新：{{GENERATED}}</p>
@@ -557,11 +557,15 @@ function buildMap() {
       })),
       m => { go(region.nodes.findIndex(n => n.id === m.id)); closePanelOnCompact(); });
   } else {
+    const plans = region.id === 'greenroom'
+      ? { 'B1': '../../assets/hall-tour/plan/B1.png' }
+      : { '1F': '../../assets/hall-tour/plan/1F.png',
+          '2F': '../../assets/hall-tour/plan/2F.png' };
     planMap = createPlanMap(mapEl, {
-      plans: { '1F': '../../assets/hall-tour/plan/1F.png',
-               '2F': '../../assets/hall-tour/plan/2F.png' },
+      plans,
       floor,
       pickable: false,
+      markerScale: region.id === 'greenroom' ? 0.72 : 1,
       onMarker(m) { go(region.nodes.findIndex(n => n.id === m.id)); closePanelOnCompact(); },
     });
   }
@@ -602,7 +606,7 @@ function buildFloorBar() {
   fs.forEach(f => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.textContent = f === '1F' ? '一樓' : '二樓';
+    b.textContent = f === 'B1' ? '地下室' : f === '1F' ? '一樓' : '二樓';
     b.className = f === floor ? 'on' : '';
     b.onclick = () => {
       floor = f;

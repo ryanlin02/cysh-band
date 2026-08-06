@@ -87,13 +87,13 @@ function validate(TOUR, HALL) {
           fail(`${at}：plan 座標必須是數字`);
         else if (x < 0 || x > 1 || y < 0 || y > 1)
           fail(`${at}：plan 座標必須介於 0–1（目前 x=${x} y=${y}）`);
-        if (!['1F', '2F'].includes(n.floor))
+        if (!['B1', '1F', '2F'].includes(n.floor))
           fail(`${at}：使用平面圖定位時必須指定 floor（目前是 ${n.floor}）`);
       }
 
       if (typeof n.heading !== 'number' || n.heading < 0 || n.heading >= 360)
         fail(`${at}：heading 必須是 0–359 的數字，目前是 ${n.heading}`);
-      else if (n.heading === 0)
+      else if (n.heading === 0 && !n.headingConfirmed)
         warn(`${at}：heading 為 0，可能尚未校正正面方向`);
 
       ['preview', 'mid', 'full'].forEach(k => {

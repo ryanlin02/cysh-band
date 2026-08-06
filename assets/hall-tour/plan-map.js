@@ -24,7 +24,7 @@ function el(n, a = {}) {
 }
 
 export function createPlanMap(container, opts = {}) {
-  const { plans = {}, onPick = null, onMarker = null, pickable = true } = opts;
+  const { plans = {}, onPick = null, onMarker = null, pickable = true, markerScale = 1 } = opts;
   const floors = Object.keys(plans);
   let floor = opts.floor || floors[0];
   let markers = [];
@@ -76,7 +76,7 @@ export function createPlanMap(container, opts = {}) {
   floors.forEach(f => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.textContent = f === '1F' ? '一樓' : f === '2F' ? '二樓' : f;
+    b.textContent = f === 'B1' ? '地下室' : f === '1F' ? '一樓' : f === '2F' ? '二樓' : f;
     b.dataset.f = f;
     b.setAttribute('aria-pressed', String(f === floor));
     b.onclick = () => setFloor(f);
@@ -94,14 +94,14 @@ export function createPlanMap(container, opts = {}) {
 
   function draw() {
     layer.textContent = '';
-    const R = MARKER_R * W;
+    const R = MARKER_R * W * markerScale;
     markers.filter(m => m.floor === floor).forEach((m, i) => {
       const cx = m.x * W, cy = m.y * H;
       const g = el('g', { class: 'planmap-marker', role: 'button', tabindex: 0 });
       g.setAttribute('aria-label', m.label || m.id);
       g.dataset.id = m.id;
       const on = m.id === activeId;
-      g.appendChild(el('circle', { cx, cy, r: R * 1.7, fill: 'transparent' }));
+      g.appendChild(el('circle', { cx, cy, r: R * 2.4, fill: 'transparent' }));
 
       // 方向扇形：heading 為 0 代表面向平面圖正上方。
       // 校正時可一眼看出哪些節點的方向還沒對齊，不必逐一點開檢查。

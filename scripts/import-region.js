@@ -67,6 +67,7 @@ async function main() {
       name: (old && old.name) || src.name,
       floor: src.floor,
       heading: src.heading,
+      headingConfirmed: Boolean(src.headingConfirmed || (old && old.headingConfirmed)),
       images: { preview: src.preview, mid: src.mid, full: src.full },
       source: src.source,
       description: (old && old.description) || '',

@@ -1,10 +1,10 @@
 // 嘉義市政府文化局音樂廳 360 導覽 — 主資料檔
 //
-// 360 影像統一放在網站既有的 Cloudflare R2 自訂網域。
-// 其餘由 scripts/import-region.js 從各區校正結果帶入。
-// name、description 是人工維護的，重跑不會被覆蓋。
+// 影像路徑、座位、heading 由 scripts/import-region.js 從各區的 nodes.json 帶入，
+// 重跑會覆蓋；name、description、hotspots、boundaries 是人工維護的，不會被覆蓋。
 //
-// 修改後執行：node scripts/generate-tour.js
+// 修改後請執行：
+//   node scripts/generate-tour.js     產生頁面並驗證資料
 
 export const TOUR = {
   "venue": {
@@ -2317,11 +2317,931 @@ export const TOUR = {
       "id": "greenroom",
       "name": "地下室休息室",
       "order": 5,
-      "status": "planned",
-      "photoCount": 0,
+      "status": "ready",
+      "photoCount": 28,
       "sourcePhotos": 28,
-      "nodes": [],
-      "boundaries": []
+      "nodes": [
+        {
+          "id": "gre-01",
+          "name": "地下室休息室 01",
+          "floor": "B1",
+          "heading": 178,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-01-preview.webp",
+            "mid": "pano/gre-01-mid.webp",
+            "full": "pano/gre-01-full.webp"
+          },
+          "source": "CAM_20260805103038_0105_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.0622,
+            "y": 0.0985
+          },
+          "links": [
+            {
+              "to": "gre-02",
+              "yaw": 91.79,
+              "pitch": -39.4
+            }
+          ]
+        },
+        {
+          "id": "gre-02",
+          "name": "地下室休息室 02",
+          "floor": "B1",
+          "heading": 5,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-02-preview.webp",
+            "mid": "pano/gre-02-mid.webp",
+            "full": "pano/gre-02-full.webp"
+          },
+          "source": "CAM_20260805103059_0106_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.1279,
+            "y": 0.1016
+          },
+          "links": [
+            {
+              "to": "gre-03",
+              "yaw": 81.3,
+              "pitch": -22.84
+            }
+          ]
+        },
+        {
+          "id": "gre-03",
+          "name": "地下室休息室 03",
+          "floor": "B1",
+          "heading": 90,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-03-preview.webp",
+            "mid": "pano/gre-03-mid.webp",
+            "full": "pano/gre-03-full.webp"
+          },
+          "source": "CAM_20260805103112_0107_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.1936,
+            "y": 0.1078
+          },
+          "links": [
+            {
+              "to": "gre-14",
+              "yaw": 176.54,
+              "pitch": -22.62
+            },
+            {
+              "to": "gre-04",
+              "yaw": 271.37,
+              "pitch": -18.91
+            },
+            {
+              "to": "gre-09",
+              "yaw": 271.71,
+              "pitch": -8.32
+            }
+          ]
+        },
+        {
+          "id": "gre-04",
+          "name": "地下室休息室 04",
+          "floor": "B1",
+          "heading": 95,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-04-preview.webp",
+            "mid": "pano/gre-04-mid.webp",
+            "full": "pano/gre-04-full.webp"
+          },
+          "source": "CAM_20260805103131_0108_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.1889,
+            "y": 0.436
+          },
+          "links": [
+            {
+              "to": "gre-03",
+              "yaw": 95.87,
+              "pitch": -16.17
+            },
+            {
+              "to": "gre-12",
+              "yaw": 125.92,
+              "pitch": -20.77
+            },
+            {
+              "to": "gre-07",
+              "yaw": 355.64,
+              "pitch": -21.08
+            },
+            {
+              "to": "gre-06",
+              "yaw": 22.65,
+              "pitch": -24.84
+            },
+            {
+              "to": "gre-09",
+              "yaw": 280.66,
+              "pitch": -13.96
+            }
+          ]
+        },
+        {
+          "id": "gre-05",
+          "name": "地下室休息室 05",
+          "floor": "B1",
+          "heading": 5,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-05-preview.webp",
+            "mid": "pano/gre-05-mid.webp",
+            "full": "pano/gre-05-full.webp"
+          },
+          "source": "CAM_20260805103208_0109_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.0637,
+            "y": 0.3486
+          },
+          "links": [
+            {
+              "to": "gre-06",
+              "yaw": 183.41,
+              "pitch": -42.25
+            }
+          ]
+        },
+        {
+          "id": "gre-06",
+          "name": "地下室休息室 06",
+          "floor": "B1",
+          "heading": 0,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-06-preview.webp",
+            "mid": "pano/gre-06-mid.webp",
+            "full": "pano/gre-06-full.webp"
+          },
+          "source": "CAM_20260805103230_0110_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.1279,
+            "y": 0.3517
+          },
+          "links": [
+            {
+              "to": "gre-04",
+              "yaw": 29.29,
+              "pitch": -24.75
+            },
+            {
+              "to": "gre-07",
+              "yaw": 119.86,
+              "pitch": -40.2
+            }
+          ]
+        },
+        {
+          "id": "gre-07",
+          "name": "地下室休息室 07",
+          "floor": "B1",
+          "heading": 9,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-07-preview.webp",
+            "mid": "pano/gre-07-mid.webp",
+            "full": "pano/gre-07-full.webp"
+          },
+          "source": "CAM_20260805103246_0111_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.1295,
+            "y": 0.4985
+          },
+          "links": [
+            {
+              "to": "gre-04",
+              "yaw": 55.84,
+              "pitch": -24.56
+            },
+            {
+              "to": "gre-06",
+              "yaw": 37.13,
+              "pitch": -30.43
+            },
+            {
+              "to": "gre-08",
+              "yaw": 143.13,
+              "pitch": -42.44
+            }
+          ]
+        },
+        {
+          "id": "gre-08",
+          "name": "地下室休息室 08",
+          "floor": "B1",
+          "heading": 0,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-08-preview.webp",
+            "mid": "pano/gre-08-mid.webp",
+            "full": "pano/gre-08-full.webp"
+          },
+          "source": "CAM_20260805103311_0112_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.0528,
+            "y": 0.5237
+          },
+          "links": [
+            {
+              "to": "gre-07",
+              "yaw": 257.34,
+              "pitch": -48.46
+            }
+          ]
+        },
+        {
+          "id": "gre-09",
+          "name": "地下室休息室 09",
+          "floor": "B1",
+          "heading": 276,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-09-preview.webp",
+            "mid": "pano/gre-09-mid.webp",
+            "full": "pano/gre-09-full.webp"
+          },
+          "source": "CAM_20260805103333_0113_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.1952,
+            "y": 0.733
+          },
+          "links": [
+            {
+              "to": "gre-10",
+              "yaw": 181.85,
+              "pitch": -24.75
+            },
+            {
+              "to": "gre-04",
+              "yaw": 277.52,
+              "pitch": -12.88
+            }
+          ]
+        },
+        {
+          "id": "gre-10",
+          "name": "地下室休息室 10",
+          "floor": "B1",
+          "heading": 10,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-10-preview.webp",
+            "mid": "pano/gre-10-mid.webp",
+            "full": "pano/gre-10-full.webp"
+          },
+          "source": "CAM_20260805103347_0114_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.131,
+            "y": 0.6736
+          },
+          "links": [
+            {
+              "to": "gre-11",
+              "yaw": 318.95,
+              "pitch": -33.55
+            },
+            {
+              "to": "gre-09",
+              "yaw": 95.53,
+              "pitch": -26.54
+            }
+          ]
+        },
+        {
+          "id": "gre-11",
+          "name": "地下室休息室 11",
+          "floor": "B1",
+          "heading": 0,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-11-preview.webp",
+            "mid": "pano/gre-11-mid.webp",
+            "full": "pano/gre-11-full.webp"
+          },
+          "source": "CAM_20260805103359_0115_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.0637,
+            "y": 0.6769
+          },
+          "links": [
+            {
+              "to": "gre-10",
+              "yaw": 134.65,
+              "pitch": -30.15
+            }
+          ]
+        },
+        {
+          "id": "gre-12",
+          "name": "地下室休息室 12",
+          "floor": "B1",
+          "heading": 125,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-12-preview.webp",
+            "mid": "pano/gre-12-mid.webp",
+            "full": "pano/gre-12-full.webp"
+          },
+          "source": "CAM_20260805103429_0116_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.2609,
+            "y": 0.3672
+          },
+          "links": [
+            {
+              "to": "gre-03",
+              "yaw": 76.55,
+              "pitch": -16.68
+            },
+            {
+              "to": "gre-04",
+              "yaw": 52.74,
+              "pitch": -28.75
+            }
+          ]
+        },
+        {
+          "id": "gre-13",
+          "name": "地下室休息室 13",
+          "floor": "B1",
+          "heading": 100,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-13-preview.webp",
+            "mid": "pano/gre-13-mid.webp",
+            "full": "pano/gre-13-full.webp"
+          },
+          "source": "CAM_20260805103444_0117_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.3282,
+            "y": 0.3735
+          },
+          "links": [
+            {
+              "to": "gre-12",
+              "yaw": 21.21,
+              "pitch": -28.2
+            }
+          ]
+        },
+        {
+          "id": "gre-14",
+          "name": "地下室休息室 14",
+          "floor": "B1",
+          "heading": 278,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-14-preview.webp",
+            "mid": "pano/gre-14-mid.webp",
+            "full": "pano/gre-14-full.webp"
+          },
+          "source": "CAM_20260805103506_0118_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.3016,
+            "y": 0.1047
+          },
+          "links": [
+            {
+              "to": "gre-15",
+              "yaw": 19.12,
+              "pitch": -16.97
+            },
+            {
+              "to": "gre-03",
+              "yaw": 190.57,
+              "pitch": -17.18
+            },
+            {
+              "to": "gre-02",
+              "yaw": 197.84,
+              "pitch": -8.48
+            }
+          ]
+        },
+        {
+          "id": "gre-15",
+          "name": "地下室休息室 15",
+          "floor": "B1",
+          "heading": 0,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-15-preview.webp",
+            "mid": "pano/gre-15-mid.webp",
+            "full": "pano/gre-15-full.webp"
+          },
+          "source": "CAM_20260805103526_0119_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.3861,
+            "y": 0.1016
+          },
+          "links": [
+            {
+              "to": "gre-16",
+              "yaw": 0.52,
+              "pitch": -8.26
+            },
+            {
+              "to": "gre-14",
+              "yaw": 197.99,
+              "pitch": -15.45
+            },
+            {
+              "to": "gre-03",
+              "yaw": 185.97,
+              "pitch": -9.19
+            }
+          ]
+        },
+        {
+          "id": "gre-16",
+          "name": "地下室休息室 16",
+          "floor": "B1",
+          "heading": 264,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-16-preview.webp",
+            "mid": "pano/gre-16-mid.webp",
+            "full": "pano/gre-16-full.webp"
+          },
+          "source": "CAM_20260805103606_0120_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.6286,
+            "y": 0.1422
+          },
+          "links": [
+            {
+              "to": "gre-17",
+              "yaw": 334.81,
+              "pitch": -11.81
+            },
+            {
+              "to": "gre-15",
+              "yaw": 176.14,
+              "pitch": -7.21
+            }
+          ]
+        },
+        {
+          "id": "gre-17",
+          "name": "地下室休息室 17",
+          "floor": "B1",
+          "heading": 267,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-17-preview.webp",
+            "mid": "pano/gre-17-mid.webp",
+            "full": "pano/gre-17-full.webp"
+          },
+          "source": "CAM_20260805103626_0121_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.7225,
+            "y": 0.1453
+          },
+          "links": [
+            {
+              "to": "gre-16",
+              "yaw": 163.11,
+              "pitch": -12.95
+            },
+            {
+              "to": "gre-18",
+              "yaw": 16.08,
+              "pitch": -22.27
+            },
+            {
+              "to": "gre-25",
+              "yaw": 350.85,
+              "pitch": -12.41
+            },
+            {
+              "to": "gre-19",
+              "yaw": 22.71,
+              "pitch": -10.39
+            }
+          ]
+        },
+        {
+          "id": "gre-18",
+          "name": "地下室休息室 18",
+          "floor": "B1",
+          "heading": 261,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-18-preview.webp",
+            "mid": "pano/gre-18-mid.webp",
+            "full": "pano/gre-18-full.webp"
+          },
+          "source": "CAM_20260805103640_0122_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8116,
+            "y": 0.2109
+          },
+          "links": [
+            {
+              "to": "gre-17",
+              "yaw": 195.36,
+              "pitch": -28.28
+            },
+            {
+              "to": "gre-16",
+              "yaw": 177.21,
+              "pitch": -8.44
+            },
+            {
+              "to": "gre-25",
+              "yaw": 305.19,
+              "pitch": -27.38
+            },
+            {
+              "to": "gre-19",
+              "yaw": 35.75,
+              "pitch": -24.24
+            },
+            {
+              "to": "gre-20",
+              "yaw": 84.79,
+              "pitch": -16.11
+            },
+            {
+              "to": "gre-24",
+              "yaw": 83.31,
+              "pitch": -7.87
+            }
+          ]
+        },
+        {
+          "id": "gre-19",
+          "name": "地下室休息室 19",
+          "floor": "B1",
+          "heading": 359,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-19-preview.webp",
+            "mid": "pano/gre-19-mid.webp",
+            "full": "pano/gre-19-full.webp"
+          },
+          "source": "CAM_20260805103655_0123_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8899,
+            "y": 0.3204
+          },
+          "links": [
+            {
+              "to": "gre-18",
+              "yaw": 309.63,
+              "pitch": -21.92
+            }
+          ]
+        },
+        {
+          "id": "gre-20",
+          "name": "地下室休息室 20",
+          "floor": "B1",
+          "heading": 357,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-20-preview.webp",
+            "mid": "pano/gre-20-mid.webp",
+            "full": "pano/gre-20-full.webp"
+          },
+          "source": "CAM_20260805103710_0124_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8304,
+            "y": 0.533
+          },
+          "links": [
+            {
+              "to": "gre-18",
+              "yaw": 348.97,
+              "pitch": -11.88
+            },
+            {
+              "to": "gre-19",
+              "yaw": 17.42,
+              "pitch": -16.33
+            },
+            {
+              "to": "gre-25",
+              "yaw": 7.64,
+              "pitch": -9.91
+            },
+            {
+              "to": "gre-21",
+              "yaw": 74.34,
+              "pitch": -28.91
+            },
+            {
+              "to": "gre-22",
+              "yaw": 116.24,
+              "pitch": -23.02
+            },
+            {
+              "to": "gre-24",
+              "yaw": 175.81,
+              "pitch": -15.18
+            }
+          ]
+        },
+        {
+          "id": "gre-21",
+          "name": "地下室休息室 21",
+          "floor": "B1",
+          "heading": 358,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-21-preview.webp",
+            "mid": "pano/gre-21-mid.webp",
+            "full": "pano/gre-21-full.webp"
+          },
+          "source": "CAM_20260805103722_0125_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8946,
+            "y": 0.5111
+          },
+          "links": [
+            {
+              "to": "gre-20",
+              "yaw": 255.29,
+              "pitch": -24.88
+            }
+          ]
+        },
+        {
+          "id": "gre-22",
+          "name": "地下室休息室 22",
+          "floor": "B1",
+          "heading": 347,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-22-preview.webp",
+            "mid": "pano/gre-22-mid.webp",
+            "full": "pano/gre-22-full.webp"
+          },
+          "source": "CAM_20260805103737_0126_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8914,
+            "y": 0.6674
+          },
+          "links": [
+            {
+              "to": "gre-20",
+              "yaw": 295.39,
+              "pitch": -21.96
+            }
+          ]
+        },
+        {
+          "id": "gre-23",
+          "name": "地下室休息室 23",
+          "floor": "B1",
+          "heading": 353,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-23-preview.webp",
+            "mid": "pano/gre-23-mid.webp",
+            "full": "pano/gre-23-full.webp"
+          },
+          "source": "CAM_20260805103751_0127_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8946,
+            "y": 0.8425
+          },
+          "links": [
+            {
+              "to": "gre-24",
+              "yaw": 229.27,
+              "pitch": -27.08
+            }
+          ]
+        },
+        {
+          "id": "gre-24",
+          "name": "地下室休息室 24",
+          "floor": "B1",
+          "heading": 98,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-24-preview.webp",
+            "mid": "pano/gre-24-mid.webp",
+            "full": "pano/gre-24-full.webp"
+          },
+          "source": "CAM_20260805103802_0128_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8179,
+            "y": 0.8456
+          },
+          "links": [
+            {
+              "to": "gre-23",
+              "yaw": 196.04,
+              "pitch": -31.27
+            },
+            {
+              "to": "gre-22",
+              "yaw": 123.13,
+              "pitch": -17.54
+            },
+            {
+              "to": "gre-20",
+              "yaw": 96.22,
+              "pitch": -18.26
+            },
+            {
+              "to": "gre-18",
+              "yaw": 95.81,
+              "pitch": -7.03
+            },
+            {
+              "to": "gre-21",
+              "yaw": 113.83,
+              "pitch": -12.73
+            }
+          ]
+        },
+        {
+          "id": "gre-25",
+          "name": "地下室休息室 25",
+          "floor": "B1",
+          "heading": 163,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-25-preview.webp",
+            "mid": "pano/gre-25-mid.webp",
+            "full": "pano/gre-25-full.webp"
+          },
+          "source": "CAM_20260805103856_0129_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.8914,
+            "y": 0.0859
+          },
+          "links": [
+            {
+              "to": "gre-18",
+              "yaw": 61.59,
+              "pitch": -24.15
+            },
+            {
+              "to": "gre-17",
+              "yaw": 66.91,
+              "pitch": -6.69
+            },
+            {
+              "to": "gre-26",
+              "yaw": 271.02,
+              "pitch": 9.37
+            }
+          ]
+        },
+        {
+          "id": "gre-26",
+          "name": "地下室休息室 26",
+          "floor": "B1",
+          "heading": 176,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-26-preview.webp",
+            "mid": "pano/gre-26-mid.webp",
+            "full": "pano/gre-26-full.webp"
+          },
+          "source": "CAM_20260805103920_0130_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.9493,
+            "y": 0.0828
+          },
+          "links": [
+            {
+              "to": "gre-25",
+              "yaw": 83.05,
+              "pitch": -36.42
+            },
+            {
+              "to": "gre-27",
+              "yaw": 103.12,
+              "pitch": 9.53
+            }
+          ]
+        },
+        {
+          "id": "gre-27",
+          "name": "地下室休息室 27",
+          "floor": "B1",
+          "heading": 190,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-27-preview.webp",
+            "mid": "pano/gre-27-mid.webp",
+            "full": "pano/gre-27-full.webp"
+          },
+          "source": "CAM_20260805103943_0131_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.9618,
+            "y": 0.2141
+          },
+          "links": [
+            {
+              "to": "gre-28",
+              "yaw": 80.24,
+              "pitch": -21.38
+            },
+            {
+              "to": "gre-26",
+              "yaw": 283.38,
+              "pitch": -33.61
+            }
+          ]
+        },
+        {
+          "id": "gre-28",
+          "name": "地下室休息室 28",
+          "floor": "B1",
+          "heading": 0,
+          "headingConfirmed": true,
+          "images": {
+            "preview": "pano/gre-28-preview.webp",
+            "mid": "pano/gre-28-mid.webp",
+            "full": "pano/gre-28-full.webp"
+          },
+          "source": "CAM_20260805103959_0132_D.JPG",
+          "description": "",
+          "hotspots": [],
+          "plan": {
+            "x": 0.7741,
+            "y": 0.0702
+          },
+          "links": [
+            {
+              "to": "gre-27",
+              "yaw": 285.9,
+              "pitch": -15.11
+            }
+          ]
+        }
+      ],
+      "boundaries": [],
+      "updatedAt": "2026-08-06"
     }
   ]
 };
