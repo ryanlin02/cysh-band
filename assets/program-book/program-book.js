@@ -458,7 +458,7 @@ function renderTeamAndLeadership() {
     ${conductors.map(c => `
       <div class="card person-feature-card">
         <figure class="person-feature-photo">
-          <img src="${c.photo}" alt="${c.photoAlt || c.name}" width="${c.photoWidth || 1200}" height="${c.photoHeight || 800}" loading="lazy" decoding="async">
+          <img src="${c.photo}" alt="${c.photoAlt || c.name}" width="${c.photoWidth || 1200}" height="${c.photoHeight || 800}" style="object-position: ${c.photoPosition || 'center'}" loading="lazy" decoding="async">
         </figure>
         <div class="person-feature-content">
           <div class="person-feature-header">

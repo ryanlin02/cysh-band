@@ -51,8 +51,9 @@ window.CONCERT_PROGRAM_DATA = {
         role: "樂團指揮",
         photo: "assets/images/conductor-lu-mi-cheng.webp",
         photoAlt: "盧宓承",
-        photoWidth: 1978,
-        photoHeight: 1380,
+        photoWidth: 1434,
+        photoHeight: 956,
+        photoPosition: "center top",
         bio: "盧宓承為嘉義高中校友管樂團團長，編號 7111，民國 71 年入學、長笛聲部，校友間暱稱「咪咪學長」。他取得國立中正大學資訊管理博士學位，現任雲林縣立蔦松藝術高中教師；長期參與嘉中校友暨在校生聯合音樂會，曾擔任多屆核心指揮，也投入地方管樂教育。在本屆《為伍》中，他以樂團指導與指揮身分，與不同世代團員共同整理合奏的呼吸、音色與樂句方向，延續校友聯演的傳承。",
         officialLink: "https://cysh.band/people/7111.html"
       },
