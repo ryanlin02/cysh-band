@@ -1216,6 +1216,30 @@ a.card-head:hover .num { color: var(--gold-soft); }
 }
 .concert-current-meta span,
 .concert-current-meta time { min-width: 0; }
+.venue-tour-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-left: 8px;
+  padding: 8px 11px;
+  border: 1px solid rgba(160,124,49,.48);
+  border-radius: 999px;
+  background: rgba(160,124,49,.08);
+  color: var(--gold);
+  font-size: .76em;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.venue-tour-link:hover,
+.venue-tour-link:focus-visible {
+  border-color: var(--gold);
+  background: rgba(160,124,49,.16);
+  color: var(--gold);
+}
 .concert-current-meta span::before {
   content: "";
   display: inline-block;

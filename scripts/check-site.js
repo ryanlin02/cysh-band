@@ -1174,11 +1174,11 @@ function checkHallTour() {
   }
 
   const html = read('hall/tour/index.html');
-  if (!/data-page-type=["']hall-tour-test["']/i.test(html)) {
-    addError('hall/tour/index.html: missing test-page marker.');
+  if (!/data-page-type=["']hall-tour["']/i.test(html)) {
+    addError('hall/tour/index.html: missing public hall-tour marker.');
   }
-  if (!/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex[^"']*nofollow/i.test(html)) {
-    addError('hall/tour/index.html: test page must remain noindex and nofollow.');
+  if (/<meta\s+name=["']robots["']\s+content=["'][^"']*(?:noindex|nofollow|noarchive)/i.test(html)) {
+    addError('hall/tour/index.html: public page must not retain noindex, nofollow, or noarchive.');
   }
   if (!/data-tour-layout=["']immersive["']/i.test(html)) {
     addError('hall/tour/index.html: immersive full-screen layout marker is missing.');
@@ -1200,10 +1200,10 @@ function checkHallTour() {
   if (!html.includes('--tour-viewport-height') || !html.includes('window.visualViewport')) {
     addError('hall/tour/index.html: visible viewport height guard is missing for installed PWA controls.');
   }
-  if (read('sitemap.xml').includes('https://cysh.band/hall/tour/')) {
-    addError('sitemap.xml: hall tour test page must not be listed before public release.');
+  if (!read('sitemap.xml').includes('https://cysh.band/hall/tour/')) {
+    addError('sitemap.xml: public hall tour page must be listed.');
   }
-  info.push('Hall tour checked: immersive controls, persistent user-initiated gyroscope, PWA viewport guard, mobile full-screen tools, private-test markers, and sitemap exclusion');
+  info.push('Hall tour checked: immersive controls, persistent user-initiated gyroscope, PWA viewport guard, mobile full-screen tools, public markers, and sitemap inclusion');
 }
 
 function printReport() {

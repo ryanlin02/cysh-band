@@ -284,7 +284,7 @@ function concertInfoTable(concert, statusText) {
     ['主題', `${escapeHtml(displayTitle(concert))}${concert.subtitle ? `｜${escapeHtml(concert.subtitle)}` : ''}${concert.aliases && concert.aliases.length ? `<br><span class="muted">別名：${concert.aliases.map(escapeHtml).join('、')}</span>` : ''}`],
     ['日期', formatDateRange(concert)],
     ['時間', escapeHtml(concert.time || '時間待考')],
-    ['場地', `${escapeHtml(concert.venue || '場地待考')}${concert.venueNote ? `<br><span class="muted">${escapeHtml(concert.venueNote)}</span>` : ''}`],
+    ['場地', `${escapeHtml(concert.venue || '場地待考')}${concert.id === '2026-41st' ? ' <a class="venue-tour-link" href="../hall/tour/" aria-label="開啟嘉義市政府文化局音樂廳線上導覽">線上導覽</a>' : ''}${concert.venueNote ? `<br><span class="muted">${escapeHtml(concert.venueNote)}</span>` : ''}`],
     ['指揮', listPeople(concert.conductors)],
     ['獨奏／協奏', listPeople(concert.soloists)],
     ['籌辦字頭', escapeHtml(concert.hostHead || '待考')],
@@ -664,7 +664,7 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=20260708-concert-booklet-text">
+<link rel="stylesheet" href="../css/style.css?v=20260806-venue-tour-link-v1">
 <script src="../js/main.js" defer></script>
 </head>
 <body>

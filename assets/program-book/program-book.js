@@ -256,7 +256,7 @@ function renderHeroAndOverview() {
         </div>
         <div class="meta-info-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-          <span>${info.venue}</span>
+          <span>${info.venue}${info.venueTourUrl ? ` <a class="venue-tour-link" href="${info.venueTourUrl}" aria-label="開啟嘉義市政府文化局音樂廳線上導覽">線上導覽</a>` : ''}</span>
         </div>
       </div>
     </div>

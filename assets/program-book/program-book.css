@@ -550,6 +550,32 @@ img {
   stroke: var(--accent-gold);
 }
 
+.venue-tour-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-left: 6px;
+  padding: 8px 11px;
+  border: 1px solid var(--accent-gold-border);
+  border-radius: 999px;
+  background: var(--accent-gold-light);
+  color: var(--accent-gold);
+  font-size: .78em;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.venue-tour-link:hover,
+.venue-tour-link:focus-visible {
+  border-color: var(--accent-gold);
+  background: rgba(184, 142, 40, .16);
+  color: var(--accent-gold-hover);
+}
+
 .card-title-serif {
   font-family: var(--font-serif);
   font-size: 1.25rem;

@@ -15,6 +15,7 @@ window.CONCERT_PROGRAM_DATA = {
     time: "14:30",
     doorTime: "14:00 自由入場",
     venue: "嘉義市政府文化局音樂廳",
+    venueTourUrl: "https://cysh.band/hall/tour/",
     venueAddress: "嘉義市東區忠孝路 275 號",
     posterUrl: "https://cysh.band/assets/img/poster_weiwu_2026.webp",
     organizer: "五字頭",
