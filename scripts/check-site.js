@@ -13,6 +13,8 @@ const warnings = [];
 const info = [];
 const ignoredDirs = new Set([
   '.git',
+  // 本機工作工具，不是公開網站輸出；各工具另有專屬檢查。
+  'tools',
   '20260704_嘉中管樂社官網_校友提供資料'
 ]);
 
