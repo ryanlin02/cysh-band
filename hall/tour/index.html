@@ -644,7 +644,6 @@ let loadedPano = viewerSrcOf(regions[0], regions[0].nodes[0], "preview");
 let pendingYaw = null;
 let navigationQueue = Promise.resolve();
 const FORWARD_PUSH_ZOOM = 6;
-const ARRIVAL_PULLBACK_ZOOM = 2;
 const FORWARD_PUSH_DURATION = 150;
 
 const clampZoom = level => Math.max(0, Math.min(100, level));
@@ -742,7 +741,7 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
   const forwardMotion = options?.motion === 'forward' && !REDUCED_MOTION;
   const currentZoom = viewer.getZoomLevel();
   const arrivalZoom = forwardMotion
-    ? clampZoom(currentZoom - ARRIVAL_PULLBACK_ZOOM)
+    ? clampZoom(currentZoom + FORWARD_PUSH_ZOOM)
     : currentZoom;
 
   // 只在點選環景內的跳點時產生輕微的「向前」感；地圖選點與
