@@ -750,10 +750,17 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
   if (forwardMotion) {
     // 不等待 viewer.animate() 的完成 promise。某些環景切換中，該 promise
     // 會被標記選取流程卡住；改以固定的短時長接續換圖，避免只放大卻不前進。
-    viewer.animate({
-      zoom: clampZoom(currentZoom + FORWARD_PUSH_ZOOM),
-      speed: FORWARD_PUSH_DURATION,
-    }).catch(() => {});
+    try {
+      const pushAnimation = viewer.animate({
+        zoom: clampZoom(currentZoom + FORWARD_PUSH_ZOOM),
+        speed: FORWARD_PUSH_DURATION,
+      });
+      // PSV 回傳的是可 then 的 Animation，不保證有 Promise.catch()。
+      // 僅觀察失敗，絕不讓動畫回傳值阻塞下一張全景。
+      if (pushAnimation && typeof pushAnimation.then === 'function') {
+        pushAnimation.then(() => {}, () => {});
+      }
+    } catch (_) {}
     await new Promise(resolve => setTimeout(resolve, FORWARD_PUSH_DURATION));
   }
   const previewSrc = viewerSrcOf(region, n, 'preview');
