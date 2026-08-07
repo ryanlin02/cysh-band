@@ -283,7 +283,8 @@
 import { Viewer } from '@photo-sphere-viewer/core';
 import { GyroscopePlugin } from '@photo-sphere-viewer/gyroscope-plugin';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
-import { TOUR } from '../../data/tour.js';
+// 版本標記避免 GitHub Pages 更新頁面後，瀏覽器仍沿用舊的導覽資料快取。
+import { TOUR } from '../../data/tour.js?v=20260807-scene-menu-v1';
 import { HALL_SEATS } from '../../data/hall-seats.js';
 import { createSeatMap, SEAT_MAP_CSS } from '../../assets/hall-tour/seat-map.js';
 import { createPlanMap, PLAN_MAP_CSS } from '../../assets/hall-tour/plan-map.js';
