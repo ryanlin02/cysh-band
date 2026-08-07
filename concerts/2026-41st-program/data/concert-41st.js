@@ -353,11 +353,12 @@ window.CONCERT_PROGRAM_DATA = {
       section: "Trombone",
       sectionZh: "長號",
       members: [
+        { name: "范庭福", number: "7962" },
+        { name: "曾裕圓", number: "8162" },
         { name: "簡晟軒", number: "8861" },
-        { name: "簡晟軒", number: "8861" },
-        { name: "簡晟軒", number: "8861" },
-        { name: "簡晟軒", number: "8861" },
-        { name: "簡晟軒", number: "8861" },
+        { name: "張永澤", number: "9601" },
+        { name: "董書菡", number: "0323" },
+        { name: "林佑瑄", number: "1161" },
       ]
     },
     {
@@ -404,13 +405,13 @@ window.CONCERT_PROGRAM_DATA = {
       { role: "總務組", names: ["魏仕杰"] },
       { role: "場務 / 器材組", names: ["還沒決定"] },
       { role: "前台公關組", names: ["還沒決定"] },
-      { role: "影像直播 / 紀錄", names: ["量子藝術有限公司"] }
+      { role: "影像直播 / 紀錄", names: ["量子藝術有限公司 葉思佑"] }
     ],
     thanksTitle: "特別感謝",
     thanksList: [
       "國立嘉義高級中學",
       "嘉義市政府文化局",
-      "熱心贊助與協助練習之全體校友與親友",
+      "熱心贊助之全體校友與親友",
       "所有蒞臨現場支持的樂迷朋友"
     ],
     supportLink: {
