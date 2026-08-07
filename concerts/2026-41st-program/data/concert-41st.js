@@ -435,7 +435,8 @@ window.CONCERT_PROGRAM_DATA = {
       { role: "舞臺總監", names: ["林俊余"] }
       { role: "場務 / 器材組", names: ["郭昱廷", "吳東謙"] },
       { role: "前台公關組", names: ["Surprise"] },
-      { role: "影像直播 / 紀錄", names: ["量子藝術有限公司 葉思佑"] }
+      { role: "影像直播 / 紀錄", names: ["量子藝術 葉思佑"] }
+      { role: "平面攝影", names: ["丁怡文 邱柏霖"] }
     ],
     thanksTitle: "特別感謝",
     thanksList: [
@@ -444,8 +445,6 @@ window.CONCERT_PROGRAM_DATA = {
       "林哲瑋",
       "鄭華翰",
       "蘇羿亘"
-      "丁怡文",
-      "邱柏霖",
       "黃怡禎",
       "謝建庭",
       "黃馨儀",
