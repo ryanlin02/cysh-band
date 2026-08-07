@@ -283,8 +283,9 @@
 import { Viewer } from '@photo-sphere-viewer/core';
 import { GyroscopePlugin } from '@photo-sphere-viewer/gyroscope-plugin';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
-// 版本標記避免 GitHub Pages 更新頁面後，瀏覽器仍沿用舊的導覽資料快取。
-import { TOUR } from '../../data/tour.js?v=20260807-scene-menu-v1';
+// 版本標記由產生器依資料內容更新，避免 GitHub Pages 混用舊快取。
+import { TOUR } from '../../data/tour.js?v={{TOUR_DATA_VERSION}}';
+import { TOUR_ENTRY_VIEWS } from '../../data/tour-entry-views.js?v={{TOUR_ENTRY_VIEWS_VERSION}}';
 import { HALL_SEATS } from '../../data/hall-seats.js';
 import { createSeatMap, SEAT_MAP_CSS } from '../../assets/hall-tour/seat-map.js';
 import { createPlanMap, PLAN_MAP_CSS } from '../../assets/hall-tour/plan-map.js';
@@ -386,6 +387,10 @@ const regions = TOUR.regions
   .filter(r => r.status === 'ready' && r.nodes.length)
   .sort((a, b) => a.order - b.order);
 const sceneMenu = TOUR.sceneMenu || [];
+const configuredSceneMenu = sceneMenu.map(entry => {
+  const entryView = TOUR_ENTRY_VIEWS[entry.id];
+  return entryView ? { ...entry, startNode: entryView.startNode, entryView } : entry;
+});
 
 // 影像由網站既有的 Cloudflare R2 自訂網域提供
 const srcOf = (region, n, tier) =>
@@ -393,14 +398,23 @@ const srcOf = (region, n, tier) =>
 // 檢視器的網址與一般縮圖分開快取，避免無 Origin 的縮圖回應被 WebGL 重用。
 const viewerSrcOf = (region, n, tier) => srcOf(region, n, tier) + '?viewer=1';
 
-let region = regions[0];
-let cur = 0;
-let floor = region.nodes[0].floor;
+// 第一個可進入的場景也讀取校準設定；否則重新整理頁面會回到舊的第一張照片。
+const initialSceneEntry = configuredSceneMenu.find(entry => entry.status === 'ready');
+const initialRegion = initialSceneEntry
+  ? regions.find(item => item.id === initialSceneEntry.regionId)
+  : regions[0];
+const initialIndex = initialSceneEntry
+  ? Math.max(0, initialRegion.nodes.findIndex(node => node.id === initialSceneEntry.startNode))
+  : 0;
+
+let region = initialRegion;
+let cur = initialIndex;
+let floor = region.nodes[cur].floor;
 
 const viewer = new Viewer({
   container: 'viewer',
-  panorama: viewerSrcOf(region, region.nodes[0], 'preview'),
-  caption: region.nodes[0].name,
+  panorama: viewerSrcOf(region, region.nodes[cur], 'preview'),
+  caption: region.nodes[cur].name,
   navbar: false,
   defaultZoomLvl: 30,
   // 全景之間不做旋轉式轉場。旋轉到目標角度雖然最後正確，
@@ -589,7 +603,7 @@ function refreshMap() {
 function buildSceneMenu() {
   const grid = document.getElementById('sceneMenu');
   grid.innerHTML = '';
-  sceneMenu.forEach(entry => {
+  configuredSceneMenu.forEach(entry => {
     const ready = entry.status === 'ready';
     const active = ready && entry.regionId === region.id && entry.floor === floor;
     const b = document.createElement('button');
@@ -628,7 +642,7 @@ function buildSceneMenu() {
       b.onclick = () => {
         const target = regionsById.get(entry.regionId);
         const start = target.nodes.findIndex(n => n.id === entry.startNode);
-        switchRegion(target, start);
+        switchRegion(target, start, { entryView: entry.entryView });
         closePanelOnCompact();
       };
     }
@@ -640,7 +654,7 @@ function closePanelOnCompact() {
   if (IS_COMPACT()) closePanel({ restoreFocus: false });
 }
 
-let loadedPano = viewerSrcOf(regions[0], regions[0].nodes[0], "preview");
+let loadedPano = viewerSrcOf(region, region.nodes[cur], "preview");
 let pendingYaw = null;
 let navigationQueue = Promise.resolve();
 const FORWARD_PUSH_ZOOM = 6;
@@ -660,7 +674,7 @@ function queueNavigation(task) {
 function switchRegion(r, startIndex = 0, options = {}) {
   return queueNavigation(async () => {
     const prev = region.nodes[cur];
-    const carried = carryOverYaw(prev, r.nodes[startIndex]);
+    const carried = options?.entryView ? null : carryOverYaw(prev, r.nodes[startIndex]);
     region = r; cur = startIndex; floor = r.nodes[startIndex].floor;
     buildSceneMenu(); buildMap();
     pendingYaw = carried;
@@ -733,11 +747,14 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
   document.getElementById('nowDesc').textContent = n.description || '';
   refreshMap();
 
-  const useYaw = carried != null ? carried
+  const entryView = options?.entryView;
+  const useYaw = Number.isFinite(entryView?.yaw) ? entryView.yaw
+               : carried != null ? carried
                : pendingYaw != null ? pendingYaw
                : (n.heading || 0);
   pendingYaw = null;
   const startYaw = useYaw * Math.PI / 180;
+  const startPitch = Number.isFinite(entryView?.pitch) ? entryView.pitch * Math.PI / 180 : 0;
   const forwardMotion = options?.motion === 'forward' && !REDUCED_MOTION;
   const currentZoom = viewer.getZoomLevel();
   const arrivalZoom = forwardMotion
@@ -767,11 +784,11 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
     await viewer.setPanorama(previewSrc, {
       transition: REDUCED_MOTION ? false : { speed: 260, effect: 'fade', rotation: false },
       caption: n.name,
-      position: { yaw: startYaw, pitch: 0 },
+      position: { yaw: startYaw, pitch: startPitch },
       zoom: arrivalZoom,
     });
   } else {
-    viewer.rotate({ yaw: startYaw, pitch: 0 });
+    viewer.rotate({ yaw: startYaw, pitch: startPitch });
   }
   loadedPano = previewSrc;
 
@@ -789,7 +806,7 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
 buildSceneMenu();
 buildMap();
 viewer.addEventListener('ready', async () => {
-  go(0, null, false);
+  go(cur, initialSceneEntry ? { entryView: initialSceneEntry.entryView } : null, false);
   wakeControls();
   const supported = await gyroPlugin.isSupported().catch(() => false);
   const mobileLike = matchMedia('(pointer: coarse)').matches;

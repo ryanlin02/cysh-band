@@ -15,6 +15,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { pathToFileURL } = require('url');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -34,7 +35,7 @@ async function load(rel) {
   return import(pathToFileURL(path.join(ROOT, rel)).href + '?t=' + Date.now());
 }
 
-function validate(TOUR, HALL) {
+function validate(TOUR, HALL, ENTRY_VIEWS) {
   const remoteImages = /^https:\/\/[^\s]+\/$/.test(TOUR.imageBase || '');
   if (!remoteImages) {
     fail('imageBase 必須是 HTTPS 公開網址，且最後保留斜線');
@@ -83,6 +84,20 @@ function validate(TOUR, HALL) {
       if (!start) return fail(`${at}：startNode「${entry.startNode}」不在 ${target.id} 區域中`);
       if (entry.floor !== start.floor)
         fail(`${at}：floor 標示 ${entry.floor}，但 startNode 位於 ${start.floor}`);
+
+      const view = ENTRY_VIEWS && ENTRY_VIEWS[entry.id];
+      if (!view || typeof view !== 'object') {
+        fail(`${at}：缺少場景開啟設定（data/tour-entry-views.js）`);
+      } else {
+        const viewNode = (target.nodes || []).find(n => n.id === view.startNode);
+        if (!viewNode) fail(`${at}：開啟設定的 startNode「${view.startNode}」不在 ${target.id} 區域中`);
+        else if (viewNode.floor !== entry.floor)
+          fail(`${at}：開啟設定的 startNode 必須位於 ${entry.floor}`);
+        if (typeof view.yaw !== 'number' || view.yaw < 0 || view.yaw >= 360)
+          fail(`${at}：開啟設定 yaw 必須是 0–359 的數字`);
+        if (typeof view.pitch !== 'number' || view.pitch < -90 || view.pitch > 90)
+          fail(`${at}：開啟設定 pitch 必須是 -90–90 的數字`);
+      }
     });
   }
 
@@ -175,9 +190,10 @@ function validate(TOUR, HALL) {
 
 async function main() {
   const { TOUR } = await load('data/tour.js');
+  const { TOUR_ENTRY_VIEWS } = await load('data/tour-entry-views.js');
   const { HALL_SEATS } = await load('data/hall-seats.js');
 
-  const stat = validate(TOUR, HALL_SEATS);
+  const stat = validate(TOUR, HALL_SEATS, TOUR_ENTRY_VIEWS);
 
   console.log(`導覽資料：${TOUR.regions.length} 個區域、${stat.nodeCount} 個節點、` +
               `${stat.ready} 個區域已完成、${stat.sceneCount} 個場景入口`);
@@ -218,12 +234,15 @@ async function main() {
     return;
   }
   fs.mkdirSync(OUT_DIR, { recursive: true });
+  const versionOf = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex').slice(0, 12);
   const html = fs.readFileSync(tpl, 'utf8')
     .replace(/\{\{VENUE\}\}/g, TOUR.venue.name)
     .replace(/\{\{DESC\}\}/g,
       `${TOUR.venue.name} 360 度環景導覽，共 ${stat.nodeCount} 個場景。` +
       `${TOUR.venue.seats.total} 席，可售 ${TOUR.venue.seats.sellable} 席。`)
-    .replace(/\{\{GENERATED\}\}/g, new Date().toISOString().slice(0, 10));
+    .replace(/\{\{GENERATED\}\}/g, new Date().toISOString().slice(0, 10))
+    .replace(/\{\{TOUR_DATA_VERSION\}\}/g, versionOf(path.join(ROOT, 'data', 'tour.js')))
+    .replace(/\{\{TOUR_ENTRY_VIEWS_VERSION\}\}/g, versionOf(path.join(ROOT, 'data', 'tour-entry-views.js')));
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), html);
   console.log(`已產生 hall/tour/index.html`);
 }

@@ -3,6 +3,7 @@
 # 本機地下室休息室標記工具的全景轉檔、配置圖與人工標記成果。
 # 原始照片與處理後全景圖不進公開網站或 Git；完成審核後才另行上傳 R2。
 /local/hall-tour-greenroom/
+/local/hall-tour-scene-calibrator/
 
 # Python 執行時暫存檔。
 __pycache__/

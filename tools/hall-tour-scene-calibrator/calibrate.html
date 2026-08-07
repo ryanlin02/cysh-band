@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>音樂廳場景開場校準工具</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.min.css">
+<style>
+:root{--paper:#f7f4ee;--card:#fffdf9;--ink:#27211c;--muted:#746a62;--line:#ddd5c9;--accent:#8c2f28;--good:#286a44;--focus:#f3bd57}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}button,select{font:inherit}.app{max-width:1440px;margin:auto;padding:18px}.top{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;margin-bottom:14px}.top h1{font-size:24px;line-height:1.25;margin:0}.top p{margin:4px 0 0;color:var(--muted)}.local-note{max-width:420px;margin:0;padding:10px 13px;border-left:4px solid var(--accent);background:#f0ebe1;font-size:14px}.layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 3px 16px #3320100b}.section-title{font-size:14px;font-weight:700;margin:2px 0 10px;color:var(--muted)}.scene-list{display:grid;gap:8px}.scene{min-height:60px;width:100%;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:7px;text-align:left;cursor:pointer}.scene img{width:66px;height:44px;object-fit:cover;border-radius:7px}.scene strong{display:block;font-size:15px}.scene small{display:block;color:var(--muted);font-size:12px}.scene[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 2px #8c2f2822}.scene:disabled{opacity:.5;cursor:not-allowed}.workspace{display:grid;grid-template-rows:auto minmax(360px,1fr) auto;gap:12px;min-height:0}.toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:end}.field{display:grid;gap:4px;font-size:14px;font-weight:650}.field select{min-height:46px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px 10px;color:var(--ink)}#viewer{min-height:420px;height:min(62vh,720px);border-radius:14px;overflow:hidden;background:#191512}.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.actions button{min-height:46px;border:1px solid var(--line);border-radius:10px;padding:8px 13px;background:#fffdf9;color:var(--ink);cursor:pointer;touch-action:manipulation}.actions button:hover{border-color:var(--accent)}.actions .primary{background:var(--accent);border-color:var(--accent);color:white;font-weight:700}.actions .save{background:var(--ink);border-color:var(--ink);color:white;font-weight:700}.actions button:focus-visible,.field select:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.status{padding:10px 12px;border-radius:10px;background:#f2eee6;color:var(--muted);font-size:14px}.status.good{background:#e8f4eb;color:var(--good)}.status.error{background:#fff0ee;color:#9b3024}.shortcut{font-size:13px;color:var(--muted);margin:0}.scene-summary{font-size:14px;color:var(--muted);margin:0}.scene-summary b{color:var(--ink)}@media(max-width:850px){.app{padding:10px}.top{flex-direction:column}.local-note{max-width:none}.layout{grid-template-columns:1fr}.scene-list{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{grid-template-columns:1fr 1fr}.toolbar .summary{grid-column:1/-1;order:-1}#viewer{height:52vh;min-height:340px}}@media(max-width:520px){.scene-list{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.field{width:100%}.actions button{flex:1}.actions .primary,.actions .save{flex-basis:100%}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top"><div><h1>音樂廳場景開場校準工具</h1><p>以眼睛設定，不需要輸入角度或修改程式。</p></div><p class="local-note"><b>只儲存在這台電腦。</b><br>按儲存後不會自行上線；完成後回到 Codex 說「發布場景校準設定」。</p></header>
+  <div class="layout">
+    <aside class="card"><h2 class="section-title">1. 選擇要設定的場景</h2><div class="scene-list" id="sceneList" aria-label="場景列表"></div></aside>
+    <section class="card workspace" aria-label="開場畫面校準區">
+      <div class="toolbar"><label class="field">2. 選擇開場照片<select id="nodeSelect" aria-label="開場照片"></select></label><p class="scene-summary summary" id="summary">讀取中…</p><button type="button" id="reset">還原此場景</button></div>
+      <div id="viewer" aria-label="360 度開場畫面預覽"></div>
+      <div class="actions"><button type="button" id="left">向左微調</button><button type="button" id="right">向右微調</button><button type="button" id="up">向上微調</button><button type="button" id="down">向下微調</button><button class="primary" type="button" id="set">設為此場景開場畫面</button><button class="save" type="button" id="save">儲存所有設定到本機</button></div>
+      <p class="shortcut">也可以直接用滑鼠或手指拖曳照片；按「設為此場景開場畫面」才會記錄這個畫面。</p><div class="status" id="status" role="status" aria-live="polite">請從左側選擇一個場景。</div>
+    </section>
+  </div>
+</main>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js","@photo-sphere-viewer/core":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.module.js"}}</script>
+<script type="module">
+import { Viewer } from '@photo-sphere-viewer/core';
+import { TOUR } from '/site/data/tour.js';
+import { TOUR_ENTRY_VIEWS } from '/site/data/tour-entry-views.js';
+const $=id=>document.getElementById(id), deg=n=>((n%360)+360)%360, round=n=>Math.round(n*100)/100;
+const entries=TOUR.sceneMenu.filter(x=>x.status==='ready');
+const regions=new Map(TOUR.regions.map(x=>[x.id,x]));
+const original=structuredClone(TOUR_ENTRY_VIEWS), draft=structuredClone(TOUR_ENTRY_VIEWS);
+let selected=entries[0].id, nodeId=draft[selected].startNode, loaded='';
+const source=(region,node)=>TOUR.imageBase+node.images.preview+'?calibrator=1';
+const viewer=new Viewer({container:'viewer',panorama:source(regions.get(entries[0].regionId),regions.get(entries[0].regionId).nodes[0]),navbar:false,defaultZoomLvl:30,defaultTransition:false,loadingTxt:'載入中'});
+function entry(){return entries.find(x=>x.id===selected)} function region(){return regions.get(entry().regionId)} function node(){return region().nodes.find(x=>x.id===nodeId)}
+function setting(){return draft[selected]} function status(text,kind=''){const s=$('status');s.textContent=text;s.className='status '+kind}
+function renderScenes(){const list=$('sceneList');list.innerHTML='';TOUR.sceneMenu.forEach(item=>{const b=document.createElement('button');b.className='scene';b.type='button';b.disabled=item.status!=='ready';b.setAttribute('aria-current',String(item.id===selected));const img=document.createElement('img');img.src=TOUR.imageBase+item.image;img.alt='';const copy=document.createElement('span');copy.innerHTML=`<strong>${item.name}</strong><small>${item.status==='ready'?'可設定開場畫面':'尚未開放'}</small>`;b.append(img,copy);if(!b.disabled)b.onclick=()=>selectScene(item.id);list.append(b)})}
+function renderNodes(){const select=$('nodeSelect');select.innerHTML='';region().nodes.filter(n=>n.floor===entry().floor).forEach(n=>{const i=region().nodes.indexOf(n);const o=document.createElement('option');o.value=n.id;o.textContent=`${String(i+1).padStart(2,'0')}　${n.name}`;o.selected=n.id===nodeId;select.append(o)});const saved=setting();$('summary').innerHTML=`<b>${entry().name}</b><br>目前設定：${saved.startNode} · 左右 ${saved.yaw}° · 上下 ${saved.pitch}°`}
+async function loadView(useSetting=false){const n=node(), view=useSetting?setting():{yaw:n.heading,pitch:0};const src=source(region(),n);if(src!==loaded){await viewer.setPanorama(src,{transition:false,position:{yaw:view.yaw+'deg',pitch:view.pitch+'deg'}});loaded=src}else viewer.rotate({yaw:view.yaw+'deg',pitch:view.pitch+'deg'});renderNodes()}
+async function selectScene(id){selected=id;nodeId=setting().startNode;renderScenes();await loadView(true);status(`正在設定「${entry().name}」。拖曳到想要的畫面後，按「設為此場景開場畫面」。`)}
+function nudge(yaw,pitch){const p=viewer.getPosition();viewer.rotate({yaw:p.yaw+yaw*Math.PI/180,pitch:Math.max(-Math.PI/2+.01,Math.min(Math.PI/2-.01,p.pitch+pitch*Math.PI/180))})}
+$('nodeSelect').onchange=async e=>{nodeId=e.target.value;await loadView(false);status('照片已切換；調整畫面後按「設為此場景開場畫面」。')};$('left').onclick=()=>nudge(-10,0);$('right').onclick=()=>nudge(10,0);$('up').onclick=()=>nudge(0,6);$('down').onclick=()=>nudge(0,-6);
+$('set').onclick=()=>{const p=viewer.getPosition();draft[selected]={startNode:nodeId,yaw:round(deg(p.yaw*180/Math.PI)),pitch:round(p.pitch*180/Math.PI)};renderScenes();renderNodes();status(`已記錄「${entry().name}」的開場畫面；完成其他場景後按「儲存所有設定到本機」。`,'good')};
+$('reset').onclick=async()=>{draft[selected]=structuredClone(original[selected]);nodeId=draft[selected].startNode;await loadView(true);renderScenes();status(`已還原「${entry().name}」到上次儲存的設定。`)};
+$('save').onclick=async()=>{const b=$('save');b.disabled=true;b.textContent='儲存中…';try{const r=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entries:draft})});const data=await r.json();if(!data.ok)throw Error(data.error);Object.assign(original,structuredClone(draft));status(`已把 ${data.saved} 個場景設定儲存在本機。請回到 Codex 說「發布場景校準設定」。`,'good')}catch(error){status('儲存失敗：'+error.message,'error')}finally{b.disabled=false;b.textContent='儲存所有設定到本機'}};
+viewer.addEventListener('ready',()=>selectScene(selected),{once:true});renderScenes();
+</script>
+</body>
+</html>
