@@ -403,7 +403,9 @@ const viewer = new Viewer({
   caption: region.nodes[0].name,
   navbar: false,
   defaultZoomLvl: 30,
-  defaultTransition: { speed: 700, effect: 'fade', rotation: true },
+  // 全景之間不做旋轉式轉場。旋轉到目標角度雖然最後正確，
+  // 但手機陀螺儀會放大這段甩動感，改以短暫淡入維持方向感。
+  defaultTransition: { speed: 260, effect: 'fade', rotation: false },
   plugins: [
     [GyroscopePlugin, { touchmove: true, moveMode: 'fast' }],
     [MarkersPlugin, {}],
@@ -522,9 +524,9 @@ markersPlugin && markersPlugin.addEventListener('select-marker', e => {
   if (l.region !== region.id) {
     const r = regionsById.get(l.region);
     const i = l.id ? r.nodes.findIndex(n => n.id === l.id) : 0;
-    switchRegion(r, i < 0 ? 0 : i);
+    switchRegion(r, i < 0 ? 0 : i, { motion: 'forward' });
   } else {
-    go(region.nodes.findIndex(n => n.id === l.id));
+    go(region.nodes.findIndex(n => n.id === l.id), { motion: 'forward' });
   }
 });
 
@@ -641,6 +643,11 @@ function closePanelOnCompact() {
 let loadedPano = viewerSrcOf(regions[0], regions[0].nodes[0], "preview");
 let pendingYaw = null;
 let navigationQueue = Promise.resolve();
+const FORWARD_PUSH_ZOOM = 6;
+const ARRIVAL_PULLBACK_ZOOM = 2;
+const FORWARD_PUSH_DURATION = 150;
+
+const clampZoom = level => Math.max(0, Math.min(100, level));
 
 // 手機上連點不同場景時，Photo Sphere Viewer 會中止前一張尚未完成的下載。
 // 將切換依序執行，避免兩次 setPanorama 互相取消並留下錯誤。
@@ -651,14 +658,14 @@ function queueNavigation(task) {
   return navigationQueue;
 }
 
-function switchRegion(r, startIndex = 0) {
+function switchRegion(r, startIndex = 0, options = {}) {
   return queueNavigation(async () => {
     const prev = region.nodes[cur];
     const carried = carryOverYaw(prev, r.nodes[startIndex]);
     region = r; cur = startIndex; floor = r.nodes[startIndex].floor;
     buildSceneMenu(); buildMap();
     pendingYaw = carried;
-    await performGo(startIndex, null, false);
+    await performGo(startIndex, options, false);
   });
 }
 
@@ -675,21 +682,25 @@ function carryOverYaw(fromNode, toNode) {
   return ((toNode.heading + (now - fromNode.heading)) % 360 + 360) % 360;
 }
 
-function go(i, _unused, keepDirection = true) {
+function go(i, options = {}, keepDirection = true) {
   const requestedRegion = region;
   return queueNavigation(() => {
     if (requestedRegion !== region) return;
-    return performGo(i, _unused, keepDirection);
+    return performGo(i, options, keepDirection);
   });
 }
 
-async function performGo(i, _unused, keepDirection = true) {
+async function performGo(i, options = {}, keepDirection = true) {
   navigationInProgress = true;
-  syncGyroState(gyroPlugin.isEnabled());
+  // 陀螺儀在全景替換期間仍持續回報裝置角度，會和新場景的
+  // 目標視角互相拉扯。先暫停，換好畫面後再以目前方向恢復。
+  const restoreGyroscope = gyroRequested && gyroPlugin.isEnabled();
+  if (restoreGyroscope) gyroPlugin.stop();
+  syncGyroState(restoreGyroscope ? false : gyroPlugin.isEnabled());
   try {
-    await performSceneChange(i, _unused, keepDirection);
+    await performSceneChange(i, options, keepDirection);
   } finally {
-    if (gyroRequested && !gyroPlugin.isEnabled()) {
+    if (restoreGyroscope && gyroRequested && !gyroPlugin.isEnabled()) {
       try {
         // setPanorama 指定視角時會呼叫 stopAll；使用者已授權且原本開啟時，自動恢復。
         await gyroPlugin.start('fast');
@@ -703,7 +714,7 @@ async function performGo(i, _unused, keepDirection = true) {
   }
 }
 
-async function performSceneChange(i, _unused, keepDirection = true) {
+async function performSceneChange(i, options = {}, keepDirection = true) {
   // 延續方向要在改 cur 之前算，否則抓到的已經是新場景
   const carried = keepDirection ? carryOverYaw(region.nodes[cur], region.nodes[i]) : null;
   cur = i;
@@ -728,11 +739,27 @@ async function performSceneChange(i, _unused, keepDirection = true) {
                : (n.heading || 0);
   pendingYaw = null;
   const startYaw = useYaw * Math.PI / 180;
+  const forwardMotion = options?.motion === 'forward' && !REDUCED_MOTION;
+  const currentZoom = viewer.getZoomLevel();
+  const arrivalZoom = forwardMotion
+    ? clampZoom(currentZoom - ARRIVAL_PULLBACK_ZOOM)
+    : currentZoom;
+
+  // 只在點選環景內的跳點時產生輕微的「向前」感；地圖選點與
+  // 場景入口維持單純淡入，避免跨距離跳轉看起來像真的在前進。
+  if (forwardMotion) {
+    await viewer.animate({
+      zoom: clampZoom(currentZoom + FORWARD_PUSH_ZOOM),
+      speed: FORWARD_PUSH_DURATION,
+    }).catch(() => {});
+  }
   const previewSrc = viewerSrcOf(region, n, 'preview');
   if (previewSrc !== loadedPano) {
     await viewer.setPanorama(previewSrc, {
-      transition: !REDUCED_MOTION, caption: n.name,
+      transition: REDUCED_MOTION ? false : { speed: 260, effect: 'fade', rotation: false },
+      caption: n.name,
       position: { yaw: startYaw, pitch: 0 },
+      zoom: arrivalZoom,
     });
   } else {
     viewer.rotate({ yaw: startYaw, pitch: 0 });
