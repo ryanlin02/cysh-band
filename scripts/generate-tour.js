@@ -48,10 +48,43 @@ function validate(TOUR, HALL) {
 
   const nodeIds = new Map();
   const regionIds = new Set(TOUR.regions.map(r => r.id));
+  const regionsById = new Map(TOUR.regions.map(r => [r.id, r]));
+  const sceneMenu = Array.isArray(TOUR.sceneMenu) ? TOUR.sceneMenu : [];
   // 先收齊所有節點 id，圓點才能檢查是不是指向不存在的場景
   const nodeIdsAll = new Set(TOUR.regions.flatMap(r => (r.nodes || []).map(n => n.id)));
 
   if (!TOUR.regions.length) fail('regions 是空的');
+  if (!Array.isArray(TOUR.sceneMenu) || !sceneMenu.length) {
+    fail('sceneMenu 必須至少有一個場景入口');
+  } else {
+    const menuIds = new Set();
+    sceneMenu.forEach(entry => {
+      const at = `sceneMenu/${entry && entry.id ? entry.id : '未命名'}`;
+      if (!entry || !entry.id) return fail(`${at}：缺少 id`);
+      if (menuIds.has(entry.id)) fail(`sceneMenu id 重複：${entry.id}`);
+      menuIds.add(entry.id);
+      if (!entry.name) fail(`${at}：缺少 name`);
+      if (!/^scene-cards\/[a-z0-9-]+\.webp$/.test(entry.image || ''))
+        fail(`${at}：image 必須是 scene-cards/ 下的 WebP 檔案`);
+      if (!['ready', 'planned'].includes(entry.status))
+        fail(`${at}：status 必須是 ready 或 planned`);
+
+      const target = regionsById.get(entry.regionId);
+      if (!target) return fail(`${at}：regionId 指向不存在的區域「${entry.regionId}」`);
+
+      if (entry.status === 'planned') {
+        if (target.status === 'ready') fail(`${at}：已完成區域不可標記為 planned`);
+        return;
+      }
+
+      if (target.status !== 'ready' || !(target.nodes || []).length)
+        fail(`${at}：ready 入口必須對應已完成且有節點的區域`);
+      const start = (target.nodes || []).find(n => n.id === entry.startNode);
+      if (!start) return fail(`${at}：startNode「${entry.startNode}」不在 ${target.id} 區域中`);
+      if (entry.floor !== start.floor)
+        fail(`${at}：floor 標示 ${entry.floor}，但 startNode 位於 ${start.floor}`);
+    });
+  }
 
   TOUR.regions.forEach(region => {
     const { id, name, status, nodes = [], boundaries = [] } = region;
@@ -137,7 +170,7 @@ function validate(TOUR, HALL) {
     });
   }
 
-  return { nodeCount: nodeIds.size, ready: ready.length };
+  return { nodeCount: nodeIds.size, ready: ready.length, sceneCount: sceneMenu.length };
 }
 
 async function main() {
@@ -147,7 +180,7 @@ async function main() {
   const stat = validate(TOUR, HALL_SEATS);
 
   console.log(`導覽資料：${TOUR.regions.length} 個區域、${stat.nodeCount} 個節點、` +
-              `${stat.ready} 個區域已完成`);
+              `${stat.ready} 個區域已完成、${stat.sceneCount} 個場景入口`);
   TOUR.regions.forEach(r => {
     const mark = { ready: '完成', draft: '進行中', planned: '未開始' }[r.status];
     console.log(`  ${r.name.padEnd(8, '　')} ${mark}　${(r.nodes || []).length}/${r.sourcePhotos} 張`);

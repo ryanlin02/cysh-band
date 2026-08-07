@@ -102,19 +102,23 @@
   .close-button:hover,.close-button:active{background:#e4dccf}
   .panel-body{overflow:auto;-webkit-overflow-scrolling:touch;padding:16px 18px max(24px,env(safe-area-inset-bottom));overscroll-behavior:contain}
   .panel-view{min-width:0}
-  .tabs,.floorbar{display:flex;gap:8px;flex-wrap:wrap}
-  .tabs{margin:0 0 16px}
-  .tabs button,.floorbar button{background:transparent;border:1px solid var(--line);border-radius:999px;
-    min-height:44px;padding:7px 15px;font-size:13.5px;cursor:pointer;color:var(--muted)}
-  .tabs button.on,.floorbar button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .tabs button:disabled{opacity:.4;cursor:default}
-  .floorbar{margin:0 0 10px}
-  .strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .thumb{min-width:0;min-height:108px;border:2px solid transparent;border-radius:12px;overflow:hidden;
-    cursor:pointer;background:var(--surface);padding:0;text-align:left;box-shadow:0 1px 0 rgba(36,31,26,.05)}
-  .thumb.on{border-color:var(--accent)}
-  .thumb img{width:100%;height:82px;object-fit:cover;display:block;background:#efe9de}
-  .thumb span{display:block;font-size:12px;padding:7px 9px;line-height:1.4;color:var(--ink)}
+  .scene-menu-note{margin:0 0 12px;font-size:13px;line-height:1.55;color:var(--muted)}
+  .scene-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+  .scene-card{position:relative;display:block;width:100%;min-height:144px;aspect-ratio:5 / 3;overflow:hidden;
+    border:2px solid transparent;border-radius:15px;background:#2b251f;color:var(--white);padding:0;text-align:left;cursor:pointer}
+  .scene-card:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+  .scene-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--motion)}
+  .scene-card::after{position:absolute;inset:0;content:"";background:linear-gradient(180deg,rgba(18,14,11,0) 38%,rgba(18,14,11,.82) 100%)}
+  .scene-card:hover img,.scene-card:active img,.scene-card[aria-pressed="true"] img{transform:scale(1.025)}
+  .scene-card[aria-pressed="true"]{border-color:var(--accent)}
+  .scene-card-copy{position:absolute;z-index:1;right:14px;bottom:12px;left:14px;font-size:18px;line-height:1.3;font-weight:650;
+    text-shadow:0 1px 8px rgba(0,0,0,.55)}
+  .scene-card-current{display:block;margin:0 0 3px;color:#f3d4a1;font-size:11px;line-height:1.2;letter-spacing:.08em}
+  .scene-card-status{position:absolute;z-index:1;top:12px;right:12px;border-radius:999px;background:rgba(255,255,255,.88);color:var(--ink);
+    padding:5px 9px;font-size:12px;line-height:1.2;font-weight:650}
+  .scene-card:disabled{cursor:not-allowed}
+  .scene-card:disabled img{filter:grayscale(1) brightness(.56)}
+  .scene-card:disabled::after{background:rgba(22,18,15,.46)}
   .info-card{padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
   .info-card+.info-card{margin-top:12px}
   .info-card h3{margin:0 0 5px;font-size:15px}
@@ -149,16 +153,12 @@
     .panel[data-size="full"] .panel-body{padding-left:max(18px,env(safe-area-inset-left));
       padding-right:max(18px,env(safe-area-inset-right));padding-bottom:max(24px,env(safe-area-inset-bottom))}
   }
-  @media (min-width:720px){
-    .strip{grid-template-columns:repeat(3,minmax(0,1fr))}
-  }
   @media (min-width:900px){
     .topbar{padding:18px}
     .scene-chip{max-width:560px}
     .panel{top:84px;bottom:92px;left:18px;right:auto;width:min(390px,calc(100vw - 36px));max-height:none;border-radius:18px;
       box-shadow:14px 0 40px rgba(0,0,0,.25)}
     .panel-body{padding-bottom:20px}
-    .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
     .scrim{background:rgba(8,7,6,.28);backdrop-filter:none;-webkit-backdrop-filter:none}
     .bottom-dock{bottom:18px}
     .gyro-intro{bottom:98px}
@@ -241,9 +241,8 @@
     </div>
     <div class="panel-body">
       <div class="panel-view" data-panel-view="scenes" hidden>
-        <div class="tabs" id="regions"></div>
-        <div class="floorbar" id="floorbar"></div>
-        <div class="strip" id="strip"></div>
+        <p class="scene-menu-note">選擇空間後，可使用「地圖」切換該區域內的拍攝位置。</p>
+        <div class="scene-grid" id="sceneMenu"></div>
       </div>
       <div class="panel-view" data-panel-view="map" hidden>
         <h3 class="map-heading" id="mapTitle">位置</h3>
@@ -252,7 +251,7 @@
       </div>
       <div class="panel-view" data-panel-view="info" hidden>
         <div class="scene-info"><b id="infoSceneName">目前場景</b><span id="infoScenePos"></span><p class="desc" id="nowDesc"></p></div>
-        <div class="info-card testing-note"><h3>目前開放範圍</h3><p>目前開放音樂廳前廳、觀眾席與地下室休息室；舞台與後台入口尚未開放。</p></div>
+        <div class="info-card testing-note"><h3>目前開放範圍</h3><p>目前開放音樂廳前台、觀眾席與演出團隊休息區；舞台與後台入口尚未開放。</p></div>
         <div class="info-card"><h3>操作方式</h3><p>用手指拖曳或滑鼠轉動視角，點畫面中的圓點前往下一個拍攝位置；手機也可自行開啟「感應」模式。</p></div>
         <div class="info-card"><h3>關於本頁</h3><p>本頁為嘉義市政府文化局音樂廳 360 導覽，提供場地空間與動線的環景瀏覽。</p></div>
         <p class="updated">資料更新：{{GENERATED}}</p>
@@ -385,6 +384,7 @@ const TIER = maxTex >= 16384 ? 'full' : maxTex >= 8192 ? 'mid' : 'preview';
 const regions = TOUR.regions
   .filter(r => r.status === 'ready' && r.nodes.length)
   .sort((a, b) => a.order - b.order);
+const sceneMenu = TOUR.sceneMenu || [];
 
 // 影像由網站既有的 Cloudflare R2 自訂網域提供
 const srcOf = (region, n, tier) =>
@@ -583,54 +583,53 @@ function refreshMap() {
   }
 }
 
-function buildTabs() {
-  const bar = document.getElementById('regions');
-  bar.innerHTML = '';
-  TOUR.regions.sort((a, b) => a.order - b.order).forEach(r => {
-    const ready = r.status === 'ready' && r.nodes.length;
+function buildSceneMenu() {
+  const grid = document.getElementById('sceneMenu');
+  grid.innerHTML = '';
+  sceneMenu.forEach(entry => {
+    const ready = entry.status === 'ready';
+    const active = ready && entry.regionId === region.id && entry.floor === floor;
     const b = document.createElement('button');
     b.type = 'button';
-    b.textContent = r.name + (ready ? '' : '（尚未開放）');
-    b.className = r.id === region.id ? 'on' : '';
-    b.disabled = !ready;
-    b.onclick = () => { switchRegion(r, 0); closePanelOnCompact(); };
-    bar.appendChild(b);
-  });
-}
+    b.className = 'scene-card';
+    b.setAttribute('aria-pressed', String(active));
+    b.setAttribute('aria-label', ready ? `選擇${entry.name}` : `${entry.name}，尚未開放`);
+    if (!ready) b.disabled = true;
 
-function buildFloorBar() {
-  const bar = document.getElementById('floorbar');
-  bar.innerHTML = '';
-  const fs = [...new Set(region.nodes.map(n => n.floor))];
-  bar.style.display = fs.length > 1 ? 'flex' : 'none';
-  fs.forEach(f => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = f === 'B1' ? '地下室' : f === '1F' ? '一樓' : '二樓';
-    b.className = f === floor ? 'on' : '';
-    b.onclick = () => {
-      floor = f;
-      if (planMap) planMap.setFloor(f);
-      buildFloorBar(); buildStrip();
-    };
-    bar.appendChild(b);
-  });
-}
+    const img = document.createElement('img');
+    img.src = TOUR.imageBase + entry.image;
+    img.alt = '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    b.appendChild(img);
 
-function buildStrip() {
-  const strip = document.getElementById('strip');
-  strip.innerHTML = '';
-  region.nodes.forEach((n, i) => {
-    if (n.floor !== floor) return;
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'thumb' + (i === cur ? ' on' : '');
-    // 縮圖與 360 檢視器必須使用相同的 CORS 模式，否則瀏覽器可能重用
-    // 一份不可供 WebGL 讀取的快取，造成點擊縮圖後顯示載入失敗。
-    b.innerHTML = `<img src="${srcOf(region, n, 'preview')}" alt="" loading="lazy" crossorigin="anonymous">` +
-                  `<span>${n.name}</span>`;
-    b.onclick = () => { go(i); closePanelOnCompact(); };
-    strip.appendChild(b);
+    if (!ready) {
+      const status = document.createElement('span');
+      status.className = 'scene-card-status';
+      status.textContent = '尚未開放';
+      b.appendChild(status);
+    }
+
+    const copy = document.createElement('span');
+    copy.className = 'scene-card-copy';
+    if (active) {
+      const current = document.createElement('span');
+      current.className = 'scene-card-current';
+      current.textContent = '目前場景';
+      copy.appendChild(current);
+    }
+    copy.append(entry.name);
+    b.appendChild(copy);
+
+    if (ready) {
+      b.onclick = () => {
+        const target = regionsById.get(entry.regionId);
+        const start = target.nodes.findIndex(n => n.id === entry.startNode);
+        switchRegion(target, start);
+        closePanelOnCompact();
+      };
+    }
+    grid.appendChild(b);
   });
 }
 
@@ -656,7 +655,7 @@ function switchRegion(r, startIndex = 0) {
     const prev = region.nodes[cur];
     const carried = carryOverYaw(prev, r.nodes[startIndex]);
     region = r; cur = startIndex; floor = r.nodes[startIndex].floor;
-    buildTabs(); buildFloorBar(); buildMap();
+    buildSceneMenu(); buildMap();
     pendingYaw = carried;
     await performGo(startIndex, null, false);
   });
@@ -711,9 +710,8 @@ async function performSceneChange(i, _unused, keepDirection = true) {
   if (n.floor !== floor) {
     floor = n.floor;
     if (planMap) planMap.setFloor(floor);
-    buildFloorBar();
   }
-  buildStrip();
+  buildSceneMenu();
 
   document.getElementById('nowName').textContent = n.name;
   const positionText = n.seat && seatMap && seatMap.get(n.seat)
@@ -751,8 +749,7 @@ async function performSceneChange(i, _unused, keepDirection = true) {
   refreshDots();
 }
 
-buildTabs();
-buildFloorBar();
+buildSceneMenu();
 buildMap();
 viewer.addEventListener('ready', async () => {
   go(0, null, false);

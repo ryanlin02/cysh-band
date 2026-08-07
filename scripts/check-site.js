@@ -1197,6 +1197,10 @@ function checkHallTour() {
   if (!html.includes("panel.dataset.size = name === 'scenes' || name === 'map' ? 'full' : 'sheet'")) {
     addError('hall/tour/index.html: mobile scene and map panels must remain full-screen.');
   }
+  if (!html.includes('const sceneMenu = TOUR.sceneMenu || []') || !html.includes('id="sceneMenu"') ||
+      !html.includes('function buildSceneMenu()')) {
+    addError('hall/tour/index.html: scene menu must use the configured scene-card entries.');
+  }
   if (!html.includes('--tour-viewport-height') || !html.includes('window.visualViewport')) {
     addError('hall/tour/index.html: visible viewport height guard is missing for installed PWA controls.');
   }

@@ -33,6 +33,67 @@ export const TOUR = {
     "sourceDocs": "嘉義市政府文化局場地技術資料（舞台／音響／燈光／懸吊系統）"
   },
   "imageBase": "https://img.cysh.band/hall-tour/",
+  "sceneMenu": [
+    {
+      "id": "lobby-1f",
+      "name": "音樂廳前台一樓",
+      "regionId": "lobby",
+      "floor": "1F",
+      "startNode": "lob-01",
+      "image": "scene-cards/lobby-1f.webp",
+      "status": "ready"
+    },
+    {
+      "id": "lobby-2f",
+      "name": "音樂廳前台二樓",
+      "regionId": "lobby",
+      "floor": "2F",
+      "startNode": "lob-21",
+      "image": "scene-cards/lobby-2f.webp",
+      "status": "ready"
+    },
+    {
+      "id": "auditorium-1f",
+      "name": "觀眾席一樓",
+      "regionId": "auditorium",
+      "floor": "1F",
+      "startNode": "aud-01",
+      "image": "scene-cards/auditorium-1f.webp",
+      "status": "ready"
+    },
+    {
+      "id": "auditorium-2f",
+      "name": "觀眾席二樓",
+      "regionId": "auditorium",
+      "floor": "2F",
+      "startNode": "aud-22",
+      "image": "scene-cards/auditorium-2f.webp",
+      "status": "ready"
+    },
+    {
+      "id": "stage",
+      "name": "舞台",
+      "regionId": "stage",
+      "image": "scene-cards/stage.webp",
+      "status": "planned"
+    },
+    {
+      "id": "backstage",
+      "name": "後台入口",
+      "regionId": "backstage",
+      "image": "scene-cards/backstage.webp",
+      "status": "planned"
+    },
+    {
+      "id": "greenroom",
+      "name": "演出團隊休息區",
+      "regionId": "greenroom",
+      "floor": "B1",
+      "startNode": "gre-01",
+      "image": "scene-cards/greenroom.webp",
+      "status": "ready"
+    }
+  ],
   "regions": [
     {
       "id": "lobby",
