@@ -2,27 +2,27 @@
 export const TOUR_ENTRY_VIEWS = Object.freeze({
   "lobby-1f": {
     "startNode": "lob-01",
-    "yaw": 89.0,
-    "pitch": 0.0
+    "yaw": 131.5,
+    "pitch": 12.27
   },
   "lobby-2f": {
-    "startNode": "lob-21",
-    "yaw": 101.0,
-    "pitch": 0.0
+    "startNode": "lob-22",
+    "yaw": 181.32,
+    "pitch": 1.17
   },
   "auditorium-1f": {
-    "startNode": "aud-01",
+    "startNode": "aud-06",
     "yaw": 265.0,
-    "pitch": 0.0
+    "pitch": 13.74
   },
   "auditorium-2f": {
     "startNode": "aud-22",
-    "yaw": 225.0,
-    "pitch": 0.0
+    "yaw": 315.56,
+    "pitch": 6.35
   },
   "greenroom": {
     "startNode": "gre-01",
-    "yaw": 178.0,
-    "pitch": 0.0
+    "yaw": 78.09,
+    "pitch": -33.14
   }
 });
