@@ -281,50 +281,43 @@ window.CONCERT_PROGRAM_DATA = {
     ]
   },
 
-  // --- 5. 演出人員名冊 ---
+  // --- 5. 演出人員名冊（各聲部依入學年份由早至晚排列） ---
   roster: [
     {
-      section: "Flute & Piccolo",
-      sectionZh: "長笛 / 短笛",
+      section: "Flute",
+      sectionZh: "長笛",
       members: [
         { name: "何權烈", number: "7112" },
-        { name: "何權烈", number: "7112" },
-        { name: "何權烈", number: "7112" },
-        { name: "何權烈", number: "7112" },
-        { name: "何權烈", number: "7112" }
+        { name: "翁書偉", number: "0511" },
+        { name: "蔡詠竹", number: "0611" },
+        { name: "蔡緯宸", number: "0711" },
+        { name: "王宥涵", number: "1111" },
+        { name: "湯喻絜", number: "1102" },
+        { name: "范語承", number: "1302" }
       ]
     },
     {
-      section: "Oboe & English Horn",
-      sectionZh: "雙簧管 / 英國管",
+      section: "Oboe",
+      sectionZh: "雙簧管",
       members: [
-        { name: "劉炫廷", number: "9921" },
-        { name: "劉炫廷", number: "9921" },
-        { name: "劉炫廷", number: "9921" },
-        { name: "劉炫廷", number: "9921" },
+        { name: "黃耀瑩", number: "8912" },
         { name: "劉炫廷", number: "9921" }
       ]
     },
     {
-      section: "Clarinet",
-      sectionZh: "單簧管",
-      members: [
-        { name: "蔡承真", number: "1301" },
-        { name: "蔡承真", number: "1301" },
-        { name: "蔡承真", number: "1301" },
-        { name: "蔡承真", number: "1301" },
-        { name: "蔡承真", number: "1301" }
-      ]
-    },
-    {
       section: "Saxophone",
-      sectionZh: "薩克斯風",
+      sectionZh: "薩克管",
       members: [
+        { name: "盧明泰", number: "7601" },
         { name: "鄭鈞元", number: "8431" },
-        { name: "鄭鈞元", number: "8431" },
-        { name: "鄭鈞元", number: "8431" },
-        { name: "鄭鈞元", number: "8431" },
-        { name: "鄭鈞元", number: "8431" }
+        { name: "呂裕翔", number: "0631" },
+        { name: "張宥閎", number: "1132" },
+        { name: "林佳蔚", number: "1131" },
+        { name: "林筱菱", number: "1232" },
+        { name: "陳佑翔", number: "1231" },
+        { name: "羅允翔", number: "1201" },
+        { name: "張景盛", number: "1432" },
+        { name: "葉濬維", number: "1431" }
       ]
     },
     {
@@ -332,21 +325,40 @@ window.CONCERT_PROGRAM_DATA = {
       sectionZh: "法國號",
       members: [
         { name: "魏仕杰", number: "8841" },
-        { name: "魏仕杰", number: "8841" },
-        { name: "魏仕杰", number: "8841" },
-        { name: "魏仕杰", number: "8841" },
-        { name: "魏仕杰", number: "8841" }
+        { name: "劉議謙", number: "8802" },
+        { name: "張淮淵", number: "1401" }
+      ]
+    },
+    {
+      section: "Clarinet",
+      sectionZh: "豎笛",
+      members: [
+        { name: "李吉峰", number: "7222" },
+        { name: "莊富益", number: "7921" },
+        { name: "賴俊甫", number: "8521" },
+        { name: "陳正龍", number: "8922" },
+        { name: "黃信又", number: "8901" },
+        { name: "吳瑩娟", number: "9122" },
+        { name: "葉哲良", number: "9721" },
+        { name: "李亞璿", number: "9802" },
+        { name: "林亦安", number: "1001" },
+        { name: "林宇勝", number: "1121" },
+        { name: "洪福疄", number: "1221" },
+        { name: "黃昱崴", number: "1321" },
+        { name: "蔡承真", number: "1301" }
       ]
     },
     {
       section: "Trumpet",
       sectionZh: "小號",
       members: [
+        { name: "蔡淳任", number: "9202" },
+        { name: "陳信慈", number: "9903" },
+        { name: "范尚華", number: "0951" },
+        { name: "郭銓", number: "1052" },
         { name: "黃鈺芠", number: "1051" },
-        { name: "吳東謙", number: "9551" },
-        { name: "吳東謙", number: "9551" },
-        { name: "吳東謙", number: "9551" },
-        { name: "吳東謙", number: "9551" }
+        { name: "葉天成", number: "1352" },
+        { name: "黃志嘉", number: "1351" }
       ]
     },
     {
@@ -362,25 +374,42 @@ window.CONCERT_PROGRAM_DATA = {
       ]
     },
     {
-      section: "Euphonium & Tuba",
-      sectionZh: "上低音號 / 低音號",
+      section: "Euphonium",
+      sectionZh: "上低音號",
       members: [
-        { name: "翁啟榮", number: "7581" },
-        { name: "翁啟榮", number: "7581" },
-        { name: "翁啟榮", number: "7581" },
-        { name: "翁啟榮", number: "7581" },
-        { name: "翁啟榮", number: "7581" }
+        { name: "游淮洲", number: "6801" },
+        { name: "陳韋龍", number: "9871" },
+        { name: "侯鈞瀚", number: "1071" }
+      ]
+    },
+    {
+      section: "Tuba",
+      sectionZh: "低音號",
+      members: [
+        { name: "翁啓榮", number: "7581" },
+        { name: "侯翔升", number: "1181" },
+        { name: "黃俊順", number: "1281" },
+        { name: "黃甄逸", number: "1381" },
+        { name: "侯又新", number: "1482" }
       ]
     },
     {
       section: "Percussion",
-      sectionZh: "打擊樂",
+      sectionZh: "打擊",
       members: [
         { name: "陳志鳴", number: "7502" },
-        { name: "陳志鳴", number: "7502" },
-        { name: "陳志鳴", number: "7502" },
-        { name: "陳志鳴", number: "7502" },
-        { name: "陳志鳴", number: "7502" }
+        { name: "蔡侑恬", number: "8792" },
+        { name: "李運昶", number: "0891" },
+        { name: "蔡程弘", number: "1002" },
+        { name: "蔡昀翰", number: "1291" },
+        { name: "許淵筑", number: "1202" }
+      ]
+    },
+    {
+      section: "Double Bass",
+      sectionZh: "低音提琴",
+      members: [
+        { name: "王泰友", number: "1290" }
       ]
     }
   ],
