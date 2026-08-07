@@ -63,10 +63,10 @@ window.CONCERT_PROGRAM_DATA = {
         name: "翁啟榮",
         number: "7581",
         role: "樂團指揮",
-        photo: "assets/images/conductor-weng-qi-rong.webp",
+        photo: "assets/images/conductor-weng-qi-rong.webp?v=20260808-weng-photo-v1",
         photoAlt: "翁啟榮",
-        photoWidth: 2808,
-        photoHeight: 1832,
+        photoWidth: 1434,
+        photoHeight: 956,
         bio: "翁啟榮為嘉中校友，編號 7581，民國 75 年入學、低音號聲部，校友間暱稱「警伯」。他現職警務人員，也是嘉義市管樂團低音號團員；自學生時代起持續投入管樂，曾協助母隊規劃曲目與團練，長期統籌校友聯演的行政與召集工作。在本屆《為伍》中，他以樂團指導與指揮身分，結合低音聲部的合奏經驗與多年籌備脈絡，協助不同世代團員在有限排練時間中建立穩定而完整的聲音。",
         officialLink: "https://cysh.band/people/7581.html"
       },

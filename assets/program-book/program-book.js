@@ -300,6 +300,16 @@ function renderHeroAndOverview() {
         <li>憑票入場，自由入座，請配合現場工作人員指引。</li>
       </ul>
     </div>
+
+    ${info.venueTourUrl ? `
+      <div class="venue-tour-action">
+        <a class="venue-tour-button" href="${info.venueTourUrl}" aria-label="開啟嘉義市政府文化局音樂廳內部導覽">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+          <span>嘉義市政府文化局音樂廳內部導覽</span>
+          <span class="venue-tour-button-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    ` : ''}
   `;
 }
 

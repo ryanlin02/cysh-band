@@ -738,6 +738,61 @@ img {
   font-size: 0.88rem;
 }
 
+.venue-tour-action {
+  display: flex;
+  justify-content: center;
+  margin: 2px 0 22px;
+}
+
+.venue-tour-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--accent-gold-border);
+  border-radius: var(--radius-sm);
+  background: var(--accent-gold-light);
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.venue-tour-button svg {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  color: var(--accent-gold);
+}
+
+.venue-tour-button-arrow {
+  flex: 0 0 auto;
+  color: var(--accent-gold);
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.venue-tour-button:hover,
+.venue-tour-button:focus-visible {
+  border-color: var(--accent-gold);
+  background: var(--bg-card);
+  color: var(--accent-gold-hover);
+}
+
+.venue-tour-button:hover .venue-tour-button-arrow {
+  transform: translateX(2px);
+}
+
+.venue-tour-button:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
 /* --- 2. 曲目解說 --- */
 .tab-switcher {
   display: flex;
