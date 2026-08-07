@@ -432,10 +432,10 @@ window.CONCERT_PROGRAM_DATA = {
       { role: "文宣 / 美宣設計", names: ["廖淑卿", "劉炫廷"] },
       { role: "譜務組", names: ["翁啟榮", "丁肇賢"] },
       { role: "總務組", names: ["魏仕杰"] },
-      { role: "舞臺總監", names: ["林俊余"] }
+      { role: "舞臺總監", names: ["林俊余"] },
       { role: "場務 / 器材組", names: ["郭昱廷", "吳東謙"] },
       { role: "前台公關組", names: ["Surprise"] },
-      { role: "影像直播 / 紀錄", names: ["量子藝術 葉思佑"] }
+      { role: "影像直播 / 紀錄", names: ["量子藝術 葉思佑"] },
       { role: "平面攝影", names: ["丁怡文 邱柏霖"] }
     ],
     thanksTitle: "特別感謝",
@@ -444,7 +444,7 @@ window.CONCERT_PROGRAM_DATA = {
       "嘉義市政府文化局",
       "林哲瑋",
       "鄭華翰",
-      "蘇羿亘"
+      "蘇羿亘",
       "黃怡禎",
       "謝建庭",
       "黃馨儀",
@@ -457,6 +457,6 @@ window.CONCERT_PROGRAM_DATA = {
       url: "https://cysh.band/support.html",
       description: "若您願意陪伴嘉中管樂持續排練、演出與保存史料，歡迎了解支持方式。"
     },
-    feedbackUrl: "https://forms.gle/sample-feedback-form-41st"
+    feedbackUrl: "https://docs.google.com/forms/d/e/1FAIpQLSd6-dIKvxU9iKks9_Dt2csIq6TSpMRsaGVQPA4w7xqUg8bL_w/viewform?usp=publish-editor"
   }
 };
