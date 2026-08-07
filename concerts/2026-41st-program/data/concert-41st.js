@@ -205,7 +205,7 @@ window.CONCERT_PROGRAM_DATA = {
         ],
         composer: ["Philip Sparke", "菲利浦・史巴克"],
         conductor: "丁肇賢",
-        soloist: "黃鈺芠（1051）",
+        soloist: "黃鈺芠",
         soloInstrument: "小號 Solo Trumpet",
         duration: "約 9 分 00 秒",
         note: [
@@ -432,10 +432,10 @@ window.CONCERT_PROGRAM_DATA = {
       { role: "文宣 / 美宣設計", names: ["廖淑卿", "劉炫廷"] },
       { role: "譜務組", names: ["翁啟榮", "丁肇賢"] },
       { role: "總務組", names: ["魏仕杰"] },
-      { role: "舞臺總監", names: ["林俊余"] },
+      { role: "舞臺監督", names: ["林俊余"] },
       { role: "場務 / 器材組", names: ["郭昱廷", "吳東謙"] },
       { role: "前台公關組", names: ["Surprise"] },
-      { role: "影像直播 / 紀錄", names: ["量子藝術 葉思佑"] },
+      { role: "影像直播 / 紀錄", names: ["量子藝術 王則量", "葉思佑"] },
       { role: "平面攝影", names: ["丁怡文 邱柏霖"] }
     ],
     thanksTitle: "特別感謝",
