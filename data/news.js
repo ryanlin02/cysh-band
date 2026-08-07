@@ -21,6 +21,32 @@
 */
 window.NEWS = [
   {
+    id: "2026-08-05-rehearsal-voices-coming-together",
+    date: "2026-08-05",
+    time: "21:00",
+    category: "活動紀錄",
+    tags: ["團練", "為伍", "校友歸隊", "在校生", "社辦日常"],
+    pinned: false,
+    priority: "normal",
+    title: "8/5 社辦團練：演出倒數三天，把聲音接回來",
+    summary: "《為伍》演出倒數三天，校友與在校生再度把社辦坐滿；群組裡互相打氣，練習室裡便把每個聲部的呼吸與聲音接回同一個方向。",
+    source: "content/news/2026-08-05-rehearsal-voices-coming-together.html",
+    output: "news/2026-08-05-rehearsal-voices-coming-together.html",
+    url: "news/2026-08-05-rehearsal-voices-coming-together.html",
+    thumb: "assets/img/news/2026-08-05-rehearsal-voices-coming-together-thumb.webp",
+    ogImage: "assets/img/news/2026-08-05-rehearsal-voices-coming-together.webp",
+    ogImageWidth: "1600",
+    ogImageHeight: "901",
+    pageTitle: "8/5 社辦團練：演出倒數三天，把聲音接回來｜最新消息｜嘉義高中管樂隊",
+    ogTitle: "8/5 社辦團練：演出倒數三天，把聲音接回來",
+    description: "第 41 屆《為伍》演出倒數三天，嘉中管樂校友與在校生再次回到社辦團練；在群組互相打氣、在練習室仔細合奏，把每個聲部的聲音接回同一個方向。",
+    ogDescription: "演出倒數三天，社辦裡又坐滿熟悉的身影。一起聽、一起調整，把每一段聲音吹得更靠近。",
+    headlineHtml: "8/5 社辦團練：<br>演出倒數三天，把聲音接回來",
+    relatedConcert: "2026-41st",
+    status: "published",
+    sourceNotes: "2026-08-05 社辦團練照片與社群互動情境；公開文章未揭露聊天原文、姓名或帳務資訊。"
+  },
+  {
     id: "2026-08-01-sausage-grill-gathering",
     date: "2026-08-01",
     time: "21:30",
