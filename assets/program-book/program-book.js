@@ -678,15 +678,17 @@ function renderThanksAndHeritage() {
       ` : ''}
     </div>
 
-    <!-- 電子問卷連結按鈕 -->
-    <div class="card" style="text-align: center;">
-      <h3 class="card-title-serif" style="border-bottom: none; margin-bottom: 4px;">現場演出意見回饋</h3>
-      <p class="p-text" style="font-size: 0.85rem; margin-bottom: 14px;">您的寶貴建議是樂團持續前行最大的動力</p>
-      <a href="${organization.feedbackUrl}" target="_blank" rel="noopener" class="btn-primary" style="margin: 0 auto;">
-        <span>填寫電子問卷</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-      </a>
-    </div>
+    ${organization.feedbackUrl ? `
+      <!-- 電子問卷連結按鈕 -->
+      <div class="card" style="text-align: center;">
+        <h3 class="card-title-serif" style="border-bottom: none; margin-bottom: 4px;">現場演出意見回饋</h3>
+        <p class="p-text" style="font-size: 0.85rem; margin-bottom: 14px;">您的寶貴建議是樂團持續前行最大的動力</p>
+        <a href="${organization.feedbackUrl}" target="_blank" rel="noopener" class="btn-primary" style="margin: 0 auto;">
+          <span>填寫電子問卷</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        </a>
+      </div>
+    ` : ''}
 
     <div class="footer-credits">
       <p>© 2026 嘉義高中校友管樂團 ✕ 國立嘉義高級中學管樂社</p>

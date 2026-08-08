@@ -291,7 +291,7 @@ function renderCard(concert) {
 
 function renderArchive() {
   const archive = concerts
-    .filter((concert) => concert.page && concert.status !== 'cancelled' && concert.id !== '2026-41st')
+    .filter((concert) => concert.page && concert.status !== 'cancelled' && !concert.isCurrent)
     .slice()
     .sort((a, b) => b.year - a.year || b.nth - a.nth);
 
