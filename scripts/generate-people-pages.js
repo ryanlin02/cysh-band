@@ -3,6 +3,7 @@
    GitHub Pages 仍使用輸出的靜態 HTML；此腳本只在本地維護時執行。 */
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { createRenderer } = require('./lib/site-template');
 const { autoLinkHtml } = require('./lib/people-auto-link');
 
@@ -14,6 +15,7 @@ require(path.join(root, 'data', 'concerts.js'));
 require(path.join(root, 'data', 'people-profiles.js'));
 
 const profiles = global.PEOPLE_PROFILES || [];
+const programBookCache = new Map();
 
 function profileKey(profile) {
   return profile.id || profile.num;
@@ -37,10 +39,67 @@ function personMatchesProfile(person, profile) {
   return false;
 }
 
+function programBookData(sourcePath) {
+  if (programBookCache.has(sourcePath)) return programBookCache.get(sourcePath);
+  const sandbox = { window: {} };
+  sandbox.window.window = sandbox.window;
+  vm.createContext(sandbox);
+  vm.runInContext(fs.readFileSync(path.join(root, sourcePath), 'utf8'), sandbox, { filename: sourcePath });
+  const data = sandbox.window.CONCERT_PROGRAM_DATA || {};
+  programBookCache.set(sourcePath, data);
+  return data;
+}
+
+function programBookPeople(people) {
+  return (people || []).map((person) => ({
+    name: person.name,
+    num: person.number || person.id,
+    role: person.role
+  }));
+}
+
+function hydrateProgramBookParticipants(concert) {
+  if (!concert.programBookSource) return concert;
+  const data = programBookData(concert.programBookSource);
+  const profileByName = new Map();
+  for (const profile of profiles) {
+    if (!profile.name) continue;
+    const matches = profileByName.get(profile.name) || [];
+    matches.push(profile);
+    profileByName.set(profile.name, matches);
+  }
+  const organizers = (data.organization && data.organization.staffGroups || []).flatMap((group) => (
+    (group.names || []).map((name) => {
+      const matches = profileByName.get(name) || [];
+      const profile = matches.length === 1 ? matches[0] : null;
+      return {
+        name,
+        num: profile ? profileKey(profile) : '',
+        role: group.role
+      };
+    })
+  ));
+  const performers = (data.roster || []).flatMap((group) => (
+    (group.members || []).map((member) => ({
+      name: member.name,
+      num: member.number,
+      role: `${group.sectionZh || group.section || '樂團'}演出`
+    }))
+  ));
+  return {
+    ...concert,
+    conductors: programBookPeople(data.leadership && data.leadership.conductors),
+    soloists: programBookPeople(data.leadership && data.leadership.soloist),
+    organizers,
+    performers
+  };
+}
+
 function findRelatedConcerts(profile) {
   const concerts = global.CONCERTS || [];
   const rows = [];
-  for (const concert of concerts) {
+  for (const sourceConcert of concerts) {
+    const concert = hydrateProgramBookParticipants(sourceConcert);
     const roles = [];
     for (const person of concert.conductors || []) {
       if (personMatchesProfile(person, profile)) roles.push(person.role || '指揮');
