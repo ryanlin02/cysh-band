@@ -128,7 +128,7 @@ window.ALUMNI = [
   { num: "8912", name: "黃耀瑩", year: 89, part: "長笛", tags: ["長笛"], role: "雙簧管演奏．音樂教育", desc: "民國 89 年入學，主修雙簧管。高師大音樂系暨研究所，曾於第 24 屆《管樂肖像》擔任雙簧管獨奏。", photo: "8912", link: "people/8912.html" },
   { num: "8962", name: "蔡秉璋", year: 89, part: "長號", tags: ["長號"], role: "警察（刑事鑑識）", desc: "民國 89 年入學，長號聲部校友，現職臺南市警局刑事鑑識中心巡官。", photo: "blank", link: "" },
   { num: "1001", name: "林奕安", year: 110, part: "社長．豎笛", tags: ["幹部", "豎笛"], role: "", desc: "民國 110 年入學，當屆社長，豎笛聲部，現就讀蘇州大學。", photo: "blank", link: "" },
-  { num: "1051", name: "黃鈺芠", year: 110, part: "小號", tags: ["小號"], role: "臺北市立大學音樂系．《為伍》小號協奏", desc: "民國 110 年入學，小號聲部，現就讀臺北市立大學音樂系，將於《為伍》擔任小號協奏。", photo: "1051", link: "people/1051.html" },
+  { num: "1051", name: "黃鈺芠", year: 110, part: "小號", tags: ["小號"], role: "臺北市立大學音樂系．《為伍》小號協奏", desc: "民國 110 年入學，小號聲部，現就讀臺北市立大學音樂系，曾於《為伍》擔任小號協奏。", photo: "1051", link: "people/1051.html" },
   { num: "0755", name: "許祥倫", year: 107, part: "小號", tags: ["小號"], role: "研究生", desc: "民國 107 年入學，小號聲部校友。", photo: "0755", link: "" },
   { num: null, id: "linshaofan", name: "林少凡", year: 107, part: "小號", tags: ["小號"], role: "小號演奏．音樂研究生", desc: "民國 107 年入學，小號聲部。屏東大學音樂系畢業，現就讀北教大音樂系碩士班演奏組，演出經驗含歌劇舞台與棒球應援。", photo: "linshaofan", link: "people/linshaofan.html" },
   { num: null, id: "linxuyang", name: "林旭颺", year: 107, part: "上低音號", tags: ["上低音號"], role: "", desc: "民國 107 年入學，上低音號聲部校友；四碼編號待補。", photo: "blank", link: "" },

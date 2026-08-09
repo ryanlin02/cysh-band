@@ -1,6 +1,6 @@
 # 嘉義高中管樂隊官方網站
 
-樂團形象網站，於《為伍》2026 第 41 屆校友暨在校生聯合音樂會前上線。
+樂團形象網站；2026 年第 41 屆校友暨在校生聯合音樂會《為伍》已完成演出並納入典藏。
 
 > 本文件是日常維護的快速操作指南；完整的設計系統、圖片規格、內容準則與檢查清單見 **`網站製作規範.md`**。
 > 根目錄 Markdown 文件的角色分工、權威順序與 AI 協作讀取路徑，見 **`文件總覽與AI協作流程.md`**。
@@ -13,13 +13,13 @@
 
 | 檔案／目錄 | 內容 |
 |------|------|
-| index.html | 首頁（雙向敘事樞紐＋《為伍》購票＋最新消息） |
+| index.html | 首頁（雙向敘事樞紐＋最新消息） |
 | about.html | 關於樂團 |
 | history.html | 傳承（歷史時間軸） |
 | numbers.html | 編號文化 |
 | people.html | 人物誌（精選故事，由 `data/people-profiles.js` 產生卡片） |
 | roster.html | 公開校友名錄（`data/alumni.js` 驅動；保留 `noindex`，不列入搜尋索引） |
-| concerts.html | 校友聯演（本屆演出＋最新消息文章索引＋歷屆紀錄典藏列表） |
+| concerts.html | 校友聯演（歷屆紀錄典藏列表與相關最新消息索引） |
 | concerts/*-program/ | 各屆獨立線上節目冊入口與當屆資料（行動裝置優先） |
 | assets/program-book/ | 所有線上節目冊共用的版型與互動程式 |
 | photos/ | 完整影像館（R2 照片資料；由 Cloudflare Access Email 白名單保護） |
@@ -31,9 +31,9 @@
 | news/ | 最新消息正式文章頁（目前由 `content/news/` 與 `scripts/generate-news-pages.js` 產生） |
 | content/news/ | 最新消息正文來源檔 |
 | 最新消息發布完整教學.md | 給非程式背景維護者的最新消息發布完整工作手冊 |
-| content/people/ | 人物個人頁正文來源檔（目前 37 個人物頁皆已模板化） |
+| content/people/ | 人物個人頁正文來源檔（目前 41 個人物頁皆已模板化） |
 | data/alumni.js | 校友名錄資料檔 |
-| data/people-profiles.js | 已模板化人物個人頁 metadata（目前 37 個人物頁皆已納入） |
+| data/people-profiles.js | 已模板化人物個人頁 metadata（目前 41 個人物頁皆已納入） |
 | data/news.js | 最新消息資料檔 |
 | data/number-lookup.js | 編號查詢小遊戲資料檔（非完整公開名錄） |
 | 校友資料管理與驗證流程.md | 公開名錄、查號資料、個人頁與內部 Excel 名冊的管理流程 |
@@ -113,9 +113,9 @@ node scripts/generate-page-preview.js
 
 輸出檔案是 `_generated/page-template-preview.html`。它只供本地檢查模板方向，不會修改首頁、關於、人物誌、校友聯演等正式頁面。
 
-目前全部 20 篇最新消息文章皆已套用；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。數量會持續變動，精確現況以檢查結果為準。
+目前全部 23 篇最新消息文章皆已套用；修改 `content/news/` 後需執行 `node scripts/generate-news-pages.js`，再跑 `node scripts/check-site.js`。`news/_template.html` 已改為維護流程說明，不再作為複製範本。數量會持續變動，精確現況以檢查結果為準。
 
-人物頁模板化已涵蓋目前全部 37 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
+人物頁模板化已涵蓋目前全部 41 個 `people/*.html` 個人頁。正文來源在 `content/people/`，頁面 metadata 在 `data/people-profiles.js`，正式 HTML 由以下指令產生：
 
 ```
 node scripts/generate-people-pages.js
@@ -164,8 +164,8 @@ cwebp -q 82 -resize 1600 0 原圖.jpg -o 輸出.webp
 
 ## 待補事項
 
-- [x] OPENTIX 實際購票連結（首頁、校友聯演頁、購票公告與第 41 屆資料頁）
-- [ ] 《為伍》正式曲目公告後更新
+- [x] 第 41 屆《為伍》票務典藏（保留票價與 OPENTIX 通路紀錄，不保留購票 CTA）
+- [x] 《為伍》最終節目冊、完整曲目與演出人員已同步至典藏頁
 - [ ] 演出照片（影像館《為伍》相簿）
 - [ ] `data/concerts.js` 目前已有 40 筆歷年資料，但多個屆別仍標示為 `partial`、`inferred` 或待補欄位；後續依各筆 `status`、`notes` 與來源逐屆補齊，不再沿用早期缺頁清單
 - [ ] 歷屆聯演獨立資料頁已先補齊至目前公開呈現屆別；總覽列表與獨立頁目前皆以 `data/concerts.js` 為主要資料來源。下一階段可把人工頁與自動頁逐步統一欄位、補入更完整節目冊與團員名單。1990、1998、2016、2022、2024 已補入校友提供之海報或主視覺影像。
