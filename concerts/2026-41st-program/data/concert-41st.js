@@ -377,7 +377,7 @@ window.CONCERT_PROGRAM_DATA = {
       section: "Euphonium",
       sectionZh: "上低音號",
       members: [
-        { name: "游淮洲", number: "6801" },
+        { name: "游宗仁", number: "6801" },
         { name: "陳韋龍", number: "9871" },
         { name: "侯鈞瀚", number: "1071" }
       ]
