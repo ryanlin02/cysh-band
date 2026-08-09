@@ -358,33 +358,32 @@ function concertIntro(concert, desc) {
     paragraphs.push(`本屆由${escapeHtml(concert.hostHead)}校友承接籌辦脈絡，延續不同世代校友與在校生共同排練、共同登台的校友聯演傳統。`);
   }
   if (concert.sessions && concert.sessions.length > 1) {
-    paragraphs.push(`本屆包含 ${concert.sessions.length} 場演出，場次資訊已依目前可考資料分列於演出資訊表；各場曲目與完整演出人員仍會隨節目冊與校友補充資料持續校對。`);
+    paragraphs.push(`本屆包含 ${concert.sessions.length} 場演出，場次資訊列於演出資訊表。`);
   }
   const hasProgramContext = Boolean(concert.programNote || (concert.programBook && concert.programBook.length));
   if (concert.program && concert.program.length && !hasProgramContext) {
-    paragraphs.push(`目前已整理出 ${concert.program.length} 首曲目線索；若尚未能確認上下半場或完整順序，網站先以可考曲目建立清單，後續再依節目冊補齊曲序與樂曲介紹。`);
+    paragraphs.push(`現存資料記載 ${concert.program.length} 首曲目；上下半場或完整順序未見明確記錄。`);
   }
   const missing = missingFields(concert);
   if (missing.length) {
-    paragraphs.push(`目前仍待補齊${missing.join('、')}等資料；若校友保存節目冊、海報、照片、錄音或團員名單，歡迎協助補充。`);
+    paragraphs.push(`現存史料尚未記載：${missing.join('、')}。`);
   }
   if (!paragraphs.length) paragraphs.push(desc);
   return paragraphs.map((text) => `<p>${escapeHtml(text)}</p>`).join('\n    ');
 }
 
-function concertInfoTable(concert, statusText) {
+function concertInfoTable(concert) {
   const rows = [
     ['屆別', `第 ${escapeHtml(concert.nth)} 屆`],
     ['年度', `${escapeHtml(concert.year)}${concert.rocYear ? `（民國 ${escapeHtml(concert.rocYear)} 年）` : ''}`],
     ['主題', `${escapeHtml(displayTitle(concert))}${concert.subtitle ? `｜${escapeHtml(concert.subtitle)}` : ''}${concert.aliases && concert.aliases.length ? `<br><span class="muted">別名：${concert.aliases.map(escapeHtml).join('、')}</span>` : ''}`],
-    ['日期', formatDateRange(concert)],
-    ['時間', escapeHtml(concert.time || '時間待考')],
-    ['場地', `${escapeHtml(concert.venue || '場地待考')}${concert.id === '2026-41st' ? ' <a class="venue-tour-link" href="../hall/tour/" aria-label="開啟嘉義市政府文化局音樂廳線上導覽">線上導覽</a>' : ''}${concert.venueNote ? `<br><span class="muted">${escapeHtml(concert.venueNote)}</span>` : ''}`],
-    ['指揮', listPeople(concert.conductors)],
-    ['獨奏／協奏', listPeople(concert.soloists)],
-    ['籌辦字頭', escapeHtml(concert.hostHead || '待考')],
-    ['票務', ticketText(concert.ticket, concert)],
-    ...(!concert.archiveComplete ? [['資料狀態', escapeHtml(statusText)]] : [])
+    ...(concert.date ? [['日期', formatDateRange(concert)]] : []),
+    ...(concert.time ? [['時間', escapeHtml(concert.time)]] : []),
+    ...(concert.venue ? [['場地', `${escapeHtml(concert.venue)}${concert.id === '2026-41st' ? ' <a class="venue-tour-link" href="../hall/tour/" aria-label="開啟嘉義市政府文化局音樂廳線上導覽">線上導覽</a>' : ''}${concert.venueNote ? `<br><span class="muted">${escapeHtml(concert.venueNote)}</span>` : ''}`]] : []),
+    ...(concert.conductors && concert.conductors.length ? [['指揮', listPeople(concert.conductors)]] : []),
+    ...(concert.soloists && concert.soloists.length ? [['獨奏／協奏', listPeople(concert.soloists)]] : []),
+    ...(concert.hostHead ? [['籌辦字頭', escapeHtml(concert.hostHead)]] : []),
+    ...(concert.ticket && concert.ticket.type !== 'unknown' ? [['票務', ticketText(concert.ticket, concert)]] : [])
   ];
   if (concert.sessions && concert.sessions.length) {
     rows.push(['場次', `${concert.sessions.length} 場${concert.sessions.length > 1 ? '（詳見下方場次資訊）' : ''}`]);
@@ -737,14 +736,18 @@ function render(concert) {
   const desc = concert.metaDescription || `${concert.year} 年第 ${concert.nth} 屆嘉義高中校友暨在校生聯合音樂會${displayTitle(concert)}資料頁：整理日期、場地、指揮、曲目、錄影與待考資訊。`;
   const lede = concertLead(concert, desc);
   const hasPoster = concert.poster && exists(concert.poster);
-  const missing = missingFields(concert);
-  const statusText = concert.status === 'planning' ? '籌備中' : concert.status === 'pending' ? '資料待考' : concert.status === 'confirmed' ? '已確認' : '部分可考';
   const canonical = `https://cysh.band/${concert.page}`;
   const planningHtml = planningSection(concert);
   const promoHtml = promoImagesSection(concert);
-  const programOrderHint = !concert.archiveComplete && concert.program && concert.program.length && !concert.program.some((work) => work.section || work.part || work.half)
-    ? '\n    <p class="muted">若尚未顯示上下半場或完整曲序，表示目前資料尚不足以確認正式節目順序；後續會依節目冊與校友補充資料校對。</p>'
-    : '';
+  const hasPeople = Boolean((concert.conductors && concert.conductors.length) || (concert.soloists && concert.soloists.length));
+  const hasProgram = Boolean(concert.program && concert.program.length);
+  const hasPerformers = Boolean((concert.performerGroups && concert.performerGroups.length) || (concert.performers && concert.performers.length));
+  const hasAdmin = Boolean((concert.adminRows && concert.adminRows.length) || (concert.organizers && concert.organizers.length));
+  const hasSponsors = Boolean((concert.sponsorParagraphs && concert.sponsorParagraphs.length) || (concert.sponsors && concert.sponsors.length) || (concert.thanks && concert.thanks.length) || (concert.acknowledgements && concert.acknowledgements.length));
+  const photos = galleryPhotos(concert);
+  const hasProgramBook = Boolean((concert.programBook && concert.programBook.length) || (concert.programScans && concert.programScans.length) || (concert.booklet && concert.booklet.length) || (concert.onlineProgramBook && concert.onlineProgramBook.url));
+  const hasVideos = Boolean(concert.videos && concert.videos.length);
+  const hasRelatedArticles = Boolean((concert.news || []).some((url) => newsItems.some((item) => item.url === url)));
 
   const html = `<!DOCTYPE html>
 <html lang="zh-Hant-TW">
@@ -814,9 +817,8 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
 <main class="wrap">
   <section class="section">
     <h2>演出資訊</h2>
-    ${concertInfoTable(concert, statusText)}
+    ${concertInfoTable(concert)}
     ${sessionsTable(concert.sessions)}
-    ${concert.archiveComplete ? '' : (missing.length ? `<p class="muted">待補欄位：${missing.map(escapeHtml).join('、')}。</p>` : '<p class="muted">本頁基本欄位已有可考資料，仍會持續核對節目冊與校友補充。</p>')}
   </section>
 
   <section class="section">
@@ -824,46 +826,48 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
     ${concertIntro(concert, desc)}
   </section>${archiveSections(concert) ? `\n\n  ${archiveSections(concert)}` : ''}${planningHtml ? `\n\n  ${planningHtml}` : ''}
 
-  <section class="section">
+  ${hasPeople ? `<section class="section">
     <h2>指揮與獨奏</h2>
     ${renderPeopleSection(concert)}
-  </section>
+  </section>` : ''}
 
-  <section class="section">
+  ${hasProgram ? `<section class="section">
     <h2>曲目</h2>
-    ${programList(concert.program, concert)}${programOrderHint}
-  </section>
+    ${programList(concert.program, concert)}
+  </section>` : ''}
 
-  <section class="section">
+  ${hasPerformers ? `<section class="section">
     <h2>演出人員名單</h2>
     ${performerRows(concert)}
-  </section>
+  </section>` : ''}
 
-  <section class="section">
+  ${hasAdmin ? `<section class="section">
     <h2>幕後行政團隊</h2>
     ${adminTable(concert)}
-  </section>
+  </section>` : ''}
 
-  <section class="section">
+  ${hasSponsors ? `<section class="section">
     <h2>贊助與致謝</h2>
     ${sponsorsText(concert)}
-  </section>
+  </section>` : ''}
 
-  ${concert.archiveComplete && !galleryPhotos(concert).length ? '' : `<section class="section">\n    <h2>演出留影</h2>\n    ${renderGallerySection(concert)}\n  </section>`}${promoHtml ? `\n\n  ${promoHtml}` : ''}
+  ${photos.length ? `<section class="section">\n    <h2>演出留影</h2>\n    ${renderGallerySection(concert)}\n  </section>` : ''}${promoHtml ? `\n\n  ${promoHtml}` : ''}
 
-  <section class="section">
+  ${hasProgramBook ? `<section class="section">
     <h2>節目冊</h2>
     ${programBookSection(concert)}
-  </section>
+  </section>` : ''}
 
-  ${concert.archiveComplete && (!concert.videos || !concert.videos.length) ? '' : `<section class="section">\n    <h2>影片連結</h2>\n    ${videosList(concert.videos)}\n  </section>`}
+  ${hasVideos ? `<section class="section">\n    <h2>影片連結</h2>\n    ${videosList(concert.videos)}\n  </section>` : ''}
 
-  <section class="section">
+  ${hasRelatedArticles ? `<section class="section">
     <h2>相關文章</h2>
     ${relatedArticles(concert)}
-  </section>
+  </section>` : ''}
 
-  ${concert.archiveComplete ? `<section class="section">\n    ${concertPageNav(concert)}\n  </section>` : `<section class="section">\n    <h2>資料補充</h2>\n    ${provenanceText(concert, missing)}\n    ${concertPageNav(concert)}\n  </section>`}
+  <section class="section">
+    ${concertPageNav(concert)}
+  </section>
 </main>
 
 <footer class="footer">
