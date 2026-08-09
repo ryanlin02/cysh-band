@@ -53,6 +53,7 @@ window.CONCERTS = [
     rocYear: 115,
     title: "為伍",
     isCurrent: false,
+    archiveComplete: true,
     subtitle: "Keep Company",
     date: "2026-08-08",
     time: "14:30",
@@ -180,15 +181,16 @@ window.CONCERTS = [
       type: "ticketed",
       price: "200",
       channels: ["OPENTIX 兩廳院文化生活"],
-      note: "憑票入場，自由入座；售票已結束"
+      note: "14:00 開放入場；憑票入場，自由入座；售票已結束"
     },
     poster: "assets/img/poster_weiwu_2026.webp",
     page: "concerts/2026-41st.html",
     onlineProgramBook: {
       url: "concerts/2026-41st-program/",
       label: "開啟第 41 屆《為伍》線上節目冊",
-      note: "曲序、人物與曲目資料已依目前可確認資訊校正；完整演出名冊等內容仍持續校對。"
+      note: "線上節目冊保留第 41 屆《為伍》演出當日的完整內容與閱讀介面。"
     },
+    programBookSource: "concerts/2026-41st-program/data/concert-41st.js",
     news: [
       "news/2026-07-23-sausage-grill-gathering.html",
       "news/2026-06-12-rehearsal-schedule.html",
@@ -206,13 +208,11 @@ window.CONCERTS = [
       "黃鈺芠本人提供之個人介紹資料",
       "OPENTIX 售票頁（2026-07-18）"
     ],
-    sourceNote: "本頁日期、時間、場地與票務依正式海報及 OPENTIX 售票頁整理；各曲指揮分配依丁肇賢指揮 2026-08-06 提供之對話紀錄更新；獨奏者、曲序、曲名、樂曲介紹與演奏時間，依校正後的線上節目冊、指揮提供資料及可確認的管樂團出版資料整理。完整演出人員、幕後工作人員及贊助致謝尚未確認，因此不採用線上節目冊中的測試內容。",
-    status: "partial",
+    status: "confirmed",
     intro: [
       "「為伍」代表相聚、陪伴與同行。睽違六年，嘉義高中校友管樂團與在校生重新回到嘉義市政府文化局音樂廳，讓不同世代的嘉中管樂人再次在同一座舞台相遇。",
       "上半場由經典管樂原創與民謠作品展開，並由黃鈺芠擔任 Philip Sparke《Manhattan》小號獨奏；下半場則橫跨電玩交響組曲、流行音樂、電影音樂與日本 City Pop，呈現管樂團多元的聲音面貌。"
     ],
-    programNote: "曲序、曲名、作曲／編曲者、各曲指揮與演奏時間依演出前校正完成的線上節目冊及指揮提供資料整理。",
     notes: "基本演出資訊、三位樂團指揮、小號獨奏與正式曲序已依目前可確認資料更新；完整演出人員、幕後工作人員及贊助致謝仍待確認。"
   },
   {

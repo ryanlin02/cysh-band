@@ -5,6 +5,7 @@
    用法：node scripts/generate-concert-pages.js [--overwrite-manual] [concert-id] */
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { autoLinkHtml } = require('./lib/people-auto-link');
 const { createAlumniRosterResolver } = require('./lib/alumni-roster');
 const { createRenderer } = require('./lib/site-template');
@@ -28,9 +29,102 @@ const args = process.argv.slice(2);
 const overwriteManual = args.includes('--overwrite-manual');
 const onlyIds = new Set(args.filter((arg) => !arg.startsWith('--')));
 const manualPageExceptions = new Set(['2019-35th']);
+const programBookDataCache = new Map();
 
 function exists(rel) {
   return fs.existsSync(path.join(root, rel));
+}
+
+function programBookData(relPath) {
+  if (programBookDataCache.has(relPath)) return programBookDataCache.get(relPath);
+  const absolutePath = path.join(root, relPath);
+  if (!fs.existsSync(absolutePath)) throw new Error(`找不到線上節目冊資料檔：${relPath}`);
+  const sandbox = { window: {} };
+  vm.runInNewContext(fs.readFileSync(absolutePath, 'utf8'), sandbox, { filename: absolutePath });
+  const data = sandbox.window.CONCERT_PROGRAM_DATA;
+  if (!data) throw new Error(`線上節目冊資料檔未提供 CONCERT_PROGRAM_DATA：${relPath}`);
+  programBookDataCache.set(relPath, data);
+  return data;
+}
+
+function programBookAssetPath(sourcePath, assetPath) {
+  return path.posix.join(path.posix.dirname(sourcePath), '..', assetPath || '');
+}
+
+function programBookPeople(people, sourcePath) {
+  return (people || []).map((person) => ({
+    name: person.name,
+    num: person.number || person.id,
+    role: person.role,
+    concertRole: person.role,
+    concertBio: person.bio,
+    concertPhoto: programBookAssetPath(sourcePath, person.photo)
+  }));
+}
+
+function programBookWorks(tracks, section) {
+  return (tracks || []).map((track) => {
+    const titles = track.titles || [];
+    const primary = titles.find((title) => title.lang === 'zh-Hant') || titles[0] || {};
+    const secondary = titles.filter((title) => title !== primary).map((title) => title.text).filter(Boolean);
+    return {
+      section,
+      localTitle: primary.text || '曲名待考',
+      foreignTitle: secondary.join('／'),
+      composer: Array.isArray(track.composer) ? track.composer.join('／') : track.composer,
+      arranger: Array.isArray(track.arranger) ? track.arranger.join('／') : track.arranger,
+      conductor: track.conductor,
+      soloist: track.soloist,
+      duration: track.duration,
+      description: track.note || []
+    };
+  });
+}
+
+function hydrateProgramBookArchive(concert) {
+  if (!concert.programBookSource) return concert;
+  const sourcePath = concert.programBookSource;
+  const data = programBookData(sourcePath);
+  const president = data.presidentMessage || {};
+  const ensembleSections = (data.leadership && data.leadership.ensembles || []).map((ensemble) => ({
+    title: ensemble.title,
+    image: {
+      src: programBookAssetPath(sourcePath, ensemble.photo),
+      alt: ensemble.photoAlt,
+      caption: ensemble.title
+    },
+    content: ensemble.content || []
+  }));
+  return {
+    ...concert,
+    conductors: programBookPeople(data.leadership && data.leadership.conductors, sourcePath),
+    soloists: programBookPeople(data.leadership && data.leadership.soloist, sourcePath),
+    program: [
+      ...programBookWorks(data.program && data.program.firstHalf, '上半場'),
+      ...programBookWorks(data.program && data.program.secondHalf, '下半場')
+    ],
+    performerGroups: (data.roster || []).map((group) => ({
+      role: group.sectionZh || group.section,
+      people: (group.members || []).map((member) => ({ name: member.name, num: member.number }))
+    })),
+    adminRows: (data.organization && data.organization.staffGroups || []).map((group) => ({
+      role: group.role,
+      people: group.names || []
+    })),
+    thanks: data.organization && data.organization.thanksList || [],
+    archiveSections: [
+      {
+        title: president.title || '團長的話',
+        image: president.photo ? {
+          src: programBookAssetPath(sourcePath, president.photo),
+          alt: president.photoAlt,
+          caption: president.author || president.name || '團長的話'
+        } : null,
+        content: president.content || []
+      },
+      ...ensembleSections
+    ]
+  };
 }
 
 function escapeHtml(value) {
@@ -143,7 +237,8 @@ function personHref(person, profile) {
   return '';
 }
 
-function personPhoto(profile) {
+function personPhoto(person, profile) {
+  if (person && person.concertPhoto) return `../${escapeHtml(person.concertPhoto)}`;
   if (!profile || !profile.photo) return '../assets/img/members/blank.webp';
   if (profile.photo.startsWith('../')) return escapeHtml(profile.photo);
   return `../${escapeHtml(profile.photo)}`;
@@ -178,7 +273,7 @@ function renderPersonByline(person, fallbackRole) {
     ? `<a href="${href}">${escapeHtml(person.name)}</a>`
     : escapeHtml(person.name);
   const number = person.num ? `<span class="person-number">編號 ${escapeHtml(person.num)}</span>` : '';
-  const photo = `<img src="${personPhoto(profile)}" alt="${escapeHtml(person.name)}">`;
+  const photo = `<img src="${personPhoto(person, profile)}" alt="${escapeHtml(person.name)}">`;
   const photoNode = href ? `<a class="person-photo-link" href="${href}" aria-label="查看${escapeHtml(person.name)}人物誌">${photo}</a>` : photo;
   const role = roleText(person, fallbackRole);
   const summary = personSummary(person, profile, fallbackRole);
@@ -289,7 +384,7 @@ function concertInfoTable(concert, statusText) {
     ['獨奏／協奏', listPeople(concert.soloists)],
     ['籌辦字頭', escapeHtml(concert.hostHead || '待考')],
     ['票務', ticketText(concert.ticket, concert)],
-    ['資料狀態', escapeHtml(statusText)]
+    ...(!concert.archiveComplete ? [['資料狀態', escapeHtml(statusText)]] : [])
   ];
   if (concert.sessions && concert.sessions.length) {
     rows.push(['場次', `${concert.sessions.length} 場${concert.sessions.length > 1 ? '（詳見下方場次資訊）' : ''}`]);
@@ -340,7 +435,8 @@ function programList(program, concert = {}) {
   const renderWorks = (works) => `<ol class="concert-program-list">
       ${works.map((work) => {
     const meta = composerText(work);
-    const description = work.description ? `<p>${escapeHtml(work.description)}</p>` : '';
+    const descriptionParts = Array.isArray(work.description) ? work.description : (work.description ? [work.description] : []);
+    const description = descriptionParts.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
     return `<li><b>${titleText(work)}</b>${meta ? `<span>${meta}</span>` : ''}${description}</li>`;
   }).join('\n      ')}
     </ol>`;
@@ -499,6 +595,21 @@ function planningSection(concert) {
   </section>`;
 }
 
+function archiveSections(concert) {
+  const sections = concert.archiveSections || [];
+  if (!sections.length) return '';
+  return sections.map((section) => {
+    const image = section.image;
+    const imageHtml = image ? `<div class="gallery-grid concert-gallery-grid"><figure><img src="../${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || section.title)}" loading="lazy"><figcaption>${escapeHtml(image.caption || section.title)}</figcaption></figure></div>` : '';
+    const paragraphs = (section.content || []).map((text) => `<p>${escapeHtml(text)}</p>`).join('\n    ');
+    return `<section class="section">
+    <h2>${escapeHtml(section.title)}</h2>
+    ${imageHtml}
+    ${paragraphs}
+  </section>`;
+  }).join('\n\n  ');
+}
+
 function galleryPhotos(concert) {
   const explicit = concert.photos || concert.galleryPhotos || [];
   const normalized = explicit.map((photo) => typeof photo === 'string' ? { src: photo, caption: '' } : photo);
@@ -620,6 +731,7 @@ function concertPageNav(concert) {
 }
 
 function render(concert) {
+  concert = hydrateProgramBookArchive(concert);
   const title = pageTitle(concert);
   const plainTitle = `${title}｜校友聯演｜嘉義高中管樂隊`;
   const desc = concert.metaDescription || `${concert.year} 年第 ${concert.nth} 屆嘉義高中校友暨在校生聯合音樂會${displayTitle(concert)}資料頁：整理日期、場地、指揮、曲目、錄影與待考資訊。`;
@@ -630,7 +742,7 @@ function render(concert) {
   const canonical = `https://cysh.band/${concert.page}`;
   const planningHtml = planningSection(concert);
   const promoHtml = promoImagesSection(concert);
-  const programOrderHint = concert.program && concert.program.length && !concert.program.some((work) => work.section || work.part || work.half)
+  const programOrderHint = !concert.archiveComplete && concert.program && concert.program.length && !concert.program.some((work) => work.section || work.part || work.half)
     ? '\n    <p class="muted">若尚未顯示上下半場或完整曲序，表示目前資料尚不足以確認正式節目順序；後續會依節目冊與校友補充資料校對。</p>'
     : '';
 
@@ -704,13 +816,13 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
     <h2>演出資訊</h2>
     ${concertInfoTable(concert, statusText)}
     ${sessionsTable(concert.sessions)}
-    ${missing.length ? `<p class="muted">待補欄位：${missing.map(escapeHtml).join('、')}。</p>` : '<p class="muted">本頁基本欄位已有可考資料，仍會持續核對節目冊與校友補充。</p>'}
+    ${concert.archiveComplete ? '' : (missing.length ? `<p class="muted">待補欄位：${missing.map(escapeHtml).join('、')}。</p>` : '<p class="muted">本頁基本欄位已有可考資料，仍會持續核對節目冊與校友補充。</p>')}
   </section>
 
   <section class="section">
     <h2>關於這場音樂會</h2>
     ${concertIntro(concert, desc)}
-  </section>${planningHtml ? `\n\n  ${planningHtml}` : ''}
+  </section>${archiveSections(concert) ? `\n\n  ${archiveSections(concert)}` : ''}${planningHtml ? `\n\n  ${planningHtml}` : ''}
 
   <section class="section">
     <h2>指揮與獨奏</h2>
@@ -737,31 +849,21 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
     ${sponsorsText(concert)}
   </section>
 
-  <section class="section">
-    <h2>演出留影</h2>
-    ${renderGallerySection(concert)}
-  </section>${promoHtml ? `\n\n  ${promoHtml}` : ''}
+  ${concert.archiveComplete && !galleryPhotos(concert).length ? '' : `<section class="section">\n    <h2>演出留影</h2>\n    ${renderGallerySection(concert)}\n  </section>`}${promoHtml ? `\n\n  ${promoHtml}` : ''}
 
   <section class="section">
     <h2>節目冊</h2>
     ${programBookSection(concert)}
   </section>
 
-  <section class="section">
-    <h2>影片連結</h2>
-    ${videosList(concert.videos)}
-  </section>
+  ${concert.archiveComplete && (!concert.videos || !concert.videos.length) ? '' : `<section class="section">\n    <h2>影片連結</h2>\n    ${videosList(concert.videos)}\n  </section>`}
 
   <section class="section">
     <h2>相關文章</h2>
     ${relatedArticles(concert)}
   </section>
 
-  <section class="section">
-    <h2>資料補充</h2>
-    ${provenanceText(concert, missing)}
-    ${concertPageNav(concert)}
-  </section>
+  ${concert.archiveComplete ? `<section class="section">\n    ${concertPageNav(concert)}\n  </section>` : `<section class="section">\n    <h2>資料補充</h2>\n    ${provenanceText(concert, missing)}\n    ${concertPageNav(concert)}\n  </section>`}
 </main>
 
 <footer class="footer">
