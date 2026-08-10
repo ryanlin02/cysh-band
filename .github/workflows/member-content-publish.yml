@@ -16,13 +16,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
+          package-manager-cache: false
       - name: Sync approved public data
         env:
           MEMBER_PUBLISH_SYNC_TOKEN: ${{ secrets.MEMBER_PUBLISH_SYNC_TOKEN }}
