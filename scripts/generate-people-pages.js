@@ -169,6 +169,18 @@ ${links.map((link) => `      <tr><th>${escapeHtml(link.type)}</th><td><a href="$
     </table></div>`;
 }
 
+function renderUpdateMeta(profile) {
+  if (!profile.updatedBy || !profile.updatedAt) return '';
+  const date = new Date(profile.updatedAt);
+  if (Number.isNaN(date.getTime())) return '';
+  const formatted = new Intl.DateTimeFormat('zh-TW', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+    timeZone: 'Asia/Taipei'
+  }).format(date);
+  return `<p class="person-update-meta">最後更新：<time datetime="${escapeHtml(profile.updatedAt)}">${escapeHtml(formatted)}</time>・更新者：${escapeHtml(profile.updatedBy)}</p>`;
+}
+
 function renderGalleryLink(profile) {
   if (!profile.num) return '';
   const href = `../photos/#/person-num/${encodeURIComponent(profile.num)}`;
@@ -258,6 +270,7 @@ function renderProfile(profile, options = {}) {
     : '';
   const previewSuffix = options.preview ? '．PREVIEW' : '';
   const relatedLinksHtml = renderRelatedLinks(profile.relatedLinks);
+  const updateMetaHtml = renderUpdateMeta(profile);
   const galleryLinkHtml = renderGalleryLink(profile);
   const personNavClass = profile.peopleLink ? 'person-nav article-page-nav' : 'person-nav article-page-nav person-nav--single';
   const peopleBackLink = profile.peopleLink
@@ -278,6 +291,8 @@ function renderProfile(profile, options = {}) {
 <main class="wrap">
   <article class="section news-article person-article">
 ${previewNote}${indentHtml(body)}
+
+    ${updateMetaHtml}
 
     ${renderRelatedConcerts(relatedConcerts)}${relatedLinksHtml ? `\n\n    ${relatedLinksHtml}` : ''}${galleryLinkHtml ? `\n\n    ${galleryLinkHtml}` : ''}
 

@@ -1520,6 +1520,15 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .person-article p { max-width: 42em; }
 .person-article .sources { font-size: .85rem; color: var(--ink-dim); }
 .person-article .sources a { word-break: break-all; }
+.person-article .person-update-meta {
+  max-width: 42em;
+  margin-top: 28px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--gold-soft);
+  background: var(--bg-soft);
+  color: var(--ink-dim);
+  font-size: .86rem;
+}
 .person-gallery-panel {
   margin: 32px 0 24px;
   padding: 16px 0;
