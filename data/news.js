@@ -634,7 +634,37 @@ window.NEWS = [
 window.NEWS_INDEX_TOPICS = ["為伍", "校友歸隊", "團練", "影像館", "嘉義管樂"];
 
 // <member-publish-news>
-window.MEMBER_PUBLISHED_NEWS = [];
+window.MEMBER_PUBLISHED_NEWS = [
+  {
+    "id": "2026-08-11-member-2026-08-10-3e1586a5",
+    "date": "2026-08-11",
+    "time": "00:22",
+    "modifiedDate": "2026-08-11",
+    "modifiedTime": "00:22",
+    "category": "行政公告",
+    "tags": [
+      "嘉中管樂",
+      "校友投稿"
+    ],
+    "pinned": false,
+    "priority": "normal",
+    "title": "文章發布系統完整流程測試（完成後刪除）",
+    "summary": "這是一篇用來驗證會員投稿、內容審核、官網同步與安全下架流程的暫時測試文章，完成全部檢查後即刪除。",
+    "source": "content/news/2026-08-11-member-2026-08-10-3e1586a5.html",
+    "output": "news/2026-08-11-member-2026-08-10-3e1586a5.html",
+    "url": "news/2026-08-11-member-2026-08-10-3e1586a5.html",
+    "thumb": "assets/img/og.jpg",
+    "ogImage": "assets/img/og.jpg",
+    "ogImageWidth": "1200",
+    "ogImageHeight": "630",
+    "pageTitle": "文章發布系統完整流程測試（完成後刪除）｜最新消息｜嘉義高中管樂隊",
+    "ogTitle": "文章發布系統完整流程測試（完成後刪除）",
+    "description": "這是一篇用來驗證會員投稿、內容審核、官網同步與安全下架流程的暫時測試文章，完成全部檢查後即刪除。",
+    "ogDescription": "這是一篇用來驗證會員投稿、內容審核、官網同步與安全下架流程的暫時測試文章，完成全部檢查後即刪除。",
+    "status": "published",
+    "sourceNotes": "會員 林俊余 投稿，經 林俊余 審核後發布。"
+  }
+];
 // </member-publish-news>
 if (window.MEMBER_PUBLISHED_NEWS.length) {
   const managedNewsIds = new Set(window.MEMBER_PUBLISHED_NEWS.map((article) => article.id));
