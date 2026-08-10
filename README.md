@@ -61,6 +61,8 @@
 
 需要立即檢查核准內容時，可在 GitHub Actions 手動執行 `Publish approved member content`；平時每 15 分鐘自動檢查一次。同步密鑰只存於會員站環境變數與 GitHub repository secret，不得寫入本資料夾。
 
+後台下架文章後，同步程式會依 `data/member-published-manifest.json` 只刪除先前由會員系統建立的對應 `content/news/` 與 `news/` 頁面，再重建最新消息索引、RSS 與 sitemap；不會碰觸人工或歷史文章。
+
 ### 發布最新消息
 目前最新消息文章已改為模板化流程：正文來源放在 `content/news/`，正式 HTML 由以下指令產生：
 

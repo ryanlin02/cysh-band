@@ -10,6 +10,7 @@ const root = path.join(__dirname, '..');
 const apiBase = String(process.env.MEMBER_PUBLISH_API_URL || 'https://members.cysh.band/api/publish').replace(/\/$/, '');
 const token = process.env.MEMBER_PUBLISH_SYNC_TOKEN || '';
 const statePath = path.join(root, 'scripts', 'output', 'member-publish-state.json');
+const manifestPath = path.join(root, 'data', 'member-published-manifest.json');
 
 function requireToken() {
   if (token.length < 32) throw new Error('缺少 MEMBER_PUBLISH_SYNC_TOKEN（至少 32 字元）');
@@ -27,6 +28,23 @@ function replaceGeneratedBlock(relativePath, marker, value) {
   const pattern = new RegExp(`${start.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s\\S]*?${end.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
   if (!pattern.test(source)) throw new Error(`${relativePath} 缺少 ${marker} 同步標記`);
   fs.writeFileSync(filePath, source.replace(pattern, `${start}\n${value}\n${end}`));
+}
+
+function readManifest() {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    return { version: 1, articles: Array.isArray(parsed.articles) ? parsed.articles : [] };
+  } catch {
+    return { version: 1, articles: [] };
+  }
+}
+
+function removeManagedFile(relativePath) {
+  if (!/^(content\/news|news)\/[a-z0-9-]+[.]html$/.test(String(relativePath || ''))) {
+    throw new Error(`拒絕刪除不在會員文章範圍內的檔案：${relativePath}`);
+  }
+  const absolutePath = path.join(root, relativePath);
+  if (fs.existsSync(absolutePath)) fs.unlinkSync(absolutePath);
 }
 
 function safePublicPhoto(url, alumniNumber) {
@@ -124,6 +142,7 @@ async function sync() {
   }
 
   const newsItems = [];
+  const nextManifestArticles = [];
   for (const article of articles) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug)) throw new Error(`文章網址代號不安全：${article.id}`);
     const published = publicDateTime(article.reviewed_at || article.published_at || article.updated_at);
@@ -133,6 +152,7 @@ async function sync() {
     const output = `news/${id}.html`;
     fs.mkdirSync(path.join(root, 'content', 'news'), { recursive: true });
     fs.writeFileSync(path.join(root, source), articleSource(article));
+    nextManifestArticles.push({ id: article.id, revision: article.revision, source, output });
     newsItems.push({
       id, date: published.date, time: published.time,
       modifiedDate: modified.date, modifiedTime: modified.time,
@@ -155,9 +175,18 @@ async function sync() {
     });
   }
 
+  const previousManifest = readManifest();
+  const nextIds = new Set(nextManifestArticles.map((article) => article.id));
+  for (const previous of previousManifest.articles) {
+    const current = nextManifestArticles.find((article) => article.id === previous.id);
+    if (!nextIds.has(previous.id) || current?.source !== previous.source) removeManagedFile(previous.source);
+    if (!nextIds.has(previous.id) || current?.output !== previous.output) removeManagedFile(previous.output);
+  }
+
   replaceGeneratedBlock('data/people-profiles.js', 'member-publish-profiles', `window.MEMBER_MANAGED_PEOPLE_PROFILES = ${JSON.stringify(profileItems, null, 2)};`);
   replaceGeneratedBlock('data/alumni.js', 'member-publish-alumni', `window.MEMBER_MANAGED_ALUMNI_PROFILES = ${JSON.stringify(alumniPatches, null, 2)};`);
   replaceGeneratedBlock('data/news.js', 'member-publish-news', `window.MEMBER_PUBLISHED_NEWS = ${JSON.stringify(newsItems, null, 2)};`);
+  fs.writeFileSync(manifestPath, JSON.stringify({ version: 1, articles: nextManifestArticles }, null, 2) + '\n');
 
   fs.mkdirSync(path.dirname(statePath), { recursive: true });
   fs.writeFileSync(statePath, JSON.stringify({
