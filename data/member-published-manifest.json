@@ -1,11 +1,4 @@
 {
   "version": 1,
-  "articles": [
-    {
-      "id": "3cbc5a71-3a6e-4a4b-a76f-0e94b5454af9",
-      "revision": 1,
-      "source": "content/news/2026-08-11-member-2026-08-10-3e1586a5.html",
-      "output": "news/2026-08-11-member-2026-08-10-3e1586a5.html"
-    }
-  ]
+  "articles": []
 }
