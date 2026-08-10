@@ -1267,7 +1267,40 @@ window.PEOPLE_FEATURED_SECTIONS = [
 ];
 
 // <member-publish-profiles>
-window.MEMBER_MANAGED_PEOPLE_PROFILES = [];
+window.MEMBER_MANAGED_PEOPLE_PROFILES = [
+  {
+    "num": "9502",
+    "name": "林俊余",
+    "source": "content/people/9502.html",
+    "output": "people/9502.html",
+    "title": "林俊余（9502）｜嘉義高中管樂隊校友",
+    "description": "林俊余是民國 95 年入學校友，曾任副社長、學生指揮並隸屬長號聲部；近年投入嘉中管樂官方網站、影像與校友資料整理，也參與校友聯演行政協作。",
+    "ogTitle": "林俊余（9502）｜從長號、學生指揮到數位典藏，以網站串起嘉中管樂的共同記憶",
+    "ogDescription": "林俊余是民國 95 年入學校友，曾任副社長、學生指揮並隸屬長號聲部；近年投入嘉中管樂官方網站、影像與校友資料整理，也參與校友聯演行政協作。",
+    "headlineHtml": "從長號、學生指揮到數位典藏，以網站串起嘉中管樂的共同記憶",
+    "photo": "../assets/img/members/9502.webp",
+    "facts": [
+      [
+        "編號",
+        "9502（民國 95 年入學）"
+      ],
+      [
+        "社團經歷",
+        "副社長、學生指揮、長號聲部"
+      ],
+      [
+        "目前投入",
+        "官方網站製作與維護、校友聯演行政協作"
+      ]
+    ],
+    "navActive": "roster",
+    "rosterLink": "../roster.html#p-9502",
+    "relatedLinks": [],
+    "updatedBy": "林俊余",
+    "updatedAt": "2026-08-10T14:42:53.324064+00:00",
+    "sourceHtml": "本文由林俊余透過會員後台提供，經林俊余審核後發布；歷史資料如有補充或更正，將保留更新者與時間紀錄。"
+  }
+];
 // </member-publish-profiles>
 if (window.MEMBER_MANAGED_PEOPLE_PROFILES.length) {
   const managedProfileIds = new Set(window.MEMBER_MANAGED_PEOPLE_PROFILES.map((profile) => profile.num || profile.id));

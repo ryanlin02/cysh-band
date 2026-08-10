@@ -537,7 +537,14 @@ window.ALUMNI = [
 ];
 
 // <member-publish-alumni>
-window.MEMBER_MANAGED_ALUMNI_PROFILES = [];
+window.MEMBER_MANAGED_ALUMNI_PROFILES = [
+  {
+    "num": "9502",
+    "name": "林俊余",
+    "photo": "9502",
+    "link": "people/9502.html"
+  }
+];
 // </member-publish-alumni>
 for (const patch of window.MEMBER_MANAGED_ALUMNI_PROFILES) {
   const person = window.ALUMNI.find((item) => item.num === patch.num);
