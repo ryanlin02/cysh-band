@@ -7,3 +7,4 @@
 
 # Python 執行時暫存檔。
 __pycache__/
+scripts/output/

@@ -632,3 +632,13 @@ window.NEWS = [
 
 // 總覽頁只呈現可長期辨識的主題；新增短期活動標籤時，不會自動塞進探索區。
 window.NEWS_INDEX_TOPICS = ["為伍", "校友歸隊", "團練", "影像館", "嘉義管樂"];
+
+// <member-publish-news>
+window.MEMBER_PUBLISHED_NEWS = [];
+// </member-publish-news>
+if (window.MEMBER_PUBLISHED_NEWS.length) {
+  const managedNewsIds = new Set(window.MEMBER_PUBLISHED_NEWS.map((article) => article.id));
+  window.NEWS = window.MEMBER_PUBLISHED_NEWS
+    .concat(window.NEWS.filter((article) => !managedNewsIds.has(article.id)))
+    .sort((a, b) => `${b.date}T${b.time || '00:00'}`.localeCompare(`${a.date}T${a.time || '00:00'}`));
+}

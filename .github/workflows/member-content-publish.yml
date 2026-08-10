@@ -1,0 +1,52 @@
+name: Publish approved member content
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: member-content-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Sync approved public data
+        env:
+          MEMBER_PUBLISH_SYNC_TOKEN: ${{ secrets.MEMBER_PUBLISH_SYNC_TOKEN }}
+        run: node scripts/sync-member-publishing.js
+      - name: Generate public pages
+        run: |
+          node scripts/generate-people-pages.js
+          node scripts/generate-gallery-profile-links.js
+          node scripts/generate-news-pages.js
+      - name: Verify public site
+        run: |
+          node scripts/check-site.js
+          node scripts/check-concerts-data.js
+          git diff --check
+      - name: Commit and publish changes
+        run: |
+          git config user.name "cysh-band-publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add data content people news assets/img/members photos/profile-links.js feed.xml sitemap.xml index.html concerts.html
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Publish approved member content"
+            git push origin main
+          fi
+      - name: Record published revision
+        env:
+          MEMBER_PUBLISH_SYNC_TOKEN: ${{ secrets.MEMBER_PUBLISH_SYNC_TOKEN }}
+        run: node scripts/sync-member-publishing.js --ack "$(git rev-parse HEAD)"

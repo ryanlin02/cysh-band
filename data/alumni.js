@@ -535,3 +535,11 @@ window.ALUMNI = [
   { num: "9995", name: "何俊男", year: 99, part: "打擊", tags: ["打擊"], role: "", desc: "民國 99 年入學，打擊聲部校友。", photo: "blank", link: "" },
   { num: "9996", name: "蕭宇哲", year: 99, part: "打擊", tags: ["打擊"], role: "", desc: "民國 99 年入學，打擊聲部校友。", photo: "blank", link: "" }
 ];
+
+// <member-publish-alumni>
+window.MEMBER_MANAGED_ALUMNI_PROFILES = [];
+// </member-publish-alumni>
+for (const patch of window.MEMBER_MANAGED_ALUMNI_PROFILES) {
+  const person = window.ALUMNI.find((item) => item.num === patch.num);
+  if (person) Object.assign(person, patch);
+}

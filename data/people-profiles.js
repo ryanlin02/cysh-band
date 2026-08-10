@@ -1265,3 +1265,13 @@ window.PEOPLE_FEATURED_SECTIONS = [
     afterHtml: "這份名單並非全部——歷屆聯演背後，還有無數校友默默投入行政聯繫、譜務整理、場務執行、宣傳設計與後勤支援。正是這些橫跨世代、分散各地的嘉中管樂人共同努力，才讓這項傳統延續超過四十年。本頁內容將持續增補。"
   }
 ];
+
+// <member-publish-profiles>
+window.MEMBER_MANAGED_PEOPLE_PROFILES = [];
+// </member-publish-profiles>
+if (window.MEMBER_MANAGED_PEOPLE_PROFILES.length) {
+  const managedProfileIds = new Set(window.MEMBER_MANAGED_PEOPLE_PROFILES.map((profile) => profile.num || profile.id));
+  window.PEOPLE_PROFILES = window.PEOPLE_PROFILES
+    .filter((profile) => !managedProfileIds.has(profile.num || profile.id))
+    .concat(window.MEMBER_MANAGED_PEOPLE_PROFILES);
+}
