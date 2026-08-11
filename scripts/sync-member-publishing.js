@@ -171,6 +171,8 @@ async function sync() {
       description: article.summary,
       ogDescription: article.summary,
       status: 'published',
+      authorName: article.author?.name || null,
+      authorAlumniNumber: article.author?.alumniNumber || null,
       sourceNotes: `會員 ${article.author?.name || '校友'} 投稿，經 ${article.reviewedByName || '內容編輯'} 審核後發布。`
     });
   }

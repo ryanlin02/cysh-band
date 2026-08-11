@@ -602,6 +602,21 @@ function generateNewsPages() {
   console.log('news/index.html');
   fs.writeFileSync(path.join(root, 'feed.xml'), renderFeed());
   console.log('feed.xml');
+  fs.writeFileSync(path.join(root, 'data', 'news-catalog.json'), JSON.stringify({
+    version: 1,
+    generatedAt: new Date().toISOString(),
+    articles: articles.map((article) => ({
+      id: article.id,
+      date: article.date,
+      category: article.category,
+      title: textFromHtml(article.listTitle || article.title),
+      url: `https://cysh.band/${article.output}`,
+      tags: article.tags,
+      authorName: article.authorName || null,
+      authorAlumniNumber: article.authorAlumniNumber || null
+    }))
+  }, null, 2) + '\n');
+  console.log('data/news-catalog.json');
   const sitemapPath = path.join(root, 'sitemap.xml');
   fs.writeFileSync(sitemapPath, renderSitemap(fs.readFileSync(sitemapPath, 'utf8')));
   console.log('sitemap.xml');
