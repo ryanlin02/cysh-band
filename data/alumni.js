@@ -27,6 +27,7 @@ window.ALUMNI = [
   { num: "7401", name: "吳金河", year: 74, part: "社長．法國號", tags: ["幹部", "法國號"], role: "", desc: "民國 74 年入學，當屆社長，法國號聲部。", photo: "7401", link: "" },
   { num: "7502", name: "陳志鳴", year: 75, part: "副社長．打擊", tags: ["幹部", "打擊"], role: "", desc: "民國 75 年入學，當屆副社長，打擊聲部。", photo: "7502", link: "" },
   { num: "7581", name: "翁啟榮", year: 75, part: "低音號", tags: ["低音號"], role: "校友聯演籌備統籌", desc: "民國 75 年入隊，低音號一吹超過四十年，綽號「警伯」，長年統籌校友聯演行政。", photo: "7581", link: "people/7581.html" },
+  { num: "7601", name: "盧明泰", year: 76, part: "薩克斯風", tags: ["薩克斯風"], role: "", desc: "民國 76 年入學，薩克斯風部校友。", photo: "7601", link: "" },
   { num: "7962", name: "范庭福", year: 79, part: "長號", tags: ["長號"], role: "", desc: "民國 79 年入學，長號聲部校友。", photo: "7962", link: "" },
   { num: "8192", name: "李瑾佑", year: 81, part: "打擊", tags: ["打擊"], role: "跨界音樂工作者．劇場現場樂師", desc: "民國 81 年入學，打擊聲部校友。曾於第 30 屆校友聯演擔任指揮，音樂工作橫跨管樂、弦樂、劇場與現場演出。", photo: "8192", link: "people/8192.html" },
   { num: "8301", name: "高崇文", year: 83, part: "社長．長號", tags: ["幹部", "長號"], role: "長號演奏家．音樂班教師", desc: "民國 83 年入學，當屆社長。曾任高雄市交響樂團長號專任團員，現任教多校音樂班。", photo: "8301", link: "people/8301.html" },
