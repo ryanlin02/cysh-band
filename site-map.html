@@ -47,7 +47,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260813-site-map">
+<link rel="stylesheet" href="css/style.css?v=20260813-site-map-v2">
 <script src="js/main.js" defer></script>
 
 
@@ -73,65 +73,82 @@
 
 
 <header class="page-head">
-  <p class="kicker">SITE MAP</p>
+  <p class="kicker">EXPLORE CYSH BAND</p>
   <h1>網站地圖</h1>
-  <p class="lede">從最新動態、歷史人物到校友聯演與會員服務，快速找到適合的入口。</p>
+  <p class="lede">從當下走進歷史，從一場演出找到一個世代。這裡整理嘉中管樂公開網站的所有主要入口。</p>
 </header>
 
 <main class="wrap site-map-page">
-  <section class="section site-map-intro">
-    <h2>這個網站如何組成？</h2>
-    <p>公開官網以「認識、查找、回顧、參與」四種需求整理內容；會員資料、投稿、活動協作與行政功能則放在獨立的會員平台，避免把公開內容與內部資料混在一起。</p>
+  <section class="site-map-intro" aria-labelledby="site-map-intro-title">
+    <div class="site-map-intro__copy">
+      <p class="kicker">THE ARCHIVE, AT A GLANCE</p>
+      <h2 id="site-map-intro-title">四條路徑，認識同一段傳承</h2>
+      <p>依照瀏覽目的，從最新動態、歷史人物、演出影像或會員服務開始。每個入口都回到同一件事：讓不同世代留下的聲音與故事，能被繼續看見。</p>
+    </div>
+    <nav class="site-map-quick" aria-label="網站地圖快速跳轉">
+      <a href="#discover"><span>01</span><strong>最新與認識</strong></a>
+      <a href="#legacy"><span>02</span><strong>歷史與身分</strong></a>
+      <a href="#stage"><span>03</span><strong>演出與影像</strong></a>
+      <a href="#services"><span>04</span><strong>會員與服務</strong></a>
+    </nav>
   </section>
 
-  <div class="site-map-grid">
-    <section class="site-map-section">
-      <p class="kicker">START HERE</p>
-      <h2>最新與認識</h2>
-      <ul>
-        <li><a href="index.html"><b>首頁</b><span>近期重點、演出與精選內容</span></a></li>
-        <li><a href="news/index.html"><b>最新消息</b><span>活動、排練與網站更新</span></a></li>
-        <li><a href="about.html"><b>關於</b><span>在校生管樂社與校友管樂團</span></a></li>
-        <li><a href="support.html"><b>支持我們</b><span>了解社團運作與支持方式</span></a></li>
-      </ul>
+  <div class="site-map-directory">
+    <section class="site-map-chapter" id="discover" aria-labelledby="discover-title">
+      <header>
+        <span class="site-map-chapter__number" aria-hidden="true">01</span>
+        <div><p class="kicker">DISCOVER</p><h2 id="discover-title">最新與認識</h2><p>第一次來到這裡，從近期動態與兩個樂團的現在開始。</p></div>
+      </header>
+      <ol class="site-map-links">
+        <li><a href="index.html"><span class="site-map-link__index">01.1</span><span><b>首頁</b><small>近期重點、演出與精選內容</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="news/index.html"><span class="site-map-link__index">01.2</span><span><b>最新消息</b><small>活動、排練與網站更新</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="about.html"><span class="site-map-link__index">01.3</span><span><b>關於</b><small>在校生管樂社與校友管樂團</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="support.html"><span class="site-map-link__index">01.4</span><span><b>支持我們</b><small>了解社團運作與支持方式</small></span><i aria-hidden="true">→</i></a></li>
+      </ol>
     </section>
 
-    <section class="site-map-section">
-      <p class="kicker">MEMORY</p>
-      <h2>歷史與身分</h2>
-      <ul>
-        <li><a href="history.html"><b>傳承</b><span>從 1931 年延續至今的發展</span></a></li>
-        <li><a href="numbers.html"><b>編號</b><span>理解嘉中管樂人的編號文化</span></a></li>
-        <li><a href="people.html"><b>人物誌</b><span>各世代校友的故事與成就</span></a></li>
-        <li><a href="roster.html"><b>校友名錄</b><span>查找已整理的公開校友資料</span></a></li>
-      </ul>
+    <section class="site-map-chapter" id="legacy" aria-labelledby="legacy-title">
+      <header>
+        <span class="site-map-chapter__number" aria-hidden="true">02</span>
+        <div><p class="kicker">LEGACY</p><h2 id="legacy-title">歷史與身分</h2><p>從 1931 年至今，認識編號、人物與跨世代的共同記憶。</p></div>
+      </header>
+      <ol class="site-map-links">
+        <li><a href="history.html"><span class="site-map-link__index">02.1</span><span><b>傳承</b><small>從 1931 年延續至今的發展</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="numbers.html"><span class="site-map-link__index">02.2</span><span><b>編號</b><small>理解嘉中管樂人的編號文化</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="people.html"><span class="site-map-link__index">02.3</span><span><b>人物誌</b><small>各世代校友的故事與成就</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="roster.html"><span class="site-map-link__index">02.4</span><span><b>校友名錄</b><small>查找已整理的公開校友資料</small></span><i aria-hidden="true">→</i></a></li>
+      </ol>
     </section>
 
-    <section class="site-map-section">
-      <p class="kicker">CONCERTS</p>
-      <h2>演出與影像</h2>
-      <ul>
-        <li><a href="concerts.html"><b>校友聯演</b><span>歷屆聯合音樂會與節目資料</span></a></li>
-        <li><a href="hall/tour/"><b>音樂廳線上導覽</b><span>認識演出場館與舞台空間</span></a></li>
-        <li><a href="photos/"><b>完整影像館</b><span>社員驗證後瀏覽活動照片</span></a></li>
-        <li><a href="gallery/2002-concert.html"><b>公開精選相簿</b><span>不需登入的典藏影像</span></a></li>
-      </ul>
+    <section class="site-map-chapter" id="stage" aria-labelledby="stage-title">
+      <header>
+        <span class="site-map-chapter__number" aria-hidden="true">03</span>
+        <div><p class="kicker">ON STAGE</p><h2 id="stage-title">演出與影像</h2><p>回到音樂會現場，瀏覽節目、場館與保存下來的影像。</p></div>
+      </header>
+      <ol class="site-map-links">
+        <li><a href="concerts.html"><span class="site-map-link__index">03.1</span><span><b>校友聯演</b><small>歷屆聯合音樂會與節目資料</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="hall/tour/"><span class="site-map-link__index">03.2</span><span><b>音樂廳線上導覽</b><small>認識演出場館與舞台空間</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="photos/"><span class="site-map-link__index">03.3</span><span><b>完整影像館</b><small>社員驗證後瀏覽活動照片</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="gallery/2002-concert.html"><span class="site-map-link__index">03.4</span><span><b>公開精選相簿</b><small>不需登入的典藏影像</small></span><i aria-hidden="true">→</i></a></li>
+      </ol>
     </section>
 
-    <section class="site-map-section">
-      <p class="kicker">SERVICES</p>
-      <h2>會員與網站服務</h2>
-      <ul>
-        <li><a href="https://members.cysh.band/"><b>會員平台</b><span>個人資料、投稿、活動與管理中心</span></a></li>
-        <li><a href="contact.html"><b>聯絡與資料更正</b><span>提供補充、勘誤或授權問題</span></a></li>
-        <li><a href="rights.html"><b>使用與著作權</b><span>了解文字、照片與史料使用原則</span></a></li>
-      </ul>
+    <section class="site-map-chapter" id="services" aria-labelledby="services-title">
+      <header>
+        <span class="site-map-chapter__number" aria-hidden="true">04</span>
+        <div><p class="kicker">CONNECT</p><h2 id="services-title">會員與服務</h2><p>登入會員平台、提供資料更正，或了解網站內容的使用原則。</p></div>
+      </header>
+      <ol class="site-map-links">
+        <li><a href="https://members.cysh.band/"><span class="site-map-link__index">04.1</span><span><b>會員平台</b><small>個人資料、投稿、活動與管理中心</small></span><i aria-hidden="true">↗</i></a></li>
+        <li><a href="contact.html"><span class="site-map-link__index">04.2</span><span><b>聯絡與資料更正</b><small>提供補充、勘誤或授權問題</small></span><i aria-hidden="true">→</i></a></li>
+        <li><a href="rights.html"><span class="site-map-link__index">04.3</span><span><b>使用與著作權</b><small>了解文字、照片與史料使用原則</small></span><i aria-hidden="true">→</i></a></li>
+      </ol>
     </section>
   </div>
 
-  <aside class="section site-map-boundary" aria-label="公開與會員資料界線">
-    <h2>公開與會員資料分開</h2>
-    <p>本頁只整理公開入口。會員平台中的私密聯絡資料、權限管理與行政內容不會公開；完整影像館仍依原有社員驗證規則保護。</p>
+  <aside class="site-map-boundary" aria-label="公開與會員資料界線">
+    <p class="kicker">PUBLIC / MEMBERS</p>
+    <div><h2>公開記憶與內部協作，清楚分開</h2><p>本頁只整理公開入口。會員平台中的私密聯絡資料、權限管理與行政內容不會公開；完整影像館仍依原有社員驗證規則保護。</p></div>
   </aside>
 </main>
 

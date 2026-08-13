@@ -3495,23 +3495,58 @@ a.roster-card.linked:hover {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- 頁尾（保留深色收尾） ---------- */
-.site-map-intro { max-width: 780px; }
-.site-map-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.site-map-section { min-width: 0; border-top: 3px solid var(--gold-soft); border-radius: var(--radius-lg); background: var(--bg-card); box-shadow: var(--shadow-sm); padding: 24px; }
-.site-map-section h2 { margin: 2px 0 16px; }
-.site-map-section ul { list-style: none; }
-.site-map-section li + li { border-top: 1px solid var(--line); }
-.site-map-section a { min-height: 68px; display: grid; align-content: center; gap: 2px; padding: 10px 2px; color: var(--ink); }
-.site-map-section a:hover b { color: var(--gold); }
-.site-map-section b { font-family: var(--serif); font-size: 1.02rem; transition: color var(--duration-fast); }
-.site-map-section span { color: var(--ink-dim); font-size: .84rem; }
-.site-map-boundary { margin-top: 28px; border-inline-start: 3px solid var(--gold-soft); background: var(--bg-soft); padding: 24px 28px; }
+/* ---------- 網站地圖：以編輯式索引取代制式卡片牆 ---------- */
+.site-map-page { --map-accent: var(--gold); }
+.site-map-intro { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, .75fr); gap: clamp(36px, 7vw, 92px); align-items: end; border-bottom: 1px solid var(--line); padding: clamp(56px, 8vw, 96px) 0; }
+.site-map-intro__copy h2 { max-width: 11em; margin: 8px 0 20px; font-size: clamp(2rem, 4.2vw, 3.65rem); line-height: 1.18; letter-spacing: -.035em; }
+.site-map-intro__copy > p:last-child { max-width: 650px; margin: 0; color: var(--ink-dim); font-size: 1rem; line-height: 1.9; }
+.site-map-quick { display: grid; border-top: 1px solid var(--line-strong); }
+.site-map-quick a { min-height: 58px; display: grid; grid-template-columns: 48px minmax(0,1fr) 20px; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; transition: color var(--duration-fast), padding-left var(--duration-fast), background var(--duration-fast); }
+.site-map-quick a::after { content: "↓"; color: var(--gold); font-size: .9rem; text-align: center; }
+.site-map-quick a:hover { background: linear-gradient(90deg, transparent, rgba(196,161,91,.08)); color: var(--gold); padding-left: 6px; }
+.site-map-quick span { color: var(--gold); font-size: .7rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .12em; }
+.site-map-quick strong { font-family: var(--serif); font-size: 1rem; }
+.site-map-directory { counter-reset: chapter; }
+.site-map-chapter { scroll-margin-top: 92px; display: grid; grid-template-columns: minmax(250px, .68fr) minmax(0, 1.32fr); gap: clamp(32px, 7vw, 92px); border-bottom: 1px solid var(--line-strong); padding: clamp(56px, 8vw, 92px) 0; }
+.site-map-chapter > header { min-width: 0; display: grid; grid-template-columns: 70px minmax(0,1fr); align-content: start; gap: 20px; }
+.site-map-chapter__number { color: var(--gold); font-family: var(--serif); font-size: clamp(2.6rem, 5vw, 4.5rem); font-variant-numeric: tabular-nums; line-height: .9; letter-spacing: -.05em; opacity: .78; }
+.site-map-chapter h2 { margin: 4px 0 12px; font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -.02em; }
+.site-map-chapter header p:last-child { max-width: 28rem; margin: 0; color: var(--ink-dim); font-size: .9rem; line-height: 1.75; }
+.site-map-links { margin: 0; border-top: 1px solid var(--line-strong); padding: 0; list-style: none; }
+.site-map-links li { border-bottom: 1px solid var(--line); }
+.site-map-links a { min-height: 88px; display: grid; grid-template-columns: 54px minmax(0,1fr) 44px; align-items: center; gap: 18px; color: var(--ink); padding: 12px 0; text-decoration: none; transition: color var(--duration-fast), padding var(--duration-fast), background var(--duration-fast); }
+.site-map-links a:hover { background: linear-gradient(90deg, rgba(196,161,91,.1), transparent 72%); color: var(--gold); padding-inline: 12px 8px; }
+.site-map-link__index { color: var(--ink-dim); font-size: .68rem; font-weight: 750; font-variant-numeric: tabular-nums; letter-spacing: .08em; }
+.site-map-links a > span:nth-child(2) { min-width: 0; display: grid; gap: 3px; }
+.site-map-links b { font-family: var(--serif); font-size: clamp(1.08rem, 2vw, 1.3rem); }
+.site-map-links small { color: var(--ink-dim); font-size: .8rem; line-height: 1.5; }
+.site-map-links i { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--gold); font-family: var(--sans); font-size: 1rem; font-style: normal; transition: border-color var(--duration-fast), background var(--duration-fast), transform var(--duration-fast); }
+.site-map-links a:hover i { border-color: var(--gold-soft); background: var(--bg-card); transform: translateX(3px); }
+.site-map-boundary { display: grid; grid-template-columns: minmax(190px,.42fr) minmax(0,1fr); gap: clamp(28px, 6vw, 76px); margin-top: clamp(56px, 8vw, 92px); border-top: 3px solid var(--gold-soft); background: linear-gradient(135deg, #f3eee2, #fffdf8 72%); padding: clamp(28px, 5vw, 52px); }
+.site-map-boundary h2 { max-width: 16em; margin: 0 0 12px; font-size: clamp(1.45rem, 2.5vw, 2rem); }
 .site-map-boundary p { margin-bottom: 0; }
-@media (max-width: 760px) {
-  .site-map-grid { grid-template-columns: 1fr; gap: 18px; }
-  .site-map-section { padding: 20px; }
+.site-map-boundary div p { max-width: 720px; color: var(--ink-dim); line-height: 1.8; }
+@media (max-width: 900px) {
+  .site-map-intro, .site-map-chapter { grid-template-columns: 1fr; }
+  .site-map-intro { gap: 34px; }
+  .site-map-chapter { gap: 32px; }
+  .site-map-chapter > header { grid-template-columns: 62px minmax(0,1fr); }
 }
+@media (max-width: 560px) {
+  .site-map-intro { padding: 46px 0 54px; }
+  .site-map-intro__copy h2 { font-size: 2rem; }
+  .site-map-chapter { padding: 52px 0; }
+  .site-map-chapter > header { grid-template-columns: 48px minmax(0,1fr); gap: 14px; }
+  .site-map-chapter__number { font-size: 2.7rem; }
+  .site-map-links a { min-height: 82px; grid-template-columns: 40px minmax(0,1fr) 38px; gap: 10px; }
+  .site-map-links i { width: 36px; height: 36px; }
+  .site-map-boundary { grid-template-columns: 1fr; gap: 10px; padding: 26px 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-map-quick a, .site-map-links a, .site-map-links i { transition: none; }
+}
+
+/* ---------- 頁尾（保留深色收尾） ---------- */
 
 .footer { border-top: none; background: linear-gradient(180deg, var(--dark-2), var(--dark)); margin-top: 72px; }
 .footer-inner {
