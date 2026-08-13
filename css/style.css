@@ -3496,6 +3496,23 @@ a.roster-card.linked:hover {
 }
 
 /* ---------- 頁尾（保留深色收尾） ---------- */
+.site-map-intro { max-width: 780px; }
+.site-map-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.site-map-section { min-width: 0; border-top: 3px solid var(--gold-soft); border-radius: var(--radius-lg); background: var(--bg-card); box-shadow: var(--shadow-sm); padding: 24px; }
+.site-map-section h2 { margin: 2px 0 16px; }
+.site-map-section ul { list-style: none; }
+.site-map-section li + li { border-top: 1px solid var(--line); }
+.site-map-section a { min-height: 68px; display: grid; align-content: center; gap: 2px; padding: 10px 2px; color: var(--ink); }
+.site-map-section a:hover b { color: var(--gold); }
+.site-map-section b { font-family: var(--serif); font-size: 1.02rem; transition: color var(--duration-fast); }
+.site-map-section span { color: var(--ink-dim); font-size: .84rem; }
+.site-map-boundary { margin-top: 28px; border-inline-start: 3px solid var(--gold-soft); background: var(--bg-soft); padding: 24px 28px; }
+.site-map-boundary p { margin-bottom: 0; }
+@media (max-width: 760px) {
+  .site-map-grid { grid-template-columns: 1fr; gap: 18px; }
+  .site-map-section { padding: 20px; }
+}
+
 .footer { border-top: none; background: linear-gradient(180deg, var(--dark-2), var(--dark)); margin-top: 72px; }
 .footer-inner {
   max-width: 1080px;

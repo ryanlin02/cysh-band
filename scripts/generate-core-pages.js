@@ -54,6 +54,16 @@ const pages = [
     ].join('\n')
   },
   {
+    id: 'site-map',
+    source: 'content/pages/site-map.html',
+    output: 'site-map.html',
+    title: '網站地圖｜嘉義高中管樂隊暨校友管樂團',
+    description: '快速了解嘉中管樂官方網站的消息、歷史、人物、聯演、影像、參與方式與會員服務架構。',
+    navActive: 'index',
+    url: 'https://cysh.band/site-map.html',
+    styleVersion: '?v=20260813-site-map'
+  },
+  {
     id: 'support',
     source: 'content/pages/support.html',
     output: 'support.html',

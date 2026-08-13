@@ -80,9 +80,10 @@ function activeFor(fileRel, html) {
     'people.html': 'people',
     'roster.html': 'roster',
     'concerts.html': 'concerts',
-    'support.html': 'about'
+    'support.html': 'about',
+    'site-map.html': 'index'
   };
-  return names[fileRel] || 'about';
+  return Object.prototype.hasOwnProperty.call(names, fileRel) ? names[fileRel] : 'about';
 }
 
 function syncSharedChrome() {
