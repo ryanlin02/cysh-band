@@ -7,6 +7,17 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
+const { renderArticleSections } = require('./lib/article-markup');
+
+// 兩個專案各有一份 article-markup.js，內容必須完全相同，否則預覽與正式頁會不一致
+function verifyMarkupInSync() {
+  const twin = path.join(root, '..', 'cysh-band-community', 'src', 'lib', 'article-markup.js');
+  if (!fs.existsSync(twin)) return;
+  const mine = fs.readFileSync(path.join(__dirname, 'lib', 'article-markup.js'), 'utf8');
+  if (fs.readFileSync(twin, 'utf8') !== mine) {
+    throw new Error('article-markup.js 兩個專案版本不一致，請先同步後再發布（會導致預覽與正式頁不同）');
+  }
+}
 const apiBase = String(process.env.MEMBER_PUBLISH_API_URL || 'https://members.cysh.band/api/publish').replace(/\/$/, '');
 const token = process.env.MEMBER_PUBLISH_SYNC_TOKEN || '';
 const statePath = path.join(root, 'scripts', 'output', 'member-publish-state.json');
@@ -79,9 +90,44 @@ function profileSource(profile) {
   return [`<p>${escapeHtml(profile.summary)}</p>`, ...sections.map((section) => `<h3>${escapeHtml(section.heading)}</h3>\n<p>${escapeHtml(section.body).replace(/\n/g, '<br>')}</p>`)].join('\n\n') + '\n';
 }
 
-function articleSource(article) {
+// 圖片：會員平台上傳在 Supabase，官網要自己保存一份，
+// 這樣官網不依賴外部服務，日後對方停用也不會整批破圖。
+async function downloadArticleImage(remoteUrl, articleId, index) {
+  const fileName = `${articleId}-${index + 1}.webp`;
+  const relative = `assets/img/news/${fileName}`;
+  const target = path.join(root, relative);
+  if (fs.existsSync(target)) return relative;
+  const response = await fetch(remoteUrl);
+  if (!response.ok) throw new Error(`文章圖片下載失敗 ${response.status}：${remoteUrl}`);
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, Buffer.from(await response.arrayBuffer()));
+  return relative;
+}
+
+async function localizeArticleImages(article, articleId) {
   const sections = Array.isArray(article.sections) ? article.sections : [];
-  return sections.map((section) => `<h2>${escapeHtml(section.heading)}</h2>\n<p>${escapeHtml(section.body).replace(/\n/g, '<br>')}</p>`).join('\n\n') + '\n';
+  let counter = 0;
+  const output = [];
+  for (const section of sections) {
+    const images = [];
+    for (const image of Array.isArray(section.images) ? section.images : []) {
+      const raw = String(image.path || '').trim();
+      if (!raw) continue;
+      if (raw.startsWith('assets/')) { images.push({ ...image, path: raw }); counter += 1; continue; }
+      const remote = /^https?:\/\//i.test(raw)
+        ? raw
+        : `${String(process.env.MEMBER_ARTICLE_IMAGE_BASE || 'https://ismoiwguyqmvuqkgxlqk.supabase.co/storage/v1/object/public/article-images').replace(/\/$/, '')}/${raw}`;
+      images.push({ ...image, path: await downloadArticleImage(remote, articleId, counter) });
+      counter += 1;
+    }
+    output.push({ ...section, images });
+  }
+  return output;
+}
+
+function articleSource(article) {
+  // 與會員平台預覽使用同一份轉換程式，所見即所得
+  return renderArticleSections(article.sections, { assetPrefix: '../' });
 }
 
 async function request(url, options = {}) {
@@ -92,6 +138,7 @@ async function request(url, options = {}) {
 
 async function sync() {
   requireToken();
+  verifyMarkupInSync();
   const payload = await (await request(apiBase)).json();
   const profiles = Array.isArray(payload.profiles) ? payload.profiles : [];
   const articles = Array.isArray(payload.articles) ? payload.articles : [];
@@ -151,7 +198,8 @@ async function sync() {
     const source = `content/news/${id}.html`;
     const output = `news/${id}.html`;
     fs.mkdirSync(path.join(root, 'content', 'news'), { recursive: true });
-    fs.writeFileSync(path.join(root, source), articleSource(article));
+    const localized = { ...article, sections: await localizeArticleImages(article, id) };
+    fs.writeFileSync(path.join(root, source), articleSource(localized));
     nextManifestArticles.push({ id: article.id, revision: article.revision, source, output });
     newsItems.push({
       id, date: published.date, time: published.time,
