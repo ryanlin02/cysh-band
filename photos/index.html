@@ -36,6 +36,42 @@
 <a class="skip-link" href="#content">跳到主要內容</a>
 
 <!-- 頂部列（電腦版含分頁；手機版只有標題與搜尋鈕） -->
+<!-- 會員平台共用頂欄：只在 members.cysh.band（或本機開發）顯示；官網網域維持原樣。
+     兩份影像館程式（cysh-band/photos 與 cysh-band-community/public/photos）需一起更新。 -->
+<style>
+#memberBar { display: none; }
+body.has-member-bar { --memberbar-h: 44px; padding-top: calc(var(--topbar-h) + var(--memberbar-h)); }
+body.has-member-bar #memberBar { position: fixed; top: 0; left: 0; right: 0; z-index: 60; display: flex; align-items: stretch; gap: 12px; height: var(--memberbar-h); padding: 0 16px; background: rgba(250,248,243,.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); font-family: var(--sans); }
+body.has-member-bar #topbar { top: var(--memberbar-h); }
+body.has-member-bar #zoomBar { top: calc(var(--topbar-h) + var(--memberbar-h)); }
+body.has-member-bar #scrubber { top: calc(var(--topbar-h) + var(--memberbar-h) + 44px); }
+body.has-member-bar #homeBtn { display: none; }
+#memberBar .mb-brand { display: flex; align-items: center; font-family: var(--serif); font-weight: 900; font-size: 15px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+#memberBar .mb-brand span { font-family: var(--latin); color: var(--gold); font-size: 11px; letter-spacing: .16em; margin-left: 6px; }
+#memberBar nav { display: flex; gap: 2px; margin-left: 6px; }
+#memberBar nav a { display: flex; align-items: center; padding: 0 12px; font-size: 13.5px; color: var(--ink-dim); text-decoration: none; border-bottom: 2px solid transparent; }
+#memberBar nav a:hover { color: var(--ink); }
+#memberBar nav a.current { color: var(--ink); font-weight: 700; border-bottom-color: var(--gold); }
+@media (max-width: 767px) { #memberBar nav a.mb-more { display: none; } }
+</style>
+<div id="memberBar">
+  <a class="mb-brand" href="/">嘉中管樂<span>MEMBER</span></a>
+  <nav aria-label="會員平台導覽">
+    <a href="/">工作台</a>
+    <a class="mb-more" href="/profile">我的資料</a>
+    <a class="mb-more" href="/articles">文章</a>
+    <a class="mb-more" href="/calendar">活動</a>
+    <a class="current" href="/photos" aria-current="page">影像館</a>
+  </nav>
+</div>
+<script>
+(function () {
+  var host = location.hostname;
+  var isMember = host === "members.cysh.band" || host === "localhost" || location.search.indexOf("memberbar=1") !== -1;
+  if (isMember) document.body.classList.add("has-member-bar");
+})();
+</script>
+
 <header id="topbar">
   <div class="topbar-inner">
     <button id="backBtn" class="icon-btn hidden" aria-label="返回"><svg class="ico-svg"><use href="#i-back"/></svg></button>
