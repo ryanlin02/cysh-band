@@ -136,10 +136,12 @@ function renderFigure(image, assetPrefix) {
  */
 function renderArticleSections(sections, options) {
   const assetPrefix = (options && options.assetPrefix) || "";
+  // 最新消息用 h2、人物介紹用 h3，與官網既有頁面一致
+  const h = (options && options.headingLevel) || "h2";
   const parts = [];
   for (const section of Array.isArray(sections) ? sections : []) {
     const heading = String(section.heading || "").trim();
-    if (heading) parts.push(`<h2>${renderInline(heading)}</h2>`);
+    if (heading) parts.push(`<${h}>${renderInline(heading)}</${h}>`);
     const body = renderBody(section.body);
     if (body) parts.push(body);
     for (const image of Array.isArray(section.images) ? section.images : []) {

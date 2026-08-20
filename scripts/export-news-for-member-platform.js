@@ -67,7 +67,7 @@ function convert(article) {
   html = html.replace(/<footer[^>]*>([\s\S]*?)<\/footer>/g, (m, inner, offset, whole) => {
     const before = whole.slice(0, offset);
     const inQuote = before.lastIndexOf('<blockquote') > before.lastIndexOf('</blockquote>');
-    return inQuote ? `\n——${inner.replace(/^\s*(——|--)\s*/, '')}` : `\n\n<p class="muted">${inner}</p>\n\n`;
+    return inQuote ? `\n——${inner.replace(/^\s*(——|--)/, '')}` : `\n\n<p class="muted">${inner}</p>\n\n`;
   });
 
   const sections = [];
