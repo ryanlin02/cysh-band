@@ -1345,7 +1345,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "source": "content/news/2026-08-21-trombone-ensemble-galaxy-night.html",
     "output": "news/2026-08-21-trombone-ensemble-galaxy-night.html",
     "url": "news/2026-08-21-trombone-ensemble-galaxy-night.html",
-    "thumb": "assets/img/news/2026-08-21-trombone-ensemble-galaxy-night-1.webp",
+    "thumb": "assets/img/news/2026-08-21-trombone-ensemble-galaxy-night-1-thumb.webp",
     "ogImage": "assets/img/news/2026-08-21-trombone-ensemble-galaxy-night-1.webp",
     "ogImageWidth": "1463",
     "ogImageHeight": "2048",
