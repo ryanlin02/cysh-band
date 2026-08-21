@@ -13,12 +13,16 @@
  *
  * 支援的寫法（社員只要記這幾個）：
  *   **粗體**
- *   [顯示文字](https://網址)
+ *   [顯示文字](https://網址)  ← 也可以直接貼網址，會自動變成連結
  *   - 項目            → 清單
  *   1. 項目           → 編號清單
  *   > 引用一段話
  *   | 欄位 | 欄位 |   → 表格（第二列用 |---|---| 分隔）
+ *   => [小標|大字](網址) → 重點連結（官網的 news-cta 樣式，自成一行）
  *   空一行            → 分成新的一段
+ *
+ * 段落層級（不是打在正文裡，是段落的設定）：
+ *   style: "callout" → 整段做成重點框（官網的 news-callout）
  */
 
 function escapeHtml(value) {
@@ -38,6 +42,44 @@ function safeUrl(raw) {
   return value;
 }
 
+function isExternal(href) {
+  return /^https?:\/\//i.test(href) && !href.startsWith("https://cysh.band");
+}
+
+/**
+ * 連結要帶哪些屬性。
+ * rel 用 noopener 不用 noreferrer：官網既有連結都是 noopener，
+ * 而且 noreferrer 會連「這個人是從嘉中管樂官網過去的」也一併拿掉，
+ * 售票與主辦單位那邊就看不出流量是我們帶過去的。
+ * 購票連結（OPENTIX）自動套官網的按鈕樣式與 GA 標記——
+ * 這是網址就看得出來的事，不需要寫文章的人自己記得加。
+ */
+function linkAttrs(href) {
+  const ticket = /^https:\/\/www\.opentix\.life\//i.test(href);
+  return (ticket ? ' class="btn"' : "")
+    + (isExternal(href) ? ' target="_blank" rel="noopener"' : "")
+    + (ticket ? ' data-ga-event="ticket_click" data-ga-placement="news_body"' : "");
+}
+
+/**
+ * 直接貼上的網址自動變成可以點的連結。
+ * 一般人不會記得 [文字](網址) 這種寫法，貼上網址卻點不了，
+ * 是寫文章的人最容易踩到、也最困惑的一件事。
+ * 已經是連結的部分不再處理，避免重複包一層。
+ */
+function autoLink(html) {
+  return html.split(/(<a\b[^>]*>[\s\S]*?<\/a>)/g).map((part, index) => {
+    if (index % 2 === 1) return part;
+    return part.replace(/https?:\/\/[^\s<"]+/g, (raw) => {
+      // 網址後面常常黏著標點（句號、全形括號），不要吃進連結裡
+      const url = raw.replace(/[)\].,;:、。，）】」]+$/, "");
+      const href = safeUrl(url.replace(/&amp;/g, "&"));
+      if (!href) return raw;
+      return `<a href="${escapeHtml(href)}"${linkAttrs(href)}>${url}</a>${raw.slice(url.length)}`;
+    });
+  }).join("");
+}
+
 /** 行內格式：先跳脫、再把白名單語法換成標籤 */
 function renderInline(text) {
   let html = escapeHtml(text);
@@ -45,13 +87,14 @@ function renderInline(text) {
   html = html.replace(/\[([^\]\n]+)\]\(([^)\s]+)\)/g, (match, label, url) => {
     const href = safeUrl(url.replace(/&amp;/g, "&"));
     if (!href) return label;
-    const external = /^https?:\/\//i.test(href) && !href.startsWith("https://cysh.band");
-    return `<a href="${escapeHtml(href)}"${external ? ' target="_blank" rel="noreferrer"' : ""}>${label}</a>`;
+    return `<a href="${escapeHtml(href)}"${linkAttrs(href)}>${label}</a>`;
   });
   // **粗體**（先處理，才不會被斜體規則吃掉）
   html = html.replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>");
   // *斜體*（曲名、外文書名常用）
   html = html.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, "$1<i>$2</i>");
+  // 直接貼上的網址（放在最後，前面的 [文字](網址) 已經變成標籤了）
+  html = autoLink(html);
   // 段落內換行
   return html.replace(/\n/g, "<br>\n");
 }
@@ -85,6 +128,22 @@ function isTableBlock(lines) {
   return lines.every((line) => /^\s*\|.*\|\s*$/.test(line) || isSeparatorRow(line)) && /^\s*\|/.test(lines[0]);
 }
 
+/**
+ * 重點連結（官網的 news-cta）：自成一行的 `=> [小標|大字](網址)`。
+ * 官網上是一個橫幅式的連結區塊，用來把人帶去相簿、售票或主辦單位頁面。
+ */
+function renderCta(label, url) {
+  const href = safeUrl(url.replace(/&amp;/g, "&"));
+  if (!href) return `<p>${renderInline(label)}</p>`;
+  const cut = label.indexOf("|");
+  const small = cut >= 0 ? label.slice(0, cut).trim() : "";
+  const big = (cut >= 0 ? label.slice(cut + 1) : label).trim();
+  const attrs = isExternal(href) ? ' target="_blank" rel="noopener"' : "";
+  return `<p><a class="news-cta" href="${escapeHtml(href)}"${attrs}>`
+    + (small ? `<span>${renderInline(small)}</span>` : "")
+    + `<b>${renderInline(big)}</b></a></p>`;
+}
+
 /** 把一段正文轉成官網 HTML */
 function renderBody(text) {
   const blocks = String(text || "").replace(/\r\n/g, "\n").split(/\n{2,}/);
@@ -95,6 +154,10 @@ function renderBody(text) {
     const lines = block.split("\n");
 
     if (isTableBlock(lines)) { out.push(renderTable(lines)); continue; }
+
+    // => [小標|大字](網址)：整個區塊只有這一行時才算重點連結
+    const cta = lines.length === 1 && /^\s*=>\s*\[([^\]\n]+)\]\(([^)\s]+)\)\s*$/.exec(block);
+    if (cta) { out.push(renderCta(cta[1], cta[2])); continue; }
 
     if (lines.every((line) => /^\s*[-*]\s+/.test(line))) {
       out.push(`<ul>${lines.map((line) => `<li>${renderInline(line.replace(/^\s*[-*]\s+/, ""))}</li>`).join("")}</ul>`);
@@ -131,8 +194,8 @@ function renderFigure(image, assetPrefix) {
 
 /**
  * 整篇文章的正文 HTML。
- * section = { heading, body, images?: [{path, alt, caption, layout, width, height}], note? }
- * 第一段可以不填標題（做為開頭導言）。
+ * section = { heading, body, style?: "callout", images?: [{path, alt, caption, layout, width, height}], note? }
+ * 第一段可以不填標題（做為開頭導言）；style: "callout" 會把整段做成官網的重點框。
  */
 function renderArticleSections(sections, options) {
   const assetPrefix = (options && options.assetPrefix) || "";
@@ -141,9 +204,18 @@ function renderArticleSections(sections, options) {
   const parts = [];
   for (const section of Array.isArray(sections) ? sections : []) {
     const heading = String(section.heading || "").trim();
-    if (heading) parts.push(`<${h}>${renderInline(heading)}</${h}>`);
+    const inner = [];
+    if (heading) inner.push(`<${h}>${renderInline(heading)}</${h}>`);
     const body = renderBody(section.body);
-    if (body) parts.push(body);
+    if (body) inner.push(body);
+    // 重點框只包標題與正文；圖片與附註仍照原本方式排在外面，
+    // 框裡塞一張大圖在官網上會整個爆版。
+    if (section.style === "callout" && inner.length) {
+      const indented = inner.join("\n").split("\n").map((line) => (line ? `  ${line}` : line)).join("\n");
+      parts.push(`<section class="news-callout">\n${indented}\n</section>`);
+    } else {
+      parts.push(...inner);
+    }
     for (const image of Array.isArray(section.images) ? section.images : []) {
       const figure = renderFigure(image, assetPrefix);
       if (figure) parts.push(figure);
@@ -156,4 +228,4 @@ function renderArticleSections(sections, options) {
 
 // 用 CommonJS 匯出：官網的產生腳本是 require()，會員平台這邊 import 也讀得到，
 // 這樣兩份檔案才能保持一字不差。
-module.exports = { escapeHtml, safeUrl, renderInline, renderBody, renderFigure, renderArticleSections };
+module.exports = { escapeHtml, safeUrl, renderInline, renderBody, renderCta, renderFigure, renderArticleSections };

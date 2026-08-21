@@ -27,6 +27,16 @@ function requireToken() {
   if (token.length < 32) throw new Error('缺少 MEMBER_PUBLISH_SYNC_TOKEN（至少 32 字元）');
 }
 
+/**
+ * 摘要與標題只會顯示成一行（清單、RSS、社群預覽），
+ * 會員打字時常帶著換行與行尾空白（例如「8/28 18:30 」換行接地點）。
+ * 官網的驗證步驟看到「行尾有空白」會讓整個發布失敗——
+ * 一個人多打一個空格不該讓整個網站停止更新，所以在這裡就收成一行。
+ */
+function oneLine(value) {
+  return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+}
+
 function escapeHtml(value) {
   return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
@@ -172,9 +182,9 @@ async function sync() {
       source,
       output,
       title: `${profile.display_name}（${num}）｜嘉義高中管樂隊校友`,
-      description: profile.summary,
-      ogTitle: `${profile.display_name}（${num}）｜${profile.headline}`,
-      ogDescription: profile.summary,
+      description: oneLine(profile.summary),
+      ogTitle: `${profile.display_name}（${num}）｜${oneLine(profile.headline)}`,
+      ogDescription: oneLine(profile.summary),
       headlineHtml: escapeHtml(profile.headline),
       photo,
       facts,
@@ -208,16 +218,16 @@ async function sync() {
       tags: article.tags,
       pinned: false,
       priority: 'normal',
-      title: article.title,
-      summary: article.summary,
+      title: oneLine(article.title),
+      summary: oneLine(article.summary),
       source, output, url: output,
       thumb: 'assets/img/og.jpg',
       ogImage: 'assets/img/og.jpg',
       ogImageWidth: '1200', ogImageHeight: '630',
-      pageTitle: `${article.title}｜最新消息｜嘉義高中管樂隊`,
-      ogTitle: article.title,
-      description: article.summary,
-      ogDescription: article.summary,
+      pageTitle: `${oneLine(article.title)}｜最新消息｜嘉義高中管樂隊`,
+      ogTitle: oneLine(article.title),
+      description: oneLine(article.summary),
+      ogDescription: oneLine(article.summary),
       status: 'published',
       authorName: article.author?.name || null,
       authorAlumniNumber: article.author?.alumniNumber || null,

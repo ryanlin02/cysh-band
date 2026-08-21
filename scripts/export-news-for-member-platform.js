@@ -60,7 +60,10 @@ function convert(article) {
   if (!fs.existsSync(filePath)) return { problems: [`找不到來源檔 ${article.source}`] };
   let html = fs.readFileSync(filePath, 'utf8');
 
-  // <section> 只是結構分組，攤平即可；<footer> 內容併入最後一段附註
+  // 官網的重點框（news-callout）要保留下來：先用哨兵標出範圍，
+  // 之後這個範圍內的段落會標成 style: "callout"。其餘 <section> 只是結構分組，攤平即可。
+  html = html.replace(/<section class="news-callout">([\s\S]*?)<\/section>/g,
+    (m, inner) => `\n\n<p>[[CALLOUT-START]]</p>\n\n${inner}\n\n<p>[[CALLOUT-END]]</p>\n\n`);
   html = html.replace(/<\/?section[^>]*>/g, '\n\n');
   html = html.replace(/<div class="table-scroll"[^>]*>([\s\S]*?)<\/div>/g, (m, inner) => `\n\n${inner}\n\n`);
   // blockquote 內的 <footer> 是引言出處，要留在 blockquote 裡；其餘 footer 才是文末附註
@@ -71,11 +74,15 @@ function convert(article) {
   });
 
   const sections = [];
+  let inCallout = false;
   let current = { heading: '', body: [], images: [], note: '' };
   const pushCurrent = () => {
     const body = current.body.join('\n\n').trim();
     if (body || current.images.length || current.note) {
-      sections.push({ heading: current.heading, body, images: current.images, note: current.note });
+      sections.push({
+        heading: current.heading, body, images: current.images, note: current.note,
+        ...(inCallout ? { style: 'callout' } : {}),
+      });
     }
     current = { heading: '', body: [], images: [], note: '' };
   };
@@ -131,6 +138,20 @@ function convert(article) {
     }
 
     // <p>
+    if (/\[\[CALLOUT-START\]\]/.test(block)) { pushCurrent(); inCallout = true; continue; }
+    if (/\[\[CALLOUT-END\]\]/.test(block)) { pushCurrent(); inCallout = false; continue; }
+
+    // 重點連結（news-cta）：官網上是一個橫幅式的連結區塊，轉成 => [小標|大字](網址)
+    const cta = /^<p[^>]*>\s*<a class="news-cta" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>\s*<\/p>$/.exec(block);
+    if (cta) {
+      const small = /<span[^>]*>([\s\S]*?)<\/span>/.exec(cta[2]);
+      const big = /<b[^>]*>([\s\S]*?)<\/b>/.exec(cta[2]);
+      const smallText = small ? inlineToMarkup(small[1], problems, context) : '';
+      const bigText = inlineToMarkup(big ? big[1] : cta[2], problems, context);
+      current.body.push(`=> [${smallText ? `${smallText}|` : ''}${bigText}](${cta[1]})`);
+      continue;
+    }
+
     const isMuted = /class="[^"]*\bmuted\b/.test(block);
     const inner = block.replace(/^<p[^>]*>/, '').replace(/<\/p>$/, '');
     const text = inlineToMarkup(inner, problems, `${article.id}`);
