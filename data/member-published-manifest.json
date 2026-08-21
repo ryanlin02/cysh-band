@@ -1,4 +1,149 @@
 {
   "version": 1,
-  "articles": []
+  "articles": [
+    {
+      "id": "17eaca20-ac97-4df2-bf19-21214aa73b9c",
+      "revision": 2,
+      "source": "content/news/2026-08-05-rehearsal-voices-coming-together.html",
+      "output": "news/2026-08-05-rehearsal-voices-coming-together.html"
+    },
+    {
+      "id": "7df054c8-1170-4070-9212-e2432b355444",
+      "revision": 2,
+      "source": "content/news/2026-08-01-sausage-grill-gathering.html",
+      "output": "news/2026-08-01-sausage-grill-gathering.html"
+    },
+    {
+      "id": "980d0293-c108-4732-8edd-1a3afe07a4d5",
+      "revision": 2,
+      "source": "content/news/2026-08-01-wu-song-ze-old-photos.html",
+      "output": "news/2026-08-01-wu-song-ze-old-photos.html"
+    },
+    {
+      "id": "8556f008-2048-4919-87ca-b7314d978e90",
+      "revision": 2,
+      "source": "content/news/2026-07-27-chiayi-song-youth-wind-concert.html",
+      "output": "news/2026-07-27-chiayi-song-youth-wind-concert.html"
+    },
+    {
+      "id": "8d08017b-ecdd-444c-9790-0ea7510629fe",
+      "revision": 2,
+      "source": "content/news/2026-07-26-rehearsal-same-row-same-sound.html",
+      "output": "news/2026-07-26-rehearsal-same-row-same-sound.html"
+    },
+    {
+      "id": "3168a10c-b6f4-4d91-bcd5-508187328127",
+      "revision": 2,
+      "source": "content/news/2026-07-25-rehearsal-coffee-and-homecoming.html",
+      "output": "news/2026-07-25-rehearsal-coffee-and-homecoming.html"
+    },
+    {
+      "id": "f3d55029-f400-4abf-8298-4e28e01ff9c0",
+      "revision": 2,
+      "source": "content/news/2026-07-24-taoxi-parent-child-arts-festival.html",
+      "output": "news/2026-07-24-taoxi-parent-child-arts-festival.html"
+    },
+    {
+      "id": "9c4d74bf-7330-4aae-8e58-2b865bf96967",
+      "revision": 2,
+      "source": "content/news/2026-07-24-southern-wind-saxophone-quartet.html",
+      "output": "news/2026-07-24-southern-wind-saxophone-quartet.html"
+    },
+    {
+      "id": "5b0be3b4-987e-4b55-9c3a-879f31788fff",
+      "revision": 2,
+      "source": "content/news/2026-07-23-sausage-grill-gathering.html",
+      "output": "news/2026-07-23-sausage-grill-gathering.html"
+    },
+    {
+      "id": "b2d9a32b-920b-462f-931f-c06d38e32320",
+      "revision": 2,
+      "source": "content/news/2026-07-19-rehearsal-stage-in-sight.html",
+      "output": "news/2026-07-19-rehearsal-stage-in-sight.html"
+    },
+    {
+      "id": "ed896ceb-c54a-4dc2-9852-2cf92e6e4f06",
+      "revision": 2,
+      "source": "content/news/2026-07-18-rehearsal-sound-coming-together.html",
+      "output": "news/2026-07-18-rehearsal-sound-coming-together.html"
+    },
+    {
+      "id": "bc16fadb-8f32-4855-af43-8cd8a49c63cc",
+      "revision": 2,
+      "source": "content/news/2026-07-13-brass-ensemble-concert-sharing.html",
+      "output": "news/2026-07-13-brass-ensemble-concert-sharing.html"
+    },
+    {
+      "id": "6ec08981-5189-4bc0-bb8b-c196f0a03e6f",
+      "revision": 2,
+      "source": "content/news/2026-07-12-rehearsal-coffee-and-returning-friends.html",
+      "output": "news/2026-07-12-rehearsal-coffee-and-returning-friends.html"
+    },
+    {
+      "id": "bf5bd1ce-58ee-43f4-8517-3658aebce530",
+      "revision": 2,
+      "source": "content/news/2026-07-11-rehearsal-resumes.html",
+      "output": "news/2026-07-11-rehearsal-resumes.html"
+    },
+    {
+      "id": "99ffbf4d-397e-471e-9efc-28c91d5fbd83",
+      "revision": 2,
+      "source": "content/news/2026-07-10-chiayi-city-closure.html",
+      "output": "news/2026-07-10-chiayi-city-closure.html"
+    },
+    {
+      "id": "e8e16570-e01b-4a5d-99a8-10c9e35f9ad2",
+      "revision": 2,
+      "source": "content/news/2026-07-04-rehearsal-coffee.html",
+      "output": "news/2026-07-04-rehearsal-coffee.html"
+    },
+    {
+      "id": "017051c4-e17d-43bd-8c69-0cca9816678c",
+      "revision": 2,
+      "source": "content/news/2026-07-02-weiwu-announce.html",
+      "output": "news/2026-07-02-weiwu-announce.html"
+    },
+    {
+      "id": "220ac8f3-3aa3-4282-bd8d-ed8aa54862f9",
+      "revision": 2,
+      "source": "content/news/2026-06-27-first-rehearsal.html",
+      "output": "news/2026-06-27-first-rehearsal.html"
+    },
+    {
+      "id": "80dfae75-b08c-435c-9e03-2c9433086353",
+      "revision": 2,
+      "source": "content/news/2026-06-12-rehearsal-schedule.html",
+      "output": "news/2026-06-12-rehearsal-schedule.html"
+    },
+    {
+      "id": "ca300ac5-30b1-4b5e-9842-d5b007c55c49",
+      "revision": 2,
+      "source": "content/news/2019-05-26-tsai-yung-chu-officer.html",
+      "output": "news/2019-05-26-tsai-yung-chu-officer.html"
+    },
+    {
+      "id": "dfe151ea-f23d-4bb9-89a6-47edb85d84e5",
+      "revision": 2,
+      "source": "content/news/2026-08-21-trombone-ensemble-galaxy-night.html",
+      "output": "news/2026-08-21-trombone-ensemble-galaxy-night.html"
+    },
+    {
+      "id": "7c338ed5-1413-489b-9215-a084b8232e09",
+      "revision": 2,
+      "source": "content/news/2026-07-18-weiwu-opentix-ticketing.html",
+      "output": "news/2026-07-18-weiwu-opentix-ticketing.html"
+    },
+    {
+      "id": "abe94ae1-3518-4891-bcba-6b8a2d5360cc",
+      "revision": 2,
+      "source": "content/news/2026-07-10-typhoon-bavi-rehearsal.html",
+      "output": "news/2026-07-10-typhoon-bavi-rehearsal.html"
+    },
+    {
+      "id": "98877cc1-cf80-4b59-b34b-675451f3ced3",
+      "revision": 2,
+      "source": "content/news/2026-06-30-summer-bbq.html",
+      "output": "news/2026-06-30-summer-bbq.html"
+    }
+  ]
 }

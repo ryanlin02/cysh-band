@@ -1,7 +1,23 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-20T14:03:14.576Z",
+  "generatedAt": "2026-08-21T09:47:52.701Z",
   "articles": [
+    {
+      "id": "2026-08-21-trombone-ensemble-galaxy-night",
+      "date": "2026-08-21",
+      "category": "嘉義管樂演出分享",
+      "title": "嘉頌拉拉頌長號重奏團｜市民BAR《銀河之夜》",
+      "url": "https://cysh.band/news/2026-08-21-trombone-ensemble-galaxy-night.html",
+      "tags": [
+        "嘉中管樂",
+        "校友投稿",
+        "拉拉頌長號重奏團",
+        "嘉頌",
+        "嘉義市立博物館"
+      ],
+      "authorName": "翁啟榮",
+      "authorAlumniNumber": "7581"
+    },
     {
       "id": "2026-08-05-rehearsal-voices-coming-together",
       "date": "2026-08-05",
@@ -15,8 +31,8 @@
         "在校生",
         "社辦日常"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-08-01-sausage-grill-gathering",
@@ -31,8 +47,8 @@
         "社辦日常",
         "影像館"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-08-01-wu-song-ze-old-photos",
@@ -47,14 +63,14 @@
         "銅管五重奏",
         "綠色小屋"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-27-chiayi-song-youth-wind-concert",
       "date": "2026-07-27",
       "category": "嘉義管樂演出分享",
-      "title": "《管樂•Taiwan•金曲》：把臺灣記憶吹進音樂廳",
+      "title": "嘉義管樂演出分享｜《管樂•Taiwan•金曲》：把臺灣記憶吹進音樂廳",
       "url": "https://cysh.band/news/2026-07-27-chiayi-song-youth-wind-concert.html",
       "tags": [
         "嘉義管樂",
@@ -63,8 +79,8 @@
         "青年管樂",
         "演出分享"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-26-rehearsal-same-row-same-sound",
@@ -79,8 +95,8 @@
         "在校生",
         "影像館"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-25-rehearsal-coffee-and-homecoming",
@@ -95,14 +111,14 @@
         "在校生",
         "影像館"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-24-taoxi-parent-child-arts-festival",
       "date": "2026-07-24",
       "category": "嘉義管樂演出分享",
-      "title": "2026 桃喜親子藝術節：三個週末，跟著音樂玩嘉義",
+      "title": "嘉義管樂演出分享｜2026 桃喜親子藝術節：三個週末，跟著音樂玩嘉義",
       "url": "https://cysh.band/news/2026-07-24-taoxi-parent-child-arts-festival.html",
       "tags": [
         "嘉義管樂",
@@ -111,14 +127,14 @@
         "嘉中校友",
         "演出分享"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-24-southern-wind-saxophone-quartet",
       "date": "2026-07-24",
       "category": "嘉義管樂演出分享",
-      "title": "《透南風》南風薩克斯風四重奏創團音樂會",
+      "title": "嘉義管樂演出分享｜《透南風》南風薩克斯風四重奏創團音樂會",
       "url": "https://cysh.band/news/2026-07-24-southern-wind-saxophone-quartet.html",
       "tags": [
         "嘉義管樂",
@@ -127,8 +143,8 @@
         "嘉中校友",
         "演出分享"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-23-sausage-grill-gathering",
@@ -142,8 +158,8 @@
         "校友歸隊",
         "社辦日常"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-19-rehearsal-stage-in-sight",
@@ -157,8 +173,8 @@
         "校友歸隊",
         "影像館"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-18-rehearsal-sound-coming-together",
@@ -172,8 +188,8 @@
         "校友歸隊",
         "影像館"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-18-weiwu-opentix-ticketing",
@@ -187,14 +203,14 @@
         "OPENTIX",
         "購票資訊"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-13-brass-ensemble-concert-sharing",
       "date": "2026-07-13",
       "category": "嘉義管樂演出分享",
-      "title": "《響十天堂》銅管重奏音樂會",
+      "title": "嘉義管樂演出分享｜《響十天堂》銅管重奏音樂會",
       "url": "https://cysh.band/news/2026-07-13-brass-ensemble-concert-sharing.html",
       "tags": [
         "嘉義管樂",
@@ -202,8 +218,8 @@
         "音樂班",
         "演出分享"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-12-rehearsal-coffee-and-returning-friends",
@@ -217,8 +233,8 @@
         "校友歸隊",
         "影像館"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-11-rehearsal-resumes",
@@ -232,8 +248,8 @@
         "為伍",
         "校友歸隊"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-10-chiayi-city-closure",
@@ -247,8 +263,8 @@
         "團練通知",
         "為伍"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-10-typhoon-bavi-rehearsal",
@@ -261,8 +277,8 @@
         "團練通知",
         "為伍"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-04-rehearsal-coffee",
@@ -276,8 +292,8 @@
         "校友歸隊",
         "嘉義日常"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-07-02-weiwu-announce",
@@ -291,8 +307,8 @@
         "文化局音樂廳",
         "OPENTIX"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-06-30-summer-bbq",
@@ -306,8 +322,8 @@
         "為伍",
         "團練"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-06-27-first-rehearsal",
@@ -321,8 +337,8 @@
         "校友歸隊",
         "火雞肉飯"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2026-06-12-rehearsal-schedule",
@@ -336,8 +352,8 @@
         "校友歸隊",
         "校友聯演"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     },
     {
       "id": "2019-05-26-tsai-yung-chu-officer",
@@ -352,8 +368,8 @@
         "蔡詠竹",
         "飛越肆國"
       ],
-      "authorName": null,
-      "authorAlumniNumber": null
+      "authorName": "林俊余",
+      "authorAlumniNumber": "9502"
     }
   ]
 }
