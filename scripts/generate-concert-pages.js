@@ -254,6 +254,11 @@ function personSummary(person, profile, fallbackRole) {
   return `${escapeHtml(person.name)}於本屆擔任${escapeHtml(role || '演出者')}；人物介紹資料仍待校友補充與確認。`;
 }
 
+function personSummaries(person, profile, fallbackRole) {
+  if (Array.isArray(person.concertBio)) return person.concertBio.map(escapeHtml);
+  return [personSummary(person, profile, fallbackRole)];
+}
+
 function roleText(person, fallbackRole) {
   if (person.concertRole) return escapeHtml(person.concertRole);
   return [person.concertRole || person.role || fallbackRole, person.instrument, person.work]
@@ -272,17 +277,17 @@ function renderPersonByline(person, fallbackRole) {
   const name = href
     ? `<a href="${href}">${escapeHtml(person.name)}</a>`
     : escapeHtml(person.name);
-  const number = person.num ? `<span class="person-number">編號 ${escapeHtml(person.num)}</span>` : '';
+  const number = person.num && person.showNumber !== false ? `<span class="person-number">編號 ${escapeHtml(person.num)}</span>` : '';
   const photo = `<img src="${personPhoto(person, profile)}" alt="${escapeHtml(person.name)}">`;
   const photoNode = href ? `<a class="person-photo-link" href="${href}" aria-label="查看${escapeHtml(person.name)}人物誌">${photo}</a>` : photo;
   const role = roleText(person, fallbackRole);
-  const summary = personSummary(person, profile, fallbackRole);
+  const summaries = personSummaries(person, profile, fallbackRole);
   return `<div class="person-byline">
       ${photoNode}
       <div>
         <h3>${name}${number}</h3>
         ${role ? `<p class="role">${role}</p>` : ''}
-        <p>${summary}${linkToFullProfile(href)}</p>
+        ${summaries.map((summary, index) => `<p>${summary}${index === summaries.length - 1 && person.showProfileLink !== false ? linkToFullProfile(href) : ''}</p>`).join('\n        ')}
       </div>
     </div>`;
 }
@@ -485,12 +490,18 @@ function provenanceText(concert, missing) {
     <p class="muted">${state}</p>`;
 }
 
-function rosterPersonText(entry) {
+function rosterPersonText(entry, options = {}) {
   if (!entry) return '';
   const resolved = rosterResolver.resolveEntry(entry);
   if (typeof entry === 'string') {
     if (!resolved) return escapeHtml(entry);
     const num = resolved.num;
+    if (options.showNumber === false) {
+      const name = resolved.name || (resolved.person && resolved.person.name) || entry;
+      return num && exists(`people/${num}.html`)
+        ? `<a href="../people/${escapeHtml(num)}.html">${escapeHtml(name)}</a>`
+        : escapeHtml(name);
+    }
     const label = num
       ? `${resolved.prefix || ''}${num} ${resolved.name || (resolved.person && resolved.person.name) || ''}`.trim()
       : resolved.raw;
@@ -499,7 +510,7 @@ function rosterPersonText(entry) {
       ? `<a href="../people/${escapeHtml(num)}.html">${escapeHtml(label)}</a>`
       : escapeHtml(label);
   }
-  if (entry.text) return rosterPersonText(entry.text);
+  if (entry.text) return rosterPersonText(entry.text, options);
   const key = (resolved && resolved.num) || entry.num || entry.id;
   const label = [
     key,
@@ -511,9 +522,9 @@ function rosterPersonText(entry) {
     : escapeHtml(label || entry.name || '');
 }
 
-function rosterPeopleText(people) {
+function rosterPeopleText(people, options = {}) {
   if (!people || !people.length) return '資料待考';
-  return people.map(rosterPersonText).filter(Boolean).join('、');
+  return people.map((person) => rosterPersonText(person, options)).filter(Boolean).join('、');
 }
 
 function performerRows(concert) {
@@ -537,7 +548,7 @@ function performerRows(concert) {
   }
   let html = `<div class="table-scroll"><table class="plain roster">
       <tr><th>聲部／角色</th><th>人員</th></tr>
-      ${groups.map((group) => `<tr><td data-label="聲部／角色">${escapeHtml(group.key)}</td><td data-label="人員">${rosterPeopleText(group.people)}</td></tr>`).join('\n      ')}
+      ${groups.map((group) => `<tr><td data-label="聲部／角色">${escapeHtml(group.key)}</td><td data-label="人員">${rosterPeopleText(group.people, { showNumber: concert.showRosterNumbers !== false })}</td></tr>`).join('\n      ')}
     </table></div>${concert.performerNote ? `\n    <p class="muted">${escapeHtml(concert.performerNote)}</p>` : ''}`;
   if (concert.performerSupplementGroups && concert.performerSupplementGroups.length) {
     html += `\n    <h3>社群協作名單補充</h3>
@@ -609,6 +620,15 @@ function archiveSections(concert) {
   }).join('\n\n  ');
 }
 
+function supplementSection(concert) {
+  const notes = concert.supplementNotes || [];
+  if (!notes.length) return '';
+  return `<section class="section">
+    <h2>${escapeHtml(concert.supplementTitle || '網站補充資訊')}</h2>
+    ${notes.map((text) => `<p>${escapeHtml(text)}</p>`).join('\n    ')}
+  </section>`;
+}
+
 function galleryPhotos(concert) {
   const explicit = concert.photos || concert.galleryPhotos || [];
   const normalized = explicit.map((photo) => typeof photo === 'string' ? { src: photo, caption: '' } : photo);
@@ -665,11 +685,12 @@ function promoImagesSection(concert) {
 function programBookSection(concert) {
   const scans = concert.programBook || concert.programScans || concert.booklet || [];
   const online = concert.onlineProgramBook;
+  const intro = concert.programBookIntro || '節目冊與企劃書影像以縮圖列保存；可左右滑動瀏覽，點開圖片後可用左右鍵切換頁面。';
   const onlineHtml = online && online.url
     ? `<p><a class="btn" href="../${escapeHtml(online.url)}">${escapeHtml(online.label || '開啟線上節目冊')}</a></p>${online.note ? `\n    <p class="muted">${escapeHtml(online.note)}</p>` : ''}`
     : '';
   if (!scans.length) return onlineHtml || '<p class="muted">目前尚未整理到可公開呈現的完整節目冊掃描圖檔。</p>';
-  return `${onlineHtml ? `${onlineHtml}\n    ` : ''}<p class="muted">節目冊與企劃書影像以縮圖列保存；可左右滑動瀏覽，點開圖片後可用左右鍵切換頁面。</p>
+  return `${onlineHtml ? `${onlineHtml}\n    ` : ''}<p class="muted">${escapeHtml(intro)}</p>
     <div class="program-book-strip" aria-label="節目冊頁面縮圖">
       ${scans.map((scan, index) => {
     const item = typeof scan === 'string' ? { src: scan, caption: `節目冊第 ${index + 1} 頁` } : scan;
@@ -822,32 +843,32 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
   </section>
 
   <section class="section">
-    <h2>關於這場音樂會</h2>
+    <h2>${escapeHtml(concert.introTitle || '關於這場音樂會')}</h2>
     ${concertIntro(concert, desc)}
   </section>${archiveSections(concert) ? `\n\n  ${archiveSections(concert)}` : ''}${planningHtml ? `\n\n  ${planningHtml}` : ''}
 
   ${hasPeople ? `<section class="section">
-    <h2>指揮與獨奏</h2>
+    <h2>${escapeHtml(concert.peopleTitle || '指揮與獨奏')}</h2>
     ${renderPeopleSection(concert)}
   </section>` : ''}
 
   ${hasProgram ? `<section class="section">
-    <h2>曲目</h2>
+    <h2>${escapeHtml(concert.programTitle || '曲目')}</h2>
     ${programList(concert.program, concert)}
   </section>` : ''}
 
   ${hasPerformers ? `<section class="section">
-    <h2>演出人員名單</h2>
+    <h2>${escapeHtml(concert.performersTitle || '演出人員名單')}</h2>
     ${performerRows(concert)}
   </section>` : ''}
 
   ${hasAdmin ? `<section class="section">
-    <h2>幕後行政團隊</h2>
+    <h2>${escapeHtml(concert.adminTitle || '幕後行政團隊')}</h2>
     ${adminTable(concert)}
   </section>` : ''}
 
   ${hasSponsors ? `<section class="section">
-    <h2>贊助與致謝</h2>
+    <h2>${escapeHtml(concert.sponsorsTitle || '贊助與致謝')}</h2>
     ${sponsorsText(concert)}
   </section>` : ''}
 
@@ -856,7 +877,7 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
   ${hasProgramBook ? `<section class="section">
     <h2>節目冊</h2>
     ${programBookSection(concert)}
-  </section>` : ''}
+  </section>` : ''}${supplementSection(concert) ? `\n\n  ${supplementSection(concert)}` : ''}
 
   ${hasVideos ? `<section class="section">\n    <h2>影片連結</h2>\n    ${videosList(concert.videos)}\n  </section>` : ''}
 
