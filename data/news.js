@@ -640,7 +640,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-08-05",
     "time": "21:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "團練",
@@ -674,7 +674,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-08-01",
     "time": "21:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "烤香腸",
@@ -708,7 +708,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-08-01",
     "time": "08:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "歷史補檔",
     "tags": [
       "校友投稿",
@@ -742,7 +742,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-27",
     "time": "23:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "嘉義管樂演出分享",
     "tags": [
       "嘉義管樂",
@@ -776,7 +776,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-26",
     "time": "22:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "團練",
@@ -810,7 +810,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-25",
     "time": "22:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "團練",
@@ -844,7 +844,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-24",
     "time": "18:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "嘉義管樂演出分享",
     "tags": [
       "嘉義管樂",
@@ -878,7 +878,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-24",
     "time": "12:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "嘉義管樂演出分享",
     "tags": [
       "嘉義管樂",
@@ -912,7 +912,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-23",
     "time": "08:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動公告",
     "tags": [
       "烤香腸",
@@ -945,7 +945,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-19",
     "time": "20:15",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "團練",
@@ -978,7 +978,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-18",
     "time": "20:50",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "團練",
@@ -1011,7 +1011,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-13",
     "time": "12:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "嘉義管樂演出分享",
     "tags": [
       "嘉義管樂",
@@ -1044,7 +1044,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-12",
     "time": "19:45",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "團練",
@@ -1077,7 +1077,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-11",
     "time": "18:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "團練通知",
     "tags": [
       "巴威颱風",
@@ -1110,7 +1110,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-10",
     "time": "21:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "行政公告",
     "tags": [
       "巴威颱風",
@@ -1143,7 +1143,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-04",
     "time": "19:30",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "團練",
@@ -1176,7 +1176,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-02",
     "time": "12:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "演出公告",
     "tags": [
       "為伍",
@@ -1209,7 +1209,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-06-27",
     "time": "18:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "第一次團練",
@@ -1242,7 +1242,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-06-12",
     "time": "16:42",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:03",
+    "modifiedTime": "17:47",
     "category": "團練通知",
     "tags": [
       "團練時程",
@@ -1275,7 +1275,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2019-05-26",
     "time": "12:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:03",
+    "modifiedTime": "17:47",
     "category": "歷史補檔",
     "tags": [
       "社團幹部",
@@ -1309,7 +1309,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-08-21",
     "time": "15:12",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:31",
+    "modifiedTime": "17:47",
     "category": "嘉義管樂演出分享",
     "tags": [
       "嘉中管樂",
@@ -1343,7 +1343,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-18",
     "time": "12:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "演出公告",
     "tags": [
       "為伍",
@@ -1376,7 +1376,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-07-10",
     "time": "19:10",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "團練通知",
     "tags": [
       "巴威颱風",
@@ -1408,7 +1408,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-06-30",
     "time": "20:00",
     "modifiedDate": "2026-08-21",
-    "modifiedTime": "17:02",
+    "modifiedTime": "17:47",
     "category": "活動紀錄",
     "tags": [
       "在校生",
