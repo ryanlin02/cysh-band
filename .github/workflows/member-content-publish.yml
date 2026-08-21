@@ -42,7 +42,9 @@ jobs:
         run: |
           git config user.name "cysh-band-publisher"
           git config user.email "actions@users.noreply.github.com"
-          git add data content people news assets/img/members photos/profile-links.js feed.xml sitemap.xml index.html concerts.html
+          # assets/img/news 一定要一起送出：會員平台上傳的文章圖片是在同步時才下載進來的，
+          # 沒有加進來就等於「文章寫著圖片網址、檔案卻沒進版本庫」，官網上會變成破圖。
+          git add data content people news assets/img/news assets/img/members photos/profile-links.js feed.xml sitemap.xml index.html concerts.html
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Publish approved member content"
             git push origin main
