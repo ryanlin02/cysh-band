@@ -893,6 +893,13 @@ function checkGeneratedNewsPages() {
       addError(`${article.output}: representative image needs responsive srcset and sizes.`);
     }
 
+    // 文章正文裡明明有圖，代表圖卻是官網主視覺＝發布流程沒有把文章自己的圖挑出來。
+    // 2026-08-21 就是這樣讓最新消息整排縮圖變成同一張 og.jpg，而所有既有檢查都沒發現。
+    const sourceBody = fs.existsSync(path.join(root, article.source)) ? read(article.source) : '';
+    if (/<figure\b[\s\S]*?<img\b/i.test(sourceBody) && /assets\/img\/og\.jpg/i.test(String(article.ogImage || ''))) {
+      addError(`${article.output}: article has its own image but the representative image is still the site default (assets/img/og.jpg).`);
+    }
+
     const articleBody = (actual.match(/<article\b[^>]*class=["'][^"']*\bnews-article\b[^"']*["'][^>]*>([\s\S]*?)<\/article>/i) || [])[1] || '';
     const bodyWithoutLead = articleBody.replace(leadFigure, '');
     const bodyImages = [...bodyWithoutLead.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);

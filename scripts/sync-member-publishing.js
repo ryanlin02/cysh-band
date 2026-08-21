@@ -118,21 +118,62 @@ async function localizeArticleImages(article, articleId) {
   const sections = Array.isArray(article.sections) ? article.sections : [];
   let counter = 0;
   const output = [];
+  let lead = null;   // 第一張圖＝這篇文章的代表圖（列表縮圖、社群預覽、內文首圖都用它）
   for (const section of sections) {
     const images = [];
     for (const image of Array.isArray(section.images) ? section.images : []) {
       const raw = String(image.path || '').trim();
       if (!raw) continue;
-      if (raw.startsWith('assets/')) { images.push({ ...image, path: raw }); counter += 1; continue; }
-      const remote = /^https?:\/\//i.test(raw)
-        ? raw
-        : `${String(process.env.MEMBER_ARTICLE_IMAGE_BASE || 'https://ismoiwguyqmvuqkgxlqk.supabase.co/storage/v1/object/public/article-images').replace(/\/$/, '')}/${raw}`;
-      images.push({ ...image, path: await downloadArticleImage(remote, articleId, counter) });
+      let localized;
+      if (raw.startsWith('assets/')) {
+        localized = { ...image, path: raw };
+      } else {
+        const remote = /^https?:\/\//i.test(raw)
+          ? raw
+          : `${String(process.env.MEMBER_ARTICLE_IMAGE_BASE || 'https://ismoiwguyqmvuqkgxlqk.supabase.co/storage/v1/object/public/article-images').replace(/\/$/, '')}/${raw}`;
+        localized = { ...image, path: await downloadArticleImage(remote, articleId, counter), source: remote };
+      }
+      images.push(localized);
+      if (!lead) lead = localized;
       counter += 1;
     }
     output.push({ ...section, images });
   }
-  return output;
+  return { sections: output, lead };
+}
+
+/**
+ * 文章的代表圖。
+ * 少了這一段，最新消息列表與每篇文章的首圖都會變成官網主視覺（assets/img/og.jpg）——
+ * 官網原本手寫的條目本來就是一篇一張自己的圖，發布流程必須照樣產生。
+ *
+ * 縮圖挑選順序（與官網原本手寫的作法一致）：
+ *   ① 影像館的照片本來就有 thumb 尺寸，列表用 thumb、內文用 large
+ *   ② 官網已經備好的小圖（xxx-thumb.webp 或 xxx_thumb.webp）
+ *   ③ 都沒有就用原圖（會員上傳時已經壓到最寬 1600px）
+ */
+function representativeImage(lead) {
+  const fallback = { thumb: 'assets/img/og.jpg', ogImage: 'assets/img/og.jpg', ogImageWidth: '1200', ogImageHeight: '630', imageAlt: '嘉義高中管樂隊' };
+  if (!lead || !lead.path) return fallback;
+  const source = String(lead.source || '');
+  let thumb = lead.path;
+  if (/^https:\/\/img\.cysh\.band\/large\//i.test(source)) {
+    thumb = source.replace('/large/', '/thumb/');
+  } else {
+    // 有些海報帶著 ?v=… 的版本參數，要先拆掉才找得到旁邊那張小圖
+    const file = lead.path.split('?')[0];
+    const sized = ['-thumb.webp', '_thumb.webp']
+      .map((suffix) => file.replace(/\.webp$/i, suffix))
+      .find((candidate) => fs.existsSync(path.join(root, candidate)));
+    if (sized) thumb = sized;
+  }
+  return {
+    thumb,
+    ogImage: lead.path,
+    ogImageWidth: String(lead.width || '1200'),
+    ogImageHeight: String(lead.height || '630'),
+    imageAlt: String(lead.alt || lead.caption || '嘉義高中管樂隊'),
+  };
 }
 
 function articleSource(article) {
@@ -208,7 +249,9 @@ async function sync() {
     const source = `content/news/${id}.html`;
     const output = `news/${id}.html`;
     fs.mkdirSync(path.join(root, 'content', 'news'), { recursive: true });
-    const localized = { ...article, sections: await localizeArticleImages(article, id) };
+    const { sections: localizedSections, lead } = await localizeArticleImages(article, id);
+    const localized = { ...article, sections: localizedSections };
+    const representative = representativeImage(lead);
     fs.writeFileSync(path.join(root, source), articleSource(localized));
     nextManifestArticles.push({ id: article.id, revision: article.revision, source, output });
     newsItems.push({
@@ -221,9 +264,11 @@ async function sync() {
       title: oneLine(article.title),
       summary: oneLine(article.summary),
       source, output, url: output,
-      thumb: 'assets/img/og.jpg',
-      ogImage: 'assets/img/og.jpg',
-      ogImageWidth: '1200', ogImageHeight: '630',
+      thumb: representative.thumb,
+      ogImage: representative.ogImage,
+      ogImageWidth: representative.ogImageWidth,
+      ogImageHeight: representative.ogImageHeight,
+      imageAlt: representative.imageAlt,
       pageTitle: `${oneLine(article.title)}｜最新消息｜嘉義高中管樂隊`,
       ogTitle: oneLine(article.title),
       description: oneLine(article.summary),
