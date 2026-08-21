@@ -111,7 +111,33 @@ async function downloadArticleImage(remoteUrl, articleId, index) {
   if (!response.ok) throw new Error(`文章圖片下載失敗 ${response.status}：${remoteUrl}`);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.writeFileSync(target, Buffer.from(await response.arrayBuffer()));
+  await downloadArticleThumb(remoteUrl, relative);
   return relative;
+}
+
+/**
+ * 列表用的小圖。
+ * 會員平台從 2026-08-22 起，上傳時會在原圖旁邊另存一張 480px 的小圖，
+ * 檔名就是原圖加上 -thumb（例如 abc.webp 旁邊有 abc-thumb.webp）。
+ * 抓得到就一起存一份，representativeImage() 原本就會優先用 xxx-thumb.webp；
+ * 抓不到（那時候還沒有這個功能的舊圖片）就沿用原圖，絕不讓發布失敗。
+ *
+ * 只在「原圖是這一次才下載的」時候才試著抓小圖：已經在版本庫裡的舊圖片
+ * 不會每小時再去要一次注定 404 的網址。
+ */
+async function downloadArticleThumb(remoteUrl, relative) {
+  const target = path.join(root, relative.replace(/\.webp$/i, '-thumb.webp'));
+  if (fs.existsSync(target)) return;
+  const remoteThumb = remoteUrl.replace(/\.webp(\?|$)/i, '-thumb.webp$1');
+  if (remoteThumb === remoteUrl) return;
+  let response;
+  try {
+    response = await fetch(remoteThumb);
+  } catch {
+    return;
+  }
+  if (!response.ok) return;
+  fs.writeFileSync(target, Buffer.from(await response.arrayBuffer()));
 }
 
 async function localizeArticleImages(article, articleId) {
