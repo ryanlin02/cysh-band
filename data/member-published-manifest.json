@@ -104,16 +104,16 @@
       "output": "news/2026-07-02-weiwu-announce.html"
     },
     {
-      "id": "220ac8f3-3aa3-4282-bd8d-ed8aa54862f9",
-      "revision": 2,
-      "source": "content/news/2026-06-27-first-rehearsal.html",
-      "output": "news/2026-06-27-first-rehearsal.html"
-    },
-    {
       "id": "80dfae75-b08c-435c-9e03-2c9433086353",
       "revision": 2,
       "source": "content/news/2026-06-12-rehearsal-schedule.html",
       "output": "news/2026-06-12-rehearsal-schedule.html"
+    },
+    {
+      "id": "220ac8f3-3aa3-4282-bd8d-ed8aa54862f9",
+      "revision": 2,
+      "source": "content/news/2026-06-27-first-rehearsal.html",
+      "output": "news/2026-06-27-first-rehearsal.html"
     },
     {
       "id": "ca300ac5-30b1-4b5e-9842-d5b007c55c49",
