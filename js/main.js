@@ -1,25 +1,15 @@
 /* 嘉義高中管樂隊官方網站 — 互動效果 */
 document.documentElement.classList.add('js');
 
-/* ---------- 影像館登入視覺狀態 ----------
-   Cloudflare Access 才是真正的存取控制；這裡只記住本瀏覽器最近成功開啟
-   影像館的時間，讓導覽文字在七天內恢復一般顏色。 */
-(function rememberPhotoAccessSession() {
-  var key = 'cyshPhotoAccessUntil';
-  var legacyKey = 'cyshMemberAccessUntil';
-  var sevenDays = 7 * 24 * 60 * 60 * 1000;
-  var protectedPath = location.pathname.indexOf('/photos') === 0;
+/* ---------- 舊版影像館狀態清理 ----------
+   2026-08-22 影像館整併到會員平台、導覽列改為「登入」之後，
+   官網不再需要記住「最近開過影像館」。順手清掉舊瀏覽器留下的紀錄。 */
+(function clearLegacyPhotoAccessFlags() {
   try {
-    localStorage.removeItem(legacyKey);
-    if (protectedPath) localStorage.setItem(key, String(Date.now() + sevenDays));
-    var activeUntil = Number(localStorage.getItem(key) || 0);
-    if (activeUntil > Date.now()) {
-      document.documentElement.classList.add('member-session-active');
-    } else {
-      localStorage.removeItem(key);
-    }
+    localStorage.removeItem('cyshPhotoAccessUntil');
+    localStorage.removeItem('cyshMemberAccessUntil');
   } catch (error) {
-    /* 隱私模式或停用儲存時不影響頁面與 Cloudflare Access 驗證。 */
+    /* 隱私模式停用儲存時不影響任何功能。 */
   }
 })();
 

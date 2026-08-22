@@ -540,8 +540,7 @@ function checkSharedChromeConsistency() {
     ['numbers.html', '編號'],
     ['people.html', '人物誌'],
     ['roster.html', '名錄'],
-    ['concerts.html', '校友聯演'],
-    ['photos/', '影像館']
+    ['concerts.html', '校友聯演']
   ];
   const footerTargets = [
     ['about.html', '關於'],
@@ -551,8 +550,7 @@ function checkSharedChromeConsistency() {
     ['roster.html', '名錄'],
     ['concerts.html', '校友聯演'],
     ['news/index.html', '最新消息'],
-    ['support.html', '支持我們'],
-    ['photos/', '影像館']
+    ['support.html', '支持我們']
   ];
 
   for (const file of publicHtml) {
@@ -568,12 +566,12 @@ function checkSharedChromeConsistency() {
         addError(`${fileRel}: shared top navigation missing ${label} -> ${prefix}${target}.`);
       }
     }
-    for (const target of ['photos/']) {
-      const escapedTarget = `${prefix}${target}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const memberLink = new RegExp(`<a\\b[^>]*href=["']${escapedTarget}["'][^>]*\\bdata-member-only\\b`, 'i');
-      if (!memberLink.test(text)) {
-        addError(`${fileRel}: shared top navigation missing member-only marker -> ${prefix}${target}.`);
-      }
+    // 影像館 2026-08-22 整併到會員平台，導覽列最後一顆改成通往登入的入口。
+    if (!/<a\b[^>]*class=["']nav-login["'][^>]*href=["']https:\/\/members\.cysh\.band\/["'][^>]*>登入<\/a>/i.test(text)) {
+      addError(`${fileRel}: shared top navigation missing 登入 entry -> https://members.cysh.band/.`);
+    }
+    if (/\bdata-member-only\b/i.test(text)) {
+      addError(`${fileRel}: legacy data-member-only marker must be removed.`);
     }
     const rosterTarget = `${prefix}roster.html`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const rosterMemberLink = new RegExp(`<a\\b[^>]*href=["']${rosterTarget}["'][^>]*\\bdata-member-only\\b`, 'i');
@@ -594,6 +592,14 @@ function checkSharedChromeConsistency() {
       if (!text.includes(`href="${prefix}${target}"`) || !text.includes(`>${label}</a>`)) {
         addError(`${fileRel}: shared footer missing ${label} -> ${prefix}${target}.`);
       }
+    }
+    if (new RegExp(`<li><a href="${prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}photos/">影像館</a></li>`).test(text)) {
+      addError(`${fileRel}: 追蹤與支持 must not link to the retired photos entry.`);
+    }
+    // 頁尾曾經同時在「網站導覽」與最底部那一行放網站地圖，看起來像出現兩次。
+    const copyLine = text.match(/<p class="copy">[\s\S]*?<\/p>/);
+    if (copyLine && copyLine[0].includes('網站地圖')) {
+      addError(`${fileRel}: footer copy line must not repeat 網站地圖.`);
     }
   }
 
@@ -733,8 +739,11 @@ function checkMemberAccessPrivacy() {
     addError('llms.txt: roster and protected photo archive must not be advertised.');
   }
   const navTemplate = read('templates/partials/nav.html');
-  if (!/<a\b[^>]*href=["'][^"']*photos\/["'][^>]*\bdata-member-only\b/i.test(navTemplate)) {
-    addError('templates/partials/nav.html: protected photo archive marker is missing.');
+  if (!/href=["']https:\/\/members\.cysh\.band\/["']/i.test(navTemplate)) {
+    addError('templates/partials/nav.html: 登入 entry to the member platform is missing.');
+  }
+  if (/\bdata-member-only\b/i.test(navTemplate)) {
+    addError('templates/partials/nav.html: legacy data-member-only marker must be removed.');
   }
   if (/<a\b[^>]*href=["'][^"']*roster\.html["'][^>]*\bdata-member-only\b/i.test(navTemplate)) {
     addError('templates/partials/nav.html: public roster must not use a member-only marker.');
