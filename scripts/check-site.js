@@ -505,7 +505,7 @@ function checkAboutPageImages() {
   if (!/<meta\s+property=["']og:image:height["']\s+content=["']640["']/i.test(text)) {
     addError('about.html: og:image dimensions should match the 1280x640 cropped image.');
   }
-  if (!/css\/style\.css\?v=20260728-about-photo-r2/i.test(text)) {
+  if (!/css\/style\.css\?v=20260822-nav-login/i.test(text)) {
     addError('about.html: stylesheet cache version must protect the corrected image dimensions.');
   }
   const css = fs.readFileSync(path.join(root, 'css', 'style.css'), 'utf8');
