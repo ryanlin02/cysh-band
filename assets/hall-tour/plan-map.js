@@ -35,6 +35,8 @@ export function createPlanMap(container, opts = {}) {
 
   const bar = document.createElement('div');
   bar.className = 'planmap-bar';
+  // 只有一張底圖時不顯示沒有選擇意義的樓層按鈕。
+  bar.hidden = floors.length <= 1;
   container.appendChild(bar);
 
   const wrap = document.createElement('div');
@@ -145,6 +147,7 @@ export function createPlanMap(container, opts = {}) {
 export const PLAN_MAP_CSS = `
 .planmap-root{--pm-line:#e2dcd1;--pm-ink:#241f1a;--pm-muted:#7a7068}
 .planmap-bar{display:flex;gap:8px;margin:0 0 8px}
+.planmap-bar[hidden]{display:none}
 .planmap-bar button{background:transparent;border:1px solid var(--pm-line);border-radius:20px;
   min-height:44px;padding:7px 15px;font-size:13px;cursor:pointer;font-family:inherit;color:var(--pm-muted);touch-action:manipulation}
 .planmap-bar button.on{background:var(--pm-ink);color:#faf8f3;border-color:var(--pm-ink)}

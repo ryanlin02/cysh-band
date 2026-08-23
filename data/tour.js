@@ -2611,6 +2611,36 @@ export const TOUR = {
               "to": "aud-019",
               "yaw": 289.38,
               "pitch": 6.39
+            },
+            {
+              "to": "stg-001",
+              "yaw": 96.48,
+              "pitch": -28.27
+            },
+            {
+              "to": "stg-002",
+              "yaw": 147.83,
+              "pitch": -17.49
+            },
+            {
+              "to": "stg-003",
+              "yaw": 165.53,
+              "pitch": -6.78
+            },
+            {
+              "to": "stg-008",
+              "yaw": 84.44,
+              "pitch": -6.2
+            },
+            {
+              "to": "stg-007",
+              "yaw": 113.09,
+              "pitch": -4.71
+            },
+            {
+              "to": "stg-006",
+              "yaw": 144.66,
+              "pitch": -2.87
             }
           ],
           "seat": "1F-1-21"
@@ -2693,6 +2723,46 @@ export const TOUR = {
               "to": "aud-001",
               "yaw": 0.8,
               "pitch": -10.35
+            },
+            {
+              "to": "stg-001",
+              "yaw": 24.84,
+              "pitch": -13.61
+            },
+            {
+              "to": "stg-002",
+              "yaw": 85.29,
+              "pitch": -23.09
+            },
+            {
+              "to": "stg-003",
+              "yaw": 143.05,
+              "pitch": -12.08
+            },
+            {
+              "to": "stg-004",
+              "yaw": 131.65,
+              "pitch": -2.42
+            },
+            {
+              "to": "stg-005",
+              "yaw": 110.59,
+              "pitch": -3.36
+            },
+            {
+              "to": "stg-006",
+              "yaw": 85.24,
+              "pitch": -4.69
+            },
+            {
+              "to": "stg-007",
+              "yaw": 59.77,
+              "pitch": -4
+            },
+            {
+              "to": "stg-008",
+              "yaw": 41.54,
+              "pitch": -3.89
             }
           ],
           "seat": "1F-1-1"
@@ -2780,6 +2850,41 @@ export const TOUR = {
               "to": "aud-014",
               "yaw": 247.52,
               "pitch": 6.65
+            },
+            {
+              "to": "stg-003",
+              "yaw": 84.83,
+              "pitch": -22.98
+            },
+            {
+              "to": "stg-002",
+              "yaw": 28.58,
+              "pitch": -14.95
+            },
+            {
+              "to": "stg-001",
+              "yaw": 15.5,
+              "pitch": -8.04
+            },
+            {
+              "to": "stg-004",
+              "yaw": 95.61,
+              "pitch": -4.42
+            },
+            {
+              "to": "stg-005",
+              "yaw": 74.18,
+              "pitch": -4.64
+            },
+            {
+              "to": "stg-006",
+              "yaw": 37.41,
+              "pitch": -3.97
+            },
+            {
+              "to": "stg-007",
+              "yaw": 28.15,
+              "pitch": -3.51
             }
           ],
           "seat": "1F-1-26"
@@ -6862,6 +6967,132 @@ export const TOUR = {
       ],
       "boundaries": [
         {
+          "node": "aud-001",
+          "to": "stage",
+          "toNode": "stg-001",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-001",
+          "to": "stage",
+          "toNode": "stg-002",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-001",
+          "to": "stage",
+          "toNode": "stg-003",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-001",
+          "to": "stage",
+          "toNode": "stg-008",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-001",
+          "to": "stage",
+          "toNode": "stg-007",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-001",
+          "to": "stage",
+          "toNode": "stg-006",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-001",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-002",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-003",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-004",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-005",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-006",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-007",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-002",
+          "to": "stage",
+          "toNode": "stg-008",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-003",
+          "to": "stage",
+          "toNode": "stg-003",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-003",
+          "to": "stage",
+          "toNode": "stg-002",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-003",
+          "to": "stage",
+          "toNode": "stg-001",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-003",
+          "to": "stage",
+          "toNode": "stg-004",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-003",
+          "to": "stage",
+          "toNode": "stg-005",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-003",
+          "to": "stage",
+          "toNode": "stg-006",
+          "label": "前往舞台與貴賓室"
+        },
+        {
+          "node": "aud-003",
+          "to": "stage",
+          "toNode": "stg-007",
+          "label": "前往舞台與貴賓室"
+        },
+        {
           "node": "aud-034",
           "to": "lobby",
           "toNode": "lob-29",
@@ -7025,8 +7256,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.3798,
-            "y": 0.4611
+            "x": 0.3653,
+            "y": 0.2792
           },
           "spaceType": "待分類"
         },
@@ -7166,8 +7397,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.4984,
-            "y": 0.4611
+            "x": 0.4963,
+            "y": 0.2838
           },
           "spaceType": "待分類"
         },
@@ -7312,8 +7543,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.6253,
-            "y": 0.4611
+            "x": 0.6336,
+            "y": 0.2749
           },
           "spaceType": "待分類"
         },
@@ -7443,8 +7674,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.6503,
-            "y": 0.3627
+            "x": 0.6315,
+            "y": 0.2254
           },
           "spaceType": "待分類"
         },
@@ -7589,8 +7820,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.5691,
-            "y": 0.3627
+            "x": 0.5671,
+            "y": 0.2247
           },
           "spaceType": "待分類"
         },
@@ -7761,7 +7992,7 @@ export const TOUR = {
           ],
           "plan": {
             "x": 0.4942,
-            "y": 0.367
+            "y": 0.2261
           },
           "spaceType": "待分類"
         },
@@ -7941,8 +8172,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.4173,
-            "y": 0.3684
+            "x": 0.4131,
+            "y": 0.2264
           },
           "spaceType": "待分類"
         },
@@ -8087,8 +8318,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.3341,
-            "y": 0.3684
+            "x": 0.3466,
+            "y": 0.225
           },
           "spaceType": "待分類"
         },
@@ -8203,8 +8434,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.3237,
-            "y": 0.2487
+            "x": 0.3715,
+            "y": 0.1762
           },
           "spaceType": "待分類"
         },
@@ -8319,8 +8550,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.4901,
-            "y": 0.2472
+            "x": 0.4942,
+            "y": 0.1723
           },
           "spaceType": "待分類"
         },
@@ -8430,8 +8661,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.6565,
-            "y": 0.2472
+            "x": 0.6128,
+            "y": 0.1723
           },
           "spaceType": "待分類"
         },
@@ -8541,8 +8772,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.6211,
-            "y": 0.1589
+            "x": 0.6066,
+            "y": 0.1234
           },
           "spaceType": "待分類"
         },
@@ -8642,8 +8873,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.4859,
-            "y": 0.1589
+            "x": 0.4922,
+            "y": 0.1234
           },
           "spaceType": "待分類"
         },
@@ -8743,8 +8974,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.357,
-            "y": 0.1631
+            "x": 0.3674,
+            "y": 0.1277
           },
           "spaceType": "待分類"
         },
@@ -8779,8 +9010,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.1448,
-            "y": 0.4304
+            "x": 0.1406,
+            "y": 0.2603
           },
           "spaceType": "待分類"
         },
@@ -8820,8 +9051,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.2134,
-            "y": 0.4475
+            "x": 0.2218,
+            "y": 0.2582
           },
           "spaceType": "待分類"
         },
@@ -8861,8 +9092,8 @@ export const TOUR = {
             }
           ],
           "plan": {
-            "x": 0.1947,
-            "y": 0.5245
+            "x": 0.2155,
+            "y": 0.3091
           },
           "spaceType": "待分類"
         }

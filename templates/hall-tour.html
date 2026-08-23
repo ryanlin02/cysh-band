@@ -426,7 +426,9 @@ const viewer = new Viewer({
   // 但手機陀螺儀會放大這段甩動感，改以短暫淡入維持方向感。
   defaultTransition: { speed: 260, effect: 'fade', rotation: false },
   plugins: [
-    [GyroscopePlugin, { touchmove: true, moveMode: 'fast' }],
+    // smooth 會吸收手持與感測器的小幅震動；停用 roll 可避免場景切換時
+    // 側傾先歸零、再恢復而造成畫面短暫逆時鐘晃動。
+    [GyroscopePlugin, { touchmove: true, moveMode: 'smooth', roll: false }],
     [MarkersPlugin, {}],
   ],
   loadingTxt: '載入中',
@@ -460,7 +462,7 @@ async function startGyroscope() {
   gyroStart.disabled = true;
   gyroStart.textContent = '正在開啟…';
   try {
-    await gyroPlugin.start('fast');
+    await gyroPlugin.start('smooth');
     gyroRequested = true;
     dismissGyroIntro();
     showToast('感應導覽已開啟；轉動手機即可環顧四周');
@@ -568,9 +570,23 @@ function buildMap() {
     : '點紅色圓點跳到該拍攝位置。';
 
   if (usesSeats()) {
-    seatMap = createSeatMap(mapEl, {
-      data: HALL_SEATS,
-      onSeatClick(seat) {
+    const availableFloors = HALL_SEATS.floors
+      .map(item => item.id)
+      .filter(id => region.nodes.some(node => node.floor === id));
+    const floorBar = document.createElement('div');
+    floorBar.className = 'planmap-bar seatmap-floor-bar';
+    floorBar.setAttribute('aria-label', '觀眾席樓層');
+    const seatHost = document.createElement('div');
+    mapEl.append(floorBar, seatHost);
+
+    let selectedSeatFloor = availableFloors.includes(floor) ? floor : availableFloors[0];
+    let activeSeatMap = null;
+    const seatMarkers = region.nodes.filter(n => n.seat).map(n => ({
+      id: n.id, seatId: n.seat, floor: n.floor, label: n.name,
+      n: region.nodes.indexOf(n) + 1,
+    }));
+
+    function goFromSeat(seat) {
         let best = null, bd = Infinity;
         region.nodes.forEach((n, i) => {
           const q = n.seat && SEAT_POS.get(n.seat);
@@ -581,16 +597,52 @@ function buildMap() {
           if (d < bd) { bd = d; best = i; }
         });
         if (best !== null) { go(best); closePanelOnCompact(); }
-      },
+    }
+
+    function renderSeatFloor(nextFloor) {
+      if (!availableFloors.includes(nextFloor)) return;
+      selectedSeatFloor = nextFloor;
+      activeSeatMap?.destroy();
+      activeSeatMap = createSeatMap(seatHost, {
+        data: HALL_SEATS,
+        floors: [selectedSeatFloor],
+        onSeatClick: goFromSeat,
+      });
+      activeSeatMap.setMarkers(
+        seatMarkers.filter(marker => marker.floor === selectedSeatFloor),
+        m => { go(region.nodes.findIndex(n => n.id === m.id)); closePanelOnCompact(); });
+      const current = region.nodes[cur];
+      activeSeatMap.select(current.floor === selectedSeatFloor ? current.seat || null : null);
+      activeSeatMap.activeMarker(current.floor === selectedSeatFloor ? current.id : null);
+      [...floorBar.children].forEach(button => {
+        const selected = button.dataset.floor === selectedSeatFloor;
+        button.classList.toggle('on', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+    }
+
+    availableFloors.forEach(id => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.floor = id;
+      button.textContent = id === '1F' ? '一樓' : id === '2F' ? '二樓' : id;
+      button.addEventListener('click', () => renderSeatFloor(id));
+      floorBar.appendChild(button);
     });
-    seatMap.setMarkers(
-      region.nodes.filter(n => n.seat).map(n => ({
-        id: n.id, seatId: n.seat, label: n.name, n: region.nodes.indexOf(n) + 1,
-      })),
-      m => { go(region.nodes.findIndex(n => n.id === m.id)); closePanelOnCompact(); });
+
+    seatMap = {
+      setFloor: renderSeatFloor,
+      getFloor: () => selectedSeatFloor,
+      select(id) { return activeSeatMap?.select(id) || null; },
+      activeMarker(id) { activeSeatMap?.activeMarker(id); },
+      get(id) { return activeSeatMap?.get(id) || null; },
+    };
+    renderSeatFloor(selectedSeatFloor);
   } else {
     const plans = region.id === 'greenroom'
       ? { 'B1': '../../assets/hall-tour/plan/B1.png' }
+      : region.id === 'stage'
+        ? { '1F': '../../assets/hall-tour/plan/1F.png' }
       : { '1F': '../../assets/hall-tour/plan/1F.png',
           '2F': '../../assets/hall-tour/plan/2F.png' };
     planMap = createPlanMap(mapEl, {
@@ -731,7 +783,7 @@ async function performGo(i, options = {}, keepDirection = true) {
     if (restoreGyroscope && gyroRequested && !gyroPlugin.isEnabled()) {
       try {
         // setPanorama 指定視角時會呼叫 stopAll；使用者已授權且原本開啟時，自動恢復。
-        await gyroPlugin.start('fast');
+        await gyroPlugin.start('smooth');
       } catch (_) {
         gyroRequested = false;
         showToast('感應模式未能自動恢復，請再點一次「感應」');
@@ -750,6 +802,7 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
   if (n.floor !== floor) {
     floor = n.floor;
     if (planMap) planMap.setFloor(floor);
+    if (seatMap) seatMap.setFloor(floor);
   }
   buildSceneMenu();
 

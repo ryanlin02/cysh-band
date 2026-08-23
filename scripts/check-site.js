@@ -1232,8 +1232,13 @@ function checkHallTour() {
       addError(`hall/tour/index.html: immersive control #${id} is missing.`);
     }
   });
-  if (!html.includes("gyroPlugin.start('fast')")) {
-    addError('hall/tour/index.html: gyroscope must remain user-initiated in fast mode.');
+  if (!html.includes("gyroPlugin.start('smooth')") ||
+      !html.includes("moveMode: 'smooth', roll: false")) {
+    addError('hall/tour/index.html: gyroscope must remain user-initiated, smoothed, and horizon-stable.');
+  }
+  if (!html.includes("floorBar.className = 'planmap-bar seatmap-floor-bar'") ||
+      !html.includes("region.id === 'stage'")) {
+    addError('hall/tour/index.html: auditorium floor switch or stage single-floor map is missing.');
   }
   if (!html.includes('let gyroRequested = false') || !html.includes('navigationInProgress && gyroRequested')) {
     addError('hall/tour/index.html: gyroscope intent must persist across panorama changes.');
