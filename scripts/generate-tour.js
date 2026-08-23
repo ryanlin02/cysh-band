@@ -65,7 +65,7 @@ function validate(TOUR, HALL, ENTRY_VIEWS) {
       if (menuIds.has(entry.id)) fail(`sceneMenu id 重複：${entry.id}`);
       menuIds.add(entry.id);
       if (!entry.name) fail(`${at}：缺少 name`);
-      if (!/^scene-cards\/[a-z0-9-]+\.webp$/.test(entry.image || ''))
+      if (!/^scene-cards\/(?:[a-z0-9-]+\/)?[a-z0-9-]+\.webp$/.test(entry.image || ''))
         fail(`${at}：image 必須是 scene-cards/ 下的 WebP 檔案`);
       if (!['ready', 'planned'].includes(entry.status))
         fail(`${at}：status 必須是 ready 或 planned`);

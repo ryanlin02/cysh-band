@@ -1,9 +1,9 @@
-// 由本機場景校準工具儲存；不要直接把這些數字當成節點 heading。
-export const TOUR_ENTRY_VIEWS = Object.freeze({
+// 由 hall-tour-editor 工作區產生。
+export const TOUR_ENTRY_VIEWS = {
   "lobby-1f": {
-    "startNode": "lob-01",
-    "yaw": 131.5,
-    "pitch": 12.27
+    "startNode": "lob-03",
+    "yaw": 99.22,
+    "pitch": 18.71
   },
   "lobby-2f": {
     "startNode": "lob-22",
@@ -11,18 +11,23 @@ export const TOUR_ENTRY_VIEWS = Object.freeze({
     "pitch": 1.17
   },
   "auditorium-1f": {
-    "startNode": "aud-06",
-    "yaw": 265.0,
-    "pitch": 13.74
+    "startNode": "aud-011",
+    "yaw": 92.46,
+    "pitch": -22.01
   },
   "auditorium-2f": {
-    "startNode": "aud-22",
-    "yaw": 315.56,
-    "pitch": 6.35
+    "startNode": "aud-048",
+    "yaw": 91.33,
+    "pitch": -25.93
   },
   "greenroom": {
-    "startNode": "gre-01",
-    "yaw": 78.09,
-    "pitch": -33.14
+    "startNode": "gre-002",
+    "yaw": 218.55,
+    "pitch": -6.34
+  },
+  "stage": {
+    "startNode": "stg-010",
+    "yaw": 269.57,
+    "pitch": 12.22
   }
-});
+};

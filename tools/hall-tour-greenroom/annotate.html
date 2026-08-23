@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>地下休息室｜人工標記工具</title>
+<title>演出團隊休息區｜人工標記工具</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.min.css">
 <style>
@@ -14,12 +14,12 @@
 </head>
 <body>
 <main class="app">
-  <header class="top"><div><h1>地下休息室｜人工標記工具</h1><p>你只要依照片順序操作：定位、設定正面、在門口放下一張。</p></div><div class="progress" id="progress">讀取中…</div></header>
+  <header class="top"><div><h1>演出團隊休息區｜人工標記工具</h1><p>你只要依照片順序操作：定位、設定正面、在門口放下一張。</p></div><div class="progress" id="progress">讀取中…</div></header>
   <p class="steps"><b>每張照片三件事：</b>① 在右側配置圖點拍攝位置　② 把左側畫面轉到「平面圖正上方」後按設定正面　③ 用「上一張／下一張」在畫面中的門口或走道放圓點。每次操作都會先保留在本機，最後再按儲存。</p>
   <div class="scene-list card" id="sceneList" aria-label="選擇照片"></div>
   <div class="layout">
     <section class="card"><div id="viewer" aria-label="目前環景照片"></div><div class="controls"><button id="prev">← 上一張</button><button id="next">下一張 →</button><button class="primary grow" id="setHeading">把目前方向設為正面</button><span class="stat" id="headingStat">尚未設定</span></div><div class="controls"><label>場景名稱 <input id="name" size="24"></label><span class="stat" id="saveState">尚未儲存</span></div></section>
-    <aside class="card"><h2 style="font-size:17px;margin:0">① 在配置圖點拍攝位置</h2><p class="help">紅點代表已定位的照片；目前照片為實心紅點。這張配置圖以地下休息室區域為主。</p><div class="plan-frame" id="planFrame"><img src="/data/plan.png" id="planImage" alt="地下休息室配置圖"><div class="markers" id="markers"></div></div><p class="stat" id="positionStat">尚未定位</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h2 style="font-size:17px;margin:0">② 在畫面中放可前往的圓點</h2><div class="link-tools"><button id="linkPrev">在畫面中放「上一張」</button><button id="linkNext">在畫面中放「下一張」</button><select id="other"></select><button id="linkOther">放選取的其他場景</button></div><div class="placing" id="placing" hidden></div><div class="link-list" id="linkList"></div><div class="controls save"><button class="accent" id="save">儲存標記成果</button><span class="stat" id="result"></span></div></aside>
+    <aside class="card"><h2 style="font-size:17px;margin:0">① 在配置圖點拍攝位置</h2><p class="help">紅點代表已定位的照片；目前照片為實心紅點。這張配置圖以演出團隊休息區為主。</p><div class="plan-frame" id="planFrame"><img src="/data/plan.png" id="planImage" alt="演出團隊休息區配置圖"><div class="markers" id="markers"></div></div><p class="stat" id="positionStat">尚未定位</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h2 style="font-size:17px;margin:0">② 在畫面中放可前往的圓點</h2><div class="link-tools"><button id="linkPrev">在畫面中放「上一張」</button><button id="linkNext">在畫面中放「下一張」</button><select id="other"></select><button id="linkOther">放選取的其他場景</button></div><div class="placing" id="placing" hidden></div><div class="link-list" id="linkList"></div><div class="controls save"><button class="accent" id="save">儲存標記成果</button><span class="stat" id="result"></span></div></aside>
   </div>
 </main>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js","@photo-sphere-viewer/core":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.module.js","@photo-sphere-viewer/markers-plugin":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.module.js"}}</script>

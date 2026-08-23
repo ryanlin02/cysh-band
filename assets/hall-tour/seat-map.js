@@ -218,7 +218,8 @@ export function createSeatMap(container, opts = {}) {
       const t = el('text', { x: cx, y: cy + MARKER_R * 0.36, 'text-anchor': 'middle',
                              'font-size': MARKER_R * 1.05, 'font-weight': 600,
                              fill: COLORS.selected });
-      t.textContent = i + 1;
+      // 呼叫端可提供跨樓層／跨區仍一致的顯示編號；未提供時維持清單順序。
+      t.textContent = m.n ?? i + 1;
       g.appendChild(t);
 
       const fire = () => onPick && onPick(m);

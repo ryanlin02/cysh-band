@@ -32,7 +32,7 @@ def process(job):
 
     return {
         "id": node_id,
-        "name": f"地下室休息室 {index + 1:02d}",
+        "name": f"演出團隊休息區 {index + 1:02d}",
         "floor": "B1",
         "source": source.name,
         "sizeKB": sizes,

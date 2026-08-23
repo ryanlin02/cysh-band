@@ -86,13 +86,19 @@ export function linksFor(node, region, ctx) {
     const out = manual.map(l => {
       const t = nodesById && nodesById.get(l.to);
       const b = (region.boundaries || []).find(x => x.node === node.id && x.toNode === l.to);
-      const idx = region.nodes.findIndex(x => x.id === l.to);
+      const targetRegion = b
+        ? regionsById.get(b.to)
+        : [...(regionsById?.values?.() || [])].find(candidate =>
+            (candidate.nodes || []).some(target => target.id === l.to));
+      const targetRegionId = targetRegion?.id || region.id;
+      const crossRegion = targetRegionId !== region.id;
+      const idx = (targetRegion?.nodes || region.nodes).findIndex(x => x.id === l.to);
       return {
         id: l.to,
-        region: b ? b.to : region.id,
+        region: targetRegionId,
         label: b ? b.label : (t ? t.name : l.to),
-        num: idx >= 0 ? idx + 1 : undefined,
-        kind: b ? 'boundary' : 'move',
+        num: !crossRegion && idx >= 0 ? idx + 1 : undefined,
+        kind: b || crossRegion ? 'boundary' : 'move',
         yaw: norm360(l.yaw),
         pitch: l.pitch,
         manual: true,
@@ -177,18 +183,25 @@ function boundaryLink(node, b, nodesById, region) {
 }
 
 /** 產生 MarkersPlugin 用的設定 */
+const escapeAttr = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+})[char]);
+
 export function toMarkers(links) {
   return links.map((l, i) => {
     const boundary = l.kind === 'boundary';
-    const r = boundary ? 26 : 22;
+    const accessibleLabel = boundary
+      ? l.label
+      : `前往 ${l.num != null ? `${l.num}. ` : ''}${l.label}`;
     return {
       id: `link-${i}`,
       position: { yaw: `${l.yaw}deg`, pitch: `${l.pitch}deg` },
-      html: `<div class="tour-dot${boundary ? ' is-boundary' : ''}">
+      html: `<button type="button" class="tour-dot${boundary ? ' is-boundary' : ''}" aria-label="${escapeAttr(accessibleLabel)}">
                <span class="tour-dot-ring">${!boundary && l.num != null ? l.num : ''}</span>
                ${boundary ? `<span class="tour-dot-label">${l.label}</span>` : ''}
-             </div>`,
-      size: { width: r * 2, height: r * 2 },
+             </button>`,
+      // 可見圓圈縮為 30px，但保留 44px 點擊範圍，兼顧密集畫面與手機操作。
+      size: { width: 44, height: 44 },
       anchor: 'center center',
       tooltip: boundary ? null : (l.num != null ? `${l.num}. ${l.label}` : l.label),
       data: l,
@@ -196,17 +209,69 @@ export function toMarkers(links) {
   });
 }
 
+/** 產生可開啟文字說明的資訊點。 */
+export function toInfoMarkers(hotspots = []) {
+  return hotspots.map((hotspot, index) => ({
+    id: `info-${hotspot.id || index}`,
+    position: { yaw: `${hotspot.yaw}deg`, pitch: `${hotspot.pitch}deg` },
+    html: `<button type="button" class="tour-info-dot" aria-label="了解${escapeAttr(hotspot.title || '這個位置')}">
+             <span class="tour-info-dot-ring" aria-hidden="true">i</span>
+           </button>`,
+    size: { width: 44, height: 44 },
+    anchor: 'center center',
+    tooltip: hotspot.title || '空間資訊',
+    data: { kind: 'info', info: hotspot },
+  }));
+}
+
+/** 以網站主視覺遮住環景正下方的腳架，不修改原始照片。 */
+export function nadirMarker(imageUrl) {
+  return {
+    id: 'nadir-cap',
+    position: { yaw: '0deg', pitch: '-90deg' },
+    html: `<span class="tour-nadir-cap"><img src="${imageUrl}" alt="" draggable="false"></span>`,
+    size: { width: 156, height: 156 },
+    anchor: 'center center',
+    tooltip: null,
+    data: null,
+  };
+}
+
 export const TOUR_DOT_CSS = `
-.tour-dot{position:relative;width:100%;height:100%;cursor:pointer}
-.tour-dot-ring{position:absolute;inset:0;border-radius:50%;
-  background:rgba(255,253,249,.92);border:2.5px solid #8c2f28;
-  box-shadow:0 2px 10px rgba(0,0,0,.35);transition:transform .15s;
+.tour-dot{position:relative;width:100%;height:100%;padding:0;border:0;background:transparent;
+  color:inherit;font:inherit;cursor:pointer;touch-action:manipulation}
+.tour-dot-ring{position:absolute;inset:7px;border-radius:50%;
+  background:rgba(255,253,249,.84);border:2px solid rgba(140,47,40,.9);
+  box-shadow:0 2px 8px rgba(0,0,0,.34);
+  transition:transform .18s cubic-bezier(.2,.8,.2,1),background-color .18s,border-color .18s,box-shadow .18s;
   display:flex;align-items:center;justify-content:center;
-  color:#8c2f28;font-size:15px;font-weight:600;line-height:1}
-.tour-dot:hover .tour-dot-ring{transform:scale(1.18)}
-.tour-dot.is-boundary .tour-dot-ring{background:#8c2f28;border-color:rgba(255,253,249,.92)}
+  color:#8c2f28;font-size:16px;font-weight:750;line-height:1;font-variant-numeric:tabular-nums}
+.tour-dot:hover .tour-dot-ring,.tour-dot:focus-visible .tour-dot-ring,.psv-marker:focus-visible .tour-dot-ring{
+  transform:scale(1.12);background:rgba(255,253,249,.98);border-color:#8c2f28;
+  box-shadow:0 4px 13px rgba(0,0,0,.42)}
+.tour-dot:active .tour-dot-ring{transform:scale(.92);background:#8c2f28;color:#fffdf9}
+.tour-dot.is-boundary .tour-dot-ring{background:rgba(140,47,40,.86);border-color:rgba(255,253,249,.86)}
 .tour-dot.is-boundary .tour-dot-ring{color:#fffdf9}
-.tour-dot-label{position:absolute;left:50%;top:112%;transform:translateX(-50%);
+.tour-dot.is-boundary:hover .tour-dot-ring,.tour-dot.is-boundary:focus-visible .tour-dot-ring,.psv-marker:focus-visible .tour-dot.is-boundary .tour-dot-ring{
+  background:rgba(140,47,40,.98);border-color:#fffdf9}
+.tour-dot-label{position:absolute;left:50%;top:100%;transform:translateX(-50%);
   white-space:nowrap;background:#8c2f28;color:#fffdf9;font-size:12.5px;
   padding:3px 10px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.tour-info-dot{position:relative;width:100%;height:100%;padding:0;border:0;background:transparent;
+  color:inherit;font:inherit;cursor:pointer;touch-action:manipulation}
+.tour-info-dot-ring{position:absolute;inset:7px;display:flex;align-items:center;justify-content:center;
+  border:2px solid rgba(255,255,255,.88);border-radius:50%;background:rgba(35,76,98,.84);
+  color:#fff;font:800 17px/1 Georgia,serif;box-shadow:0 2px 8px rgba(0,0,0,.34);
+  transition:transform .18s cubic-bezier(.2,.8,.2,1),background-color .18s,box-shadow .18s}
+.tour-info-dot:hover .tour-info-dot-ring,.tour-info-dot:focus-visible .tour-info-dot-ring{
+  transform:scale(1.12);background:rgba(35,76,98,.98);box-shadow:0 4px 13px rgba(0,0,0,.42)}
+.tour-info-dot:active .tour-info-dot-ring{transform:scale(.92);background:#173b4e}
+@media (prefers-reduced-motion:reduce){.tour-dot-ring,.tour-info-dot-ring{transition-duration:.01ms}}
+`;
+
+export const NADIR_CAP_CSS = `
+.tour-nadir-cap{display:grid;width:100%;height:100%;place-items:center;overflow:hidden;
+  border:5px solid rgba(255,253,249,.92);border-radius:50%;background:#172532;
+  box-shadow:0 3px 18px rgba(0,0,0,.42);pointer-events:none;user-select:none}
+.tour-nadir-cap img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
 `;

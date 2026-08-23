@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>音樂廳 360 導覽｜整合標注工具</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.min.css">
+  <link rel="stylesheet" href="/editor.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">僅在這台電腦使用 · 不會上傳或發布</p>
+        <h1>音樂廳 360 導覽｜整合標注工具</h1>
+      </div>
+      <div class="save-cluster">
+        <span class="save-state" id="saveState">讀取中…</span>
+        <button class="button button-primary" id="saveButton" type="button">正式儲存</button>
+      </div>
+    </header>
+
+    <section class="progress-strip" aria-label="標注進度">
+      <span id="progressPosition">位置 0/0</span>
+      <span id="progressHeading">方向 0/0</span>
+      <span id="progressLinks">動線 0/0</span>
+      <span id="progressDescriptions">介紹 0/0</span>
+      <span id="progressInfo">資訊點 0</span>
+      <span id="progressCrossLinks">跨場景動線 0</span>
+      <span id="progressConnectionIssues">待補返回 0</span>
+      <span id="progressDenseScenes">連線過密 0</span>
+    </section>
+
+    <div class="workspace">
+      <aside class="panel scene-panel" aria-label="照片點位清單">
+        <div class="panel-heading">
+          <div>
+            <h2>照片點位</h2>
+            <p id="areaSummary">選擇一個區域</p>
+          </div>
+          <select id="statusFilter" aria-label="篩選完成狀態">
+            <option value="all">全部</option>
+            <option value="todo">尚未完成定位</option>
+            <option value="done">已完成定位</option>
+            <option value="connection-issues">動線需檢查</option>
+            <option value="cross-region">有跨場景動線</option>
+            <option value="dense">連線過多（超過 12）</option>
+          </select>
+        </div>
+        <nav class="area-tabs" id="areaTabs" aria-label="選擇區域"></nav>
+        <div class="scene-list" id="sceneList"></div>
+      </aside>
+
+      <section class="panel viewer-panel">
+        <div class="viewer-heading">
+          <div>
+            <p class="node-kicker" id="nodeKicker"></p>
+            <h2 id="nodeTitle">讀取中…</h2>
+          </div>
+          <span class="source-name" id="sourceName"></span>
+        </div>
+        <div id="viewer" aria-label="目前 360 環景照片"></div>
+        <div class="viewer-load-status" id="viewerLoadStatus" role="status" aria-live="polite" hidden>
+          <span id="viewerLoadMessage"></span>
+          <button class="text-button" id="retryPanoramaButton" type="button">重新載入照片</button>
+        </div>
+        <div class="viewer-controls">
+          <button class="button" id="previousButton" type="button">← 上一張</button>
+          <button class="button" id="nextButton" type="button">下一張 →</button>
+          <button class="button button-accent grow" id="headingButton" type="button">把目前畫面設為平面圖上方</button>
+          <span class="compact-status" id="headingStatus">尚未設定</span>
+        </div>
+        <div class="viewer-controls secondary-controls">
+          <button class="button" id="entryNodeButton" type="button">設為本區開場點</button>
+          <button class="button" id="entryViewButton" type="button">以目前畫面作為開場視角</button>
+          <span class="compact-status" id="entryStatus"></span>
+        </div>
+      </section>
+
+      <aside class="panel edit-panel">
+        <div class="edit-tabs" role="tablist" aria-label="標注功能">
+          <button class="edit-tab is-active" data-tab="position" role="tab" aria-selected="true">定位</button>
+          <button class="edit-tab" data-tab="links" role="tab" aria-selected="false">動線</button>
+          <button class="edit-tab" data-tab="content" role="tab" aria-selected="false">內容</button>
+        </div>
+
+        <section class="spatial-reference" id="spatialReference" aria-labelledby="positionTitle">
+          <div class="reference-heading">
+            <div>
+              <p class="reference-kicker">三個分頁共用</p>
+              <h2 id="positionTitle">空間參考</h2>
+            </div>
+            <div class="reference-actions">
+              <label class="compact-field">
+                <span>參考區域</span>
+                <select id="referenceAreaSelect" aria-label="切換空間參考區域"></select>
+              </label>
+              <button class="text-button" id="toggleReferenceButton" type="button" aria-expanded="true" aria-controls="referenceBody">收合</button>
+            </div>
+          </div>
+          <div class="reference-body" id="referenceBody">
+            <p class="reference-mode-hint" id="referenceModeHint"></p>
+            <p class="help" id="positionHelp"></p>
+            <p class="notice" id="planNote" hidden></p>
+            <div class="seat-map-frame" id="seatMapFrame" hidden>
+              <div id="seatMap"></div>
+            </div>
+            <div class="plan-frame" id="planFrame">
+              <div class="plan-canvas" id="planCanvas">
+                <img id="planImage" alt="目前區域平面圖">
+                <div class="plan-markers" id="planMarkers"></div>
+              </div>
+            </div>
+            <div class="reference-footer">
+              <p class="compact-status" id="positionStatus">尚未定位</p>
+              <button class="text-button danger" id="clearPositionButton" type="button">清除目前定位</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="tab-page is-active" id="tab-position" role="tabpanel">
+          <h2>定位與方向</h2>
+          <p class="help">直接使用上方空間參考標示目前照片的位置，再把環景轉到圖面正上方所代表的方向，設定圖面上方。</p>
+          <p class="notice">切到「動線」或「內容」後，空間參考仍會保留，不必來回切換分頁。</p>
+        </section>
+
+        <section class="tab-page" id="tab-links" role="tabpanel" hidden>
+          <h2>在環景中放移動圓點</h2>
+          <p class="help">先選目標，再點左側環景中的門口、走道或前進方向。圓點會保留數字編號。</p>
+          <p class="notice cross-region-note">可以連到其他區域，例如觀眾席與舞台；請只建立現場實際互通的路線，並在兩端各放一次返回連線。</p>
+          <section class="connection-audit" aria-labelledby="connectionAuditTitle">
+            <div class="section-heading connection-heading">
+              <div>
+                <h3 id="connectionAuditTitle">目前點位連線檢查</h3>
+                <p class="help">數量會隨標註即時更新；「同場景」包含同一空間的一、二樓。</p>
+              </div>
+            </div>
+            <div class="connection-metrics" aria-label="目前點位連線統計">
+              <div><strong id="connectionSame">0</strong><span>同場景</span></div>
+              <div><strong id="connectionCross">0</strong><span>跨場景</span></div>
+              <div><strong id="connectionIncoming">0</strong><span>傳入</span></div>
+              <div><strong id="connectionReciprocal">0</strong><span>已雙向</span></div>
+              <div><strong id="connectionMissing">0</strong><span>待補返回</span></div>
+            </div>
+            <p class="connection-alert" id="connectionAlert" role="status"></p>
+            <div class="connection-breakdown" id="connectionBreakdown"></div>
+            <div class="return-issue-list" id="returnIssueList"></div>
+          </section>
+          <p class="direct-pick-note">最快方式：直接點上方座位圖或平面圖中的編號；確認縮圖後，再點環景中的實際通行方向。</p>
+          <div class="quick-links">
+            <button class="button" id="linkPreviousButton" type="button">放「上一張」</button>
+            <button class="button" id="linkNextButton" type="button">放「下一張」</button>
+          </div>
+          <label class="field">
+            <span>目標區域</span>
+            <select id="targetAreaSelect"></select>
+          </label>
+          <label class="field">
+            <span>目標點位</span>
+            <select id="otherNodeSelect"></select>
+          </label>
+          <article class="target-preview" id="targetPreviewCard" hidden>
+            <img id="targetPreviewImage" alt="">
+            <div>
+              <span id="targetPreviewMeta"></span>
+              <strong id="targetPreviewName"></strong>
+            </div>
+          </article>
+          <button class="button full" id="linkOtherButton" type="button">在環景中放選取點位</button>
+          <p class="placing-message" id="placingMessage" hidden></p>
+          <div class="item-list" id="linkList"></div>
+        </section>
+
+        <section class="tab-page" id="tab-content" role="tabpanel" hidden>
+          <h2>名稱、介紹與資訊點</h2>
+          <label class="field">
+            <span>點位名稱</span>
+            <input id="nameInput" autocomplete="off">
+          </label>
+          <label class="field" id="spaceTypeField" hidden>
+            <span>空間分類</span>
+            <select id="spaceTypeSelect">
+              <option>待分類</option>
+              <option>舞台</option>
+              <option>樂池</option>
+              <option>貴賓休息室</option>
+              <option>走道或銜接空間</option>
+              <option>其他</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>環境介紹</span>
+            <textarea id="descriptionInput" rows="5" placeholder="可先留白；之後由 Codex 依正式資料起草，再交文化局確認。"></textarea>
+          </label>
+          <label class="field">
+            <span>內部備註（不公開）</span>
+            <textarea id="notesInput" rows="2" placeholder="例如：這張在舞台左側、通往 7 號。"></textarea>
+          </label>
+          <div class="section-heading info-heading">
+            <div>
+              <h3>可點擊資訊點</h3>
+              <p class="help">按新增後，再點環景中要標示的位置。</p>
+            </div>
+            <button class="button" id="addInfoButton" type="button">＋ 新增資訊點</button>
+          </div>
+          <div class="item-list" id="infoList"></div>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="footer-note">建議順序：先完成位置與正面方向，再標動線；介紹文字與資訊點可最後統一整理。瀏覽器會暫存未正式儲存的內容。</footer>
+  </main>
+
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js","@photo-sphere-viewer/core":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core@5.15.1/index.module.js","@photo-sphere-viewer/markers-plugin":"https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/markers-plugin@5.15.1/index.module.js"}}</script>
+  <script type="module" src="/editor.js"></script>
+</body>
+</html>

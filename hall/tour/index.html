@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>360 環景導覽｜嘉義市政府文化局音樂廳</title>
-<meta name="description" content="嘉義市政府文化局音樂廳 360 度環景導覽，共 83 個場景。961 席，可售 951 席。">
+<meta name="description" content="嘉義市政府文化局音樂廳 360 度環景導覽，共 138 個場景。961 席，可售 951 席。">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#171310">
 <link rel="canonical" href="https://cysh.band/hall/tour/">
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="嘉義高中管樂隊暨校友管樂團">
 <meta property="og:title" content="360 環景導覽｜嘉義市政府文化局音樂廳">
-<meta property="og:description" content="嘉義市政府文化局音樂廳 360 度環景導覽，共 83 個場景。961 席，可售 951 席。">
+<meta property="og:description" content="嘉義市政府文化局音樂廳 360 度環景導覽，共 138 個場景。961 席，可售 951 席。">
 <meta property="og:url" content="https://cysh.band/hall/tour/">
 <meta property="og:image" content="https://cysh.band/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -125,6 +125,8 @@
   .info-card p{margin:0;font-size:14px;color:var(--muted)}
   .info-card p+p{margin-top:7px}
   .testing-note{border-left:3px solid var(--accent);padding-left:11px}
+  .hotspot-card{border-left:3px solid #234c62;padding-left:11px;background:#f4fafc}
+  .hotspot-card .hotspot-kicker{display:block;margin-bottom:3px;color:#234c62;font-size:11px;font-weight:750;letter-spacing:.08em}
   .scene-info{margin-bottom:14px}
   .scene-info b{display:block;font-size:17px;font-weight:650}
   .scene-info span{display:block;font-size:13px;color:var(--muted)}
@@ -251,10 +253,11 @@
       </div>
       <div class="panel-view" data-panel-view="info" hidden>
         <div class="scene-info"><b id="infoSceneName">目前場景</b><span id="infoScenePos"></span><p class="desc" id="nowDesc"></p></div>
-        <div class="info-card testing-note"><h3>目前開放範圍</h3><p>目前開放音樂廳前台、觀眾席與演出團隊休息區；舞台與後台入口尚未開放。</p></div>
+        <div class="info-card hotspot-card" id="hotspotCard" hidden><span class="hotspot-kicker">空間重點</span><h3 id="hotspotTitle"></h3><p id="hotspotBody"></p></div>
+        <div class="info-card testing-note"><h3>目前開放範圍</h3><p>目前可瀏覽音樂廳前廳一、二樓、觀眾席一、二樓、舞台與貴賓室，以及演出團隊休息區。</p></div>
         <div class="info-card"><h3>操作方式</h3><p>用手指拖曳或滑鼠轉動視角，點畫面中的圓點前往下一個拍攝位置；手機也可自行開啟「感應」模式。</p></div>
         <div class="info-card"><h3>關於本頁</h3><p>本頁為嘉義市政府文化局音樂廳 360 導覽，提供場地空間與動線的環景瀏覽。</p></div>
-        <p class="updated">資料更新：2026-08-07</p>
+        <p class="updated">資料更新：2026-08-23</p>
       </div>
     </div>
   </section>
@@ -284,12 +287,12 @@ import { Viewer } from '@photo-sphere-viewer/core';
 import { GyroscopePlugin } from '@photo-sphere-viewer/gyroscope-plugin';
 import { MarkersPlugin } from '@photo-sphere-viewer/markers-plugin';
 // 版本標記由產生器依資料內容更新，避免 GitHub Pages 混用舊快取。
-import { TOUR } from '../../data/tour.js?v=4a5daa4e94ec';
-import { TOUR_ENTRY_VIEWS } from '../../data/tour-entry-views.js?v=a5dfc597849a';
+import { TOUR } from '../../data/tour.js?v=a7a4a0ccbf1e';
+import { TOUR_ENTRY_VIEWS } from '../../data/tour-entry-views.js?v=420001f63c86';
 import { HALL_SEATS } from '../../data/hall-seats.js';
 import { createSeatMap, SEAT_MAP_CSS } from '../../assets/hall-tour/seat-map.js';
 import { createPlanMap, PLAN_MAP_CSS } from '../../assets/hall-tour/plan-map.js';
-import { linksFor, toMarkers, TOUR_DOT_CSS } from '../../assets/hall-tour/links.js';
+import { linksFor, toMarkers, toInfoMarkers, TOUR_DOT_CSS, nadirMarker, NADIR_CAP_CSS } from '../../assets/hall-tour/links.js?v=20260823-interactive-dots';
 
 const REDUCED_MOTION = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const IS_COMPACT = () => matchMedia('(max-width: 899px)').matches;
@@ -375,13 +378,15 @@ document.addEventListener('keydown', event => {
   shell.addEventListener(type, wakeControls, { passive: true }));
 
 document.head.appendChild(Object.assign(document.createElement('style'),
-  { textContent: SEAT_MAP_CSS + PLAN_MAP_CSS + TOUR_DOT_CSS }));
+  { textContent: SEAT_MAP_CSS + PLAN_MAP_CSS + TOUR_DOT_CSS + NADIR_CAP_CSS }));
 
 // ── Stage A 實測定案的設定，改動前請看維護手冊 ──────────────
 const gl = document.createElement('canvas').getContext('webgl2')
         || document.createElement('canvas').getContext('webgl');
 const maxTex = gl ? gl.getParameter(gl.MAX_TEXTURE_SIZE) : 4096;
-const TIER = maxTex >= 16384 ? 'full' : maxTex >= 8192 ? 'mid' : 'preview';
+// 一般導覽以 4096px 為畫質上限；在手機與一般桌機已足夠清楚，
+// 同時避免 6144px 圖片拖慢場景切換與增加不必要流量。
+const TIER = maxTex >= 8192 ? 'mid' : 'preview';
 
 const regions = TOUR.regions
   .filter(r => r.status === 'ready' && r.nodes.length)
@@ -528,13 +533,23 @@ TOUR.regions.forEach(r => {
 function refreshDots() {
   if (!markersPlugin) return;
   markersPlugin.clearMarkers();
+  markersPlugin.addMarker(nadirMarker('../../assets/img/icon-512.png'));
   const links = linksFor(region.nodes[cur], region, { seatPos: SEAT_POS, regionsById, nodesById });
   toMarkers(links).forEach(m => markersPlugin.addMarker(m));
+  toInfoMarkers(region.nodes[cur].hotspots || []).forEach(m => markersPlugin.addMarker(m));
 }
 
 markersPlugin && markersPlugin.addEventListener('select-marker', e => {
   const l = e.marker.data;
   if (!l) return;
+  if (l.kind === 'info') {
+    const info = l.info || {};
+    document.getElementById('hotspotTitle').textContent = info.title || '空間資訊';
+    document.getElementById('hotspotBody').textContent = info.body || '';
+    document.getElementById('hotspotCard').hidden = false;
+    openPanel('info', document.getElementById('infoBtn'));
+    return;
+  }
   if (l.region !== region.id) {
     const r = regionsById.get(l.region);
     const i = l.id ? r.nodes.findIndex(n => n.id === l.id) : 0;
@@ -745,6 +760,7 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
   document.getElementById('infoSceneName').textContent = n.name;
   document.getElementById('infoScenePos').textContent = positionText;
   document.getElementById('nowDesc').textContent = n.description || '';
+  document.getElementById('hotspotCard').hidden = true;
   refreshMap();
 
   const entryView = options?.entryView;
@@ -791,6 +807,8 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
     viewer.rotate({ yaw: startYaw, pitch: startPitch });
   }
   loadedPano = previewSrc;
+  // 預覽圖淡入完成後立即恢復移動點位，不必等待較大的清晰版本下載完。
+  refreshDots();
 
   const hi = viewerSrcOf(region, n, TIER);
   if (hi !== loadedPano) {
@@ -799,8 +817,8 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
       transition: false, showLoader: false, caption: n.name,
     });
     loadedPano = hi;
+    refreshDots();
   }
-  refreshDots();
 }
 
 buildSceneMenu();
