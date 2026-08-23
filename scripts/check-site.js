@@ -6,6 +6,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const { hasUnlinkedPeopleNames } = require('./lib/people-auto-link');
 const { createAlumniRosterResolver, cleanName } = require('./lib/alumni-roster');
+const { isChiayiCultureHallVenue } = require('./lib/hall-tour-venue');
 
 const root = path.join(__dirname, '..');
 const errors = [];
@@ -697,6 +698,33 @@ function checkAnalyticsTracking() {
   info.push(`Analytics tracking checked: ${concertPages.length} concert detail pages; OPENTIX links are marked for ticket_click.`);
 }
 
+function checkConcertVenueTourLinks() {
+  const concerts = global.CONCERTS || [];
+  let expectedLinks = 0;
+  let matchingPages = 0;
+
+  for (const concert of concerts) {
+    if (!concert?.page || concert.status === 'cancelled' || !exists(concert.page)) continue;
+    const expected = [isChiayiCultureHallVenue(`${concert.venue || ''} ${concert.venueNote || ''}`),
+      ...(concert.sessions || []).map((session) => isChiayiCultureHallVenue(session.venue))]
+      .filter(Boolean).length;
+    if (!expected) continue;
+
+    matchingPages += 1;
+    expectedLinks += expected;
+    const html = read(concert.page);
+    const actual = (html.match(/class=["'][^"']*\bvenue-tour-link\b[^"']*["']/g) || []).length;
+    if (actual !== expected) {
+      addError(`${concert.page}: expected ${expected} hall-tour link(s) from venue data, found ${actual}.`);
+    }
+    if (!html.includes('href="../hall/tour/"') || !html.includes('開啟嘉義市政府文化局音樂廳線上導覽')) {
+      addError(`${concert.page}: hall-tour link must use the formal local URL and accessible label.`);
+    }
+  }
+
+  info.push(`Concert venue tour links checked: ${matchingPages} pages; ${expectedLinks} contextual links`);
+}
+
 function checkSitemapAndFeed() {
   const sitemapUrls = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   const omittedFromSitemapUrls = new Set([
@@ -1255,6 +1283,7 @@ checkAboutPageImages();
 checkSharedChromeConsistency();
 checkConcertProgramBooks();
 checkAnalyticsTracking();
+checkConcertVenueTourLinks();
 checkSitemapAndFeed();
 checkMemberAccessPrivacy();
 checkStructuredData();

@@ -8,6 +8,7 @@ const path = require('path');
 const vm = require('vm');
 const { autoLinkHtml } = require('./lib/people-auto-link');
 const { createAlumniRosterResolver } = require('./lib/alumni-roster');
+const { isChiayiCultureHallVenue } = require('./lib/hall-tour-venue');
 const { createRenderer } = require('./lib/site-template');
 const { syncSharedChrome } = require('./sync-shared-chrome');
 
@@ -384,7 +385,7 @@ function concertInfoTable(concert) {
     ['主題', `${escapeHtml(displayTitle(concert))}${concert.subtitle ? `｜${escapeHtml(concert.subtitle)}` : ''}${concert.aliases && concert.aliases.length ? `<br><span class="muted">別名：${concert.aliases.map(escapeHtml).join('、')}</span>` : ''}`],
     ...(concert.date ? [['日期', formatDateRange(concert)]] : []),
     ...(concert.time ? [['時間', escapeHtml(concert.time)]] : []),
-    ...(concert.venue ? [['場地', `${escapeHtml(concert.venue)}${concert.id === '2026-41st' ? ' <a class="venue-tour-link" href="../hall/tour/" aria-label="開啟嘉義市政府文化局音樂廳線上導覽">線上導覽</a>' : ''}${concert.venueNote ? `<br><span class="muted">${escapeHtml(concert.venueNote)}</span>` : ''}`]] : []),
+    ...(concert.venue ? [['場地', `${venueWithTourLink(concert.venue, concert.venueNote)}${concert.venueNote ? `<br><span class="muted">${escapeHtml(concert.venueNote)}</span>` : ''}`]] : []),
     ...(concert.conductors && concert.conductors.length ? [['指揮', listPeople(concert.conductors)]] : []),
     ...(concert.soloists && concert.soloists.length ? [['獨奏／協奏', listPeople(concert.soloists)]] : []),
     ...(concert.hostHead ? [['籌辦字頭', escapeHtml(concert.hostHead)]] : []),
@@ -396,6 +397,12 @@ function concertInfoTable(concert) {
   return `<div class="table-scroll"><table class="plain">
       ${rows.map(([label, value]) => `<tr><th>${label}</th><td>${value}</td></tr>`).join('\n      ')}
     </table></div>`;
+}
+
+function venueWithTourLink(venue, context = '') {
+  const venueText = escapeHtml(venue || '待考');
+  if (!isChiayiCultureHallVenue(`${venue} ${context}`)) return venueText;
+  return `${venueText} <a class="venue-tour-link" href="../hall/tour/" aria-label="開啟嘉義市政府文化局音樂廳線上導覽">線上導覽</a>`;
 }
 
 function programList(program, concert = {}) {
@@ -465,7 +472,7 @@ function sessionsTable(sessions) {
       <dl class="session-meta">
         <div><dt>日期</dt><dd>${formatDate(session.date)}</dd></div>
         <div><dt>時間</dt><dd>${escapeHtml(session.time || '待考')}</dd></div>
-        <div><dt>場地</dt><dd>${escapeHtml(session.venue || '待考')}</dd></div>
+        <div><dt>場地</dt><dd>${venueWithTourLink(session.venue || '待考')}</dd></div>
         <div><dt>指揮</dt><dd>${session.conductor ? itemText({ ...session.conductor, role: '指揮' }) : '待考'}</dd></div>
       </dl>
     </div>`).join('\n');
@@ -800,7 +807,7 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=20260806-venue-tour-link-v1">
+<link rel="stylesheet" href="../css/style.css?v=20260822-nav-login">
 <link rel="stylesheet" href="../css/venue-tour-link.css?v=20260807-compact-v1">
 <script src="../js/main.js" defer></script>
 </head>
