@@ -1237,7 +1237,8 @@ function checkHallTour() {
     addError('hall/tour/index.html: gyroscope must remain user-initiated, smoothed, and horizon-stable.');
   }
   if (!html.includes("floorBar.className = 'planmap-bar seatmap-floor-bar'") ||
-      !html.includes("region.id === 'stage'")) {
+      !html.includes("region.id === 'stage'") ||
+      !html.includes('plan-map.js?v=20260823-floor-controls')) {
     addError('hall/tour/index.html: auditorium floor switch or stage single-floor map is missing.');
   }
   if (!html.includes('let gyroRequested = false') || !html.includes('navigationInProgress && gyroRequested')) {
