@@ -867,6 +867,8 @@ let sceneTransitionTimer = null;
 let hiUpgradeToken = 0;
 let hiUpgradeTimer = null;
 let hiPreloader = null;
+let hiUpgradeInProgress = false;
+let hiUpgradeDisabled = false;
 const FORWARD_PUSH_ZOOM = 6;
 const FORWARD_PUSH_DURATION = 150;
 
@@ -901,6 +903,7 @@ function cancelHiUpgrade() {
 // 預覽圖先讓使用者立即抵達。4096px 版本只在連線條件合適、沒有開啟
 // 陀螺儀且使用者停留一段時間後於背景預載，避免高清下載卡住下一次移動。
 function scheduleHiUpgrade(targetRegion, targetNode, previewSrc) {
+  if (hiUpgradeDisabled) return;
   const hi = viewerSrcOf(targetRegion, targetNode, TIER);
   if (hi === previewSrc) return;
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
@@ -910,6 +913,9 @@ function scheduleHiUpgrade(targetRegion, targetNode, previewSrc) {
     if (token !== hiUpgradeToken || gyroRequested || navigationInProgress) return;
     const image = new Image();
     hiPreloader = image;
+    // R2 回應依 Origin 分流。預載也必須使用 CORS 模式，否則部分瀏覽器
+    // 可能先快取不含 CORS 標頭的版本，之後交給 WebGL 時反而載入失敗。
+    image.crossOrigin = 'anonymous';
     image.decoding = 'async';
     image.onload = () => {
       hiPreloader = null;
@@ -917,14 +923,33 @@ function scheduleHiUpgrade(targetRegion, targetNode, previewSrc) {
         if (token !== hiUpgradeToken || gyroRequested || navigationInProgress ||
             region !== targetRegion || region.nodes[cur]?.id !== targetNode.id) return;
         try {
-          await viewer.setPanorama(hi, { transition: false, showLoader: false, caption: targetNode.name });
-          if (token !== hiUpgradeToken) return;
+          hiUpgradeInProgress = true;
+          const upgraded = await viewer.setPanorama(hi, {
+            transition: false,
+            showLoader: false,
+            caption: targetNode.name,
+          });
+          if (!upgraded || token !== hiUpgradeToken) return;
           loadedPano = hi;
+          viewer.hideError();
           refreshDots();
-        } catch (_) {}
+        } catch (error) {
+          // 高清只是加值，不可讓它的失敗蓋住已可使用的 2048px 預覽。
+          // 本工作階段停止後續高清升級，保留目前畫面與導覽操作。
+          hiUpgradeDisabled = true;
+          loadedPano = previewSrc;
+          viewer.hideError();
+          refreshDots();
+          console.warn('高清環景升級失敗，已保留預覽畫面', error);
+        } finally {
+          hiUpgradeInProgress = false;
+        }
       });
     };
-    image.onerror = () => { hiPreloader = null; };
+    image.onerror = () => {
+      hiPreloader = null;
+      hiUpgradeDisabled = true;
+    };
     image.src = hi;
   }, 900);
 }
@@ -1084,7 +1109,16 @@ viewer.addEventListener('ready', async () => {
   wakeControls();
   maybeScheduleGyroIntro();
 }, { once: true });
-viewer.addEventListener('panorama-error', e => console.error('全景載入失敗', e.error));
+viewer.addEventListener('panorama-error', e => {
+  if (hiUpgradeInProgress) {
+    // Photo Sphere Viewer 會把任何 setPanorama 失敗當成致命錯誤覆蓋畫面；
+    // 背景高清升級失敗時舊預覽仍有效，因此立即隱藏錯誤覆蓋層。
+    viewer.hideError();
+    console.warn('高清環景升級失敗，已保留預覽畫面', e.error);
+    return;
+  }
+  console.error('全景載入失敗', e.error);
+});
 </script>
 </body>
 </html>

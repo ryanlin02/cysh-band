@@ -1257,6 +1257,10 @@ function checkHallTour() {
       !html.includes('id="sceneTransition"') || !html.includes('scheduleHiUpgrade')) {
     addError('hall/tour/index.html: first-session opening or progressive scene transition is incomplete.');
   }
+  if (!html.includes("image.crossOrigin = 'anonymous'") ||
+      !html.includes('hiUpgradeDisabled = true') || !html.includes('viewer.hideError()')) {
+    addError('hall/tour/index.html: optional high-resolution upgrades must preserve the usable preview on failure.');
+  }
   if (!html.includes("panel.dataset.size = name === 'scenes' || name === 'map' ? 'full' : 'sheet'")) {
     addError('hall/tour/index.html: mobile scene and map panels must remain full-screen.');
   }
