@@ -1202,12 +1202,19 @@ function checkHallTour() {
     'hall/tour/index.html',
     'assets/hall-tour/links.js',
     'assets/hall-tour/plan-map.js',
-    'assets/hall-tour/seat-map.js'
+    'assets/hall-tour/seat-map.js',
+    'assets/hall-tour/opening/hall-fly-in-2x.mp4',
+    'assets/hall-tour/opening/hall-fly-in-poster.webp'
   ];
   required.forEach((file) => {
     if (!exists(file)) addError(`Hall tour required file missing: ${file}`);
   });
   if (!required.every(exists)) return;
+  const openingVideoBytes = fs.statSync(path.join(root, 'assets/hall-tour/opening/hall-fly-in-2x.mp4')).size;
+  const openingPosterBytes = fs.statSync(path.join(root, 'assets/hall-tour/opening/hall-fly-in-poster.webp')).size;
+  if (openingVideoBytes > 2 * 1024 * 1024 || openingPosterBytes > 150 * 1024) {
+    addError('Hall tour opening assets exceed the low-bandwidth budget (2 MiB video / 150 KiB poster).');
+  }
 
   const result = spawnSync(process.execPath, ['scripts/generate-tour.js', '--check'], {
     cwd: root,
@@ -1241,8 +1248,14 @@ function checkHallTour() {
       !html.includes('plan-map.js?v=20260823-floor-controls')) {
     addError('hall/tour/index.html: auditorium floor switch or stage single-floor map is missing.');
   }
-  if (!html.includes('let gyroRequested = false') || !html.includes('navigationInProgress && gyroRequested')) {
+  if (!html.includes('let gyroRequested = false') || !html.includes('const restoreGyroscope = gyroRequested') ||
+      !html.includes('await resumeGyroscope()')) {
     addError('hall/tour/index.html: gyroscope intent must persist across panorama changes.');
+  }
+  if (!html.includes("sessionStorage.getItem('hall-tour-opening-v1')") ||
+      !html.includes('hall-fly-in-2x.mp4') || !html.includes('id="openingSkip"') ||
+      !html.includes('id="sceneTransition"') || !html.includes('scheduleHiUpgrade')) {
+    addError('hall/tour/index.html: first-session opening or progressive scene transition is incomplete.');
   }
   if (!html.includes("panel.dataset.size = name === 'scenes' || name === 'map' ? 'full' : 'sheet'")) {
     addError('hall/tour/index.html: mobile scene and map panels must remain full-screen.');

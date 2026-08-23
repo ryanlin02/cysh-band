@@ -35,6 +35,15 @@
     addEventListener('resize', syncTourViewportHeight, { passive: true });
     addEventListener('orientationchange', syncTourViewportHeight, { passive: true });
     window.visualViewport?.addEventListener('resize', syncTourViewportHeight, { passive: true });
+
+    // 在模組與 360 檢視器下載前先顯示輕量封面，避免第一次進入時看到黑畫面。
+    // 每個瀏覽工作階段只播放一次；減少動態效果使用者直接進入環景。
+    try {
+      if (!sessionStorage.getItem('hall-tour-opening-v1') &&
+          !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('tour-opening-pending');
+      }
+    } catch (_) {}
   })();
 </script>
 <style>
@@ -42,7 +51,8 @@
     --paper:#faf8f3;--surface:#fffdf9;--ink:#241f1a;--muted:#746a62;--line:#ded6ca;
     --accent:#8c2f28;--control:rgba(24,20,17,.72);--control-hover:rgba(24,20,17,.9);
     --white:#fff;--focus:#f3bd57;--z-viewer:0;--z-chrome:20;--z-scrim:30;--z-panel:40;
-    --z-dialog:50;--motion:220ms cubic-bezier(.2,.8,.2,1);--tour-viewport-height:100dvh
+    --z-transition:10;--z-dialog:50;--z-opening:70;
+    --motion:220ms cubic-bezier(.2,.8,.2,1);--tour-viewport-height:100dvh
   }
   *{box-sizing:border-box}
   html,body{width:100%;height:100%;height:var(--tour-viewport-height);overflow:hidden}
@@ -58,6 +68,35 @@
   .tour-shell{position:relative;width:100%;height:100%;isolation:isolate;overflow:hidden}
   #tour-main,#viewer{position:absolute;inset:0;width:100%;height:100%}
   #viewer{z-index:var(--z-viewer);background:#171310}
+  .scene-transition{position:absolute;z-index:var(--z-transition);inset:0;display:flex;align-items:center;
+    justify-content:center;pointer-events:none;visibility:hidden;opacity:0;color:var(--white);
+    background:radial-gradient(circle at 50% 58%,rgba(140,47,40,.08),rgba(12,10,9,.42));
+    backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);
+    transition:opacity 160ms ease-out,backdrop-filter 220ms ease-out,visibility 0s linear 220ms}
+  .scene-transition.is-active{visibility:visible;opacity:1;backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);transition-delay:0s}
+  .scene-transition-status{display:flex;align-items:center;gap:10px;max-width:calc(100% - 48px);
+    padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:999px;
+    background:rgba(24,20,17,.68);box-shadow:0 10px 30px rgba(0,0,0,.2);font-size:13px;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .scene-transition-pulse{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:#f3bd57;
+    box-shadow:0 0 0 0 rgba(243,189,87,.5);animation:scene-pulse 1s ease-out infinite}
+  @keyframes scene-pulse{70%{box-shadow:0 0 0 9px rgba(243,189,87,0)}100%{box-shadow:0 0 0 0 rgba(243,189,87,0)}}
+  .opening-film{position:absolute;z-index:var(--z-opening);inset:0;display:none;overflow:hidden;
+    align-items:center;justify-content:center;background:#171310;opacity:1;transition:opacity 520ms ease-in}
+  .tour-opening-pending .opening-film{display:flex}
+  .opening-film video{width:100%;height:100%;display:block;object-fit:cover;object-position:center center;
+    transform:scale(1);opacity:1;transition:transform 680ms cubic-bezier(.2,.75,.25,1),opacity 520ms ease-in}
+  .opening-film::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(10,8,7,.08),rgba(10,8,7,0) 68%,rgba(10,8,7,.16))}
+  .opening-film.is-exiting{opacity:0}
+  .opening-film.is-exiting video{transform:scale(1.075);opacity:.35}
+  .opening-film.is-skipped{transition-duration:180ms}
+  .opening-film.is-skipped video{transition-duration:180ms}
+  .opening-skip{position:absolute;z-index:1;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));
+    min-width:72px;min-height:44px;padding:8px 14px;border:1px solid rgba(255,255,255,.32);border-radius:999px;
+    background:rgba(24,20,17,.56);color:var(--white);cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .opening-skip:hover,.opening-skip:active{background:rgba(24,20,17,.82)}
   .topbar{position:absolute;z-index:var(--z-chrome);top:0;left:0;right:0;display:flex;
     align-items:flex-start;gap:10px;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 12px max(12px,env(safe-area-inset-left));
     pointer-events:none;transition:opacity var(--motion)}
@@ -84,9 +123,9 @@
     background:rgba(255,255,255,.16);color:var(--white)}
   .dock-button:disabled{opacity:.45;cursor:not-allowed}
   .dock-button svg{width:23px;height:23px}
-  .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .topbar,
-  .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .bottom-dock{opacity:.56}
-  .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .bottom-dock{transform:translateX(-50%) translateY(3px)}
+  .tour-shell.controls-idle:not(.panel-open):not(.intro-open):not(.opening-open) .topbar,
+  .tour-shell.controls-idle:not(.panel-open):not(.intro-open):not(.opening-open) .bottom-dock{opacity:.56}
+  .tour-shell.controls-idle:not(.panel-open):not(.intro-open):not(.opening-open) .bottom-dock{transform:translateX(-50%) translateY(3px)}
   .scrim{position:absolute;z-index:var(--z-scrim);inset:0;background:rgba(8,7,6,.5);backdrop-filter:blur(2px);
     -webkit-backdrop-filter:blur(2px);opacity:1;transition:opacity var(--motion)}
   .panel{position:absolute;z-index:var(--z-panel);left:8px;right:8px;bottom:8px;max-height:min(72dvh,680px);
@@ -184,12 +223,13 @@
     .panel{top:6px;bottom:6px;left:6px;right:auto;width:min(390px,55vw);max-height:none}
     .bottom-dock{left:auto;right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));transform:none;flex-direction:column}
     .dock-button{min-width:54px;min-height:46px;flex-direction:row;gap:6px}
-    .tour-shell.controls-idle:not(.panel-open):not(.intro-open) .bottom-dock{transform:translateY(3px)}
+    .tour-shell.controls-idle:not(.panel-open):not(.intro-open):not(.opening-open) .bottom-dock{transform:translateY(3px)}
     .gyro-intro{left:auto;right:74px;bottom:8px;transform:none;width:min(420px,calc(100% - 160px))}
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;
       animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .opening-film{display:none!important}
   }
 </style>
 </head>
@@ -199,6 +239,17 @@
   <main id="tour-main" aria-label="嘉義市政府文化局音樂廳 360 環景">
     <div id="viewer"></div>
   </main>
+
+  <div class="scene-transition" id="sceneTransition" role="status" aria-live="polite" aria-hidden="true">
+    <div class="scene-transition-status"><span class="scene-transition-pulse" aria-hidden="true"></span><span id="sceneTransitionText">正在前往下一個場景</span></div>
+  </div>
+
+  <section class="opening-film" id="openingFilm" aria-label="音樂廳導覽開場動畫">
+    <video id="openingVideo" muted playsinline preload="none" aria-hidden="true" poster="../../assets/hall-tour/opening/hall-fly-in-poster.webp">
+      <source src="../../assets/hall-tour/opening/hall-fly-in-2x.mp4" type="video/mp4">
+    </video>
+    <button class="opening-skip" id="openingSkip" type="button">略過動畫</button>
+  </section>
 
   <header class="topbar" aria-label="目前場景">
     <a class="home-link glass-control" href="../../" aria-label="回到嘉中管樂官網首頁" title="首頁">
@@ -309,15 +360,25 @@ const gyroBtn = document.getElementById('gyroBtn');
 const gyroStart = document.getElementById('gyroStart');
 const gyroSkip = document.getElementById('gyroSkip');
 const toast = document.getElementById('tourToast');
+const sceneTransition = document.getElementById('sceneTransition');
+const sceneTransitionText = document.getElementById('sceneTransitionText');
+const openingFilm = document.getElementById('openingFilm');
+const openingVideo = document.getElementById('openingVideo');
+const openingSkip = document.getElementById('openingSkip');
 let activePanel = null;
 let lastPanelTrigger = null;
 let idleTimer = null;
 let toastTimer = null;
+let openingActive = document.documentElement.classList.contains('tour-opening-pending');
+let openingSafetyTimer = null;
+let openingStartupTimer = null;
+let viewerReadyForIntro = false;
+let gyroIntroTimer = null;
 
 function wakeControls() {
   shell.classList.remove('controls-idle');
   clearTimeout(idleTimer);
-  if (!activePanel && gyroIntro.hidden) {
+  if (!activePanel && gyroIntro.hidden && !openingActive) {
     idleTimer = setTimeout(() => shell.classList.add('controls-idle'), 4500);
   }
 }
@@ -371,6 +432,7 @@ panel.addEventListener('keydown', event => {
   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
 });
 document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && openingActive) return finishOpening({ skipped: true });
   if (event.key === 'Escape' && activePanel) closePanel();
   if (event.key === 'Escape' && !gyroIntro.hidden) dismissGyroIntro();
 });
@@ -440,14 +502,85 @@ const gyroPlugin = viewer.getPlugin(GyroscopePlugin);
 const gyroLabel = gyroBtn.querySelector('span');
 let gyroRequested = false;
 let navigationInProgress = false;
+let gyroResumePromise = null;
 const sessionGet = key => { try { return sessionStorage.getItem(key); } catch (_) { return null; } };
 const sessionSet = (key, value) => { try { sessionStorage.setItem(key, value); } catch (_) {} };
 
 function syncGyroState(enabled) {
-  const active = enabled || (navigationInProgress && gyroRequested);
+  // 以使用者的「希望保持開啟」為主，避免套件短暫停止時按鍵文字與實際意圖相反。
+  const active = gyroRequested || enabled;
   gyroBtn.setAttribute('aria-pressed', String(active));
   gyroLabel.textContent = active ? '關閉感應' : '感應';
   gyroBtn.setAttribute('aria-label', active ? '關閉手機動作感應' : '開啟手機動作感應');
+}
+
+function finishOpening({ skipped = false } = {}) {
+  if (!openingActive) return;
+  sessionSet('hall-tour-opening-v1', 'seen');
+  clearTimeout(openingSafetyTimer);
+  clearTimeout(openingStartupTimer);
+  if (skipped) openingFilm.classList.add('is-skipped');
+  openingFilm.classList.add('is-exiting');
+  const delay = skipped ? 190 : 540;
+  setTimeout(() => {
+    openingActive = false;
+    openingVideo.pause();
+    openingFilm.hidden = true;
+    shell.classList.remove('opening-open');
+    document.documentElement.classList.remove('tour-opening-pending');
+    maybeScheduleGyroIntro();
+    wakeControls();
+  }, delay);
+}
+
+function startOpening() {
+  if (!openingActive) {
+    openingFilm.hidden = true;
+    return;
+  }
+  shell.classList.add('opening-open');
+  shell.classList.remove('controls-idle');
+  // 一開始就記錄，重新整理或影片錯誤時不會反覆卡在開場。
+  sessionSet('hall-tour-opening-v1', 'seen');
+  openingVideo.preload = 'auto';
+  openingVideo.addEventListener('playing', () => clearTimeout(openingStartupTimer), { once: true });
+  openingVideo.addEventListener('timeupdate', () => {
+    if (openingVideo.currentTime >= 3.32) openingFilm.classList.add('is-exiting');
+  });
+  openingVideo.addEventListener('ended', () => finishOpening(), { once: true });
+  openingVideo.addEventListener('error', () => finishOpening({ skipped: true }), { once: true });
+  openingStartupTimer = setTimeout(() => finishOpening({ skipped: true }), 1400);
+  openingSafetyTimer = setTimeout(() => finishOpening({ skipped: true }), 5600);
+  openingVideo.load();
+  const play = openingVideo.play();
+  if (play && typeof play.catch === 'function') play.catch(() => finishOpening({ skipped: true }));
+}
+
+openingSkip.addEventListener('click', () => finishOpening({ skipped: true }));
+startOpening();
+
+async function resumeGyroscope() {
+  if (!gyroRequested || gyroPlugin.isEnabled()) return true;
+  if (gyroResumePromise) return gyroResumePromise;
+  gyroResumePromise = (async () => {
+    for (let attempt = 0; attempt < 2 && gyroRequested; attempt++) {
+      try {
+        await gyroPlugin.start('smooth');
+        return true;
+      } catch (_) {
+        if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 140));
+      }
+    }
+    if (gyroRequested) {
+      gyroRequested = false;
+      showToast('感應暫時中斷，請再點一次「感應」重新開啟');
+    }
+    return false;
+  })().finally(() => {
+    gyroResumePromise = null;
+    syncGyroState(gyroPlugin.isEnabled());
+  });
+  return gyroResumePromise;
 }
 
 function dismissGyroIntro() {
@@ -478,7 +611,13 @@ async function startGyroscope() {
   }
 }
 
-gyroPlugin.addEventListener('gyroscope-updated', event => syncGyroState(event.gyroscopeEnabled));
+gyroPlugin.addEventListener('gyroscope-updated', event => {
+  syncGyroState(event.gyroscopeEnabled);
+  // setPanorama 以外的 stopAll 也可能暫停外掛；使用者沒有主動關閉時自動校正。
+  if (!event.gyroscopeEnabled && gyroRequested && !navigationInProgress) {
+    setTimeout(() => resumeGyroscope(), 80);
+  }
+});
 gyroBtn.addEventListener('click', async () => {
   if (gyroRequested || gyroPlugin.isEnabled()) {
     gyroRequested = false;
@@ -724,10 +863,71 @@ function closePanelOnCompact() {
 let loadedPano = viewerSrcOf(region, region.nodes[cur], "preview");
 let pendingYaw = null;
 let navigationQueue = Promise.resolve();
+let sceneTransitionTimer = null;
+let hiUpgradeToken = 0;
+let hiUpgradeTimer = null;
+let hiPreloader = null;
 const FORWARD_PUSH_ZOOM = 6;
 const FORWARD_PUSH_DURATION = 150;
 
 const clampZoom = level => Math.max(0, Math.min(100, level));
+
+function beginSceneTransition(name) {
+  if (openingActive) return;
+  clearTimeout(sceneTransitionTimer);
+  sceneTransitionText.textContent = name ? `正在前往${name}` : '正在前往下一個場景';
+  sceneTransition.setAttribute('aria-hidden', 'false');
+  sceneTransition.classList.add('is-active');
+}
+
+function endSceneTransition() {
+  sceneTransition.classList.remove('is-active');
+  clearTimeout(sceneTransitionTimer);
+  sceneTransitionTimer = setTimeout(() => sceneTransition.setAttribute('aria-hidden', 'true'), 230);
+}
+
+function cancelHiUpgrade() {
+  hiUpgradeToken += 1;
+  clearTimeout(hiUpgradeTimer);
+  hiUpgradeTimer = null;
+  if (hiPreloader) {
+    hiPreloader.onload = null;
+    hiPreloader.onerror = null;
+    hiPreloader.src = '';
+    hiPreloader = null;
+  }
+}
+
+// 預覽圖先讓使用者立即抵達。4096px 版本只在連線條件合適、沒有開啟
+// 陀螺儀且使用者停留一段時間後於背景預載，避免高清下載卡住下一次移動。
+function scheduleHiUpgrade(targetRegion, targetNode, previewSrc) {
+  const hi = viewerSrcOf(targetRegion, targetNode, TIER);
+  if (hi === previewSrc) return;
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection?.saveData || /(^|-)2g$|slow-2g|3g/.test(connection?.effectiveType || '')) return;
+  const token = hiUpgradeToken;
+  hiUpgradeTimer = setTimeout(() => {
+    if (token !== hiUpgradeToken || gyroRequested || navigationInProgress) return;
+    const image = new Image();
+    hiPreloader = image;
+    image.decoding = 'async';
+    image.onload = () => {
+      hiPreloader = null;
+      queueNavigation(async () => {
+        if (token !== hiUpgradeToken || gyroRequested || navigationInProgress ||
+            region !== targetRegion || region.nodes[cur]?.id !== targetNode.id) return;
+        try {
+          await viewer.setPanorama(hi, { transition: false, showLoader: false, caption: targetNode.name });
+          if (token !== hiUpgradeToken) return;
+          loadedPano = hi;
+          refreshDots();
+        } catch (_) {}
+      });
+    };
+    image.onerror = () => { hiPreloader = null; };
+    image.src = hi;
+  }, 900);
+}
 
 // 手機上連點不同場景時，Photo Sphere Viewer 會中止前一張尚未完成的下載。
 // 將切換依序執行，避免兩次 setPanorama 互相取消並留下錯誤。
@@ -772,25 +972,20 @@ function go(i, options = {}, keepDirection = true) {
 
 async function performGo(i, options = {}, keepDirection = true) {
   navigationInProgress = true;
+  cancelHiUpgrade();
+  beginSceneTransition(region.nodes[i]?.name);
   // 陀螺儀在全景替換期間仍持續回報裝置角度，會和新場景的
   // 目標視角互相拉扯。先暫停，換好畫面後再以目前方向恢復。
-  const restoreGyroscope = gyroRequested && gyroPlugin.isEnabled();
-  if (restoreGyroscope) gyroPlugin.stop();
-  syncGyroState(restoreGyroscope ? false : gyroPlugin.isEnabled());
+  const restoreGyroscope = gyroRequested;
+  if (gyroPlugin.isEnabled()) gyroPlugin.stop();
+  syncGyroState(gyroPlugin.isEnabled());
   try {
     await performSceneChange(i, options, keepDirection);
   } finally {
-    if (restoreGyroscope && gyroRequested && !gyroPlugin.isEnabled()) {
-      try {
-        // setPanorama 指定視角時會呼叫 stopAll；使用者已授權且原本開啟時，自動恢復。
-        await gyroPlugin.start('smooth');
-      } catch (_) {
-        gyroRequested = false;
-        showToast('感應模式未能自動恢復，請再點一次「感應」');
-      }
-    }
+    if (restoreGyroscope && gyroRequested) await resumeGyroscope();
     navigationInProgress = false;
     syncGyroState(gyroPlugin.isEnabled());
+    endSceneTransition();
   }
 }
 
@@ -862,33 +1057,32 @@ async function performSceneChange(i, options = {}, keepDirection = true) {
   loadedPano = previewSrc;
   // 預覽圖淡入完成後立即恢復移動點位，不必等待較大的清晰版本下載完。
   refreshDots();
-
-  const hi = viewerSrcOf(region, n, TIER);
-  if (hi !== loadedPano) {
-    // 不重送 position／zoom，讓高清替換保留目前視角，也避免第二次停止控制器。
-    await viewer.setPanorama(hi, {
-      transition: false, showLoader: false, caption: n.name,
-    });
-    loadedPano = hi;
-    refreshDots();
-  }
+  scheduleHiUpgrade(region, n, previewSrc);
 }
 
 buildSceneMenu();
 buildMap();
-viewer.addEventListener('ready', async () => {
-  go(cur, initialSceneEntry ? { entryView: initialSceneEntry.entryView } : null, false);
-  wakeControls();
+async function maybeScheduleGyroIntro() {
+  clearTimeout(gyroIntroTimer);
+  if (!viewerReadyForIntro || openingActive || activePanel || !gyroIntro.hidden ||
+      sessionGet('hall-tour-gyro-intro')) return;
   const supported = await gyroPlugin.isSupported().catch(() => false);
   const mobileLike = matchMedia('(pointer: coarse)').matches;
-  if (supported && mobileLike && !sessionGet('hall-tour-gyro-intro')) {
-    setTimeout(() => {
-      if (activePanel || !gyroIntro.hidden) return;
+  if (supported && mobileLike) {
+    gyroIntroTimer = setTimeout(() => {
+      if (openingActive || activePanel || !gyroIntro.hidden || sessionGet('hall-tour-gyro-intro')) return;
       gyroIntro.hidden = false;
       shell.classList.add('intro-open');
       shell.classList.remove('controls-idle');
     }, 700);
   }
+}
+
+viewer.addEventListener('ready', async () => {
+  go(cur, initialSceneEntry ? { entryView: initialSceneEntry.entryView } : null, false);
+  viewerReadyForIntro = true;
+  wakeControls();
+  maybeScheduleGyroIntro();
 }, { once: true });
 viewer.addEventListener('panorama-error', e => console.error('全景載入失敗', e.error));
 </script>
