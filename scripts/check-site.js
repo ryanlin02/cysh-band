@@ -1234,6 +1234,27 @@ function checkHallTour() {
   if (!/data-tour-layout=["']immersive["']/i.test(html)) {
     addError('hall/tour/index.html: immersive full-screen layout marker is missing.');
   }
+  if (!html.includes('<title>嘉義市音樂廳 360°線上導覽｜嘉義市政府文化局</title>') ||
+      !html.includes('<h1>嘉義市音樂廳 360°線上導覽</h1>') ||
+      !/<meta\s+name=["']description["'][^>]+嘉義市音樂廳/i.test(html)) {
+    addError('hall/tour/index.html: descriptive Chiayi Music Hall title, visible H1, or search description is missing.');
+  }
+  const hallJsonLdBlocks = [...html.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];
+  let hallJsonLd = null;
+  try {
+    hallJsonLd = hallJsonLdBlocks.map((match) => JSON.parse(match[1])).find((item) => item['@type'] === 'WebPage');
+  } catch (error) {
+    addError(`hall/tour/index.html: invalid JSON-LD: ${error.message}`);
+  }
+  if (!hallJsonLd || hallJsonLd.mainEntity?.['@type'] !== 'MusicVenue' ||
+      !hallJsonLd.mainEntity?.alternateName?.includes('嘉義市音樂廳') ||
+      hallJsonLd.mainEntity?.address?.streetAddress !== '忠孝路 275 號' ||
+      hallJsonLd.mainEntity?.address?.addressRegion !== '嘉義市') {
+    addError('hall/tour/index.html: WebPage/MusicVenue structured data is incomplete.');
+  }
+  if (!html.includes('href="../../concerts.html"') || !html.includes('href="../../site-map.html"')) {
+    addError('hall/tour/index.html: crawlable related-content links are missing from the tour description.');
+  }
   ['scenesBtn', 'mapBtn', 'infoBtn', 'gyroBtn', 'tourPanel'].forEach((id) => {
     if (!html.includes(`id="${id}"`)) {
       addError(`hall/tour/index.html: immersive control #${id} is missing.`);
@@ -1273,6 +1294,10 @@ function checkHallTour() {
   }
   if (!read('sitemap.xml').includes('https://cysh.band/hall/tour/')) {
     addError('sitemap.xml: public hall tour page must be listed.');
+  }
+  const hallSitemapDate = read('sitemap.xml').match(/<loc>https:\/\/cysh\.band\/hall\/tour\/<\/loc><lastmod>([^<]+)<\/lastmod>/)?.[1];
+  if (!hallJsonLd?.dateModified || hallSitemapDate !== hallJsonLd.dateModified) {
+    addError('sitemap.xml: hall-tour lastmod must match its JSON-LD dateModified value.');
   }
   info.push('Hall tour checked: immersive controls, persistent user-initiated gyroscope, PWA viewport guard, mobile full-screen tools, public markers, and sitemap inclusion');
 }

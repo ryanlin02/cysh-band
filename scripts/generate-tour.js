@@ -235,16 +235,29 @@ async function main() {
   }
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const versionOf = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex').slice(0, 12);
+  const generated = new Date().toISOString().slice(0, 10);
+  const seoTitle = '嘉義市音樂廳 360°線上導覽｜嘉義市政府文化局';
+  const seoHeading = '嘉義市音樂廳 360°線上導覽';
+  const description = `線上瀏覽嘉義市音樂廳（${TOUR.venue.name}）的 360° 環景，` +
+    `查看前廳、觀眾席一樓與二樓座位視野、舞台、樂池、貴賓室及演出團隊休息區，共 ${stat.nodeCount} 個拍攝點。`;
   const html = fs.readFileSync(tpl, 'utf8')
     .replace(/\{\{VENUE\}\}/g, TOUR.venue.name)
-    .replace(/\{\{DESC\}\}/g,
-      `${TOUR.venue.name} 360 度環景導覽，共 ${stat.nodeCount} 個場景。` +
-      `${TOUR.venue.seats.total} 席，可售 ${TOUR.venue.seats.sellable} 席。`)
-    .replace(/\{\{GENERATED\}\}/g, new Date().toISOString().slice(0, 10))
+    .replace(/\{\{SEO_TITLE\}\}/g, seoTitle)
+    .replace(/\{\{SEO_H1\}\}/g, seoHeading)
+    .replace(/\{\{DESC\}\}/g, description)
+    .replace(/\{\{SEATS_TOTAL\}\}/g, String(TOUR.venue.seats.total))
+    .replace(/\{\{GENERATED\}\}/g, generated)
     .replace(/\{\{TOUR_DATA_VERSION\}\}/g, versionOf(path.join(ROOT, 'data', 'tour.js')))
     .replace(/\{\{TOUR_ENTRY_VIEWS_VERSION\}\}/g, versionOf(path.join(ROOT, 'data', 'tour-entry-views.js')));
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), html);
   console.log(`已產生 hall/tour/index.html`);
+
+  const sitemapPath = path.join(ROOT, 'sitemap.xml');
+  const sitemap = fs.readFileSync(sitemapPath, 'utf8');
+  const hallEntry = /(<loc>https:\/\/cysh\.band\/hall\/tour\/<\/loc><lastmod>)[^<]+/;
+  if (!hallEntry.test(sitemap)) throw new Error('sitemap.xml 找不到音樂廳導覽網址');
+  fs.writeFileSync(sitemapPath, sitemap.replace(hallEntry, `$1${generated}`));
+  console.log('已更新 sitemap.xml 的音樂廳導覽日期');
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
