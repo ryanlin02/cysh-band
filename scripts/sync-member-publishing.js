@@ -207,10 +207,34 @@ function articleSource(article) {
   return renderArticleSections(article.sections, { assetPrefix: '../' });
 }
 
+function aiEditorialDisclosure(article) {
+  if (article.editorialOrigin !== 'ai_assisted') return '';
+  const sources = (Array.isArray(article.sourceItems) ? article.sourceItems : []).slice(0, 8);
+  const links = sources.map((source) => `<li><a href="${escapeHtml(String(source.url || ''))}" target="_blank" rel="noopener noreferrer">${escapeHtml(String(source.publisher || source.title || '公開來源'))}</a></li>`).join('');
+  return `<aside class="news-callout ai-editorial-disclosure" aria-label="AI 小編與資料來源">
+  <h2>撰稿與核准</h2>
+  <p>${escapeHtml(article.aiAssistedDisclosure || `本文由嘉中管樂官方網站 AI 小編依公開來源協助整理，並由 ${article.reviewedByName || '管理員'} 核准後發布。`)}</p>
+  ${links ? `<p><strong>資料來源</strong></p><ul>${links}</ul>` : ''}
+</aside>`;
+}
+
 async function request(url, options = {}) {
   const response = await fetch(url, { ...options, headers: { authorization: `Bearer ${token}`, ...(options.headers || {}) } });
   if (!response.ok) throw new Error(`發布 API ${response.status}: ${await response.text()}`);
   return response;
+}
+
+let activeAiArticle = null;
+
+async function reportAiArticleFailure(article, error) {
+  try {
+    await request(apiBase, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ failedArticles: [{ id: article.id, revision: article.revision, error: String(error?.message || error).slice(0, 2000) }] })
+    });
+  } catch (reportError) {
+    console.error(`AI 文章失敗回報也未成功：${reportError.message}`);
+  }
 }
 
 async function sync() {
@@ -268,8 +292,10 @@ async function sync() {
   const newsItems = [];
   const nextManifestArticles = [];
   for (const article of articles) {
+    activeAiArticle = article.editorialOrigin === 'ai_assisted' ? { id: article.id, revision: article.revision } : null;
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug)) throw new Error(`文章網址代號不安全：${article.id}`);
-    const published = publicDateTime(article.reviewed_at || article.published_at || article.updated_at);
+    // 回顧補記可使用管理員選定的內容日期；實際核准與上線時間仍由會員系統另外保存。
+    const published = publicDateTime(article.publicDisplayDate ? `${article.publicDisplayDate}T12:00:00+08:00` : article.reviewed_at || article.published_at || article.updated_at);
     const modified = publicDateTime(article.updated_at);
     const id = `${published.date}-${article.slug}`.replace(new RegExp(`^${published.date}-${published.date}-`), `${published.date}-`);
     const source = `content/news/${id}.html`;
@@ -278,7 +304,8 @@ async function sync() {
     const { sections: localizedSections, lead } = await localizeArticleImages(article, id);
     const localized = { ...article, sections: localizedSections };
     const representative = representativeImage(lead);
-    fs.writeFileSync(path.join(root, source), articleSource(localized));
+    const disclosure = aiEditorialDisclosure(article);
+    fs.writeFileSync(path.join(root, source), `${articleSource(localized)}${disclosure ? `\n${disclosure}` : ''}`);
     nextManifestArticles.push({ id: article.id, revision: article.revision, source, output });
     newsItems.push({
       id, date: published.date, time: published.time,
@@ -302,8 +329,11 @@ async function sync() {
       status: 'published',
       authorName: article.author?.name || null,
       authorAlumniNumber: article.author?.alumniNumber || null,
-      sourceNotes: `會員 ${article.author?.name || '校友'} 投稿，經 ${article.reviewedByName || '內容編輯'} 審核後發布。`
+      sourceNotes: article.editorialOrigin === 'ai_assisted'
+        ? `嘉中管樂官方網站 AI 小編依公開來源協助整理，經 ${article.reviewedByName || '管理員'} 核准後發布。`
+        : `會員 ${article.author?.name || '校友'} 投稿，經 ${article.reviewedByName || '內容編輯'} 審核後發布。`
     });
+    activeAiArticle = null;
   }
 
   const previousManifest = readManifest();
@@ -337,4 +367,7 @@ async function acknowledge(commitSha) {
 }
 
 const ackIndex = process.argv.indexOf('--ack');
-(ackIndex >= 0 ? acknowledge(process.argv[ackIndex + 1]) : sync()).catch((error) => { console.error(error); process.exitCode = 1; });
+(ackIndex >= 0 ? acknowledge(process.argv[ackIndex + 1]) : sync()).catch(async (error) => {
+  if (activeAiArticle) await reportAiArticleFailure(activeAiArticle, error);
+  console.error(error); process.exitCode = 1;
+});
