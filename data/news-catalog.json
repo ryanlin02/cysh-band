@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-28T21:27:11.563Z",
+  "generatedAt": "2026-08-29T03:19:59.311Z",
   "articles": [
     {
       "id": "2026-08-21-trombone-ensemble-galaxy-night",
@@ -17,6 +17,22 @@
       ],
       "authorName": "翁啟榮",
       "authorAlumniNumber": "7581"
+    },
+    {
+      "id": "2026-08-12-ai-2026-08-29-39d9409a",
+      "date": "2026-08-12",
+      "category": "活動紀錄",
+      "title": "嘉市管樂盛事圓滿落幕 嘉義高商管樂團拾光樂句交織跨世代樂章",
+      "url": "https://cysh.band/news/2026-08-12-ai-2026-08-29-39d9409a.html",
+      "tags": [
+        "嘉中管樂",
+        "嘉義高商管樂團",
+        "拾光樂句",
+        "校友聯合音樂會",
+        "嘉義市政府文化局音樂廳"
+      ],
+      "authorName": "AI 小編",
+      "authorAlumniNumber": null
     },
     {
       "id": "2026-08-05-rehearsal-voices-coming-together",
