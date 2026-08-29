@@ -1431,7 +1431,7 @@ window.MEMBER_PUBLISHED_NEWS = [
     "date": "2026-08-12",
     "time": "12:00",
     "modifiedDate": "2026-08-29",
-    "modifiedTime": "07:47",
+    "modifiedTime": "11:20",
     "category": "活動紀錄",
     "tags": [
       "嘉中管樂",
