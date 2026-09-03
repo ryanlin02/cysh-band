@@ -352,6 +352,10 @@ async function sync() {
 
   replaceGeneratedBlock('data/people-profiles.js', 'member-publish-profiles', `window.MEMBER_MANAGED_PEOPLE_PROFILES = ${JSON.stringify(profileItems, null, 2)};`);
   replaceGeneratedBlock('data/alumni.js', 'member-publish-alumni', `window.MEMBER_MANAGED_ALUMNI_PROFILES = ${JSON.stringify(alumniPatches, null, 2)};`);
+  // 各屆「參與過的校友」：只同步已確認的紀錄，待確認與未採用的不出官網
+  const participation = Array.isArray(payload.participation) ? payload.participation : [];
+  replaceGeneratedBlock('data/concert-participants.js', 'member-publish-participants',
+    `window.MEMBER_CONFIRMED_PARTICIPATION = ${JSON.stringify(participation, null, 2)};`);
   replaceGeneratedBlock('data/news.js', 'member-publish-news', `window.MEMBER_PUBLISHED_NEWS = ${JSON.stringify(newsItems, null, 2)};`);
   fs.writeFileSync(manifestPath, JSON.stringify({ version: 1, articles: nextManifestArticles }, null, 2) + '\n');
 

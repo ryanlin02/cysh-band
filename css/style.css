@@ -2796,6 +2796,16 @@ a.roster-card.linked:hover {
   font-size: .88rem;
   line-height: 1.6;
 }
+/* 參與過的校友：一行一個人，細線分隔。
+   規範 2.3-A：這是索引型內容，用列表不用卡片。 */
+.participant-list { list-style: none; margin: 14px 0 0; padding: 0; max-width: 42em; }
+.participant-list li { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 9px 2px; border-bottom: 1px solid var(--line); }
+.participant-list li:last-child { border-bottom: 0; }
+.participant-list a { font-weight: 700; color: var(--ink); text-decoration: none; }
+.participant-list a:hover { color: var(--gold); }
+.participant-num { margin-left: 6px; color: var(--ink-dim); font-size: .82rem; font-weight: 400; }
+.participant-role { margin-left: auto; color: var(--ink-dim); font-size: .85rem; }
+
 /* 文章結尾（撰稿與核准＋互動＋分享）：一條細線帶出來的一區，不是三個框。
    規範 2.3：新內容一律沿用既有 class，不另造樣式；2.3-A：外層已經是文章，
    內部資訊用文字階層與細分隔線呈現，不再加內嵌卡片或多套框線系統。 */

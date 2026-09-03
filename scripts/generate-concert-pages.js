@@ -15,6 +15,7 @@ const { syncSharedChrome } = require('./sync-shared-chrome');
 global.window = global;
 require(path.join(__dirname, '..', 'data', 'alumni.js'));
 require(path.join(__dirname, '..', 'data', 'concerts.js'));
+require(path.join(__dirname, '..', 'data', 'concert-participants.js'));
 require(path.join(__dirname, '..', 'data', 'people-profiles.js'));
 require(path.join(__dirname, '..', 'data', 'news.js'));
 
@@ -291,6 +292,37 @@ function renderPersonByline(person, fallbackRole) {
         ${summaries.map((summary, index) => `<p>${summary}${index === summaries.length - 1 && person.showProfileLink !== false ? linkToFullProfile(href) : ''}</p>`).join('\n        ')}
       </div>
     </div>`;
+}
+
+/* 參與過的校友：由會員平台的參與紀錄同步過來（data/concert-participants.js），
+   只包含已確認的。指揮與獨奏上面那一區已經介紹過了，這裡不重複，
+   只列團員與幕後（行政、舞監、器材、編曲）——那正是節目冊沒有印、
+   一直空著的部分，靠校友自己填才補得起來。 */
+function renderParticipantSection(concert) {
+  const all = global.window.CONCERT_PARTICIPANTS || [];
+  const already = new Set([...(concert.conductors || []), ...(concert.soloists || [])]
+    .map((person) => String(person.num || '')).filter(Boolean));
+  const rows = all
+    .filter((row) => Number(row.edition) === Number(concert.nth))
+    .filter((row) => !(['指揮', '獨奏'].includes(row.role) && already.has(String(row.alumniNumber || ''))))
+    .sort((a, b) => String(a.alumniNumber).localeCompare(String(b.alumniNumber)));
+  if (!rows.length) return '';
+  const item = (row) => {
+    const num = String(row.alumniNumber || '');
+    const label = `${escapeHtml(row.name)}<span class="participant-num">${escapeHtml(num)}</span>`;
+    const detail = [row.role === '團員' ? row.section : row.role, row.note].filter(Boolean).join('・');
+    // 不是每個校友都有人物頁；沒有就不要做成連結，不然會產生死連結
+    const hasPage = num && fs.existsSync(path.join(__dirname, '..', 'people', `${num}.html`));
+    const who = hasPage ? `<a href="../people/${escapeHtml(num)}.html">${label}</a>` : `<span>${label}</span>`;
+    return `<li>${who}${detail ? `<span class="participant-role">${escapeHtml(detail)}</span>` : ''}</li>`;
+  };
+  return `<section class="section">
+    <h2>參與過的校友</h2>
+    <p class="muted">由校友在會員平台自己填寫、經確認後列出。節目冊本來就沒有印全體團員名單，這一區靠大家一起補。</p>
+    <ul class="participant-list">
+      ${rows.map(item).join('\n      ')}
+    </ul>
+  </section>`;
 }
 
 function renderPeopleSection(concert) {
@@ -858,6 +890,8 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
     <h2>${escapeHtml(concert.peopleTitle || '指揮與獨奏')}</h2>
     ${renderPeopleSection(concert)}
   </section>` : ''}
+
+  ${renderParticipantSection(concert)}
 
   ${hasProgram ? `<section class="section">
     <h2>${escapeHtml(concert.programTitle || '曲目')}</h2>

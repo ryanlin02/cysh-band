@@ -44,7 +44,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           # assets/img/news 一定要一起送出：會員平台上傳的文章圖片是在同步時才下載進來的，
           # 沒有加進來就等於「文章寫著圖片網址、檔案卻沒進版本庫」，官網上會變成破圖。
-          git add data content people news assets/img/news assets/img/members photos/profile-links.js feed.xml sitemap.xml index.html concerts.html
+          git add data content people news concerts assets/img/news assets/img/members photos/profile-links.js feed.xml sitemap.xml index.html concerts.html
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Publish approved member content"
             # 排程發布與人手動推送會互相撞到：只要在這個工作跑的一兩分鐘之內有人推了東西，
