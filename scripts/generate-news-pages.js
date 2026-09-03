@@ -394,35 +394,6 @@ function articlePageNav(article) {
     </nav>`;
 }
 
-function articleShareControl(article) {
-  const shareUrl = `https://cysh.band/${article.output}`;
-  const statusId = `${article.id}-share-status`;
-  return `<div class="news-share" aria-label="分享這則消息">
-      <button class="news-share-button" type="button" data-news-share data-share-url="${escapeHtml(shareUrl)}" data-share-title="${escapeHtml(textFromHtml(article.ogTitle || article.title))}" data-share-text="${escapeHtml(article.summary)}" aria-describedby="${escapeHtml(statusId)}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"></path></svg>
-        <span>分享這則消息</span>
-      </button>
-      <p class="news-share-status" id="${escapeHtml(statusId)}" role="status" aria-live="polite" hidden></p>
-    </div>`;
-}
-
-/* 社員的討論：讚數與留言數由會員平台提供（/api/public/article-social）。
-   官網是靜態頁，所以先出一個空殼，由 news-social.js 去要數字；
-   要不到（例如這篇不是從會員平台發布的）就整塊不顯示，不會留一個空框。
-   刻意只顯示數字：留言內容與姓名是社員在「只有社員看得到」的前提下寫的。 */
-function articleSocialBlock(article) {
-  const slug = String(article.id || '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
-  if (!slug) return '';
-  return `<section class="news-social" data-news-social data-slug="${escapeHtml(slug)}" hidden aria-label="社員的討論">
-      <div class="news-social-counts">
-        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10.5v9H4.5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1z"></path><path d="M7 10.5 11.5 3.5a2 2 0 0 1 2.9 2.4L13.3 9.5h5.2a2 2 0 0 1 1.95 2.45l-1.3 5.8a2.5 2.5 0 0 1-2.44 1.95H7z"></path></svg><b data-social-likes>0</b> 個讚</span>
-        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12.5a7 7 0 0 1-7 7H8l-3.5 2.5v-4a7 7 0 0 1 3.5-13h5a7 7 0 0 1 7 7z"></path></svg><b data-social-comments>0</b> 則留言</span>
-      </div>
-      <a class="news-social-cta" data-social-cta href="https://members.cysh.band/">登入後可以留言與按讚 →</a>
-      <p class="news-social-note" data-social-note>留言與按讚只開放給社員，內容也只有社員看得到。</p>
-    </section>`;
-}
-
 /* 文章結尾：撰稿與核准 ＋ 社員的討論 ＋ 分享，合成同一區。
    以前這三件事各自一個框，同一頁出現三種框線，看起來像拼湊的。
    規範 2.3-A：外層已經是文章，內部用文字階層與細分隔線，不再加內嵌框。
@@ -446,7 +417,7 @@ function articleEnd(article, sourceLinks = '') {
       ${social}
       <div class="article-end-actions">
         <a class="btn ghost" data-social-cta href="https://members.cysh.band/" hidden>登入後可以留言與按讚 →</a>
-        <button class="btn ghost news-share-button" type="button" data-news-share data-share-url="${escapeHtml(shareUrl)}" data-share-title="${escapeHtml(textFromHtml(article.ogTitle || article.title))}" data-share-text="${escapeHtml(article.summary)}" aria-describedby="${escapeHtml(statusId)}">分享這則消息</button>
+        <button class="btn ghost" type="button" data-news-share data-share-url="${escapeHtml(shareUrl)}" data-share-title="${escapeHtml(textFromHtml(article.ogTitle || article.title))}" data-share-text="${escapeHtml(article.summary)}" aria-describedby="${escapeHtml(statusId)}">分享這則消息</button>
       </div>
       <p class="article-end-status news-share-status" id="${escapeHtml(statusId)}" role="status" aria-live="polite" hidden></p>
       <p class="article-end-status" data-social-note hidden></p>

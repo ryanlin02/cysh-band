@@ -836,8 +836,9 @@ function checkGeneratedNewsPages() {
   if (!/\.news-article figure img\s*\{[\s\S]*?max-width:\s*100%[\s\S]*?height:\s*auto[\s\S]*?aspect-ratio:\s*auto[\s\S]*?object-fit:\s*contain/i.test(css)) {
     addError('css/style.css: news article images must preserve their intrinsic aspect ratio.');
   }
-  if (!/\.news-share-button\s*\{[\s\S]*?min-height:\s*44px[\s\S]*?touch-action:\s*manipulation/i.test(css)) {
-    addError('css/style.css: news share control must keep a 44px touch target and touch-action: manipulation.');
+  // 文章結尾的動作鍵（分享、看留言）：手指點得到，而且不要有 300ms 延遲
+  if (!/\.article-end-actions \.btn\.ghost\s*\{[\s\S]*?min-height:\s*44px[\s\S]*?touch-action:\s*manipulation/i.test(css)) {
+    addError('css/style.css: 文章結尾的動作鍵要保留 44px 觸控高度與 touch-action: manipulation。');
   }
   if (!exists('js/news-share.js')) {
     addError('js/news-share.js: generated news pages require the share control script.');
