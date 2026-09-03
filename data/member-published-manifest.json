@@ -2,6 +2,30 @@
   "version": 1,
   "articles": [
     {
+      "id": "bc16fadb-8f32-4855-af43-8cd8a49c63cc",
+      "revision": 2,
+      "source": "content/news/2026-07-13-brass-ensemble-concert-sharing.html",
+      "output": "news/2026-07-13-brass-ensemble-concert-sharing.html"
+    },
+    {
+      "id": "6ec08981-5189-4bc0-bb8b-c196f0a03e6f",
+      "revision": 2,
+      "source": "content/news/2026-07-12-rehearsal-coffee-and-returning-friends.html",
+      "output": "news/2026-07-12-rehearsal-coffee-and-returning-friends.html"
+    },
+    {
+      "id": "bf5bd1ce-58ee-43f4-8517-3658aebce530",
+      "revision": 2,
+      "source": "content/news/2026-07-11-rehearsal-resumes.html",
+      "output": "news/2026-07-11-rehearsal-resumes.html"
+    },
+    {
+      "id": "017051c4-e17d-43bd-8c69-0cca9816678c",
+      "revision": 2,
+      "source": "content/news/2026-07-02-weiwu-announce.html",
+      "output": "news/2026-07-02-weiwu-announce.html"
+    },
+    {
       "id": "17eaca20-ac97-4df2-bf19-21214aa73b9c",
       "revision": 2,
       "source": "content/news/2026-08-05-rehearsal-voices-coming-together.html",
@@ -30,6 +54,12 @@
       "revision": 2,
       "source": "content/news/2026-07-26-rehearsal-same-row-same-sound.html",
       "output": "news/2026-07-26-rehearsal-same-row-same-sound.html"
+    },
+    {
+      "id": "dfe151ea-f23d-4bb9-89a6-47edb85d84e5",
+      "revision": 2,
+      "source": "content/news/2026-08-21-trombone-ensemble-galaxy-night.html",
+      "output": "news/2026-08-21-trombone-ensemble-galaxy-night.html"
     },
     {
       "id": "3168a10c-b6f4-4d91-bcd5-508187328127",
@@ -68,24 +98,6 @@
       "output": "news/2026-07-18-rehearsal-sound-coming-together.html"
     },
     {
-      "id": "bc16fadb-8f32-4855-af43-8cd8a49c63cc",
-      "revision": 2,
-      "source": "content/news/2026-07-13-brass-ensemble-concert-sharing.html",
-      "output": "news/2026-07-13-brass-ensemble-concert-sharing.html"
-    },
-    {
-      "id": "6ec08981-5189-4bc0-bb8b-c196f0a03e6f",
-      "revision": 2,
-      "source": "content/news/2026-07-12-rehearsal-coffee-and-returning-friends.html",
-      "output": "news/2026-07-12-rehearsal-coffee-and-returning-friends.html"
-    },
-    {
-      "id": "bf5bd1ce-58ee-43f4-8517-3658aebce530",
-      "revision": 2,
-      "source": "content/news/2026-07-11-rehearsal-resumes.html",
-      "output": "news/2026-07-11-rehearsal-resumes.html"
-    },
-    {
       "id": "99ffbf4d-397e-471e-9efc-28c91d5fbd83",
       "revision": 2,
       "source": "content/news/2026-07-10-chiayi-city-closure.html",
@@ -96,12 +108,6 @@
       "revision": 2,
       "source": "content/news/2026-07-04-rehearsal-coffee.html",
       "output": "news/2026-07-04-rehearsal-coffee.html"
-    },
-    {
-      "id": "017051c4-e17d-43bd-8c69-0cca9816678c",
-      "revision": 2,
-      "source": "content/news/2026-07-02-weiwu-announce.html",
-      "output": "news/2026-07-02-weiwu-announce.html"
     },
     {
       "id": "80dfae75-b08c-435c-9e03-2c9433086353",
@@ -122,28 +128,22 @@
       "output": "news/2019-05-26-tsai-yung-chu-officer.html"
     },
     {
-      "id": "dfe151ea-f23d-4bb9-89a6-47edb85d84e5",
-      "revision": 2,
-      "source": "content/news/2026-08-21-trombone-ensemble-galaxy-night.html",
-      "output": "news/2026-08-21-trombone-ensemble-galaxy-night.html"
-    },
-    {
       "id": "7c338ed5-1413-489b-9215-a084b8232e09",
       "revision": 2,
       "source": "content/news/2026-07-18-weiwu-opentix-ticketing.html",
       "output": "news/2026-07-18-weiwu-opentix-ticketing.html"
     },
     {
-      "id": "abe94ae1-3518-4891-bcba-6b8a2d5360cc",
-      "revision": 2,
-      "source": "content/news/2026-07-10-typhoon-bavi-rehearsal.html",
-      "output": "news/2026-07-10-typhoon-bavi-rehearsal.html"
-    },
-    {
       "id": "e39ac6dd-811d-49f4-a872-6773d717a885",
       "revision": 2,
       "source": "content/news/2026-08-12-ai-2026-08-29-39d9409a.html",
       "output": "news/2026-08-12-ai-2026-08-29-39d9409a.html"
+    },
+    {
+      "id": "abe94ae1-3518-4891-bcba-6b8a2d5360cc",
+      "revision": 2,
+      "source": "content/news/2026-07-10-typhoon-bavi-rehearsal.html",
+      "output": "news/2026-07-10-typhoon-bavi-rehearsal.html"
     },
     {
       "id": "98877cc1-cf80-4b59-b34b-675451f3ced3",

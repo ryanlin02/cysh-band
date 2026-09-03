@@ -8,7 +8,32 @@
  */
 window.CONCERT_PARTICIPANTS = [];
 // <member-publish-participants>
-window.MEMBER_CONFIRMED_PARTICIPATION = [];
+window.MEMBER_CONFIRMED_PARTICIPATION = [
+  {
+    "edition": 41,
+    "role": "指揮",
+    "section": null,
+    "note": "樂團指揮",
+    "name": "翁啟榮",
+    "alumniNumber": "7581"
+  },
+  {
+    "edition": 32,
+    "role": "指揮",
+    "section": null,
+    "note": "指揮",
+    "name": "翁啟榮",
+    "alumniNumber": "7581"
+  },
+  {
+    "edition": 30,
+    "role": "指揮",
+    "section": null,
+    "note": "指揮",
+    "name": "翁啟榮",
+    "alumniNumber": "7581"
+  }
+];
 // </member-publish-participants>
 if (Array.isArray(window.MEMBER_CONFIRMED_PARTICIPATION)) {
   window.CONCERT_PARTICIPANTS = window.MEMBER_CONFIRMED_PARTICIPATION;
