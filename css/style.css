@@ -379,37 +379,8 @@ html.js .hero .est { animation-delay: .44s; }
   padding-top: 28px;
   border-top: 1px solid var(--line);
 }
-.article-page-nav .btn.ghost {
-  margin-left: 0;
-  min-height: 78px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  text-align: center;
-  letter-spacing: .06em;
-  line-height: 1.35;
-}
-.article-page-nav .btn.ghost span {
-  font-size: .82rem;
-  color: var(--ink-dim);
-  letter-spacing: .12em;
-}
-.article-page-nav .btn.ghost b {
-  display: block;
-  color: var(--gold);
-  font-weight: 700;
-}
-.article-page-nav .previous { text-align: left; align-items: flex-start; }
-.article-page-nav .overview { text-align: center; align-items: center; }
-.article-page-nav .next { text-align: right; align-items: flex-end; }
 @media (max-width: 760px) {
   .article-page-nav { grid-template-columns: 1fr; }
-  .article-page-nav .btn.ghost {
-    min-height: auto;
-    align-items: center;
-    text-align: center;
-  }
 }
 
 /* ---------- 內容頁結尾導流 ---------- */
@@ -1342,12 +1313,17 @@ a.card-head:hover .num { color: var(--gold-soft); }
 }
 
 /* ---------- 表格 ---------- */
-table.plain { border-collapse: collapse; width: 100%; max-width: 640px; margin: 12px 0 20px; font-size: .95rem; background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
-table.plain th, table.plain td { border: 1px solid var(--line); padding: 10px 16px; text-align: left; }
-table.plain th { background: var(--bg-soft); color: var(--gold); font-weight: 700; letter-spacing: .08em; white-space: nowrap; word-break: keep-all; }
-table.plain th:first-child { width: 1%; min-width: 5.5em; }
-table.plain td { color: var(--ink-dim); }
-table.plain td b { color: var(--ink); }
+/* 全站表格（2026-09 改版）：原本是「試算表」——米色卡片＋陰影＋每格四邊格線＋
+   金色底色標題欄。線太多、顏色太多，而且把「標籤」畫得比「內容」還醒目。
+   改成一列一條細線的列式呈現，跟 .record-list、.article-end 用同一種語言：
+   線只有橫的、標籤退成灰色小字、值才是主角。不另造框（規範 2.3-0）。 */
+table.plain { border-collapse: collapse; width: 100%; max-width: 640px; margin: 14px 0 22px; font-size: .95rem; }
+table.plain th, table.plain td { padding: 11px 20px 11px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+table.plain tr:last-child th, table.plain tr:last-child td { border-bottom: 0; }
+table.plain th { color: var(--ink-dim); font-size: .82rem; font-weight: 700; letter-spacing: .08em; white-space: nowrap; word-break: keep-all; }
+table.plain th:first-child { width: 1%; min-width: 5.5em; padding-right: 26px; }
+table.plain td { color: var(--ink); }
+table.plain td b { color: var(--ink); font-weight: 700; }
 
 /* 內容較多欄（如演出人員名單）的表格：放寬寬度、首欄不換行 */
 table.plain.roster { max-width: 880px; }
@@ -1516,68 +1492,42 @@ blockquote footer { font-family: var(--sans); font-size: .85rem; color: var(--in
 .person-article p { max-width: 42em; }
 .person-article .sources { font-size: .85rem; color: var(--ink-dim); }
 .person-article .sources a { word-break: break-all; }
-.person-article .person-update-meta {
-  max-width: 42em;
-  margin-top: 28px;
-  padding: 10px 14px;
-  border-left: 3px solid var(--gold-soft);
-  background: var(--bg-soft);
-  color: var(--ink-dim);
-  font-size: .86rem;
-}
-.person-gallery-panel {
-  margin: 32px 0 24px;
-  padding: 16px 0;
+/* 人物頁附錄（相關聯演／相關連結／照片／資料來源）：
+   文章結束之後的資料區，沿用文章結尾 .article-end 的語言——一條細線帶出來，
+   小標是灰色小字而不是跟內文章節同級的大標題，節與節之間也只用一條細線。
+   舊版這一段有三種框（表格格線、米色左線框、外框大按鈕），已全部拿掉。 */
+.person-appendix { margin-top: 44px; }
+.person-appendix > section + section {
+  margin-top: 26px;
+  padding-top: 24px;
   border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
-  gap: 18px;
-  align-items: center;
 }
-.person-gallery-panel h3 { margin: 0; }
-.person-gallery-panel .btn.ghost {
-  min-height: 62px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+.person-appendix .record-list {
+  margin: 12px 0 0;
+  padding-left: 0;
+  color: var(--ink);
+  font-size: .95rem;
 }
-.person-gallery-panel .btn.ghost span {
-  color: var(--ink-dim);
-  font-size: .82rem;
-  letter-spacing: .12em;
-}
-.person-gallery-panel .btn.ghost b {
-  color: var(--gold);
-}
-@media (max-width: 760px) {
-  .person-gallery-panel {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-  .person-gallery-panel .btn.ghost {
-    min-height: auto;
-  }
-}
+.person-appendix .record-note,
+.person-appendix .record-sub { font-size: .85rem; }
+.person-appendix .article-end-actions { margin-top: 12px; }
+.person-appendix .person-update-meta { margin-top: 10px; }
 
 /* ---------- 人物頁尾導覽（回人物誌／看校友名錄） ---------- */
-.person-nav { margin-top: 48px; }
-.person-nav.article-page-nav .btn.ghost,
-.person-nav.article-page-nav .overview,
-.person-nav.article-page-nav .next {
-  align-items: center;
-  text-align: center;
+.person-nav.article-page-nav {
+  max-width: 42em;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  margin-top: 40px;
 }
-.person-nav.person-nav--single {
-  grid-template-columns: minmax(220px, 360px);
-  justify-content: end;
-}
+.person-nav.person-nav--single { grid-template-columns: minmax(0, 1fr); }
+/* 只有一個去處時就靠左，不要讓一行字孤零零地被推到頁面最右邊 */
+.person-nav.person-nav--single .page-neighbor.next { text-align: left; }
 @media (max-width: 760px) {
-  .person-nav.person-nav--single {
-    grid-template-columns: 1fr;
-    justify-content: stretch;
-  }
+  .person-nav.article-page-nav { grid-template-columns: 1fr; gap: 4px; }
+  /* 手機版 .page-neighbor 會加一條分隔線；人物頁最後一個連結不需要，
+     否則頁面最下方會多出一條看起來像斷掉的線。 */
+  .person-nav.article-page-nav .page-neighbor:last-child { border-bottom: 0; }
 }
 
 /* ---------- 回到頂端 ---------- */
@@ -2798,13 +2748,17 @@ a.roster-card.linked:hover {
 }
 /* 參與過的校友：一行一個人，細線分隔。
    規範 2.3-A：這是索引型內容，用列表不用卡片。 */
-.participant-list { list-style: none; margin: 14px 0 0; padding: 0; max-width: 42em; }
-.participant-list li { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 9px 2px; border-bottom: 1px solid var(--line); }
-.participant-list li:last-child { border-bottom: 0; }
-.participant-list a { font-weight: 700; color: var(--ink); text-decoration: none; }
-.participant-list a:hover { color: var(--gold); }
-.participant-num { margin-left: 6px; color: var(--ink-dim); font-size: .82rem; font-weight: 400; }
-.participant-role { margin-left: auto; color: var(--ink-dim); font-size: .85rem; }
+/* 資料列表（.record-list）：全站「一筆一列」的索引語言——演出頁的參與校友、
+   人物頁的相關聯演與相關連結都用這一套，不要再為每一種資料另開表格或卡片。
+   結構：主要文字（多半是連結）＋右側一句附註（.record-note）＋可選的第二行（.record-sub）。 */
+.record-list { list-style: none; margin: 14px 0 0; padding: 0; max-width: 42em; }
+.record-list li { display: flex; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; padding: 11px 2px; border-bottom: 1px solid var(--line); }
+.record-list li:last-child { border-bottom: 0; }
+.record-list a { font-weight: 700; color: var(--ink); text-decoration: none; }
+.record-list a:hover { color: var(--gold); }
+.record-num { margin-left: 6px; color: var(--ink-dim); font-size: .82rem; font-weight: 400; }
+.record-note { margin-left: auto; color: var(--ink-dim); font-size: .85rem; text-align: right; }
+.record-sub { flex-basis: 100%; margin: 0; color: var(--ink-dim); font-size: .85rem; line-height: 1.6; }
 
 /* 文章結尾（撰稿與核准＋互動＋分享）：一條細線帶出來的一區，不是三個框。
    規範 2.3：新內容一律沿用既有 class，不另造樣式；2.3-A：外層已經是文章，
@@ -2907,7 +2861,7 @@ a.roster-card.linked:hover {
   transform: translateY(var(--lift-sm));
 }
 .news-content .news-cta:focus-visible,
-.news-page-neighbor:focus-visible,
+.page-neighbor:focus-visible,
 .news-page-overview:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
@@ -3017,12 +2971,15 @@ a.roster-card.linked:hover {
   gap: 24px;
   max-width: 42em;
 }
-.news-page-neighbors {
+/* 頁尾去處連結（.page-neighbor）：新聞頁的上一篇／下一篇、人物頁的回總覽／看名錄
+   都用這一套——沒有框、只有一行小標＋一行標題，靠上方那條細線分隔。
+   人物頁原本用的是 78px 高的外框按鈕，跟新聞頁不一樣，也讓同一頁多出一種框，已停用。 */
+.page-neighbors {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px 24px;
 }
-.news-page-neighbor {
+.page-neighbor {
   display: block;
   min-width: 0;
   min-height: 44px;
@@ -3030,14 +2987,14 @@ a.roster-card.linked:hover {
   color: var(--ink);
   text-decoration: none;
 }
-.news-page-neighbor span {
+.page-neighbor span {
   display: block;
   color: var(--ink-dim);
   font-size: .8rem;
   font-weight: 700;
   letter-spacing: .08em;
 }
-.news-page-neighbor b {
+.page-neighbor b {
   display: block;
   margin-top: 3px;
   color: var(--ink);
@@ -3045,8 +3002,8 @@ a.roster-card.linked:hover {
   font-size: 1rem;
   line-height: 1.45;
 }
-.news-page-neighbor.next { text-align: right; }
-.news-page-neighbor:hover b { color: var(--gold); }
+.page-neighbor.next { text-align: right; }
+.page-neighbor:hover b { color: var(--gold); }
 .news-page-overview {
   display: inline-flex;
   align-items: center;
@@ -3080,15 +3037,15 @@ a.roster-card.linked:hover {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  .news-page-neighbors {
+  .page-neighbors {
     grid-template-columns: 1fr;
     gap: 0;
   }
-  .news-page-neighbor {
+  .page-neighbor {
     padding: 12px 0;
     border-bottom: 1px solid var(--line);
   }
-  .news-page-neighbor.next { text-align: left; }
+  .page-neighbor.next { text-align: left; }
   .news-page-overview { width: 100%; }
 }
 .news-index-layout { display: block; }
@@ -3463,6 +3420,9 @@ a.roster-card.linked:hover {
 }
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .table-scroll table.plain { min-width: 480px; }
+/* 只有「標籤／內容」兩欄的表格（人物頁基本資料、演出基本資料等）不需要橫向捲動；
+   有第二個資料欄（td + td）的才是真的多欄表格，才維持 min-width 交給捲動處理。 */
+.table-scroll table.plain:not(:has(td + td)) { min-width: 0; }
 
 /* 表格橫向捲動提示（CSS-only「捲動陰影」，不需 JavaScript）：
    桌機版關閉此提示，避免寬版表格右側出現不自然白邊或殘影。
@@ -3513,6 +3473,17 @@ a.roster-card.linked:hover {
 .part-code-table td:nth-child(3) {
   background: rgba(242, 238, 228, .36);
 }
+/* 全站表格改為細線列式後，這張表的格線外觀改由自己宣告（見上方「例外」說明），
+   不再依賴 table.plain 的邊框，往後調整全站表格樣式也不會影響它。 */
+.part-code-table {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.part-code-table th, .part-code-table td { border: 1px solid var(--line); }
+.part-code-table tr:last-child th, .part-code-table tr:last-child td { border-bottom: 1px solid var(--line); }
+.part-code-table th { background: var(--bg-soft); color: var(--gold); font-size: .95rem; }
 .part-code-table td b {
   font-size: 1.08rem;
   font-variant-numeric: tabular-nums;

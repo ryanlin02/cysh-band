@@ -20,7 +20,6 @@ const pages = [
     ogImage: 'https://cysh.band/assets/img/about/about-ensemble-1280.webp',
     ogImageWidth: '1280',
     ogImageHeight: '640',
-    styleVersion: '?v=20260822-nav-login',
     extraHead: [
       '<meta name="robots" content="max-image-preview:large">',
       '<meta property="og:image:alt" content="嘉義高中校園中，在校生與校友組成的管樂團共同演奏">',
@@ -61,7 +60,6 @@ const pages = [
     description: '快速了解嘉中管樂官方網站的消息、歷史、人物、聯演、影像、參與方式與會員服務架構。',
     navActive: 'index',
     url: 'https://cysh.band/site-map.html',
-    styleVersion: '?v=20260822-nav-login'
   },
   {
     id: 'support',

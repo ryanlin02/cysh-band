@@ -7,8 +7,12 @@ const { spawnSync } = require('child_process');
 const { hasUnlinkedPeopleNames } = require('./lib/people-auto-link');
 const { createAlumniRosterResolver, cleanName } = require('./lib/alumni-roster');
 const { isChiayiCultureHallVenue } = require('./lib/hall-tour-venue');
+const { createRenderer } = require('./lib/site-template');
 
 const root = path.join(__dirname, '..');
+/* 樣式快取版本的唯一來源（見 lib/site-template.js）：全站每一頁都要帶同一個值，
+   否則改了 CSS 之後，回訪的人會拿到瀏覽器裡的舊樣式，新版面就會走位。 */
+const { styleVersion: STYLE_VERSION } = createRenderer(root);
 const errors = [];
 const warnings = [];
 const info = [];
@@ -449,6 +453,13 @@ function checkPublicHtmlQuality() {
     }
     if (anchorDepth !== 0) addError(`${fileRel}: unbalanced <a> tags.`);
 
+    /* 每一頁的樣式網址都要帶目前的內容雜湊。少了它，改完 CSS 之後回訪的人
+       會拿到瀏覽器裡的舊樣式，配上新的 HTML 就會走位。補救方式：
+       跑一次 node scripts/sync-shared-chrome.js（產生器輸出的頁面則重跑產生器）。 */
+    if (text.includes('css/style.css') && !text.includes(`css/style.css${STYLE_VERSION}`)) {
+      addError(`${fileRel}: stylesheet cache version is missing or stale. Run node scripts/sync-shared-chrome.js`);
+    }
+
     const isStandalonePage = /<html\b[^>]*\bdata-page-shell=["']standalone["']/i.test(text);
     const activeNav = [...text.matchAll(/<a\b[^>]*class=["'][^"']*\bactive\b[^"']*["'][^>]*>/g)];
     if (!isStandalonePage && activeNav.length !== 1) {
@@ -456,7 +467,7 @@ function checkPublicHtmlQuality() {
     }
   }
 
-  info.push(`Public HTML quality checked: ${publicHtml.length} files`);
+  info.push(`Public HTML quality checked: ${publicHtml.length} files; stylesheet cache version ${STYLE_VERSION}`);
 }
 
 function checkAboutPageImages() {
@@ -506,8 +517,8 @@ function checkAboutPageImages() {
   if (!/<meta\s+property=["']og:image:height["']\s+content=["']640["']/i.test(text)) {
     addError('about.html: og:image dimensions should match the 1280x640 cropped image.');
   }
-  if (!/css\/style\.css\?v=20260822-nav-login/i.test(text)) {
-    addError('about.html: stylesheet cache version must protect the corrected image dimensions.');
+  if (!text.includes(`css/style.css${STYLE_VERSION}`)) {
+    addError('about.html: stylesheet cache version is missing or stale.');
   }
   const css = fs.readFileSync(path.join(root, 'css', 'style.css'), 'utf8');
   if (!/\.about-photo\s*\{[\s\S]*?max-width:\s*40rem/i.test(css)
@@ -1168,7 +1179,8 @@ function checkPeopleProfilePages() {
 
     if (!/class=["'][^"']*\bperson-hero\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-hero.`);
     if (!/class=["'][^"']*\bperson-article\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-article.`);
-    if (!/<h3>\s*資料來源\s*<\/h3>/i.test(text)) addError(`${fileRel}: missing 資料來源 heading.`);
+    if (!/<h[23]>\s*資料來源\s*<\/h[23]>/i.test(text)) addError(`${fileRel}: missing 資料來源 heading.`);
+    if (!/class=["'][^"']*\bperson-appendix\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-appendix.`);
     if (!/class=["'][^"']*\bperson-nav\b[^"']*["']/i.test(text)) addError(`${fileRel}: missing person-nav.`);
     if (!text.includes(`PEOPLE．${num}`)) addError(`${fileRel}: page kicker should include PEOPLE．${num}.`);
     if (!/<meta\s+property=["']og:type["']\s+content=["']profile["']/i.test(text)) addError(`${fileRel}: og:type should be profile.`);

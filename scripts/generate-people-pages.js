@@ -137,36 +137,48 @@ ${facts.map(([label, value]) => `        <tr><th>${escapeHtml(label)}</th><td>${
       </table></div>`;
 }
 
+/* 相關聯演改用全站共用的資料列表 .record-list，不再做成表格。
+   原本的「年份」欄跟下面那行日期是同一件事，重複了；日期本身就帶年份，欄位刪掉。 */
 function renderRelatedConcerts(rows) {
   if (!rows.length) {
-    return `<h3>相關校友聯演</h3>
-    <p class="muted">目前資料庫尚未列出可確認的相關聯演紀錄；這不代表此人物未曾參與校友聯演。</p>`;
+    return `<section>
+        <h2>相關校友聯演</h2>
+        <p class="article-end-note">目前資料庫尚未列出可確認的相關聯演紀錄；這不代表此人物未曾參與校友聯演。</p>
+      </section>`;
   }
-  return `<h3>相關校友聯演</h3>
-    <p class="muted">以下為目前資料庫可確認的相關聯演紀錄，並非此人物完整參與履歷。</p>
-    <div class="table-scroll"><table class="plain">
-      <tr><th>年份</th><th>演出</th><th>角色</th></tr>
-${rows.map((row) => {
+  const items = rows.map((row) => {
     const escapedTitle = escapeHtml(row.title);
     const title = String(row.title || '').includes(`第 ${row.nth} 屆`)
       ? `《${escapedTitle}》`
       : `第 ${escapeHtml(row.nth)} 屆《${escapedTitle}》`;
     const titleHtml = row.page
       ? `<a href="../${escapeHtml(row.page)}">${title}</a>`
-      : title;
+      : `<span>${title}</span>`;
+    const roles = row.roles.filter(Boolean).join('、');
     const meta = [zhDate(row.date), row.venue].filter(Boolean).join('．');
-    return `      <tr><th>${escapeHtml(row.year)}</th><td>${titleHtml}${meta ? `<br><span class="muted">${escapeHtml(meta)}</span>` : ''}</td><td>${escapeHtml(row.roles.join('、'))}</td></tr>`;
-  }).join('\n')}
-    </table></div>`;
+    return `        <li>${titleHtml}${roles ? `<span class="record-note">${escapeHtml(roles)}</span>` : ''}${meta ? `<span class="record-sub">${escapeHtml(meta)}</span>` : ''}</li>`;
+  }).join('\n');
+  return `<section>
+        <h2>相關校友聯演</h2>
+        <p class="article-end-note">以下為目前資料庫可確認的紀錄，並非此人物完整參與履歷。</p>
+        <ul class="record-list">
+${items}
+        </ul>
+      </section>`;
 }
 
 function renderRelatedLinks(links) {
   if (!links || !links.length) return '';
-  return `<h3>相關連結</h3>
-    <div class="table-scroll"><table class="plain">
-      <tr><th>類型</th><th>連結</th></tr>
-${links.map((link) => `      <tr><th>${escapeHtml(link.type)}</th><td><a href="${escapeHtml(link.url)}"${/^https?:/.test(link.url) ? ' target="_blank" rel="noopener"' : ''}>${escapeHtml(link.label)}</a></td></tr>`).join('\n')}
-    </table></div>`;
+  const items = links.map((link) => {
+    const external = /^https?:/.test(link.url);
+    return `        <li><a href="${escapeHtml(link.url)}"${external ? ' target="_blank" rel="noopener"' : ''}>${escapeHtml(link.label)}</a><span class="record-note">${escapeHtml(link.type)}</span></li>`;
+  }).join('\n');
+  return `<section>
+        <h2>相關連結</h2>
+        <ul class="record-list">
+${items}
+        </ul>
+      </section>`;
 }
 
 function renderUpdateMeta(profile) {
@@ -178,7 +190,7 @@ function renderUpdateMeta(profile) {
     timeStyle: 'short',
     timeZone: 'Asia/Taipei'
   }).format(date);
-  return `<p class="person-update-meta">最後更新：<time datetime="${escapeHtml(profile.updatedAt)}">${escapeHtml(formatted)}</time>・更新者：${escapeHtml(profile.updatedBy)}</p>`;
+  return `<p class="article-end-note person-update-meta">最後更新：<time datetime="${escapeHtml(profile.updatedAt)}">${escapeHtml(formatted)}</time>・更新者：${escapeHtml(profile.updatedBy)}</p>`;
 }
 
 /* 這個人的照片。三件事要說清楚：
@@ -189,11 +201,13 @@ function renderUpdateMeta(profile) {
 function renderGalleryLink(profile) {
   if (!profile.num) return '';
   const href = `../photos/#/person-num/${encodeURIComponent(profile.num)}`;
-  return `<section class="person-gallery-panel" aria-label="這個人的照片">
-      <h3>這個人的照片</h3>
-      <p>照片放在會員平台，需要社員身分才看得到。</p>
-      <a class="btn ghost" href="${escapeHtml(href)}"><span>社員登入後可看</span><b>${escapeHtml(profile.name || '這個人')}的照片 →</b></a>
-    </section>`;
+  return `<section>
+        <h2>這個人的照片</h2>
+        <p>照片放在會員平台，需要社員身分才看得到。</p>
+        <div class="article-end-actions">
+          <a class="btn ghost" href="${escapeHtml(href)}">看${escapeHtml(profile.name || '這個人')}的照片 →</a>
+        </div>
+      </section>`;
 }
 
 function escapeRegExp(value) {
@@ -272,7 +286,7 @@ function renderProfile(profile, options = {}) {
     ? `    <p class="muted">此頁為人物個人頁模板預覽，由 <code>scripts/generate-people-profile-preview.js</code> 產生，不是正式公開人物頁。產生時間：${escapeHtml(options.generatedAt || new Date().toISOString())}</p>\n\n`
     : '';
   const officialPageLink = options.preview
-    ? `      <a class="btn ghost" href="../${escapeHtml(profile.output)}">查看目前正式頁 →</a>\n`
+    ? `      <a class="page-neighbor" href="../${escapeHtml(profile.output)}"><span>預覽模式</span><b>查看目前正式頁 →</b></a>\n`
     : '';
   const previewSuffix = options.preview ? '．PREVIEW' : '';
   const relatedLinksHtml = renderRelatedLinks(profile.relatedLinks);
@@ -280,7 +294,7 @@ function renderProfile(profile, options = {}) {
   const galleryLinkHtml = renderGalleryLink(profile);
   const personNavClass = profile.peopleLink ? 'person-nav article-page-nav' : 'person-nav article-page-nav person-nav--single';
   const peopleBackLink = profile.peopleLink
-    ? `      <a class="btn ghost article-page-nav-link overview" href="${escapeHtml(profile.peopleLink)}"><span>回到</span><b>人物誌總覽</b></a>\n`
+    ? `      <a class="page-neighbor" href="${escapeHtml(profile.peopleLink)}"><span>← 回到</span><b>人物誌總覽</b></a>\n`
     : '';
 
   const content = `<header class="page-head">
@@ -298,15 +312,18 @@ function renderProfile(profile, options = {}) {
   <article class="section news-article person-article">
 ${previewNote}${indentHtml(body)}
 
-    ${updateMetaHtml}
+    <footer class="article-end person-appendix" aria-label="人物資料附錄">
+      ${renderRelatedConcerts(relatedConcerts)}${relatedLinksHtml ? `\n\n      ${relatedLinksHtml}` : ''}${galleryLinkHtml ? `\n\n      ${galleryLinkHtml}` : ''}
 
-    ${renderRelatedConcerts(relatedConcerts)}${relatedLinksHtml ? `\n\n    ${relatedLinksHtml}` : ''}${galleryLinkHtml ? `\n\n    ${galleryLinkHtml}` : ''}
-
-    <h3>資料來源</h3>
-    <p class="sources">${profile.sourceHtml}</p>
+      <section>
+        <h2>資料來源</h2>
+        <p class="sources">${profile.sourceHtml}</p>
+        ${updateMetaHtml}
+      </section>
+    </footer>
 
     <nav class="${personNavClass}" aria-label="人物頁面導覽">
-${peopleBackLink}${officialPageLink}      <a class="btn ghost article-page-nav-link next" href="${escapeHtml(profile.rosterLink)}"><span>校友資料</span><b>在名錄查看</b></a>
+${peopleBackLink}${officialPageLink}      <a class="page-neighbor next" href="${escapeHtml(profile.rosterLink)}"><span>校友資料 →</span><b>在名錄查看</b></a>
     </nav>
   </article>
 </main>`;

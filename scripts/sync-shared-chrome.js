@@ -5,7 +5,7 @@ const path = require('path');
 const { createRenderer } = require('./lib/site-template');
 
 const root = path.join(__dirname, '..');
-const { renderPartial } = createRenderer(root);
+const { renderPartial, styleVersion } = createRenderer(root);
 
 function walk(dir, files = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -45,6 +45,16 @@ function syncPwaInstallMeta(html, fileRel) {
   return html.replace(
     /<link rel="apple-touch-icon" href="[^"]+">\n<meta name="theme-color" content="#faf8f3">/,
     pwaInstallMeta
+  );
+}
+
+/* 樣式快取版本：把每一頁的 css/style.css 網址換成目前的內容雜湊。
+   以前有 52 個頁面完全沒有版本參數，改了 CSS 之後回訪的人會吃到瀏覽器的舊樣式，
+   新版面就會走位。這裡統一補上，來源是 lib/site-template.js 算出的同一個值。 */
+function syncStyleVersion(html) {
+  return html.replace(
+    /(href=["'])((?:\.\.\/)*css\/style\.css)(\?v=[^"']*)?(["'])/g,
+    (_, open, href, _version, close) => `${open}${href}${styleVersion}${close}`
   );
 }
 
@@ -97,7 +107,7 @@ function syncSharedChrome() {
     const fileRel = relative(file);
     if (fileRel === 'news/_template.html') continue;
     const html = fs.readFileSync(file, 'utf8');
-    const withPwaInstallMeta = syncPwaInstallMeta(html, fileRel);
+    const withPwaInstallMeta = syncStyleVersion(syncPwaInstallMeta(html, fileRel));
     if (!withPwaInstallMeta.includes('<nav class="nav">') || !withPwaInstallMeta.includes('<footer class="footer">')) {
       if (withPwaInstallMeta !== html) {
         fs.writeFileSync(file, withPwaInstallMeta);

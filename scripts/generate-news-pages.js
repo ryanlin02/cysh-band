@@ -3,17 +3,14 @@
    GitHub Pages 仍使用輸出的靜態 HTML；此腳本只在本地維護時執行。 */
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const { createRenderer } = require('./lib/site-template');
 const { autoLinkHtml } = require('./lib/people-auto-link');
 
 const root = path.join(__dirname, '..');
-const { escapeHtml, renderPage } = createRenderer(root);
-const NEWS_STYLE_VERSION = `?v=${crypto
-  .createHash('sha256')
-  .update(fs.readFileSync(path.join(root, 'css', 'style.css')))
-  .digest('hex')
-  .slice(0, 12)}`;
+const { escapeHtml, renderPage, styleVersion } = createRenderer(root);
+/* 樣式快取版本已改由 lib/site-template.js 統一計算（全站同一個值）；
+   這裡保留舊名稱是為了 check-site.js 仍以它比對輸出。 */
+const NEWS_STYLE_VERSION = styleVersion;
 
 global.window = global;
 require(path.join(root, 'data', 'news.js'));
@@ -383,13 +380,13 @@ function articlePageNav(article) {
   const { previous, next } = adjacentArticles(article);
   const neighbors = [];
   if (previous) {
-    neighbors.push(`<a class="news-page-neighbor previous" href="../${escapeHtml(previous.output)}"><span>← 上一篇消息</span><b>${escapeHtml(articleNavLabel(previous))}</b></a>`);
+    neighbors.push(`<a class="page-neighbor previous" href="../${escapeHtml(previous.output)}"><span>← 上一篇消息</span><b>${escapeHtml(articleNavLabel(previous))}</b></a>`);
   }
   if (next) {
-    neighbors.push(`<a class="news-page-neighbor next" href="../${escapeHtml(next.output)}"><span>下一篇消息 →</span><b>${escapeHtml(articleNavLabel(next))}</b></a>`);
+    neighbors.push(`<a class="page-neighbor next" href="../${escapeHtml(next.output)}"><span>下一篇消息 →</span><b>${escapeHtml(articleNavLabel(next))}</b></a>`);
   }
   return `<nav class="article-page-nav news-page-nav" aria-label="最新消息文章導覽">
-      ${neighbors.length ? `<div class="news-page-neighbors">${neighbors.join('\n        ')}</div>` : ''}
+      ${neighbors.length ? `<div class="page-neighbors">${neighbors.join('\n        ')}</div>` : ''}
       <a class="news-page-overview" href="../news/index.html">回到最新消息總覽</a>
     </nav>`;
 }

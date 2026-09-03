@@ -20,7 +20,7 @@ require(path.join(__dirname, '..', 'data', 'people-profiles.js'));
 require(path.join(__dirname, '..', 'data', 'news.js'));
 
 const root = path.join(__dirname, '..');
-const { renderPartial } = createRenderer(root);
+const { renderPartial, styleVersion } = createRenderer(root);
 const alumni = global.ALUMNI || [];
 const concerts = global.CONCERTS || [];
 const peopleProfiles = global.PEOPLE_PROFILES || [];
@@ -309,17 +309,17 @@ function renderParticipantSection(concert) {
   if (!rows.length) return '';
   const item = (row) => {
     const num = String(row.alumniNumber || '');
-    const label = `${escapeHtml(row.name)}<span class="participant-num">${escapeHtml(num)}</span>`;
+    const label = `${escapeHtml(row.name)}<span class="record-num">${escapeHtml(num)}</span>`;
     const detail = [row.role === '團員' ? row.section : row.role, row.note].filter(Boolean).join('・');
     // 不是每個校友都有人物頁；沒有就不要做成連結，不然會產生死連結
     const hasPage = num && fs.existsSync(path.join(__dirname, '..', 'people', `${num}.html`));
     const who = hasPage ? `<a href="../people/${escapeHtml(num)}.html">${label}</a>` : `<span>${label}</span>`;
-    return `<li>${who}${detail ? `<span class="participant-role">${escapeHtml(detail)}</span>` : ''}</li>`;
+    return `<li>${who}${detail ? `<span class="record-note">${escapeHtml(detail)}</span>` : ''}</li>`;
   };
   return `<section class="section">
     <h2>參與過的校友</h2>
     <p class="muted">由校友在會員平台自己填寫、經確認後列出。節目冊本來就沒有印全體團員名單，這一區靠大家一起補。</p>
-    <ul class="participant-list">
+    <ul class="record-list">
       ${rows.map(item).join('\n      ')}
     </ul>
   </section>`;
@@ -839,7 +839,7 @@ ${renderPartial('partials/pwa-install.html', { assetPrefix: '../' }).trim()}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&amp;family=Noto+Sans+TC:wght@400;700&amp;family=Noto+Serif+TC:wght@700;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=20260822-nav-login">
+<link rel="stylesheet" href="../css/style.css${styleVersion}">
 <link rel="stylesheet" href="../css/venue-tour-link.css?v=20260807-compact-v1">
 <script src="../js/main.js" defer></script>
 </head>
