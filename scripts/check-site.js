@@ -990,6 +990,15 @@ function checkGeneratedNewsPages() {
       missingNumber += 1;
     }
   }
+  // 屆別清單（給會員平台讀的）要跟 data/concerts.js 同步
+  try {
+    const { execFileSync } = require('child_process');
+    execFileSync(process.execPath, [path.join(root, 'scripts', 'generate-concerts-catalog.js'), '--check'], { stdio: 'pipe' });
+    info.push('Concert catalog checked: in sync with data/concerts.js');
+  } catch (error) {
+    addError('data/concerts-catalog.json: 與 data/concerts.js 不同步。執行 node scripts/generate-concerts-catalog.js');
+  }
+
   // 人物頁有兩個來源：手寫的 content/people/*.html，與會員平台同步下來的那幾份。
   // 同步下來的每次都會整份重寫，手動改了會安靜地不見——所以檢查標記還在不在。
   try {
