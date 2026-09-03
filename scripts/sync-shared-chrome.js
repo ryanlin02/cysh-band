@@ -70,7 +70,12 @@ function activeFor(fileRel, html) {
   if (fileRel === 'index.html') return 'index';
   if (fileRel.startsWith('news/')) return 'news';
   if (fileRel.startsWith('concerts/')) return 'concerts';
-  if (fileRel.startsWith('gallery/')) return 'photos';
+  // 導覽列 2026-08 起沒有「影像館」了（換成「登入」），
+  // 所以 gallery/ 底下的頁面不能再指 photos——那會變成一個都沒亮。
+  // 先沿用頁面上原本標好的那一個，沒有再照內容歸類。
+  if (fileRel.startsWith('gallery/')) {
+    return activeFromExisting(html) || (fileRel.startsWith('gallery/2026-') ? 'news' : 'concerts');
+  }
   const existing = activeFromExisting(html);
   if (existing) return existing;
   const names = {

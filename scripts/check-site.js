@@ -970,6 +970,42 @@ function checkGeneratedNewsPages() {
   if (actualSitemap !== expectedSitemap) {
     addError('sitemap.xml: generated news entries are out of sync. Run node scripts/generate-news-pages.js');
   }
+  // 每一篇文章都要有「撰稿與核准」，而且姓名要帶校友編號。
+  // 這是對讀者的交代：誰寫的、誰核准的，不能只有一部分文章有。
+  let missingProvenance = 0;
+  let missingNumber = 0;
+  for (const article of articles) {
+    const html = read(article.output);
+    if (!html) continue;
+    const block = (html.match(/<aside class="news-provenance"[\s\S]*?<\/aside>/) || [''])[0];
+    if (!block) {
+      addError(`${article.output}: missing the 撰稿與核准 block. Run node scripts/generate-news-pages.js`);
+      missingProvenance += 1;
+      continue;
+    }
+    // 署名是「AI 小編」的那一篇沒有校友編號，其他都要有
+    if (!/（\d{4}）/.test(block)) {
+      addError(`${article.output}: the 撰稿與核准 block has no alumni number.`);
+      missingNumber += 1;
+    }
+  }
+  // 版面規範：短消息維持「段落＋圖」就好，不硬加結構；
+  // 但超過約 900 字還一個小標都沒有，讀者在手機上會看到一整片文字牆。
+  // 這是提醒（warning），不是錯誤——不同類型的文章本來就該有彈性。
+  let longFlat = 0;
+  for (const article of articles) {
+    if (!article.source) continue;
+    const source = read(article.source);
+    if (!source) continue;
+    const plain = source.replace(/<[^>]+>/g, '').replace(/\s+/g, '');
+    const headings = (source.match(/<h[23][ >]/g) || []).length;
+    if (plain.length >= 900 && headings === 0) {
+      addWarning(`${article.output}: ${plain.length} 字但沒有小標，建議分成 2～4 段加上小標題。`);
+      longFlat += 1;
+    }
+  }
+  info.push(`Article layout checked: ${articles.length}; long articles without headings: ${longFlat}`);
+  info.push(`Article provenance checked: ${articles.length}; missing block: ${missingProvenance}; missing alumni number: ${missingNumber}`);
   info.push(`Generated news pages, RSS, and sitemap checked: ${articles.length}`);
 }
 

@@ -208,13 +208,14 @@ function articleSource(article) {
 }
 
 function aiEditorialDisclosure(article) {
+  // 說明句改由 generate-news-pages.js 的 articleProvenance 統一產生
+  //（每一篇都要有，寫法才會一致），這裡只留資料來源的連結。
   if (article.editorialOrigin !== 'ai_assisted') return '';
   const sources = (Array.isArray(article.sourceItems) ? article.sourceItems : []).slice(0, 8);
   const links = sources.map((source) => `<li><a href="${escapeHtml(String(source.url || ''))}" target="_blank" rel="noopener noreferrer">${escapeHtml(String(source.publisher || source.title || '公開來源'))}</a></li>`).join('');
-  return `<aside class="news-callout ai-editorial-disclosure" aria-label="AI 小編與資料來源">
-  <h2>撰稿與核准</h2>
-  <p>${escapeHtml(article.aiAssistedDisclosure || `本文由嘉中管樂官方網站 AI 小編依公開來源協助整理，並由 ${article.reviewedByName || '管理員'} 核准後發布。`)}</p>
-  ${links ? `<p><strong>資料來源</strong></p><ul>${links}</ul>` : ''}
+  if (!links) return '';
+  return `<aside class="news-callout ai-editorial-disclosure" aria-label="資料來源">
+  <ul>${links}</ul>
 </aside>`;
 }
 

@@ -2841,6 +2841,44 @@ a.roster-card.linked:hover {
   font-size: .88rem;
   line-height: 1.6;
 }
+/* 撰稿與核准：每一篇文章都有，寫法一致。
+   放在文章結尾、分享鍵之前——讀完才會想知道「這是誰寫的、誰核准的」。 */
+.news-provenance {
+  max-width: 42em;
+  margin-top: 34px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold-soft);
+  border-radius: 12px;
+  background: var(--bg-soft, rgba(200,164,92,.06));
+}
+.news-provenance h2 {
+  margin: 0 0 6px;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--ink-dim);
+}
+.news-provenance p {
+  margin: 0;
+  color: var(--ink);
+  font-size: .92rem;
+  line-height: 1.85;
+}
+.news-provenance .news-provenance-source {
+  margin-top: 8px;
+  color: var(--ink-dim);
+  font-size: .85rem;
+}
+.news-provenance .news-provenance-source strong { margin-right: 6px; color: var(--ink); }
+.news-provenance ul {
+  margin: 4px 0 0;
+  padding-left: 1.2em;
+  color: var(--ink-dim);
+  font-size: .85rem;
+  line-height: 1.8;
+}
+
 /* 社員的討論：官網只顯示數字，內容要登入會員平台才看得到。
    留言與姓名是社員在「只有社員看得到」的前提下寫的，不能因為官網要顯示就變成公開資料。 */
 .news-social {

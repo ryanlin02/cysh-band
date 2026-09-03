@@ -21,6 +21,69 @@ require(path.join(root, 'data', 'people-profiles.js'));
 
 const profiles = global.PEOPLE_PROFILES || [];
 
+require(path.join(root, 'data', 'news-provenance.js'));
+const provenanceConfig = global.NEWS_PROVENANCE || { byAuthor: {}, byArticle: {} };
+// 姓名 → 校友編號：撰稿與核准那一行要把編號一起寫出來
+const numberByName = new Map(profiles.filter((p) => p.name && p.num).map((p) => [p.name, String(p.num)]));
+
+function personLabel(name, alumniNumber) {
+  const clean = String(name || '').trim();
+  if (!clean) return '';
+  const num = String(alumniNumber || numberByName.get(clean) || '').trim();
+  return num ? `${clean}（${num}）` : clean;
+}
+
+/* 撰稿與核准：每一篇文章都要有，而且寫法一致。
+   誰寫的由 data/news-provenance.js 聲明（發布者自己說的，不是程式猜的）。
+   sourceNotes 是這一篇的資料來源說明，有就一起列出來。 */
+/* 內文裡如果還留著舊版的 AI 揭露區塊，把它抽出來：
+   說明句改由 articleProvenance 統一產生，只留下資料來源的連結。 */
+function extractLegacyDisclosure(body) {
+  const match = body.match(/\s*<aside class="news-callout ai-editorial-disclosure"[\s\S]*?<\/aside>/);
+  if (!match) return { body, sourceLinks: '' };
+  const links = (match[0].match(/<ul>[\s\S]*?<\/ul>/) || [''])[0];
+  return { body: body.replace(match[0], ''), sourceLinks: links };
+}
+
+function articleProvenance(article, sourceLinks = '') {
+  const author = String(article.authorName || '').trim();
+  if (!author) return '';
+  const origin = provenanceConfig.byArticle?.[article.id]
+    || (article.authorAlumniNumber ? provenanceConfig.byAuthor?.[String(article.authorAlumniNumber)] : null)
+    || (author === 'AI 小編' ? 'ai_assisted' : 'member');
+
+  // sourceNotes 目前的寫法是「…，經 某某 核准後發布。」，把核准的人抓出來
+  const notes = String(article.sourceNotes || '').trim();
+  const approvedBy = (notes.match(/經\s*([^\s，,。]+)\s*(?:核准|審核)/) || [])[1] || author;
+  const writerLabel = origin === 'ai_assisted' && author === 'AI 小編'
+    ? '嘉中管樂官方網站 AI 小編'
+    : personLabel(author, article.authorAlumniNumber);
+  const approverLabel = personLabel(approvedBy);
+
+  let sentence;
+  if (origin === 'ai_assisted') {
+    sentence = author === 'AI 小編'
+      ? `本文由嘉中管樂官方網站 AI 小編依公開來源協助整理，並由 ${approverLabel} 核准後發布。`
+      : `本文由嘉中管樂官方網站 AI 小編協助整理，並由 ${writerLabel} 核准後發布。`;
+  } else {
+    sentence = writerLabel === approverLabel
+      ? `本文由 ${writerLabel} 撰寫並核准後發布。`
+      : `本文由 ${writerLabel} 撰寫，並由 ${approverLabel} 核准後發布。`;
+  }
+
+  // 資料來源說明：AI 那一篇的來源連結已經寫在內文的區塊裡，這裡只補文字說明
+  const sourceLine = notes && !/核准後發布|審核後發布/.test(notes)
+    ? `<p class="news-provenance-source"><strong>資料來源</strong>${escapeHtml(notes)}</p>`
+    : '';
+
+  const links = sourceLinks ? `<p class="news-provenance-source"><strong>資料來源</strong></p>${sourceLinks}` : '';
+  return `<aside class="news-provenance" aria-label="撰稿與核准">
+      <h2>撰稿與核准</h2>
+      <p>${escapeHtml(sentence)}</p>
+      ${sourceLine}${links}
+    </aside>`;
+}
+
 function isExternalUrl(value) {
   return /^https?:\/\//i.test(String(value || ''));
 }
@@ -353,6 +416,8 @@ function renderArticle(article) {
   const pageNav = articlePageNav(article);
   const shareControl = articleShareControl(article);
   const socialBlock = articleSocialBlock(article);
+  const legacy = extractLegacyDisclosure(indentedBody);
+  const provenance = articleProvenance(article, legacy.sourceLinks);
   const content = `<header class="page-head">
   <p class="kicker">NEWS</p>
   <h1>${article.headlineHtml}</h1>
@@ -365,10 +430,10 @@ function renderArticle(article) {
     ${prepared.leadFigure}
 
     <div class="news-content">
-${indentedBody}
+${legacy.body}
     </div>
 
-    ${shareControl}
+${provenance ? `    ${provenance}\n\n` : ''}    ${shareControl}
 
 ${socialBlock ? `    ${socialBlock}\n\n` : ''}${related ? `    ${related}\n\n` : ''}    ${pageNav}
   </article>
@@ -631,7 +696,8 @@ function generateNewsPages() {
       url: `https://cysh.band/${article.output}`,
       tags: article.tags,
       authorName: article.authorName || null,
-      authorAlumniNumber: article.authorAlumniNumber || null
+      authorAlumniNumber: article.authorAlumniNumber || null,
+      sourceNotes: article.sourceNotes || null
     }))
   }, null, 2) + '\n');
   console.log('data/news-catalog.json');
