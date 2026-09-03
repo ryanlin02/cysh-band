@@ -73,15 +73,10 @@ function articleProvenance(article, sourceLinks = '') {
 
   // 資料來源說明：AI 那一篇的來源連結已經寫在內文的區塊裡，這裡只補文字說明
   const sourceLine = notes && !/核准後發布|審核後發布/.test(notes)
-    ? `<p class="news-provenance-source"><strong>資料來源</strong>${escapeHtml(notes)}</p>`
+    ? `<p class="article-end-note"><strong>資料來源</strong>　${escapeHtml(notes)}</p>`
     : '';
 
-  const links = sourceLinks ? `<p class="news-provenance-source"><strong>資料來源</strong></p>${sourceLinks}` : '';
-  return `<aside class="news-provenance" aria-label="撰稿與核准">
-      <h2>撰稿與核准</h2>
-      <p>${escapeHtml(sentence)}</p>
-      ${sourceLine}${links}
-    </aside>`;
+  return { sentence, sourceLine, sourceLinks };
 }
 
 function isExternalUrl(value) {
@@ -407,6 +402,35 @@ function articleSocialBlock(article) {
     </section>`;
 }
 
+/* 文章結尾：撰稿與核准 ＋ 社員的討論 ＋ 分享，合成同一區。
+   以前這三件事各自一個框，同一頁出現三種框線，看起來像拼湊的。
+   規範 2.3-A：外層已經是文章，內部用文字階層與細分隔線，不再加內嵌框。
+   讚數與留言數由會員平台提供（js/news-social.js 去要），要不到就把那一列藏起來。 */
+function articleEnd(article, sourceLinks = '') {
+  const provenance = articleProvenance(article, sourceLinks);
+  const slug = String(article.id || '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+  const shareUrl = `https://cysh.band/${article.output}`;
+  const statusId = `${article.id}-share-status`;
+  const social = slug
+    ? `<div class="article-end-meta" data-news-social data-slug="${escapeHtml(slug)}" hidden>
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10.5v9H4.5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1z"></path><path d="M7 10.5 11.5 3.5a2 2 0 0 1 2.9 2.4L13.3 9.5h5.2a2 2 0 0 1 1.95 2.45l-1.3 5.8a2.5 2.5 0 0 1-2.44 1.95H7z"></path></svg><b data-social-likes>0</b> 個讚</span>
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12.5a7 7 0 0 1-7 7H8l-3.5 2.5v-4a7 7 0 0 1 3.5-13h5a7 7 0 0 1 7 7z"></path></svg><b data-social-comments>0</b> 則留言</span>
+      </div>`
+    : '';
+  return `<footer class="article-end" aria-label="撰稿與核准與互動">
+      <h2>撰稿與核准</h2>
+      <p>${escapeHtml(provenance.sentence)}</p>
+      ${provenance.sourceLine}${provenance.sourceLinks ? `<p class="article-end-note"><strong>資料來源</strong></p>${provenance.sourceLinks}` : ''}
+      ${social}
+      <div class="article-end-actions">
+        <a class="btn ghost" data-social-cta href="https://members.cysh.band/" hidden>登入後可以留言與按讚 →</a>
+        <button class="btn ghost news-share-button" type="button" data-news-share data-share-url="${escapeHtml(shareUrl)}" data-share-title="${escapeHtml(textFromHtml(article.ogTitle || article.title))}" data-share-text="${escapeHtml(article.summary)}" aria-describedby="${escapeHtml(statusId)}">分享這則消息</button>
+      </div>
+      <p class="article-end-status news-share-status" id="${escapeHtml(statusId)}" role="status" aria-live="polite" hidden></p>
+      <p class="article-end-status" data-social-note hidden></p>
+    </footer>`;
+}
+
 function renderArticle(article) {
   const sourceBody = fs.readFileSync(path.join(root, article.source), 'utf8');
   const prepared = prepareArticleBody(article, sourceBody);
@@ -414,10 +438,8 @@ function renderArticle(article) {
   const indentedBody = prepared.body.split('\n').map((line) => (line ? `      ${line}` : line)).join('\n');
   const related = relatedArticles(article);
   const pageNav = articlePageNav(article);
-  const shareControl = articleShareControl(article);
-  const socialBlock = articleSocialBlock(article);
   const legacy = extractLegacyDisclosure(indentedBody);
-  const provenance = articleProvenance(article, legacy.sourceLinks);
+  const endBlock = articleEnd(article, legacy.sourceLinks);
   const content = `<header class="page-head">
   <p class="kicker">NEWS</p>
   <h1>${article.headlineHtml}</h1>
@@ -433,9 +455,9 @@ function renderArticle(article) {
 ${legacy.body}
     </div>
 
-${provenance ? `    ${provenance}\n\n` : ''}    ${shareControl}
+    ${endBlock}
 
-${socialBlock ? `    ${socialBlock}\n\n` : ''}${related ? `    ${related}\n\n` : ''}    ${pageNav}
+${related ? `    ${related}\n\n` : ''}    ${pageNav}
   </article>
 </main>`;
 

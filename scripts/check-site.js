@@ -977,7 +977,7 @@ function checkGeneratedNewsPages() {
   for (const article of articles) {
     const html = read(article.output);
     if (!html) continue;
-    const block = (html.match(/<aside class="news-provenance"[\s\S]*?<\/aside>/) || [''])[0];
+    const block = (html.match(/<footer class="article-end"[\s\S]*?<\/footer>/) || [''])[0];
     if (!block) {
       addError(`${article.output}: missing the 撰稿與核准 block. Run node scripts/generate-news-pages.js`);
       missingProvenance += 1;

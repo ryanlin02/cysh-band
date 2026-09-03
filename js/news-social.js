@@ -5,6 +5,8 @@
    官網照樣看得到文章，不會留一個空框或錯誤訊息。 */
 (function () {
   var block = document.querySelector('[data-news-social]');
+  var cta = document.querySelector('[data-social-cta]');
+  var note = document.querySelector('[data-social-note]');
   if (!block) return;
   var slug = block.getAttribute('data-slug');
   if (!slug) return;
@@ -19,17 +21,18 @@
       var comments = block.querySelector('[data-social-comments]');
       if (likes) likes.textContent = data.likes;
       if (comments) comments.textContent = data.comments;
-
-      var cta = block.querySelector('[data-social-cta]');
-      var note = block.querySelector('[data-social-note]');
-      if (data.signedIn) {
-        // 已經是社員：直接帶到會員平台的那一篇，留言與按讚都在那裡
-        if (cta) { cta.textContent = '看留言與按讚 →'; cta.href = data.href; }
-        if (note) note.textContent = '你已經登入，點上面可以看留言、留言與按讚。';
-      } else {
-        if (cta) { cta.href = 'https://members.cysh.band/login?next=' + encodeURIComponent(data.href.replace('https://members.cysh.band', '')); }
-      }
       block.hidden = false;
+      if (!cta) return;
+      if (data.signedIn) {
+        cta.textContent = '看留言與按讚 →';
+        cta.href = data.href;
+        if (note) { note.textContent = '你已經登入，點上面可以看留言、留言與按讚。'; note.hidden = false; }
+      } else {
+        cta.textContent = '登入後可以留言與按讚 →';
+        cta.href = 'https://members.cysh.band/login?next=' + encodeURIComponent(String(data.href || '').replace('https://members.cysh.band', ''));
+        if (note) { note.textContent = '留言與按讚只開放給社員，內容也只有社員看得到。'; note.hidden = false; }
+      }
+      cta.hidden = false;
     })
     .catch(function () { /* 連不上就不顯示，不影響閱讀文章 */ });
 })();

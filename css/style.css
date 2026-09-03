@@ -2790,12 +2790,7 @@ a.roster-card.linked:hover {
 .news-article figcaption { margin-top: 10px; font-size: .88rem; color: var(--ink-dim); }
 .news-content > :first-child { margin-top: 0; }
 .news-content h2 { margin-top: 42px; }
-.news-share {
-  max-width: 42em;
-  margin-top: 34px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
-}
+.news-share { margin: 0; padding: 0; border: 0; }
 .news-share-button {
   display: inline-flex;
   align-items: center;
@@ -2841,95 +2836,63 @@ a.roster-card.linked:hover {
   font-size: .88rem;
   line-height: 1.6;
 }
-/* 撰稿與核准：每一篇文章都有，寫法一致。
-   放在文章結尾、分享鍵之前——讀完才會想知道「這是誰寫的、誰核准的」。 */
-.news-provenance {
+/* 文章結尾（撰稿與核准＋互動＋分享）：一條細線帶出來的一區，不是三個框。
+   規範 2.3：新內容一律沿用既有 class，不另造樣式；2.3-A：外層已經是文章，
+   內部資訊用文字階層與細分隔線呈現，不再加內嵌卡片或多套框線系統。 */
+.article-end {
   max-width: 42em;
   margin-top: 34px;
-  padding: 16px 18px;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--gold-soft);
-  border-radius: 12px;
-  background: var(--bg-soft, rgba(200,164,92,.06));
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
 }
-.news-provenance h2 {
-  margin: 0 0 6px;
+.article-end h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  font-family: inherit;
   font-size: .82rem;
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: .12em;
   color: var(--ink-dim);
 }
-.news-provenance p {
+.article-end h2::before { content: none; }
+.article-end p {
   margin: 0;
   color: var(--ink);
   font-size: .92rem;
-  line-height: 1.85;
+  line-height: 1.9;
 }
-.news-provenance .news-provenance-source {
-  margin-top: 8px;
+.article-end .article-end-note {
+  margin-top: 6px;
   color: var(--ink-dim);
   font-size: .85rem;
 }
-.news-provenance .news-provenance-source strong { margin-right: 6px; color: var(--ink); }
-.news-provenance ul {
-  margin: 4px 0 0;
+.article-end ul {
+  margin: 6px 0 0;
   padding-left: 1.2em;
   color: var(--ink-dim);
   font-size: .85rem;
   line-height: 1.8;
 }
-
-/* 社員的討論：官網只顯示數字，內容要登入會員平台才看得到。
-   留言與姓名是社員在「只有社員看得到」的前提下寫的，不能因為官網要顯示就變成公開資料。 */
-.news-social {
-  max-width: 42em;
-  margin-top: 18px;
-  padding: 16px 18px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--bg-card);
-}
-.news-social[hidden] { display: none; }
-.news-social-counts {
+.article-end-meta {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 8px 18px;
   flex-wrap: wrap;
-  font-size: .95rem;
-  font-weight: 700;
-  color: var(--ink);
+  margin-top: 18px;
+  color: var(--ink-dim);
+  font-size: .88rem;
 }
-.news-social-counts span { display: inline-flex; align-items: center; gap: 6px; }
-.news-social-counts svg {
-  width: 18px; height: 18px; fill: none; stroke: currentColor;
+.article-end-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.article-end-meta b { color: var(--ink); font-weight: 700; }
+.article-end-meta svg {
+  width: 17px; height: 17px; fill: none; stroke: currentColor;
   stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; color: var(--gold);
 }
-.news-social-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  margin-top: 10px;
-  padding: 0 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: var(--bg-card);
-  color: var(--ink);
-  font-size: .9rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-.news-social-cta:hover {
-  border-color: var(--gold-soft);
-  background: rgba(200,164,92,.1);
-  color: var(--gold);
-}
-.news-social-note {
-  margin: 8px 0 0;
-  color: var(--ink-dim);
-  font-size: .85rem;
-  line-height: 1.7;
-}
+.article-end-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.article-end-actions .btn.ghost { margin-left: 0; padding: 11px 20px; font-size: .88rem; letter-spacing: .06em; }
+.article-end-actions .btn.ghost[hidden] { display: none; }
+.article-end-status { margin: 10px 0 0; color: var(--ink-dim); font-size: .85rem; line-height: 1.7; }
+
 .news-content .news-cta {
   display: flex;
   align-items: center;
