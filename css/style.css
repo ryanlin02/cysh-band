@@ -2841,6 +2841,57 @@ a.roster-card.linked:hover {
   font-size: .88rem;
   line-height: 1.6;
 }
+/* 社員的討論：官網只顯示數字，內容要登入會員平台才看得到。
+   留言與姓名是社員在「只有社員看得到」的前提下寫的，不能因為官網要顯示就變成公開資料。 */
+.news-social {
+  max-width: 42em;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+.news-social[hidden] { display: none; }
+.news-social-counts {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.news-social-counts span { display: inline-flex; align-items: center; gap: 6px; }
+.news-social-counts svg {
+  width: 18px; height: 18px; fill: none; stroke: currentColor;
+  stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; color: var(--gold);
+}
+.news-social-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--ink);
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.news-social-cta:hover {
+  border-color: var(--gold-soft);
+  background: rgba(200,164,92,.1);
+  color: var(--gold);
+}
+.news-social-note {
+  margin: 8px 0 0;
+  color: var(--ink-dim);
+  font-size: .85rem;
+  line-height: 1.7;
+}
 .news-content .news-cta {
   display: flex;
   align-items: center;

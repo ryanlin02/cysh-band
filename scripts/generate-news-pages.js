@@ -327,6 +327,23 @@ function articleShareControl(article) {
     </div>`;
 }
 
+/* 社員的討論：讚數與留言數由會員平台提供（/api/public/article-social）。
+   官網是靜態頁，所以先出一個空殼，由 news-social.js 去要數字；
+   要不到（例如這篇不是從會員平台發布的）就整塊不顯示，不會留一個空框。
+   刻意只顯示數字：留言內容與姓名是社員在「只有社員看得到」的前提下寫的。 */
+function articleSocialBlock(article) {
+  const slug = String(article.id || '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+  if (!slug) return '';
+  return `<section class="news-social" data-news-social data-slug="${escapeHtml(slug)}" hidden aria-label="社員的討論">
+      <div class="news-social-counts">
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10.5v9H4.5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1z"></path><path d="M7 10.5 11.5 3.5a2 2 0 0 1 2.9 2.4L13.3 9.5h5.2a2 2 0 0 1 1.95 2.45l-1.3 5.8a2.5 2.5 0 0 1-2.44 1.95H7z"></path></svg><b data-social-likes>0</b> 個讚</span>
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12.5a7 7 0 0 1-7 7H8l-3.5 2.5v-4a7 7 0 0 1 3.5-13h5a7 7 0 0 1 7 7z"></path></svg><b data-social-comments>0</b> 則留言</span>
+      </div>
+      <a class="news-social-cta" data-social-cta href="https://members.cysh.band/">登入後可以留言與按讚 →</a>
+      <p class="news-social-note" data-social-note>留言與按讚只開放給社員，內容也只有社員看得到。</p>
+    </section>`;
+}
+
 function renderArticle(article) {
   const sourceBody = fs.readFileSync(path.join(root, article.source), 'utf8');
   const prepared = prepareArticleBody(article, sourceBody);
@@ -335,6 +352,7 @@ function renderArticle(article) {
   const related = relatedArticles(article);
   const pageNav = articlePageNav(article);
   const shareControl = articleShareControl(article);
+  const socialBlock = articleSocialBlock(article);
   const content = `<header class="page-head">
   <p class="kicker">NEWS</p>
   <h1>${article.headlineHtml}</h1>
@@ -352,7 +370,7 @@ ${indentedBody}
 
     ${shareControl}
 
-${related ? `    ${related}\n\n` : ''}    ${pageNav}
+${socialBlock ? `    ${socialBlock}\n\n` : ''}${related ? `    ${related}\n\n` : ''}    ${pageNav}
   </article>
 </main>`;
 
@@ -370,7 +388,7 @@ ${related ? `    ${related}\n\n` : ''}    ${pageNav}
     styleVersion: NEWS_STYLE_VERSION,
     assetPrefix: '../',
     navActive: 'news',
-    extraScripts: '<script src="../js/news-share.js" defer></script>',
+    extraScripts: '<script src="../js/news-share.js" defer></script>\n  <script src="../js/news-social.js" defer></script>',
     content
   });
   return autoLinkHtml(html, article.output, profiles);
