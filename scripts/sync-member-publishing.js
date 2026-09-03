@@ -253,7 +253,11 @@ async function sync() {
     const source = `content/people/${num}.html`;
     const output = `people/${num}.html`;
     fs.mkdirSync(path.join(root, 'content', 'people'), { recursive: true });
-    fs.writeFileSync(path.join(root, source), profileSource(profile));
+    // 這個檔每次同步都會整份重寫。加一行標記說清楚，不然有人手動改了會安靜地不見。
+    const managedHeader = '<!-- 這一頁的內容由會員平台的「公開介紹」產生，每次同步都會整份重寫。\n'
+      + '     直接改這個檔沒有用，下一次同步就會被蓋掉。\n'
+      + '     要修改請到 https://members.cysh.band/profile 編輯後送審。 -->\n';
+    fs.writeFileSync(path.join(root, source), managedHeader + profileSource(profile));
 
     let photo = safePublicPhoto(profile.photo_url, num);
     if (profile.photo_storage_path) {
@@ -330,6 +334,7 @@ async function sync() {
       status: 'published',
       authorName: article.author?.name || null,
       authorAlumniNumber: article.author?.alumniNumber || null,
+      revisedBy: Array.isArray(article.revisedBy) ? article.revisedBy : [],
       sourceNotes: article.editorialOrigin === 'ai_assisted'
         ? `嘉中管樂官方網站 AI 小編依公開來源協助整理，經 ${article.reviewedByName || '管理員'} 核准後發布。`
         : `會員 ${article.author?.name || '校友'} 投稿，經 ${article.reviewedByName || '內容編輯'} 審核後發布。`

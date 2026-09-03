@@ -47,7 +47,20 @@ jobs:
           git add data content people news assets/img/news assets/img/members photos/profile-links.js feed.xml sitemap.xml index.html concerts.html
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Publish approved member content"
-            git push origin main
+            # 排程發布與人手動推送會互相撞到：只要在這個工作跑的一兩分鐘之內有人推了東西，
+            # 這裡的 push 就會被 GitHub 以 non-fast-forward 拒絕，整個工作失敗，
+            # 於是下一步的 --ack 不會執行——會員平台就一直停在「已核准，等待上官網」。
+            # 所以推不上去時先把對方的更動接下來再推，最多試三次。
+            pushed=""
+            for attempt in 1 2 3; do
+              if git push origin main; then pushed="yes"; break; fi
+              echo "推送被拒絕（第 ${attempt} 次），先接上遠端的更動再試"
+              git pull --rebase --autostash origin main || break
+            done
+            if [ -z "$pushed" ]; then
+              echo "::error::推不上去，這一批沒有發布。下一次排程會再試一次。"
+              exit 1
+            fi
           fi
       - name: Record published revision
         env:

@@ -989,6 +989,34 @@ function checkGeneratedNewsPages() {
       missingNumber += 1;
     }
   }
+  // 人物頁有兩個來源：手寫的 content/people/*.html，與會員平台同步下來的那幾份。
+  // 同步下來的每次都會整份重寫，手動改了會安靜地不見——所以檢查標記還在不在。
+  try {
+    require(path.join(root, 'data', 'people-profiles.js'));
+    const managed = new Set((global.MEMBER_MANAGED_PEOPLE_PROFILES || []).map((item) => String(item.num)));
+    let tampered = 0;
+    for (const num of managed) {
+      const file = `content/people/${num}.html`;
+      if (!fs.existsSync(path.join(root, file))) continue;
+      if (!read(file).startsWith('<!-- 這一頁的內容由會員平台')) {
+        addWarning(`${file}: 這一頁由會員平台管理，但檔案裡沒有那行標記——可能被手動改過，下次同步會整份蓋掉。`);
+        tampered += 1;
+      }
+    }
+    info.push(`Member-managed people pages checked: ${managed.size}; hand-edited: ${tampered}`);
+  } catch { /* 還沒有會員管理的人物頁就跳過 */ }
+
+  // 分類只能是固定的那六種。想加第七種之前先確認它是不是其實只是一個標籤。
+  try {
+    require(path.join(root, 'data', 'news-taxonomy.js'));
+    const allowed = new Set((global.NEWS_CATEGORIES || []).map((item) => item.name));
+    if (allowed.size) {
+      const bad = [...new Set(articles.map((article) => article.category).filter((name) => !allowed.has(name)))];
+      for (const name of bad) addError(`分類「${name}」不在固定的六種裡。要嘛對到既有分類（見 data/news-taxonomy.js），要嘛它其實是一個標籤。`);
+      info.push(`Article categories checked: ${allowed.size} allowed; out of taxonomy: ${bad.length}`);
+    }
+  } catch { /* 分類表還沒建立就先跳過 */ }
+
   // 版面規範：短消息維持「段落＋圖」就好，不硬加結構；
   // 但超過約 900 字還一個小標都沒有，讀者在手機上會看到一整片文字牆。
   // 這是提醒（warning），不是錯誤——不同類型的文章本來就該有彈性。

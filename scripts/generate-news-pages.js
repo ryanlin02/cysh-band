@@ -22,6 +22,12 @@ require(path.join(root, 'data', 'people-profiles.js'));
 const profiles = global.PEOPLE_PROFILES || [];
 
 require(path.join(root, 'data', 'news-provenance.js'));
+require(path.join(root, 'data', 'news-taxonomy.js'));
+const CATEGORY_MAP = global.NEWS_CATEGORY_MAP || {};
+/** 舊分類自動對到固定的六種；沒對到的原樣保留，check-site 會抓出來。 */
+function mapCategory(name) {
+  return CATEGORY_MAP[String(name || '').trim()] || String(name || '').trim();
+}
 const provenanceConfig = global.NEWS_PROVENANCE || { byAuthor: {}, byArticle: {} };
 // 姓名 → 校友編號：撰稿與核准那一行要把編號一起寫出來
 const numberByName = new Map(profiles.filter((p) => p.name && p.num).map((p) => [p.name, String(p.num)]));
@@ -76,7 +82,22 @@ function articleProvenance(article, sourceLinks = '') {
     ? `<p class="article-end-note"><strong>資料來源</strong>　${escapeHtml(notes)}</p>`
     : '';
 
-  return { sentence, sourceLine, sourceLinks };
+  // 發布之後被誰改過。一個人就寫名字，兩個人寫兩個，三個以上寫「某某等 N 人」——
+  // 不是省略，是因為列出五六個名字讀者反而看不懂重點，最後修訂日期才是他要的資訊。
+  const revised = (Array.isArray(article.revisedBy) ? article.revisedBy : [])
+    .filter((item) => item && item.name);
+  let revisionLine = '';
+  if (revised.length) {
+    const labels = revised.map((item) => personLabel(item.name, item.alumniNumber));
+    const lastAt = revised.map((item) => String(item.at || '').slice(0, 10)).filter(Boolean).sort().pop();
+    const who = labels.length === 1
+      ? labels[0]
+      : labels.length === 2
+        ? `${labels[0]}、${labels[1]}`
+        : `${labels[0]} 等 ${labels.length} 人`;
+    revisionLine = `發布後由 ${who}修訂過${lastAt ? `，最後修訂 ${lastAt}` : ''}。`;
+  }
+  return { sentence, sourceLine, sourceLinks, revisionLine };
 }
 
 function isExternalUrl(value) {
@@ -119,7 +140,7 @@ function normalizeArticle(item) {
     description: item.description || item.summary || title,
     ogDescription: item.ogDescription || item.description || item.summary || title,
     headlineHtml: item.headlineHtml || escapeHtml(title),
-    category: item.category || '最新消息',
+    category: mapCategory(item.category) || '團的日常',
     tags: Array.isArray(item.tags) ? item.tags : [],
     pinUntil: item.pinUntil || '',
     priority: item.priority || (item.pinned ? 'important' : 'normal'),
@@ -420,6 +441,7 @@ function articleEnd(article, sourceLinks = '') {
   return `<footer class="article-end" aria-label="撰稿與核准與互動">
       <h2>撰稿與核准</h2>
       <p>${escapeHtml(provenance.sentence)}</p>
+      ${provenance.revisionLine ? `<p class="article-end-note">${escapeHtml(provenance.revisionLine)}</p>` : ''}
       ${provenance.sourceLine}${provenance.sourceLinks ? `<p class="article-end-note"><strong>資料來源</strong></p>${provenance.sourceLinks}` : ''}
       ${social}
       <div class="article-end-actions">
