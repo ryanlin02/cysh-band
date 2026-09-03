@@ -181,12 +181,18 @@ function renderUpdateMeta(profile) {
   return `<p class="person-update-meta">最後更新：<time datetime="${escapeHtml(profile.updatedAt)}">${escapeHtml(formatted)}</time>・更新者：${escapeHtml(profile.updatedBy)}</p>`;
 }
 
+/* 這個人的照片。三件事要說清楚：
+     1. 名稱要跟會員平台一致——那一區已經改叫「照片」，不要一邊叫影像館一邊叫照片
+     2. 照片在會員平台，**需要社員身分**。官網是公開的，不先講的話
+        非社員點下去只會撞到登入牆，那是一條沒有預告的死路
+     3. 區塊標題、按鈕上下兩行原本把同一件事講了三次，改成各講一件 */
 function renderGalleryLink(profile) {
   if (!profile.num) return '';
   const href = `../photos/#/person-num/${encodeURIComponent(profile.num)}`;
-  return `<section class="person-gallery-panel" aria-label="影像館人物照片">
-      <h3>影像館中的照片</h3>
-      <a class="btn ghost" href="${escapeHtml(href)}"><span>前往影像館</span><b>查看照片牆</b></a>
+  return `<section class="person-gallery-panel" aria-label="這個人的照片">
+      <h3>這個人的照片</h3>
+      <p>照片放在會員平台，需要社員身分才看得到。</p>
+      <a class="btn ghost" href="${escapeHtml(href)}"><span>社員登入後可看</span><b>${escapeHtml(profile.name || '這個人')}的照片 →</b></a>
     </section>`;
 }
 
