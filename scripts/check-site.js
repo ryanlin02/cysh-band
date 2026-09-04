@@ -1051,6 +1051,15 @@ function checkGeneratedNewsPages() {
     addError('data/concerts-catalog.json: 與 data/concerts.js 不同步。執行 node scripts/generate-concerts-catalog.js');
   }
 
+  // 名錄索引（給會員平台配對大頭照用）要跟 data/alumni.js 同步
+  try {
+    const { execFileSync } = require('child_process');
+    execFileSync(process.execPath, [path.join(root, 'scripts', 'generate-roster-catalog.js'), '--check'], { stdio: 'pipe' });
+    info.push('Roster catalog checked: in sync with data/alumni.js');
+  } catch (error) {
+    addError('data/roster-catalog.json: 與 data/alumni.js 不同步。執行 node scripts/generate-roster-catalog.js');
+  }
+
   // 人物頁有兩個來源：手寫的 content/people/*.html，與會員平台同步下來的那幾份。
   // 同步下來的每次都會整份重寫，手動改了會安靜地不見——所以檢查標記還在不在。
   try {
