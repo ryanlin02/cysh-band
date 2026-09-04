@@ -1,7 +1,40 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-04T00:20:50.454Z",
+  "generatedAt": "2026-09-04T06:00:50.218Z",
   "articles": [
+    {
+      "id": "2026-08-26-ai-2026-09-03-b16674ea",
+      "date": "2026-08-26",
+      "category": "嘉義樂壇",
+      "title": "嘉義在地音樂之光嘉頌重奏團樂脈勇奪第37屆傳藝金曲獎三項大獎",
+      "url": "https://cysh.band/news/2026-08-26-ai-2026-09-03-b16674ea.html",
+      "tags": [
+        "嘉中管樂",
+        "傳藝金曲獎",
+        "嘉頌重奏團",
+        "樂脈",
+        "藝文消息"
+      ],
+      "authorName": "AI 小編",
+      "authorAlumniNumber": null,
+      "sourceNotes": "嘉中管樂官方網站 AI 小編依公開來源協助整理，經 翁啟榮 核准後發布。"
+    },
+    {
+      "id": "2026-08-22-ai-2026-09-03-fa1b7d80",
+      "date": "2026-08-22",
+      "category": "嘉義樂壇",
+      "title": "嘉義管樂躍上國際舞台！嘉頌重奏團專輯樂脈榮獲第37屆傳藝金曲獎三項大獎！",
+      "url": "https://cysh.band/news/2026-08-22-ai-2026-09-03-fa1b7d80.html",
+      "tags": [
+        "嘉中管樂",
+        "傳藝金曲獎",
+        "嘉頌重奏團",
+        "管樂新聞"
+      ],
+      "authorName": "AI 小編",
+      "authorAlumniNumber": null,
+      "sourceNotes": "嘉中管樂官方網站 AI 小編依公開來源協助整理，經 翁啟榮 核准後發布。"
+    },
     {
       "id": "2026-08-21-trombone-ensemble-galaxy-night",
       "date": "2026-08-21",

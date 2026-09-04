@@ -1274,9 +1274,9 @@ window.MEMBER_MANAGED_PEOPLE_PROFILES = [
     "source": "content/people/9502.html",
     "output": "people/9502.html",
     "title": "林俊余（9502）｜嘉義高中管樂隊校友",
-    "description": "林俊余是民國 95 年入學校友，曾任副社長、學生指揮並隸屬長號聲部。",
+    "description": "一篇虛構短篇小說《方城十六張》。故事發生在颱風夜的嘉中管樂社社辦，四個人、一張蒙塵的方桌，賭的東西看起來很大，其實很小。本文純屬創作，人物性格與情節皆為虛構，不是真實紀錄；文末另有一小段是真的。",
     "ogTitle": "林俊余（9502）｜這傢伙的個人介紹內容基本都是AI胡謅的不要太認真",
-    "ogDescription": "林俊余是民國 95 年入學校友，曾任副社長、學生指揮並隸屬長號聲部。",
+    "ogDescription": "一篇虛構短篇小說《方城十六張》。故事發生在颱風夜的嘉中管樂社社辦，四個人、一張蒙塵的方桌，賭的東西看起來很大，其實很小。本文純屬創作，人物性格與情節皆為虛構，不是真實紀錄；文末另有一小段是真的。",
     "headlineHtml": "這傢伙的個人介紹內容基本都是AI胡謅的不要太認真",
     "photo": "../assets/img/members/9502.webp",
     "facts": [
@@ -1297,7 +1297,7 @@ window.MEMBER_MANAGED_PEOPLE_PROFILES = [
     "rosterLink": "../roster.html#p-9502",
     "relatedLinks": [],
     "updatedBy": "林俊余",
-    "updatedAt": "2026-08-11T09:53:08.522423+00:00",
+    "updatedAt": "2026-09-04T02:33:54.856102+00:00",
     "sourceHtml": "本文由林俊余透過會員後台提供，經林俊余審核後發布；歷史資料如有補充或更正，將保留更新者與時間紀錄。"
   }
 ];
