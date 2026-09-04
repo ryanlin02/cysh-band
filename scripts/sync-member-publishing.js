@@ -329,6 +329,12 @@ async function sync() {
       title: oneLine(article.title),
       summary: oneLine(article.summary),
       source, output, url: output,
+      /* 會員平台那邊的網址代號。官網原本是「把 id 前面的日期切掉」猜出來的，
+         但會員平台的 slug 本身就可能含日期（2026-07-02-weiwu-announce），
+         切掉之後兩邊對不起來——結果 25 篇文章有 24 篇的讚與留言查不到，
+         而且因為「查不到就整塊不顯示」，壞掉的時候完全沒有跡象。
+         所以改成由這裡把真正的 slug 帶過去，不要再猜。 */
+      memberSlug: article.slug,
       thumb: representative.thumb,
       ogImage: representative.ogImage,
       ogImageWidth: representative.ogImageWidth,

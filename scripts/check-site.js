@@ -923,6 +923,15 @@ function checkGeneratedNewsPages() {
     if (!actual.includes('data-news-share') || !actual.includes('../js/news-share.js')) {
       addError(`${article.output}: article share control is missing or incomplete.`);
     }
+    /* 讚與留言用的網址代號要跟會員平台那邊一模一樣。
+       對不起來的時候頁面不會出錯，只是那一整塊安靜地不顯示——
+       所以一定要用檢查抓，不能靠肉眼看。 */
+    if (article.memberSlug) {
+      const expectedSlug = `data-slug="${article.memberSlug}"`;
+      if (!actual.includes(expectedSlug)) {
+        addError(`${article.output}: 讚與留言的 data-slug 與會員平台不一致（應該是 ${article.memberSlug}）。`);
+      }
+    }
 
     const schemaBlocks = [...actual.matchAll(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)];
     const newsSchemas = [];

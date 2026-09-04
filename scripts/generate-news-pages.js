@@ -397,7 +397,12 @@ function articlePageNav(article) {
    讚數與留言數由會員平台提供（js/news-social.js 去要），要不到就把那一列藏起來。 */
 function articleEnd(article, sourceLinks = '') {
   const provenance = articleProvenance(article, sourceLinks);
-  const slug = String(article.id || '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+  /* 會員平台那邊的網址代號：以 memberSlug 為準（由同步帶過來），
+     沒有的才退回舊的猜法（官網早期手寫、從來沒進過會員平台的文章）。
+     舊的猜法是「把 id 前面的日期切掉」，但會員平台的 slug 本身可能含日期，
+     切掉就對不起來——25 篇有 24 篇的讚與留言因此查不到（2026-09-04 修）。 */
+  const slug = String(article.memberSlug || '').trim()
+    || String(article.id || '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
   const shareUrl = `https://cysh.band/${article.output}`;
   const statusId = `${article.id}-share-status`;
   const social = slug
