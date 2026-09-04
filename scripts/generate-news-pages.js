@@ -697,10 +697,11 @@ function generateNewsPages() {
   console.log('news/index.html');
   fs.writeFileSync(path.join(root, 'feed.xml'), renderFeed());
   console.log('feed.xml');
-  fs.writeFileSync(path.join(root, 'data', 'news-catalog.json'), JSON.stringify({
-    version: 1,
-    generatedAt: new Date().toISOString(),
-    articles: articles.map((article) => ({
+  /* generatedAt 每次執行都會變。以前直接寫現在時間，結果排程發布每小時都會產生
+     一筆「只改了時間戳」的 commit——版本紀錄被灌滿雜訊，真正有內容的發布反而找不到。
+     現在只有文章清單真的變了才更新時間。 */
+  const catalogPath = path.join(root, 'data', 'news-catalog.json');
+  const catalogArticles = articles.map((article) => ({
       id: article.id,
       date: article.date,
       category: article.category,
@@ -710,8 +711,15 @@ function generateNewsPages() {
       authorName: article.authorName || null,
       authorAlumniNumber: article.authorAlumniNumber || null,
       sourceNotes: article.sourceNotes || null
-    }))
-  }, null, 2) + '\n');
+  }));
+  let generatedAt = new Date().toISOString();
+  try {
+    const previous = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+    if (JSON.stringify(previous.articles) === JSON.stringify(catalogArticles) && previous.generatedAt) {
+      generatedAt = previous.generatedAt;
+    }
+  } catch { /* 檔案不存在或壞掉就重新產生 */ }
+  fs.writeFileSync(catalogPath, JSON.stringify({ version: 1, generatedAt, articles: catalogArticles }, null, 2) + '\n');
   console.log('data/news-catalog.json');
   const sitemapPath = path.join(root, 'sitemap.xml');
   fs.writeFileSync(sitemapPath, renderSitemap(fs.readFileSync(sitemapPath, 'utf8')));

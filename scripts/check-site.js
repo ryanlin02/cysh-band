@@ -834,6 +834,47 @@ function checkFontUrlEncoding() {
   }
 }
 
+/* 文章正文兩邊要長得一樣。
+   article-markup.js 兩份程式已經有一致性檢查，但**樣式沒有**——
+   同一段 markup 產生同一段 HTML，官網有 .news-cta 的金色外框、
+   會員平台沒有規則就變成一行純文字連結，同一篇文章在兩邊看起來是兩種東西。
+   所以這裡檢查：article-markup.js 會產生的每一個 class，
+   會員平台的 v2.css 都要有對應規則。新增排版元素時會自動被抓到。 */
+function checkArticleMarkupStyling() {
+  const markupPath = path.join(root, 'scripts', 'lib', 'article-markup.js');
+  const memberCssPath = path.join(root, '..', 'cysh-band-community', 'src', 'app', 'v2.css');
+  if (!fs.existsSync(memberCssPath)) {
+    warnings.push('找不到會員平台的 v2.css，略過「文章排版兩邊樣式一致」檢查。');
+    return;
+  }
+  const markup = fs.readFileSync(markupPath, 'utf8');
+  const css = fs.readFileSync(memberCssPath, 'utf8');
+  const siteCss = fs.readFileSync(path.join(root, 'css', 'style.css'), 'utf8');
+  const classes = new Set();
+  for (const match of markup.matchAll(/class="([a-z0-9 _-]+)"/g)) {
+    for (const name of match[1].split(/\s+/)) if (name) classes.add(name);
+  }
+  for (const name of [...classes].sort()) {
+    if (!css.includes(`.${name}`)) {
+      addError(`會員平台 v2.css 沒有 .${name} 的規則：同一篇文章在官網與後台會長得不一樣。`);
+    }
+    if (!siteCss.includes(`.${name}`)) {
+      addError(`css/style.css 沒有 .${name} 的規則：article-markup.js 會產生這個 class 卻沒有樣式。`);
+    }
+  }
+  // 一篇文章最多一個重點連結（規範 2.3-B）：由 article-markup.js 保證，這裡防退化
+  if (!/ctaBudget|cta_budget/.test(markup)) {
+    addError('article-markup.js 少了「一篇最多一個重點連結」的額度控制（規範 2.3-B）。');
+  }
+  const overCta = [];
+  for (const file of walk(path.join(root, 'content', 'news'), (f) => f.endsWith('.html'))) {
+    const count = (fs.readFileSync(file, 'utf8').match(/class="news-cta"/g) || []).length;
+    if (count > 1) overCta.push(`${rel(file)}（${count} 個）`);
+  }
+  if (overCta.length) addError(`這些文章有超過一個重點連結，重新產生一次就會修正：${overCta.join('、')}`);
+  info.push(`Article markup styling checked: ${classes.size} classes shared with the member platform`);
+}
+
 function checkGeneratedNewsPages() {
   const {
     articles,
@@ -1423,6 +1464,7 @@ checkMemberAccessPrivacy();
 checkStructuredData();
 checkFontUrlEncoding();
 checkGeneratedCorePages();
+checkArticleMarkupStyling();
 checkGeneratedNewsPages();
 checkGeneratedPeoplePages();
 checkGeneratedPeopleIndex();

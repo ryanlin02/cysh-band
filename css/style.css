@@ -2822,6 +2822,21 @@ a.roster-card.linked:hover {
 .article-end-actions .btn.ghost[hidden] { display: none; }
 .article-end-status { margin: 10px 0 0; color: var(--ink-dim); font-size: .85rem; line-height: 1.7; }
 
+/* 文章正文裡「把幾件實務資訊圈起來」的一段（演出資訊、報名方式…）。
+   規範 2.3-0：一個頁面最多兩種框——文章頁的框額度已經給了 .news-cta，
+   所以這一段不做框，用上下兩條細線把它跟前後文分開就夠了。 */
+.news-content .news-callout {
+  margin: 26px 0;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.news-content .news-callout > :first-child { margin-top: 0; }
+.news-content .news-callout > :last-child { margin-bottom: 0; }
+/* 半寬圖：不佔滿整個欄寬的插圖 */
+.news-content figure.is-half { max-width: 60%; }
+@media (max-width: 640px) { .news-content figure.is-half { max-width: 100%; } }
+
 .news-content .news-cta {
   display: flex;
   align-items: center;

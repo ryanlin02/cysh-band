@@ -21,8 +21,17 @@
  *   => [小標|大字](網址) → 重點連結（官網的 news-cta 樣式，自成一行）
  *   空一行            → 分成新的一段
  *
+ * ⚠️ 重點連結一篇只有一個（2026-09-04 起）：
+ *    金色外框是「讀者現在可以做的那一件事」——報名、購票、看這場的相簿。
+ *    主辦單位官網、場館介紹、樂團簡介這些是**註腳**，不是行動；
+ *    三個一樣重的框排在一起，讀者反而看不出哪一個才重要。
+ *    所以第二個以後的 `=>` 會自動降級成一行普通的連結文字（連結不會消失）。
+ *    這條規則寫在網站製作規範 2.3-B，由程式保證，不必靠寫文章的人記得。
+ *
  * 段落層級（不是打在正文裡，是段落的設定）：
- *   style: "callout" → 整段做成重點框（官網的 news-callout）
+ *   style: "callout" → 把一段實務資訊（演出資訊、報名方式…）用上下兩條細線
+ *                       跟前後文分開（官網的 news-callout）。不是外框：
+ *                       文章頁的框額度已經給了重點連結（規範 2.3-0）。
  */
 
 function escapeHtml(value) {
@@ -132,20 +141,29 @@ function isTableBlock(lines) {
  * 重點連結（官網的 news-cta）：自成一行的 `=> [小標|大字](網址)`。
  * 官網上是一個橫幅式的連結區塊，用來把人帶去相簿、售票或主辦單位頁面。
  */
-function renderCta(label, url) {
+function renderCta(label, url, demote) {
   const href = safeUrl(url.replace(/&amp;/g, "&"));
   if (!href) return `<p>${renderInline(label)}</p>`;
   const cut = label.indexOf("|");
   const small = cut >= 0 ? label.slice(0, cut).trim() : "";
   const big = (cut >= 0 ? label.slice(cut + 1) : label).trim();
   const attrs = isExternal(href) ? ' target="_blank" rel="noopener"' : "";
+  // 第二個以後的重點連結降級成一行普通連結：連結還在，只是不再搶走版面。
+  if (demote) {
+    const text = big.replace(/\s*[→>]+\s*$/, "").trim() || big;
+    return `<p>${small ? `${renderInline(small)}：` : ""}`
+      + `<a href="${escapeHtml(href)}"${attrs}>${renderInline(text)}</a></p>`;
+  }
   return `<p><a class="news-cta" href="${escapeHtml(href)}"${attrs}>`
     + (small ? `<span>${renderInline(small)}</span>` : "")
     + `<b>${renderInline(big)}</b></a></p>`;
 }
 
-/** 把一段正文轉成官網 HTML */
-function renderBody(text) {
+/** 把一段正文轉成官網 HTML。
+ *  budget 是整篇文章共用的重點連結額度（見檔頭說明）；單獨呼叫時每次都給一個新的，
+ *  行為與以前一樣——第一個 `=>` 仍然是金色外框。 */
+function renderBody(text, budget) {
+  const cta_budget = budget || { ctaUsed: false };
   const blocks = String(text || "").replace(/\r\n/g, "\n").split(/\n{2,}/);
   const out = [];
   for (const raw of blocks) {
@@ -157,7 +175,11 @@ function renderBody(text) {
 
     // => [小標|大字](網址)：整個區塊只有這一行時才算重點連結
     const cta = lines.length === 1 && /^\s*=>\s*\[([^\]\n]+)\]\(([^)\s]+)\)\s*$/.exec(block);
-    if (cta) { out.push(renderCta(cta[1], cta[2])); continue; }
+    if (cta) {
+      out.push(renderCta(cta[1], cta[2], cta_budget.ctaUsed));
+      cta_budget.ctaUsed = true;
+      continue;
+    }
 
     if (lines.every((line) => /^\s*[-*]\s+/.test(line))) {
       out.push(`<ul>${lines.map((line) => `<li>${renderInline(line.replace(/^\s*[-*]\s+/, ""))}</li>`).join("")}</ul>`);
@@ -202,11 +224,13 @@ function renderArticleSections(sections, options) {
   // 最新消息用 h2、人物介紹用 h3，與官網既有頁面一致
   const h = (options && options.headingLevel) || "h2";
   const parts = [];
+  // 整篇文章共用一個重點連結額度：只有第一個 `=>` 會做成金色外框。
+  const ctaBudget = { ctaUsed: false };
   for (const section of Array.isArray(sections) ? sections : []) {
     const heading = String(section.heading || "").trim();
     const inner = [];
     if (heading) inner.push(`<${h}>${renderInline(heading)}</${h}>`);
-    const body = renderBody(section.body);
+    const body = renderBody(section.body, ctaBudget);
     if (body) inner.push(body);
     // 重點框只包標題與正文；圖片與附註仍照原本方式排在外面，
     // 框裡塞一張大圖在官網上會整個爆版。

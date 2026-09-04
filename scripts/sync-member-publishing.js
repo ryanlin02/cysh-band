@@ -376,8 +376,29 @@ async function acknowledge(commitSha) {
   console.log(`發布回報完成：人物 ${result.profilesPublished}；文章 ${result.articlesPublished}`);
 }
 
+/*
+  發布流程失敗時要讓會員平台知道。
+  以前只要任何一個步驟失敗（例如全站檢查沒過），整個工作就結束，
+  什麼都不會回報——後台只會一直顯示「已核准，等待上官網」，
+  沒有人知道其實是壞掉了、也不知道壞在哪裡。
+*/
+async function reportSyncFailure(step, message) {
+  requireToken();
+  const text = String(message || '').replace(/\s+/g, ' ').trim().slice(0, 2000);
+  const result = await (await request(apiBase, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ syncFailure: { step: String(step || '未知步驟').slice(0, 120), message: text || '沒有錯誤訊息' } }),
+  })).json();
+  console.log(`已回報發布失敗：${JSON.stringify(result)}`);
+}
+
 const ackIndex = process.argv.indexOf('--ack');
-(ackIndex >= 0 ? acknowledge(process.argv[ackIndex + 1]) : sync()).catch(async (error) => {
+const failIndex = process.argv.indexOf('--fail');
+const task = failIndex >= 0
+  ? reportSyncFailure(process.argv[failIndex + 1], process.argv[failIndex + 2])
+  : ackIndex >= 0 ? acknowledge(process.argv[ackIndex + 1]) : sync();
+task.catch(async (error) => {
   if (activeAiArticle) await reportAiArticleFailure(activeAiArticle, error);
   console.error(error); process.exitCode = 1;
 });

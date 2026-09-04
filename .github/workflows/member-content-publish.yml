@@ -63,6 +63,18 @@ jobs:
             fi
           fi
       - name: Record published revision
+        id: ack
         env:
           MEMBER_PUBLISH_SYNC_TOKEN: ${{ secrets.MEMBER_PUBLISH_SYNC_TOKEN }}
         run: node scripts/sync-member-publishing.js --ack "$(git rev-parse HEAD)"
+      # 任何一步失敗都要讓會員平台知道，而且要說出壞在哪一步。
+      # 以前失敗就整個工作結束、什麼都不回報，後台只會一直顯示
+      # 「已核准，等待上官網」——看起來像在等，其實是壞了。
+      - name: Report failure to the member platform
+        if: failure()
+        env:
+          MEMBER_PUBLISH_SYNC_TOKEN: ${{ secrets.MEMBER_PUBLISH_SYNC_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node scripts/sync-member-publishing.js --fail "自動發布流程" \
+            "GitHub Actions 這一次的發布失敗了，詳細錯誤請看執行紀錄：$RUN_URL"
