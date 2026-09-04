@@ -2,12 +2,6 @@
   "version": 1,
   "articles": [
     {
-      "id": "405705bb-d9b7-4d67-abbd-ebc984d2ac4d",
-      "revision": 1,
-      "source": "content/news/2026-08-26-ai-2026-09-03-b16674ea.html",
-      "output": "news/2026-08-26-ai-2026-09-03-b16674ea.html"
-    },
-    {
       "id": "bc16fadb-8f32-4855-af43-8cd8a49c63cc",
       "revision": 2,
       "source": "content/news/2026-07-13-brass-ensemble-concert-sharing.html",
@@ -24,6 +18,12 @@
       "revision": 2,
       "source": "content/news/2026-07-11-rehearsal-resumes.html",
       "output": "news/2026-07-11-rehearsal-resumes.html"
+    },
+    {
+      "id": "405705bb-d9b7-4d67-abbd-ebc984d2ac4d",
+      "revision": 1,
+      "source": "content/news/2026-08-26-ai-2026-09-03-b16674ea.html",
+      "output": "news/2026-08-26-ai-2026-09-03-b16674ea.html"
     },
     {
       "id": "017051c4-e17d-43bd-8c69-0cca9816678c",
