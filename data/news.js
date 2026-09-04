@@ -1419,8 +1419,8 @@ window.MEMBER_PUBLISHED_NEWS = [
     "id": "2026-08-12-ai-2026-08-29-39d9409a",
     "date": "2026-08-12",
     "time": "12:00",
-    "modifiedDate": "2026-09-03",
-    "modifiedTime": "18:06",
+    "modifiedDate": "2026-08-29",
+    "modifiedTime": "07:47",
     "category": "團的日常",
     "tags": [
       "嘉中管樂",
@@ -1448,7 +1448,13 @@ window.MEMBER_PUBLISHED_NEWS = [
     "status": "published",
     "authorName": "AI 小編",
     "authorAlumniNumber": null,
-    "revisedBy": [],
+    "revisedBy": [
+      {
+        "name": "林俊余",
+        "alumniNumber": "9502",
+        "at": "2026-09-04T00:18:40.062918+00:00"
+      }
+    ],
     "sourceNotes": "嘉中管樂官方網站 AI 小編依公開來源協助整理，經 林俊余 核准後發布。"
   },
   {
