@@ -95,9 +95,16 @@ function webpDimensions(bytes) {
   return null;
 }
 
+/* 公開介紹的正文，與文章用同一份轉換程式（renderArticleSections）。
+   以前這裡是自己寫的簡易版：整段跳脫、換行變 <br>，於是同一種寫法
+   在文章裡會變成粗體、引言、清單，在人物介紹裡卻原封不動印出 ** 和 >。
+   同一個網站兩種規則，寫的人記不住，也違反規範 2.3-B 的「兩邊要長得一樣」。
+   人物頁的段落標題用 h3（規範 7.2），文章用 h2。 */
 function profileSource(profile) {
   const sections = Array.isArray(profile.sections) ? profile.sections : [];
-  return [`<p>${escapeHtml(profile.summary)}</p>`, ...sections.map((section) => `<h3>${escapeHtml(section.heading)}</h3>\n<p>${escapeHtml(section.body).replace(/\n/g, '<br>')}</p>`)].join('\n\n') + '\n';
+  const lede = `<p class="lede">${escapeHtml(profile.summary)}</p>`;
+  const body = renderArticleSections(sections, { headingLevel: 'h3', assetPrefix: '../' });
+  return `${lede}\n\n${body}`;
 }
 
 // 圖片：會員平台上傳在 Supabase，官網要自己保存一份，

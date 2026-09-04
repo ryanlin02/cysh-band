@@ -2822,22 +2822,30 @@ a.roster-card.linked:hover {
 .article-end-actions .btn.ghost[hidden] { display: none; }
 .article-end-status { margin: 10px 0 0; color: var(--ink-dim); font-size: .85rem; line-height: 1.7; }
 
+/* 以下這幾條同時套用在最新消息（.news-content）與人物介紹（.person-article）：
+   2026-09-04 起，人物介紹的正文改用與文章相同的排版程式（article-markup.js），
+   所以同一種寫法必須在兩種頁面得到同一個樣子。 */
 /* 文章正文裡「把幾件實務資訊圈起來」的一段（演出資訊、報名方式…）。
    規範 2.3-0：一個頁面最多兩種框——文章頁的框額度已經給了 .news-cta，
    所以這一段不做框，用上下兩條細線把它跟前後文分開就夠了。 */
-.news-content .news-callout {
+.news-content .news-callout,
+.person-article .news-callout {
   margin: 26px 0;
   padding: 20px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
-.news-content .news-callout > :first-child { margin-top: 0; }
-.news-content .news-callout > :last-child { margin-bottom: 0; }
+.news-content .news-callout > :first-child,
+.person-article .news-callout > :first-child { margin-top: 0; }
+.news-content .news-callout > :last-child,
+.person-article .news-callout > :last-child { margin-bottom: 0; }
 /* 半寬圖：不佔滿整個欄寬的插圖 */
-.news-content figure.is-half { max-width: 60%; }
-@media (max-width: 640px) { .news-content figure.is-half { max-width: 100%; } }
+.news-content figure.is-half,
+.person-article figure.is-half { max-width: 60%; }
+@media (max-width: 640px) { .news-content figure.is-half, .person-article figure.is-half { max-width: 100%; } }
 
-.news-content .news-cta {
+.news-content .news-cta,
+.person-article .news-cta {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2854,14 +2862,16 @@ a.roster-card.linked:hover {
   touch-action: manipulation;
   transition: color var(--duration-fast), background var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
 }
-.news-content .news-cta span {
+.news-content .news-cta span,
+.person-article .news-cta span {
   flex: 0 0 auto;
   color: var(--ink-dim);
   font-size: .8rem;
   font-weight: 700;
   letter-spacing: .08em;
 }
-.news-content .news-cta b {
+.news-content .news-cta b,
+.person-article .news-cta b {
   min-width: 0;
   color: var(--gold);
   font-family: var(--serif);
@@ -2869,13 +2879,15 @@ a.roster-card.linked:hover {
   line-height: 1.45;
   text-align: right;
 }
-.news-content .news-cta:hover {
+.news-content .news-cta:hover,
+.person-article .news-cta:hover {
   color: var(--gold);
   border-color: var(--gold);
   background: rgba(200,164,92,.1);
   transform: translateY(var(--lift-sm));
 }
 .news-content .news-cta:focus-visible,
+.person-article .news-cta:focus-visible,
 .page-neighbor:focus-visible,
 .news-page-overview:focus-visible {
   outline: 2px solid var(--gold);

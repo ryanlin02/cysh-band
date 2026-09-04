@@ -42,7 +42,13 @@ function currentProfileFor(currentRel, profiles) {
   return (profiles || []).find((profile) => profile && profile.output === currentRel) || null;
 }
 
-function linkText(text, currentRel, profiles) {
+/* 「每次提到都要連」對索引與短文是對的，對長篇敘事就不是。
+   人物介紹頁開始出現長文之後，同一個名字在一頁裡出現三十幾次，
+   就變成三十幾個金色連結，整頁像連結農場，讀者也不會點第二次。
+   所以只有**人物介紹頁**改成一個人只連第一次；
+   其他頁面（歷屆聯演索引、最新消息的演出者名單⋯⋯）維持每次都連——
+   那些地方每一筆是獨立的一則，少一個連結就是少一條路。 */
+function linkText(text, currentRel, profiles, linked) {
   if (!text || !profiles || !profiles.length) return text;
   const currentProfile = currentProfileFor(currentRel, profiles);
   const skipName = currentProfile ? currentProfile.name : '';
@@ -53,6 +59,8 @@ function linkText(text, currentRel, profiles) {
   return text.replace(pattern, (name) => {
     const profile = linkable.find((item) => item.name === name);
     if (!profile) return name;
+    if (linked && linked.has(name)) return name;
+    if (linked) linked.add(name);
     return `<a href="${relativeHref(currentRel, profile.output)}">${name}</a>`;
   });
 }
@@ -72,6 +80,18 @@ function isSelfClosingTag(tag) {
 
 function autoLinkHtml(html, currentRel, profiles) {
   const input = String(html || '');
+  // 只有人物介紹頁（長篇敘事）才「一個人只連第一次」；其他頁面維持每次都連
+  const linked = /^people\//.test(String(currentRel || '')) ? new Set() : null;
+  /* 已經是連結的名字也要記進去。
+     否則對「已經產生好的頁面」再跑一次時，第一次的連結因為在 <a> 裡被跳過，
+     計數器就以為還沒連過，於是又想把第二次出現的名字連起來——
+     產生器與檢查程式會永遠互相打架。 */
+  const noteAlreadyLinked = (text) => {
+    if (!linked || !text) return;
+    for (const profile of publicProfiles(profiles)) {
+      if (text.includes(profile.name)) linked.add(profile.name);
+    }
+  };
   const tagRegex = /<[^>]*>/g;
   let result = '';
   let lastIndex = 0;
@@ -82,7 +102,12 @@ function autoLinkHtml(html, currentRel, profiles) {
   while ((match = tagRegex.exec(input))) {
     const text = input.slice(lastIndex, match.index);
     if (text) {
-      result += inBody && !skipStack.length ? linkText(text, currentRel, profiles) : text;
+      if (inBody && !skipStack.length) {
+        result += linkText(text, currentRel, profiles, linked);
+      } else {
+        if (skipStack.includes('a')) noteAlreadyLinked(text);
+        result += text;
+      }
     }
 
     const tag = match[0];
@@ -113,7 +138,7 @@ function autoLinkHtml(html, currentRel, profiles) {
   }
 
   const tail = input.slice(lastIndex);
-  result += inBody && !skipStack.length ? linkText(tail, currentRel, profiles) : tail;
+  result += inBody && !skipStack.length ? linkText(tail, currentRel, profiles, linked) : tail;
   return result;
 }
 
