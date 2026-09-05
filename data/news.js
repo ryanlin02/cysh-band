@@ -1478,9 +1478,9 @@ window.MEMBER_PUBLISHED_NEWS = [
     "id": "2026-08-12-ai-2026-08-29-39d9409a",
     "date": "2026-08-12",
     "time": "12:00",
-    "modifiedDate": "2026-08-29",
-    "modifiedTime": "07:47",
-    "category": "團的日常",
+    "modifiedDate": "2026-09-04",
+    "modifiedTime": "08:18",
+    "category": "嘉義樂壇",
     "tags": [
       "嘉中管樂",
       "嘉義高商管樂團",
